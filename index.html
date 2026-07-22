@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <title>66notes bubt - Student Dashboard, Class Routine & Assignments</title>
-  <meta name="description" content="66Notes BUBT - Student dashboard for class routine, assignments, faculty info, and classroom codes." />
+
+  <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
+  <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
+
+  <!-- PRIMARY TITLE (56 characters - within 30-60 range) -->
+  <title>66notes bubt - Student Dashboard, Routine & Assignments</title>
+
+  <!-- META DESCRIPTION -->
+  <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
+
+  <!-- CANONICAL URL -->
+  <link rel="canonical" href="https://66notes.github.io/" />
+
+  <!-- OPEN GRAPH (Facebook, WhatsApp, Telegram) -->
+  <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
+  <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://66notes.github.io/" />
+  <meta property="og:image" content="https://66notes.github.io/og-image.png" />
+  <meta property="og:site_name" content="66Notes BUBT" />
+
+  <!-- TWITTER CARDS -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
+  <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
+  <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
+
+  <!-- FONTS & ICONS -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
   <style>
+    /* ===== RESET & BASE ===== */
     *,
     *::before,
     *::after {
@@ -20,11 +47,12 @@
       font-size: 16px;
       -webkit-text-size-adjust: 100%;
       -webkit-tap-highlight-color: transparent;
+      scroll-behavior: smooth;
     }
     body {
       background: #f4f7fc;
       font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      padding: 1rem 0.8rem;
+      padding: 0.8rem 0.5rem;
       color: #1e2a3e;
       line-height: 1.4;
       min-height: 100vh;
@@ -34,38 +62,165 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1rem;
     }
+
+    /* ===== HEADER WITH SEARCH (RIGHT) ===== */
     .site-header {
       background: #ffffff;
       border-radius: 18px;
-      padding: 1.2rem 1.5rem;
+      padding: 0.7rem 1rem;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
       border: 1px solid #eef2f6;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.8rem;
     }
     .site-header h1 {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: #0d2b4e;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.3px;
     }
     .site-header h1 span {
       color: #4a6cf7;
     }
-    .site-header .subhead {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #6b7280;
-      background: #f3f6fa;
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
-      border: 1px solid #e5eaf0;
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      flex-shrink: 0;
     }
+    .search-toggle {
+      background: #ffffff;
+      border: 1.5px solid #e2e6ec;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+      color: #0d2b4e;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      touch-action: manipulation;
+    }
+    .search-toggle:active {
+      background: #f0f2f5;
+      border-color: #4a6cf7;
+    }
+    .search-toggle i {
+      font-size: 1rem;
+    }
+
+    /* Search Bar (hidden by default) */
+    .search-bar-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+      opacity: 0;
+      margin-top: 0;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #eef2f6;
+      padding: 0 0.8rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .search-bar-wrap.open {
+      max-height: 260px;
+      opacity: 1;
+      margin-top: 0.4rem;
+      padding: 0.6rem 0.8rem;
+    }
+    .search-bar-wrap input {
+      width: 100%;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #e2e6ec;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border 0.2s;
+      background: #f8fafc;
+    }
+    .search-bar-wrap input:focus {
+      border-color: #4a6cf7;
+      background: #fff;
+    }
+    .search-bar-wrap input::placeholder {
+      color: #9ca3af;
+    }
+    .search-results {
+      list-style: none;
+      padding: 0.3rem 0 0;
+      margin: 0;
+      max-height: 160px;
+      overflow-y: auto;
+      display: none;
+    }
+    .search-results.show {
+      display: block;
+    }
+    .search-results li {
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: #1e2a3e;
+      transition: background 0.15s;
+      border-bottom: 1px solid #f0f2f5;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .search-results li:last-child {
+      border-bottom: none;
+    }
+    .search-results li:active,
+    .search-results li:hover {
+      background: #eef2f6;
+    }
+    .search-results li .match-icon {
+      color: #4a6cf7;
+      font-size: 0.7rem;
+      width: 1.2rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .search-results li .match-label {
+      font-weight: 500;
+      flex: 1;
+    }
+    .search-results li .match-hint {
+      font-size: 0.6rem;
+      color: #9ca3af;
+      background: #f1f3f5;
+      padding: 0.1rem 0.5rem;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+    .no-results {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.7rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    /* ===== SECTION HIGHLIGHT (blue marker) ===== */
+    .section-highlight {
+      animation: highlightPulse 1.2s ease 3;
+      border-left: 4px solid #4a6cf7 !important;
+      background: #ebf0ff !important;
+    }
+    @keyframes highlightPulse {
+      0% { background: #ebf0ff; }
+      50% { background: #d6e4ff; }
+      100% { background: #ebf0ff; }
+    }
+
+    /* ===== REST OF THE STYLES (compressed for readability) ===== */
     .glance {
       background: #ffffff;
       border-radius: 20px;
@@ -73,6 +228,7 @@
       border: 1px solid #eef2f6;
       text-align: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+      transition: border 0.3s, background 0.3s;
     }
     .section-title {
       display: flex;
@@ -253,7 +409,7 @@
       border: 1px solid #eef2f6;
       padding: 0.6rem 0.7rem;
       margin-bottom: 8px;
-      transition: background 0.15s;
+      transition: background 0.15s, border 0.3s, background 0.3s;
     }
     .assign-block:last-child {
       margin-bottom: 0;
@@ -669,7 +825,7 @@
       padding: 0.8rem 1rem;
       border-bottom: 2px solid #eef2f6;
     }
-    .notice-header h3 {
+    .notice-header h2 {
       font-size: 1rem;
       font-weight: 600;
       color: #0a2540;
@@ -677,7 +833,7 @@
       align-items: center;
       gap: 6px;
     }
-    .notice-header h3 i {
+    .notice-header h2 i {
       color: #4a6cf7;
     }
     .table-wrapper {
@@ -848,6 +1004,15 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .codes-section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #0d2b4e;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+
+    /* ===== FACULTY (Always expanded) ===== */
     .faculty-root {
       font-family: 'Poppins', system-ui, -apple-system, sans-serif;
       margin: 0;
@@ -862,55 +1027,34 @@
       border: 1px solid #eef2f6;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
     }
-    .faculty-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.4rem;
-      padding: 0.2rem 0.1rem 0.4rem;
-      border-bottom: 1.5px solid #e9edf2;
-      cursor: pointer;
-      user-select: none;
-      min-height: 48px;
-    }
-    .faculty-toggle:active {
-      border-bottom-color: #b3c2d1;
-    }
     .faculty-heading {
       font-weight: 700;
-      font-size: 0.8rem;
-      letter-spacing: 0.2px;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
       color: #1e2a3e;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5px solid #e9edf2;
+      position: relative;
     }
     .faculty-heading i {
       color: #4a6cf7;
     }
-    .faculty-toggle-icon {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: #4b5563;
-      background: #f3f4f6;
-      padding: 0 8px;
-      border-radius: 10px;
-      line-height: 1.6;
-      border: 1px solid #e5e7eb;
-      flex-shrink: 0;
-    }
-    .faculty-body {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin 0.3s ease;
-      margin-top: 0;
-    }
-    .faculty-body.open {
-      max-height: 900px;
-      opacity: 1;
-      margin-top: 0.6rem;
+    .faculty-heading::after {
+      content: '';
+      position: absolute;
+      bottom: -1.5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: #4a6cf7;
+      border-radius: 2px;
     }
     .faculty-list {
       display: flex;
@@ -1004,6 +1148,8 @@
       color: #1e2a3e;
       font-weight: 400;
     }
+
+    /* ===== CTA ===== */
     .cta-card {
       background: #f9fafb;
       border-radius: 14px;
@@ -1051,12 +1197,39 @@
     .cta-btn i {
       font-size: 0.9rem;
     }
+
+    /* ===== FOOTER ===== */
+    .footer-seo {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      border: 1px solid #eef2f6;
+    }
+    .footer-seo p {
+      font-size: 0.7rem;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 0.3rem;
+    }
+    .footer-seo .brand {
+      font-weight: 600;
+      color: #0d2b4e;
+    }
+    .footer-seo .tags {
+      font-size: 0.6rem;
+      color: #6b7280;
+    }
+
+    /* ===== MOBILE OPTIMIZATION ===== */
     @media (max-width: 480px) {
       body { padding: 0.4rem 0.2rem; }
       .dashboard { gap: 0.8rem; }
-      .site-header { padding: 0.8rem 1rem; border-radius: 14px; }
-      .site-header h1 { font-size: 1.2rem; }
-      .site-header .subhead { font-size: 0.65rem; }
+      .site-header { padding: 0.5rem 0.6rem; border-radius: 14px; gap: 0.4rem; }
+      .site-header h1 { font-size: 1rem; }
+      .search-toggle { width: 36px; height: 36px; font-size: 0.9rem; }
+      .search-toggle i { font-size: 0.9rem; }
+      .search-bar-wrap.open { padding: 0.4rem 0.6rem; }
+      .search-bar-wrap input { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
       .glance { padding: 0.8rem 0.5rem; border-radius: 14px; }
       .section-title { font-size: 0.85rem; }
       .message-box { font-size: 0.78rem; min-height: 44px; }
@@ -1075,7 +1248,7 @@
       .sub-link-btn { font-size: 0.55rem; padding: 5px 8px; min-height: 36px; min-width: 80px; }
       .drive-heading { font-size: 0.7rem; }
       .drive-btn { font-size: 0.65rem; padding: 0.5rem 0.8rem; min-height: 40px; flex: 1 1 100%; }
-      .notice-header h3 { font-size: 0.85rem; }
+      .notice-header h2 { font-size: 0.85rem; }
       .notice-table { font-size: 0.6rem; min-width: 320px; }
       .notice-table th, .notice-table td { padding: 0.4rem 0.4rem; }
       .see-more-btn { font-size: 0.6rem; min-height: 40px; padding: 0.4rem; }
@@ -1084,6 +1257,7 @@
       .code-box { padding: 1px 6px; min-width: 50px; }
       .code-text { font-size: 0.65rem; }
       .copy-btn-code { font-size: 0.55rem; min-height: 24px; padding: 2px 8px; }
+      .codes-section-title { font-size: 0.7rem; }
       .faculty-heading { font-size: 0.7rem; }
       .faculty-name { font-size: 0.6rem; min-width: 80px; }
       .faculty-number { font-size: 0.55rem; padding: 1px 6px; }
@@ -1094,6 +1268,9 @@
       .cta-title { font-size: 0.8rem; }
       .cta-desc { font-size: 0.65rem; }
       .cta-btn { font-size: 0.7rem; padding: 0.4rem 1rem; min-height: 38px; width: 100%; justify-content: center; }
+      .footer-seo { padding: 0.6rem 0.7rem; }
+      .footer-seo p { font-size: 0.6rem; }
+      .footer-seo .tags { font-size: 0.55rem; }
     }
     @media (max-width: 380px) {
       .drive-buttons { flex-direction: column; align-items: stretch; }
@@ -1105,6 +1282,7 @@
       .faculty-main { flex-direction: column; align-items: stretch; }
       .faculty-number { align-self: flex-start; }
       .copy-btn-fac { align-self: flex-start; }
+      .site-header h1 { font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -1113,20 +1291,30 @@
   <div class="dashboard">
 
     <!-- ==============================================================
-    HEADER
+    HEADER WITH SEARCH (RIGHT)
     ============================================================== -->
     <header class="site-header">
-      <h1>66<span>Notes</span></h1>
-      <span class="subhead"><i class="fas fa-graduation-cap"></i> BUBT Dashboard</span>
+      <h1>66<span>Notes</span> BUBT</h1>
+      <div class="header-right">
+        <button class="search-toggle" id="searchToggle" aria-label="Search sections">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
     </header>
 
+    <!-- Search Bar -->
+    <div class="search-bar-wrap" id="searchBarWrap">
+      <input type="text" id="searchInput" placeholder="Search for teachers, codes, assignments..." autocomplete="off" />
+      <ul class="search-results" id="searchResults"></ul>
+    </div>
+
     <!-- ==============================================================
-    SECTION 1 – AI REMINDER (Class Status + CT + MKT + Bangla)
+    SECTION 1 – AI REMINDER
     ============================================================== -->
-    <div class="glance" id="glanceBox">
-      <div class="section-title">
+    <div class="glance" id="section-ai">
+      <h2 class="section-title">
         <span class="live-indicator"></span> AI Reminder
-      </div>
+      </h2>
       <div class="message-box" id="messageBox">
         <div class="message-line active">Loading...</div>
       </div>
@@ -1139,40 +1327,26 @@
     </div>
 
     <!-- ==============================================================
-    SECTION 2 – ASSIGNMENTS & PRESENTATIONS (with Bangla Assignment)
+    SECTION 2 – ASSIGNMENTS
     ============================================================== -->
-    <div class="assign-root">
+    <div class="assign-root" id="section-assignments">
       <div class="assign-card">
         <div class="assign-header">
-          <span class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</span>
+          <h2 class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</h2>
         </div>
 
-        <!-- 1. ICT CT Exam (Pinned) -->
+        <!-- ICT CT Exam -->
         <div class="assign-block pinned" data-date="2026-07-19">
-          <div class="assign-title">
-            <span>ICT CT Exam</span>
-            <span class="badge ct">CT</span>
-          </div>
-          <div class="assign-meta">
-            <strong>Date:</strong> 19th July (Sunday) &nbsp;|&nbsp; <span class="assign-topic">During class time</span>
-          </div>
-          <div class="assign-items">
-            <span><strong>Topics:</strong> <span class="topic-badge">Chapter 2</span> <span class="topic-badge">Chapter 10</span></span>
-          </div>
-          <div class="assign-note green">
-            <i class="fas fa-clock"></i> Exam will be held during class time.
-          </div>
+          <div class="assign-title"><span>ICT CT Exam</span><span class="badge ct">CT</span></div>
+          <div class="assign-meta"><strong>Date:</strong> 19th July (Sunday) &nbsp;|&nbsp; <span class="assign-topic">During class time</span></div>
+          <div class="assign-items"><span><strong>Topics:</strong> <span class="topic-badge">Chapter 2</span> <span class="topic-badge">Chapter 10</span></span></div>
+          <div class="assign-note green"><i class="fas fa-clock"></i> Exam will be held during class time.</div>
         </div>
 
-        <!-- 2. Bangla Assignment (NEW) -->
+        <!-- Bangla Assignment -->
         <div class="assign-block pinned" data-date="2026-08-11">
-          <div class="assign-title">
-            <span>Bangla Assignment (Sahitya)</span>
-            <span class="badge">Deadline</span>
-          </div>
-          <div class="assign-meta">
-            <strong>Date:</strong> 11th August &nbsp;|&nbsp; <span class="assign-topic">তোমার পঠিত যেকোনো সাহিত্য কর্ম নিয়ে আলোচনা</span>
-          </div>
+          <div class="assign-title"><span>Bangla Assignment (Sahitya)</span><span class="badge">Deadline</span></div>
+          <div class="assign-meta"><strong>Date:</strong> 11th August &nbsp;|&nbsp; <span class="assign-topic">তোমার পঠিত যেকোনো সাহিত্য কর্ম নিয়ে আলোচনা</span></div>
           <div class="assign-items">
             <span>১. লেখক/কবি পরিচিতি</span>
             <span>২. সাহিত্যের মূল বিষয় বস্তু</span>
@@ -1181,12 +1355,10 @@
             <span>৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ</span>
             <span>৬. উপসংহার</span>
           </div>
-          <div class="assign-note blue">
-            <i class="fas fa-book"></i> Prepare a full analysis as per the guidelines above.
-          </div>
+          <div class="assign-note blue"><i class="fas fa-book"></i> Prepare a full analysis as per the guidelines above.</div>
         </div>
 
-        <!-- 3. Star Cineplex -->
+        <!-- Star Cineplex -->
         <div class="assign-block" data-date="2026-07-27">
           <div class="assign-title"><span>1. Case Presentation (CT 2)</span><span class="badge">CT 2</span></div>
           <div class="assign-meta"><strong>Date:</strong> 27th July &nbsp;|&nbsp; <span class="assign-topic">Star Cineplex</span></div>
@@ -1194,7 +1366,7 @@
           <div class="assign-note"><i class="fas fa-exclamation-circle"></i> Slide is important! Check Classroom / All PDFs / WhatsApp for details.</div>
         </div>
 
-        <!-- 4. Strawberry Juice -->
+        <!-- Strawberry Juice -->
         <div class="assign-block" data-date="2026-08-04">
           <div class="assign-title"><span>2. Assignment + Poster Presentation</span><span class="badge">CT 2</span></div>
           <div class="assign-meta"><strong>Date:</strong> Aug 4th &nbsp;|&nbsp; <span class="assign-topic">Strawberry Juice / Milkshake</span></div>
@@ -1209,9 +1381,9 @@
     <!-- ==============================================================
     SECTION 3 – CLASS ROUTINE
     ============================================================== -->
-    <div class="routine-outer-wrapper">
+    <div class="routine-outer-wrapper" id="section-routine">
       <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
-        <span class="btn-text">SEE FULL CLASS ROUTINE</span>
+        <h3 class="btn-text">SEE FULL CLASS ROUTINE</h3>
         <span class="btn-arrow" aria-hidden="true">▸</span>
       </button>
       <div class="routine-collapse-wrapper" id="routineCollapseWrapper">
@@ -1252,8 +1424,10 @@
     <!-- ==============================================================
     SECTION 4 – STUDY MATERIALS
     ============================================================== -->
-    <div class="drive-card">
-      <div class="drive-header"><span class="drive-heading"><i class="fas fa-folder-open"></i> Study Materials</span></div>
+    <div class="drive-card" id="section-materials">
+      <div class="drive-header">
+        <h2 class="drive-heading"><i class="fas fa-folder-open"></i> Study Materials</h2>
+      </div>
       <div class="drive-buttons">
         <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" rel="noopener" class="drive-btn"><i class="fas fa-file-pdf"></i> ALL PDFs</a>
         <a href="https://drive.google.com/drive/folders/199VzmGjr7lO2WBDqMUKTT5XdvgWQa-UJ?usp=sharing" target="_blank" rel="noopener" class="drive-btn outline"><i class="fas fa-list-ul"></i> Outlines</a>
@@ -1263,60 +1437,60 @@
     <!-- ==============================================================
     SECTION 5 – LATEST NOTICES
     ============================================================== -->
-    <div class="notice-board">
-      <div class="notice-header"><h3><i class="fas fa-bullhorn"></i> Latest Notices</h3></div>
+    <div class="notice-board" id="section-notices">
+      <div class="notice-header">
+        <h2><i class="fas fa-bullhorn"></i> Latest Notices</h2>
+      </div>
       <div id="noticeContainer"><div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading notices...</div></div>
     </div>
 
     <!-- ==============================================================
     SECTION 6 – CLASSROOM CODES
     ============================================================== -->
-    <div class="codes-list" id="codeList"></div>
+    <div id="section-codes">
+      <h3 class="codes-section-title">Classroom Codes</h3>
+      <div class="codes-list" id="codeList"></div>
+    </div>
 
     <!-- ==============================================================
-    SECTION 7 – FACULTY INFO (Collapsible)
+    SECTION 7 – FACULTY INFO (Always Expanded)
     ============================================================== -->
-    <div class="faculty-root">
+    <div class="faculty-root" id="section-faculty">
       <div class="faculty-card">
-        <div class="faculty-toggle" id="facultyToggle" role="button" tabindex="0" aria-expanded="false">
-          <span class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</span>
-          <span class="faculty-toggle-icon" id="facultyIcon">▼</span>
-        </div>
-        <div class="faculty-body" id="facultyBody">
-          <div class="faculty-list">
-            <div class="faculty-item">
-              <div class="faculty-main">
-                <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
-                <span class="faculty-number">01742068119</span>
-                <button class="copy-btn-fac" data-number="01742068119">Copy</button>
-              </div>
-              <div class="faculty-details">
-                <span><span class="label">Email:</span> <span class="value">maliha.ahmed@bubt.edu.bd</span></span>
-                <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
-              </div>
+        <div class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</div>
+        <div class="faculty-list">
+          <div class="faculty-item">
+            <div class="faculty-main">
+              <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
+              <span class="faculty-number">01742068119</span>
+              <button class="copy-btn-fac" data-number="01742068119">Copy</button>
             </div>
-            <div class="faculty-item">
-              <div class="faculty-main">
-                <span class="faculty-name">Shabuj Mia</span>
-                <span class="faculty-number">01791471867</span>
-                <button class="copy-btn-fac" data-number="01791471867">Copy</button>
-              </div>
-              <div class="faculty-details">
-                <span><span class="label">Course:</span> <span class="value">HUM 1102 (BNQF-023201) – Bangla Language</span></span>
-                <span><span class="label">Also:</span> <span class="value">ICT 1102 – Intro to Computer Science Lab</span></span>
-              </div>
+            <div class="faculty-details">
+              <span><span class="label">Email:</span> <span class="value">maliha.ahmed@bubt.edu.bd</span></span>
+              <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
             </div>
-            <div class="faculty-item">
-              <div class="faculty-main">
-                <span class="faculty-name">Hasibul Hossain Shajeeb</span>
-                <span class="faculty-number">01966901950</span>
-                <button class="copy-btn-fac" data-number="01966901950">Copy</button>
-              </div>
-              <div class="faculty-details">
-                <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
-                <span><span class="label">Email:</span> <span class="value">shajeeb@bubt.edu.bd</span></span>
-                <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
-              </div>
+          </div>
+          <div class="faculty-item">
+            <div class="faculty-main">
+              <span class="faculty-name">Shabuj Mia</span>
+              <span class="faculty-number">01791471867</span>
+              <button class="copy-btn-fac" data-number="01791471867">Copy</button>
+            </div>
+            <div class="faculty-details">
+              <span><span class="label">Course:</span> <span class="value">HUM 1102 (BNQF-023201) – Bangla Language</span></span>
+              <span><span class="label">Also:</span> <span class="value">ICT 1102 – Intro to Computer Science Lab</span></span>
+            </div>
+          </div>
+          <div class="faculty-item">
+            <div class="faculty-main">
+              <span class="faculty-name">Hasibul Hossain Shajeeb</span>
+              <span class="faculty-number">01966901950</span>
+              <button class="copy-btn-fac" data-number="01966901950">Copy</button>
+            </div>
+            <div class="faculty-details">
+              <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
+              <span><span class="label">Email:</span> <span class="value">shajeeb@bubt.edu.bd</span></span>
+              <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
             </div>
           </div>
         </div>
@@ -1324,10 +1498,10 @@
     </div>
 
     <!-- ==============================================================
-    SECTION 8 – CTA / CONTACT
+    SECTION 8 – CTA
     ============================================================== -->
-    <div class="cta-card">
-      <div class="cta-title"><span>Want website like this for you too?</span></div>
+    <div class="cta-card" id="section-cta">
+      <h3 class="cta-title"><span>Want website like this for you too?</span></h3>
       <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
       <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
         <i class="fab fa-facebook"></i> Message Us
@@ -1337,16 +1511,14 @@
     <!-- ==============================================================
     FOOTER SEO
     ============================================================== -->
-    <div style="max-width:780px;margin:0 auto;font-family:'Poppins',sans-serif;padding-top:0.8rem;border-top:1px solid #eef2f6;">
-      <div style="background:#f9fafb;border-radius:12px;padding:0.8rem 1rem;border:1px solid #eef2f6;">
-        <p style="font-size:0.7rem;color:#4b5563;line-height:1.6;margin-bottom:0.3rem;">
-          <span style="font-weight:600;color:#0d2b4e;">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized. 
-          From lecture slides to assignment deadlines, this dashboard keeps everything in one place.
-        </p>
-        <p style="font-size:0.6rem;color:#6b7280;">
-          66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT
-        </p>
-      </div>
+    <div class="footer-seo">
+      <p>
+        <span class="brand">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized. 
+        From lecture slides to assignment deadlines, this dashboard keeps everything in one place.
+      </p>
+      <p class="tags">
+        66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT
+      </p>
     </div>
 
   </div>
@@ -1371,7 +1543,6 @@
       ];
       const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-      // ---- EVENTS WITH DATES ----
       const events = [
         { year: 2026, month: 6, day: 19, label: 'ICT CT Exam', style: 'cta-reminder' },
         { year: 2026, month: 7, day: 11, label: 'Bangla Assignment (Sahitya)', style: 'mkt-reminder' },
@@ -1590,7 +1761,6 @@
         }
       });
 
-      // Reorder: active first, passed last
       const container = blocks[0]?.parentNode;
       if (container) {
         activeBlocks.forEach(b => container.appendChild(b));
@@ -1862,63 +2032,226 @@
 
 
     // ================================================================
-    // SECTION 7 – FACULTY TOGGLE + COPY
+    // SEARCH FUNCTIONALITY (Full text search)
     // ================================================================
     (function() {
-      const toggle = document.getElementById('facultyToggle');
-      const body = document.getElementById('facultyBody');
-      const icon = document.getElementById('facultyIcon');
+      const toggleBtn = document.getElementById('searchToggle');
+      const searchWrap = document.getElementById('searchBarWrap');
+      const searchInput = document.getElementById('searchInput');
+      const resultsList = document.getElementById('searchResults');
+      let isOpen = false;
 
-      function toggleFaculty() {
-        const isOpen = body.classList.toggle('open');
-        icon.textContent = isOpen ? '▲' : '▼';
-        toggle.setAttribute('aria-expanded', isOpen);
+      // ------ BUILD SEARCH INDEX (maps keywords/phrases to section IDs) ------
+      const searchIndex = [];
+
+      // Section names + common keywords
+      function addEntry(text, sectionId, icon) {
+        if (!text || !sectionId) return;
+        searchIndex.push({ text: text.trim(), sectionId: sectionId, icon: icon || 'fa-tag' });
       }
-      toggle.addEventListener('click', toggleFaculty);
-      toggle.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
-          toggleFaculty(); }
-      });
 
-      const cbs = document.querySelectorAll('.copy-btn-fac');
-      cbs.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const num = this.getAttribute('data-number');
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(num).then(() => {
-              showCopied(this);
-            }).catch(() => {
-              fallback(num, this);
-            });
-          } else {
-            fallback(num, this);
+      // Helper to add multiple variations
+      function addVariations(text, sectionId, icon) {
+        addEntry(text, sectionId, icon);
+        // Also add lowercase version (case-insensitive search handled later)
+      }
+
+      // 1. AI Reminder section
+      addEntry('AI Reminder', 'section-ai', 'fa-brain');
+      addEntry('Class Status', 'section-ai', 'fa-brain');
+      addEntry('Today\'s Class', 'section-ai', 'fa-brain');
+      addEntry('Break Time', 'section-ai', 'fa-brain');
+      addEntry('Running Class', 'section-ai', 'fa-brain');
+      addEntry('ICT CT Exam', 'section-ai', 'fa-brain');
+      addEntry('Bangla Assignment', 'section-ai', 'fa-brain');
+      addEntry('Sahitya', 'section-ai', 'fa-brain');
+      addEntry('Star Cineplex', 'section-ai', 'fa-brain');
+      addEntry('Strawberry Juice', 'section-ai', 'fa-brain');
+
+      // 2. Assignments section
+      addEntry('Assignments', 'section-assignments', 'fa-tasks');
+      addEntry('Presentations', 'section-assignments', 'fa-tasks');
+      addEntry('CT 2', 'section-assignments', 'fa-tasks');
+      addEntry('Case Presentation', 'section-assignments', 'fa-tasks');
+      addEntry('Poster Presentation', 'section-assignments', 'fa-tasks');
+      addEntry('MKT', 'section-assignments', 'fa-tasks');
+      addEntry('4Ps', 'section-assignments', 'fa-tasks');
+      addEntry('STP', 'section-assignments', 'fa-tasks');
+
+      // 3. Routine section
+      addEntry('Class Routine', 'section-routine', 'fa-table');
+      addEntry('Schedule', 'section-routine', 'fa-table');
+      addEntry('SUN', 'section-routine', 'fa-table');
+      addEntry('MON', 'section-routine', 'fa-table');
+      addEntry('TUE', 'section-routine', 'fa-table');
+      addEntry('WED', 'section-routine', 'fa-table');
+      addEntry('ICT 1101', 'section-routine', 'fa-table');
+      addEntry('HUM 1102', 'section-routine', 'fa-table');
+      addEntry('MKT 1101', 'section-routine', 'fa-table');
+      addEntry('ICT 1102', 'section-routine', 'fa-table');
+      addEntry('Room 4801', 'section-routine', 'fa-table');
+      addEntry('Room 4201', 'section-routine', 'fa-table');
+      addEntry('Room 4705', 'section-routine', 'fa-table');
+      addEntry('Room 4303', 'section-routine', 'fa-table');
+
+      // 4. Study Materials
+      addEntry('Study Materials', 'section-materials', 'fa-folder-open');
+      addEntry('PDF', 'section-materials', 'fa-file-pdf');
+      addEntry('Outlines', 'section-materials', 'fa-list-ul');
+      addEntry('Google Drive', 'section-materials', 'fa-folder-open');
+
+      // 5. Notices
+      addEntry('Notices', 'section-notices', 'fa-bullhorn');
+      addEntry('Bulletin', 'section-notices', 'fa-bullhorn');
+      addEntry('Latest News', 'section-notices', 'fa-bullhorn');
+
+      // 6. Codes
+      addEntry('Classroom Codes', 'section-codes', 'fa-key');
+      addEntry('TYFAJJUM', 'section-codes', 'fa-key');
+      addEntry('3NHHKKL7', 'section-codes', 'fa-key');
+      addEntry('BQS76V5Z', 'section-codes', 'fa-key');
+      addEntry('ICT Code', 'section-codes', 'fa-key');
+
+      // 7. Faculty (Critical for teacher name search)
+      addEntry('Faculty', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Teacher', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Professor', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Maliha Ahmed Siddique', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('MAHS', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Maliha', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Shabuj Mia', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Shabuj', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Hasibul Hossain Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('01742068119', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('01791471867', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('01966901950', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('maliha.ahmed@bubt.edu.bd', 'section-faculty', 'fa-chalkboard-teacher');
+      addEntry('shajeeb@bubt.edu.bd', 'section-faculty', 'fa-chalkboard-teacher');
+
+      // 8. CTA
+      addEntry('Contact', 'section-cta', 'fa-message');
+      addEntry('Facebook', 'section-cta', 'fa-message');
+      addEntry('Message', 'section-cta', 'fa-message');
+      addEntry('Website', 'section-cta', 'fa-message');
+
+      // ------ SEARCH LOGIC ------
+      function performSearch(query) {
+        if (!query) return [];
+        const q = query.toLowerCase().trim();
+        const results = [];
+        const seen = new Set();
+        for (let entry of searchIndex) {
+          if (entry.text.toLowerCase().includes(q)) {
+            const key = entry.sectionId;
+            if (!seen.has(key)) {
+              seen.add(key);
+              // Find the best matching text for this section (first match)
+              const matchedText = entry.text;
+              results.push({
+                sectionId: entry.sectionId,
+                label: matchedText,
+                icon: entry.icon || 'fa-tag'
+              });
+            }
           }
+        }
+        // Limit to 6 results for clarity
+        return results.slice(0, 6);
+      }
+
+      function renderResults(results) {
+        resultsList.innerHTML = '';
+        if (results.length === 0) {
+          resultsList.innerHTML = '<li class="no-results">No matching sections found</li>';
+          resultsList.classList.add('show');
+          return;
+        }
+        let html = '';
+        results.forEach(r => {
+          html += `<li data-section="${r.sectionId}">
+            <i class="fas ${r.icon} match-icon"></i>
+            <span class="match-label">${r.label}</span>
+            <span class="match-hint">Go to section</span>
+          </li>`;
         });
+        resultsList.innerHTML = html;
+        resultsList.classList.add('show');
+
+        // Click/touch handlers
+        resultsList.querySelectorAll('li[data-section]').forEach(item => {
+          const handler = function(e) {
+            e.preventDefault();
+            const sectionId = this.getAttribute('data-section');
+            scrollToSection(sectionId);
+            // Close search
+            isOpen = false;
+            searchWrap.classList.remove('open');
+            resultsList.classList.remove('show');
+            searchInput.value = '';
+          };
+          item.addEventListener('click', handler);
+          item.addEventListener('touchend', handler);
+        });
+      }
+
+      function scrollToSection(sectionId) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+          document.querySelectorAll('.section-highlight').forEach(el => el.classList.remove('section-highlight'));
+          const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          setTimeout(() => {
+            target.classList.add('section-highlight');
+            setTimeout(() => target.classList.remove('section-highlight'), 4000);
+          }, 500);
+        }
+      }
+
+      // Toggle search bar
+      toggleBtn.addEventListener('click', function() {
+        isOpen = !isOpen;
+        searchWrap.classList.toggle('open', isOpen);
+        if (isOpen) {
+          searchInput.focus();
+          searchInput.value = '';
+          resultsList.classList.remove('show');
+          resultsList.innerHTML = '';
+        }
       });
 
-      function fallback(text, btn) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        ta.style.top = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          const ok = document.execCommand('copy');
-          if (ok) { showCopied(btn); } else { alert('Could not copy number. Please copy manually.'); }
-        } catch (e) { alert('Could not copy number. Please copy manually.'); }
-        document.body.removeChild(ta);
-      }
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isOpen) {
+          isOpen = false;
+          searchWrap.classList.remove('open');
+          resultsList.classList.remove('show');
+          searchInput.value = '';
+        }
+      });
 
-      function showCopied(btn) {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied';
-        btn.classList.add('copied');
-        setTimeout(() => { btn.textContent = orig;
-          btn.classList.remove('copied'); }, 2000);
-      }
+      // Input handler
+      searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        if (!query) {
+          resultsList.classList.remove('show');
+          resultsList.innerHTML = '';
+          return;
+        }
+        const matches = performSearch(query);
+        renderResults(matches);
+      });
+
+      // Click outside to close
+      document.addEventListener('click', function(e) {
+        if (isOpen && !searchWrap.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e.target)) {
+          isOpen = false;
+          searchWrap.classList.remove('open');
+          resultsList.classList.remove('show');
+          searchInput.value = '';
+        }
+      });
     })();
   </script>
 
