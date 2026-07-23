@@ -1,2259 +1,2057 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
 
-  <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
-  <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
+    <!-- GOOGLE SEARCH CONSOLE VERIFICATION -->
+    <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
 
-  <!-- PRIMARY TITLE (56 characters - within 30-60 range) -->
-  <title>66notes bubt - Student Dashboard, Routine & Assignments</title>
+    <title>66notes bubt - Student Dashboard, Routine & Assignments</title>
 
-  <!-- META DESCRIPTION -->
-  <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
+    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
+    <link rel="canonical" href="https://66notes.github.io/" />
 
-  <!-- CANONICAL URL -->
-  <link rel="canonical" href="https://66notes.github.io/" />
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
+    <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://66notes.github.io/" />
+    <meta property="og:image" content="https://66notes.github.io/og-image.png" />
+    <meta property="og:site_name" content="66Notes BUBT" />
 
-  <!-- OPEN GRAPH (Facebook, WhatsApp, Telegram) -->
-  <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
-  <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://66notes.github.io/" />
-  <meta property="og:image" content="https://66notes.github.io/og-image.png" />
-  <meta property="og:site_name" content="66Notes BUBT" />
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
+    <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
+    <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
 
-  <!-- TWITTER CARDS -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
-  <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
-  <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
+    <!-- FONTS & ICONS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <!-- FONTS & ICONS -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+        body {
+            background: #f4f7fc;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            padding: 12px 14px;
+            color: #1e2a3e;
+            line-height: 1.4;
+            min-height: 100vh;
+        }
+        .dashboard {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-  <style>
-    /* ===== RESET & BASE ===== */
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      font-size: 16px;
-      -webkit-text-size-adjust: 100%;
-      -webkit-tap-highlight-color: transparent;
-      scroll-behavior: smooth;
-    }
-    body {
-      background: #f4f7fc;
-      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      padding: 0.8rem 0.5rem;
-      color: #1e2a3e;
-      line-height: 1.4;
-      min-height: 100vh;
-    }
-    .dashboard {
-      max-width: 780px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+        /* ===== HEADER ===== */
+        .site-header {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+        .site-header h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0d2b4e;
+            letter-spacing: -0.3px;
+        }
+        .site-header h1 span {
+            color: #4a6cf7;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .search-toggle {
+            background: #ffffff;
+            border: 1.5px solid #e2e6ec;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            color: #0d2b4e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+            touch-action: manipulation;
+        }
+        .search-toggle:active {
+            background: #f0f2f5;
+            border-color: #4a6cf7;
+        }
+        .search-toggle i {
+            font-size: 1rem;
+        }
 
-    /* ===== HEADER WITH SEARCH (RIGHT) ===== */
-    .site-header {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 0.7rem 1rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      border: 1px solid #eef2f6;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
-    }
-    .site-header h1 {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #0d2b4e;
-      letter-spacing: -0.3px;
-    }
-    .site-header h1 span {
-      color: #4a6cf7;
-    }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      flex-shrink: 0;
-    }
-    .search-toggle {
-      background: #ffffff;
-      border: 1.5px solid #e2e6ec;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 1rem;
-      color: #0d2b4e;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, border-color 0.2s;
-      touch-action: manipulation;
-    }
-    .search-toggle:active {
-      background: #f0f2f5;
-      border-color: #4a6cf7;
-    }
-    .search-toggle i {
-      font-size: 1rem;
-    }
+        /* ===== SEARCH BAR ===== */
+        .search-bar-wrap {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            margin-top: 0;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            padding: 0 0.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .search-bar-wrap.open {
+            max-height: 260px;
+            opacity: 1;
+            margin-top: 0.4rem;
+            padding: 0.6rem 0.8rem;
+        }
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #e2e6ec;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+            background: #f8fafc;
+        }
+        .search-bar-wrap input:focus {
+            border-color: #4a6cf7;
+            background: #fff;
+        }
+        .search-bar-wrap input::placeholder {
+            color: #9ca3af;
+        }
+        .search-results {
+            list-style: none;
+            padding: 0.3rem 0 0;
+            margin: 0;
+            max-height: 160px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-results li {
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #1e2a3e;
+            transition: background 0.15s;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .search-results li:last-child {
+            border-bottom: none;
+        }
+        .search-results li:active,
+        .search-results li:hover {
+            background: #eef2f6;
+        }
+        .search-results li .match-icon {
+            color: #4a6cf7;
+            font-size: 0.7rem;
+            width: 1.2rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .search-results li .match-label {
+            font-weight: 500;
+            flex: 1;
+        }
+        .search-results li .match-hint {
+            font-size: 0.6rem;
+            color: #9ca3af;
+            background: #f1f3f5;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .no-results {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-align: center;
+        }
 
-    /* Search Bar (hidden by default) */
-    .search-bar-wrap {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
-      opacity: 0;
-      margin-top: 0;
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #eef2f6;
-      padding: 0 0.8rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-    .search-bar-wrap.open {
-      max-height: 260px;
-      opacity: 1;
-      margin-top: 0.4rem;
-      padding: 0.6rem 0.8rem;
-    }
-    .search-bar-wrap input {
-      width: 100%;
-      padding: 0.5rem 0.8rem;
-      border: 1px solid #e2e6ec;
-      border-radius: 10px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
-      outline: none;
-      transition: border 0.2s;
-      background: #f8fafc;
-    }
-    .search-bar-wrap input:focus {
-      border-color: #4a6cf7;
-      background: #fff;
-    }
-    .search-bar-wrap input::placeholder {
-      color: #9ca3af;
-    }
-    .search-results {
-      list-style: none;
-      padding: 0.3rem 0 0;
-      margin: 0;
-      max-height: 160px;
-      overflow-y: auto;
-      display: none;
-    }
-    .search-results.show {
-      display: block;
-    }
-    .search-results li {
-      padding: 0.4rem 0.6rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      color: #1e2a3e;
-      transition: background 0.15s;
-      border-bottom: 1px solid #f0f2f5;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .search-results li:last-child {
-      border-bottom: none;
-    }
-    .search-results li:active,
-    .search-results li:hover {
-      background: #eef2f6;
-    }
-    .search-results li .match-icon {
-      color: #4a6cf7;
-      font-size: 0.7rem;
-      width: 1.2rem;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .search-results li .match-label {
-      font-weight: 500;
-      flex: 1;
-    }
-    .search-results li .match-hint {
-      font-size: 0.6rem;
-      color: #9ca3af;
-      background: #f1f3f5;
-      padding: 0.1rem 0.5rem;
-      border-radius: 10px;
-      flex-shrink: 0;
-    }
-    .no-results {
-      padding: 0.4rem 0.6rem;
-      font-size: 0.7rem;
-      color: #9ca3af;
-      text-align: center;
-    }
+        /* ===== SECTION HIGHLIGHT ===== */
+        .section-highlight {
+            animation: highlightPulse 1.2s ease 3;
+            border-left: 4px solid #4a6cf7 !important;
+            background: #ebf0ff !important;
+        }
+        @keyframes highlightPulse {
+            0% { background: #ebf0ff; }
+            50% { background: #d6e4ff; }
+            100% { background: #ebf0ff; }
+        }
 
-    /* ===== SECTION HIGHLIGHT (blue marker) ===== */
-    .section-highlight {
-      animation: highlightPulse 1.2s ease 3;
-      border-left: 4px solid #4a6cf7 !important;
-      background: #ebf0ff !important;
-    }
-    @keyframes highlightPulse {
-      0% { background: #ebf0ff; }
-      50% { background: #d6e4ff; }
-      100% { background: #ebf0ff; }
-    }
+        /* ===== GLANCE (CLOCK) ===== */
+        .glance {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1e2a3e;
+            margin-bottom: 0.6rem;
+        }
+        .section-title i { color: #4a6cf7; }
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
+            animation: pulse 1.8s infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+        .message-box {
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #2d3748;
+            position: relative;
+            margin-bottom: 0.6rem;
+        }
+        .message-line {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(12px);
+            transition: opacity 0.5s cubic-bezier(0.2,0.9,0.3,1), transform 0.5s cubic-bezier(0.2,0.9,0.3,1);
+            pointer-events: none;
+            padding: 0 0.2rem;
+        }
+        .message-line.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        .message-line strong { font-weight: 700; color: #0d2b4e; }
+        .message-line.cta-reminder { color: #7c2d12; font-weight: 600; }
+        .message-line.mkt-reminder { color: #1e40af; font-weight: 600; }
+        .break-timer { font-weight: 700; color: #b45309; font-size: 1.1rem; }
 
-    /* ===== REST OF THE STYLES (compressed for readability) ===== */
-    .glance {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 1.2rem 1rem;
-      border: 1px solid #eef2f6;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-      transition: border 0.3s, background 0.3s;
-    }
-    .section-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #1e2a3e;
-      margin-bottom: 0.8rem;
-    }
-    .section-title i {
-      color: #4a6cf7;
-    }
-    .live-indicator {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-      animation: pulse 1.8s infinite;
-      flex-shrink: 0;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-    }
-    .message-box {
-      min-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: #2d3748;
-      position: relative;
-      margin-bottom: 0.6rem;
-    }
-    .message-line {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      opacity: 0;
-      transform: translateX(12px);
-      transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
-      pointer-events: none;
-      padding: 0 0.2rem;
-    }
-    .message-line.active {
-      opacity: 1;
-      transform: translateX(0);
-      position: relative;
-      pointer-events: auto;
-    }
-    .message-line strong {
-      font-weight: 700;
-      color: #0d2b4e;
-    }
-    .message-line.cta-reminder {
-      color: #7c2d12;
-      font-weight: 600;
-    }
-    .message-line.mkt-reminder {
-      color: #1e40af;
-      font-weight: 600;
-    }
-    .break-timer {
-      font-weight: 700;
-      color: #b45309;
-      font-size: 1.1rem;
-    }
-    .next-class-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.75rem;
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 0.5rem 0.8rem;
-      border: 1px solid #eef2f6;
-      font-weight: 500;
-      justify-content: center;
-      flex-wrap: wrap;
-      min-height: 44px;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #3b82f6;
-      flex-shrink: 0;
-    }
-    .status-dot.running {
-      background: #22c55e;
-    }
-    .next-label {
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      color: #4b5563;
-      font-size: 0.7rem;
-    }
-    .nc-day,
-    .nc-course,
-    .nc-time {
-      font-weight: 600;
-    }
-    .nc-room {
-      font-weight: 600;
-      background: #eef2f6;
-      padding: 0.1rem 0.5rem;
-      border-radius: 8px;
-      font-size: 0.7rem;
-    }
-    .dhaka-time-below {
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: #6b7280;
-      margin-top: 0.5rem;
-      text-align: center;
-      background: #f1f4f9;
-      padding: 0.2rem 0.8rem;
-      border-radius: 20px;
-      display: inline-block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .assign-root {
-      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.3;
-      color: #1e2a3e;
-    }
-    .assign-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 1rem 1rem 0.8rem;
-      border: 1px solid #eef2f6;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    }
-    .assign-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-bottom: 0.8rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1.5px solid #e9edf2;
-      position: relative;
-    }
-    .assign-header::after {
-      content: '';
-      position: absolute;
-      bottom: -1.5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 3px;
-      background: #4a6cf7;
-      border-radius: 2px;
-    }
-    .assign-heading {
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      color: #1e2a3e;
-    }
-    .assign-heading i {
-      color: #4a6cf7;
-      margin-right: 0.3rem;
-    }
-    .assign-block {
-      background: #f9fafb;
-      border-radius: 12px;
-      border: 1px solid #eef2f6;
-      padding: 0.6rem 0.7rem;
-      margin-bottom: 8px;
-      transition: background 0.15s, border 0.3s, background 0.3s;
-    }
-    .assign-block:last-child {
-      margin-bottom: 0;
-    }
-    .assign-block.pinned {
-      background: #fef9e3;
-      border-left: 4px solid #f5b042;
-      border-color: #fde68a;
-    }
-    .assign-block.passed {
-      opacity: 0.6;
-      filter: grayscale(0.8);
-      order: 999;
-    }
-    .assign-block.passed .assign-title,
-    .assign-block.passed .assign-meta,
-    .assign-block.passed .assign-items,
-    .assign-block.passed .assign-note,
-    .assign-block.passed .mkt-team,
-    .assign-block.passed .assign-topic {
-      text-decoration: line-through;
-      color: #6b7280 !important;
-    }
-    .assign-block.passed .assign-note {
-      background: #e5e7eb !important;
-      border-color: #9ca3af !important;
-      color: #6b7280 !important;
-    }
-    .assign-block.passed .badge {
-      background: #d1d5db !important;
-      color: #6b7280 !important;
-      border-color: #9ca3af !important;
-    }
-    .assign-title {
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #1e2a3e;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.3rem 0.5rem;
-      margin-bottom: 0.1rem;
-    }
-    .assign-title .badge {
-      font-weight: 600;
-      font-size: 0.55rem;
-      background: #fef3c7;
-      color: #b45309;
-      padding: 0 6px;
-      border-radius: 8px;
-      border: 1px solid #fde68a;
-      white-space: nowrap;
-    }
-    .assign-title .badge.ct {
-      border-color: #f59e0b;
-    }
-    .assign-meta {
-      font-size: 0.6rem;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 0.1rem;
-    }
-    .assign-meta strong {
-      color: #1e2a3e;
-    }
-    .assign-topic {
-      font-size: 0.62rem;
-      font-weight: 500;
-      color: #1e40af;
-      background: #eff6ff;
-      padding: 0 6px;
-      border-radius: 8px;
-      border: 1px solid #dbeafe;
-      display: inline-block;
-      margin-bottom: 0.2rem;
-    }
-    .assign-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.15rem 0.5rem;
-      font-size: 0.6rem;
-      color: #4b5563;
-      padding-top: 0.1rem;
-    }
-    .assign-items span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.1rem;
-    }
-    .assign-items .opt {
-      color: #6b7280;
-      font-style: italic;
-    }
-    .assign-note {
-      font-size: 0.6rem;
-      font-weight: 500;
-      color: #7c2d12;
-      background: #fef3c7;
-      padding: 0.1rem 0.6rem;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 0.2rem;
-      border: 1px solid #fde68a;
-    }
-    .assign-note.blue {
-      background: #eff6ff;
-      color: #1e40af;
-      border-color: #dbeafe;
-    }
-    .assign-note.green {
-      background: #ecfdf5;
-      color: #065f46;
-      border-color: #a7f3d0;
-    }
-    .mkt-team {
-      font-size: 0.55rem;
-      font-weight: 500;
-      color: #6d28d9;
-      background: #f5f3ff;
-      border: 1px solid #ede9fe;
-      padding: 0.1rem 6px;
-      border-radius: 8px;
-      display: inline-block;
-      margin-top: 0.2rem;
-    }
-    .topic-badge {
-      font-size: 0.55rem;
-      font-weight: 500;
-      background: #e5e7eb;
-      color: #1e2a3e;
-      padding: 0 6px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-right: 4px;
-    }
-    .routine-outer-wrapper {
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 8px;
-      background: transparent;
-    }
-    .routine-toggle-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px 16px;
-      background: #0d2b4e;
-      color: #ffffff;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      min-height: 48px;
-      touch-action: manipulation;
-      box-shadow: 0 4px 14px rgba(13, 43, 78, 0.15);
-      transition: background 0.3s ease, transform 0.15s ease;
-    }
-    .routine-toggle-btn:active {
-      transform: scale(0.97);
-      background: #14365e;
-    }
-    .btn-arrow {
-      display: inline-flex;
-      font-size: 0.9rem;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: rotate(0deg);
-    }
-    .routine-toggle-btn.expanded .btn-arrow {
-      transform: rotate(90deg);
-    }
-    .routine-collapse-wrapper {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 0 0 14px 14px;
-      background: #ffffff;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      border: 1px solid #eef2f6;
-      border-top: none;
-      margin-top: -1px;
-    }
-    .routine-collapse-wrapper.open {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 0 0 1px #eef2f6;
-    }
-    .routine-inner {
-      padding: 10px 6px 12px 6px;
-    }
-    .table-scrollable {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: #cdd4de transparent;
-      position: relative;
-    }
-    .table-scrollable::-webkit-scrollbar {
-      height: 4px;
-    }
-    .table-scrollable::-webkit-scrollbar-thumb {
-      background: #cdd4de;
-      border-radius: 10px;
-    }
-    .table-responsive {
-      width: 100%;
-      background: white;
-      border-radius: 8px;
-      border: 1px solid #eef2f6;
-      min-width: 340px;
-    }
-    .schedule-table {
-      width: 100%;
-      table-layout: fixed;
-      border-collapse: collapse;
-      font-size: 0.55rem;
-      background-color: white;
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.3;
-      min-width: 340px;
-    }
-    .schedule-table thead tr {
-      background-color: #fafafc;
-      border-bottom: 1.5px solid #d0d4da;
-    }
-    .schedule-table th {
-      text-align: left;
-      padding: 4px 5px;
-      font-weight: 600;
-      font-size: 0.5rem;
-      color: #1e2a3e;
-      border-bottom: 1px solid #e9edf2;
-      background-color: #fafafc;
-      white-space: nowrap;
-      letter-spacing: 0.02em;
-    }
-    .schedule-table td {
-      padding: 4px 5px;
-      border-bottom: 1px solid #eef2f6;
-      vertical-align: middle;
-      background-color: white;
-      color: #1f2a3e;
-      white-space: nowrap;
-    }
-    .schedule-table tbody tr.section-end td {
-      border-bottom: 1.5px solid #1a1a1a;
-    }
-    .day-cell {
-      font-weight: 700;
-      color: #0f2b46;
-      font-size: 0.55rem;
-    }
-    .course-code {
-      font-weight: 700;
-      color: #0d2b4e;
-      background: #f0f3f7;
-      padding: 1px 4px;
-      border-radius: 8px;
-      font-size: 0.5rem;
-      display: inline-block;
-    }
-    .schedule-table colgroup .col-day {
-      width: 14%;
-    }
-    .schedule-table colgroup .col-time {
-      width: 32%;
-    }
-    .schedule-table colgroup .col-room {
-      width: 14%;
-    }
-    .schedule-table colgroup .col-course {
-      width: 40%;
-    }
-    .sub-buttons-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: stretch;
-      margin-top: 2px;
-    }
-    .sub-link-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      background: transparent;
-      border: 1.5px solid #cdd6e4;
-      color: #0d2b4e;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border-radius: 40px;
-      background-color: #ffffff;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      min-height: 40px;
-      flex: 1 1 auto;
-      min-width: 100px;
-    }
-    .sub-link-btn:active {
-      transform: scale(0.96);
-      background: #e5eaf2;
-    }
-    .external-icon {
-      font-size: 0.7rem;
-      opacity: 0.7;
-    }
-    .drive-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 1rem 0.8rem;
-      border: 1px solid #eef2f6;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    }
-    .drive-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-bottom: 0.8rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1.5px solid #e9edf2;
-      position: relative;
-    }
-    .drive-header::after {
-      content: '';
-      position: absolute;
-      bottom: -1.5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 3px;
-      background: #4a6cf7;
-      border-radius: 2px;
-    }
-    .drive-heading {
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.2px;
-      text-transform: uppercase;
-      color: #1e2a3e;
-    }
-    .drive-heading i {
-      color: #4a6cf7;
-    }
-    .drive-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      justify-content: center;
-    }
-    .drive-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 40px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 0.7rem;
-      text-decoration: none;
-      color: white;
-      background: #0d2b4e;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15);
-      white-space: nowrap;
-      min-height: 44px;
-      flex: 1 1 120px;
-      min-width: 100px;
-    }
-    .drive-btn:active {
-      transform: scale(0.96);
-      background: #14365e;
-    }
-    .drive-btn i {
-      font-size: 0.9rem;
-    }
-    .drive-btn.outline {
-      background: transparent;
-      color: #0d2b4e;
-      border: 1.5px solid #cdd6e4;
-      box-shadow: none;
-    }
-    .drive-btn.outline:active {
-      background: #f0f3f9;
-    }
-    .notice-board {
-      background: white;
-      border: 1px solid #eef2f6;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    }
-    .notice-header {
-      background: #fff;
-      padding: 0.8rem 1rem;
-      border-bottom: 2px solid #eef2f6;
-    }
-    .notice-header h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #0a2540;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .notice-header h2 i {
-      color: #4a6cf7;
-    }
-    .table-wrapper {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .notice-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.7rem;
-      min-width: 380px;
-    }
-    .notice-table th {
-      background: #f8fafc;
-      color: #1e3a8a;
-      font-weight: 600;
-      padding: 0.5rem 0.6rem;
-      text-align: left;
-      border-bottom: 1px solid #eef2f6;
-    }
-    .notice-table td {
-      padding: 0.5rem 0.6rem;
-      border-bottom: 1px solid #f0f2f5;
-      vertical-align: middle;
-    }
-    .pinned-row {
-      background-color: #fef9e3;
-      border-left: 3px solid #f5b042;
-    }
-    .clickable-title {
-      color: #0a2540;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s;
-      cursor: pointer;
-      word-break: break-word;
-      display: inline-block;
-      min-height: 44px;
-      line-height: 1.3;
-    }
-    .clickable-title:active {
-      color: #2563eb;
-    }
-    .see-more-btn {
-      background: #f1f5f9;
-      border: none;
-      width: 100%;
-      padding: 0.6rem;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      color: #0a3e6d;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      border-top: 1px solid #eef2f6;
-      min-height: 48px;
-      font-size: 0.7rem;
-    }
-    .see-more-btn:active {
-      background: #e6edf4;
-    }
-    .hidden-notices {
-      display: none;
-    }
-    .hidden-notices.show {
-      display: table-row-group;
-    }
-    .loading,
-    .error {
-      text-align: center;
-      padding: 1.5rem;
-      color: #5d6f83;
-      font-size: 0.8rem;
-    }
-    .codes-list {
-      max-width: 500px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .codes-row {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: #f9fafb;
-      border-radius: 10px;
-      padding: 0.35rem 0.45rem;
-      border: 1px solid #eef2f6;
-    }
-    .codes-sub {
-      font-weight: 600;
-      font-size: 0.65rem;
-      white-space: nowrap;
-      min-width: 50px;
-      color: #0f2b46;
-    }
-    .code-box {
-      flex: 1;
-      background: #f0f3f7;
-      border-radius: 6px;
-      padding: 2px 8px;
-      border: 1px solid #e2e6ec;
-      min-width: 60px;
-    }
-    .code-text {
-      font-weight: 600;
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #1e2a3e;
-    }
-    .code-text.empty {
-      color: #9ca3af;
-      font-weight: 400;
-      font-size: 0.6rem;
-      font-style: italic;
-      text-transform: none;
-    }
-    .copy-btn-code {
-      flex-shrink: 0;
-      padding: 3px 10px;
-      border-radius: 16px;
-      font-weight: 600;
-      font-size: 0.6rem;
-      font-family: 'Poppins', sans-serif;
-      cursor: pointer;
-      border: none;
-      background: #e5e7eb;
-      color: #374151;
-      transition: 0.15s;
-      min-height: 28px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      justify-content: center;
-    }
-    .copy-btn-code:active {
-      transform: scale(0.95);
-      background: #d1d5db;
-    }
-    .copy-btn-code.dim {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    .copy-btn-code.copied {
-      background: #065f46;
-      color: #fff;
-      pointer-events: none;
-      font-size: 0.55rem;
-    }
-    .copy-btn-code.loading {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-    .spinner {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border: 2px solid transparent;
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      margin-right: 2px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .codes-section-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #0d2b4e;
-      margin-bottom: 0.3rem;
-      text-align: center;
-    }
+        /* CLOCK DISPLAY */
+        .clock-display {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+            font-variant-numeric: tabular-nums;
+        }
 
-    /* ===== FACULTY (Always expanded) ===== */
-    .faculty-root {
-      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.3;
-      color: #1e2a3e;
-    }
-    .faculty-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 0.8rem 0.8rem 0.6rem;
-      border: 1px solid #eef2f6;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    }
-    .faculty-heading {
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      color: #1e2a3e;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-bottom: 0.6rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1.5px solid #e9edf2;
-      position: relative;
-    }
-    .faculty-heading i {
-      color: #4a6cf7;
-    }
-    .faculty-heading::after {
-      content: '';
-      position: absolute;
-      bottom: -1.5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 3px;
-      background: #4a6cf7;
-      border-radius: 2px;
-    }
-    .faculty-list {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .faculty-item {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 0.3rem 0.4rem;
-      background: #f9fafb;
-      border-radius: 10px;
-      border: 1px solid #eef2f6;
-      padding: 0.4rem 0.5rem;
-    }
-    .faculty-main {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.3rem 0.4rem;
-      width: 100%;
-    }
-    .faculty-name {
-      font-weight: 600;
-      font-size: 0.68rem;
-      color: #1e2a3e;
-      flex: 1 1 120px;
-      min-width: 100px;
-    }
-    .faculty-number {
-      font-size: 0.6rem;
-      font-weight: 500;
-      color: #1e40af;
-      background: #eff6ff;
-      padding: 1px 8px;
-      border-radius: 8px;
-      border: 1px solid #dbeafe;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-      font-family: 'Poppins', monospace;
-    }
-    .copy-btn-fac {
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.55rem;
-      font-weight: 600;
-      color: #065f46;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 2px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-      line-height: 1.6;
-      min-height: 36px;
-      display: inline-flex;
-      align-items: center;
-    }
-    .copy-btn-fac:active {
-      transform: scale(0.96);
-      background: #d1fae5;
-    }
-    .copy-btn-fac.copied {
-      background: #dbeafe;
-      color: #1e40af;
-      border-color: #93c5fd;
-    }
-    .faculty-details {
-      width: 100%;
-      font-size: 0.55rem;
-      color: #4b5563;
-      padding-top: 0.1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.2rem 0.6rem;
-      border-top: 1px dashed #e9edf2;
-      margin-top: 0.1rem;
-      padding-top: 0.25rem;
-    }
-    .faculty-details span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.15rem;
-    }
-    .faculty-details .label {
-      font-weight: 500;
-      color: #6b7280;
-    }
-    .faculty-details .value {
-      color: #1e2a3e;
-      font-weight: 400;
-    }
+        .next-class-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #eef2f6;
+            font-weight: 500;
+            justify-content: center;
+            flex-wrap: wrap;
+            min-height: 44px;
+        }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #3b82f6;
+            flex-shrink: 0;
+        }
+        .status-dot.running { background: #22c55e; }
+        .next-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #4b5563;
+            font-size: 0.7rem;
+        }
+        .nc-day, .nc-course, .nc-time { font-weight: 600; }
+        .nc-room {
+            font-weight: 600;
+            background: #eef2f6;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+        }
 
-    /* ===== CTA ===== */
-    .cta-card {
-      background: #f9fafb;
-      border-radius: 14px;
-      padding: 1rem 1.2rem;
-      border: 1px solid #eef2f6;
-      text-align: center;
-    }
-    .cta-title {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #1e2a3e;
-      margin-bottom: 0.2rem;
-    }
-    .cta-title span {
-      color: #0d2b4e;
-    }
-    .cta-desc {
-      font-size: 0.7rem;
-      color: #4b5563;
-      margin: 0.2rem 0 0.6rem;
-    }
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.4rem;
-      border-radius: 40px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-decoration: none;
-      color: #fff;
-      background: #1877f2;
-      transition: background 0.2s, transform 0.15s;
-      box-shadow: 0 3px 12px rgba(24, 119, 242, 0.25);
-      min-height: 40px;
-    }
-    .cta-btn:hover {
-      background: #166fe5;
-      transform: translateY(-1px);
-    }
-    .cta-btn:active {
-      transform: scale(0.96);
-    }
-    .cta-btn i {
-      font-size: 0.9rem;
-    }
+        /* ===== ASSIGNMENTS (EXPANDABLE) ===== */
+        .assign-root {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            margin: 0; padding: 0; line-height: 1.3; color: #1e2a3e;
+        }
+        .assign-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 1rem 0.6rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .assign-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid #e9edf2;
+            position: relative;
+        }
+        .assign-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 2px;
+        }
+        .assign-heading {
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            color: #1e2a3e;
+        }
+        .assign-heading i { color: #4a6cf7; margin-right: 0.3rem; }
 
-    /* ===== FOOTER ===== */
-    .footer-seo {
-      background: #f9fafb;
-      border-radius: 12px;
-      padding: 0.8rem 1rem;
-      border: 1px solid #eef2f6;
-    }
-    .footer-seo p {
-      font-size: 0.7rem;
-      color: #4b5563;
-      line-height: 1.6;
-      margin-bottom: 0.3rem;
-    }
-    .footer-seo .brand {
-      font-weight: 600;
-      color: #0d2b4e;
-    }
-    .footer-seo .tags {
-      font-size: 0.6rem;
-      color: #6b7280;
-    }
+        .assign-block {
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            margin-bottom: 8px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .assign-block:last-child { margin-bottom: 0; }
+        .assign-block.pinned {
+            background: #fef9e3;
+            border-left: 4px solid #f5b042;
+            border-color: #fde68a;
+        }
+        .assign-block.passed {
+            opacity: 0.5;
+            filter: grayscale(0.6);
+        }
+        .assign-block.passed .assign-title,
+        .assign-block.passed .assign-meta,
+        .assign-block.passed .assign-items,
+        .assign-block.passed .assign-note,
+        .assign-block.passed .mkt-team,
+        .assign-block.passed .assign-topic {
+            text-decoration: line-through;
+            color: #6b7280 !important;
+        }
+        .assign-block.passed .assign-note {
+            background: #e5e7eb !important;
+            border-color: #9ca3af !important;
+            color: #6b7280 !important;
+        }
+        .assign-block.passed .badge {
+            background: #d1d5db !important;
+            color: #6b7280 !important;
+            border-color: #9ca3af !important;
+        }
 
-    /* ===== MOBILE OPTIMIZATION ===== */
-    @media (max-width: 480px) {
-      body { padding: 0.4rem 0.2rem; }
-      .dashboard { gap: 0.8rem; }
-      .site-header { padding: 0.5rem 0.6rem; border-radius: 14px; gap: 0.4rem; }
-      .site-header h1 { font-size: 1rem; }
-      .search-toggle { width: 36px; height: 36px; font-size: 0.9rem; }
-      .search-toggle i { font-size: 0.9rem; }
-      .search-bar-wrap.open { padding: 0.4rem 0.6rem; }
-      .search-bar-wrap input { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
-      .glance { padding: 0.8rem 0.5rem; border-radius: 14px; }
-      .section-title { font-size: 0.85rem; }
-      .message-box { font-size: 0.78rem; min-height: 44px; }
-      .next-class-bar { font-size: 0.65rem; padding: 0.4rem 0.5rem; gap: 0.3rem; }
-      .nc-room { font-size: 0.6rem; }
-      .assign-heading { font-size: 0.7rem; }
-      .assign-title { font-size: 0.7rem; }
-      .assign-meta { font-size: 0.55rem; }
-      .assign-items { font-size: 0.55rem; }
-      .assign-note { font-size: 0.55rem; }
-      .routine-toggle-btn { font-size: 0.65rem; padding: 10px 12px; min-height: 44px; border-radius: 10px; }
-      .schedule-table { font-size: 0.5rem; min-width: 300px; }
-      .schedule-table th, .schedule-table td { padding: 3px 4px; }
-      .course-code { font-size: 0.45rem; padding: 0px 3px; }
-      .day-cell { font-size: 0.5rem; }
-      .sub-link-btn { font-size: 0.55rem; padding: 5px 8px; min-height: 36px; min-width: 80px; }
-      .drive-heading { font-size: 0.7rem; }
-      .drive-btn { font-size: 0.65rem; padding: 0.5rem 0.8rem; min-height: 40px; flex: 1 1 100%; }
-      .notice-header h2 { font-size: 0.85rem; }
-      .notice-table { font-size: 0.6rem; min-width: 320px; }
-      .notice-table th, .notice-table td { padding: 0.4rem 0.4rem; }
-      .see-more-btn { font-size: 0.6rem; min-height: 40px; padding: 0.4rem; }
-      .clickable-title { font-size: 0.6rem; min-height: 36px; }
-      .codes-sub { font-size: 0.6rem; min-width: 45px; }
-      .code-box { padding: 1px 6px; min-width: 50px; }
-      .code-text { font-size: 0.65rem; }
-      .copy-btn-code { font-size: 0.55rem; min-height: 24px; padding: 2px 8px; }
-      .codes-section-title { font-size: 0.7rem; }
-      .faculty-heading { font-size: 0.7rem; }
-      .faculty-name { font-size: 0.6rem; min-width: 80px; }
-      .faculty-number { font-size: 0.55rem; padding: 1px 6px; }
-      .copy-btn-fac { font-size: 0.5rem; min-height: 32px; padding: 2px 8px; }
-      .faculty-details { font-size: 0.5rem; }
-      .assign-card, .drive-card, .faculty-card, .notice-board { border-radius: 14px; }
-      .cta-card { padding: 0.8rem 0.8rem; }
-      .cta-title { font-size: 0.8rem; }
-      .cta-desc { font-size: 0.65rem; }
-      .cta-btn { font-size: 0.7rem; padding: 0.4rem 1rem; min-height: 38px; width: 100%; justify-content: center; }
-      .footer-seo { padding: 0.6rem 0.7rem; }
-      .footer-seo p { font-size: 0.6rem; }
-      .footer-seo .tags { font-size: 0.55rem; }
-    }
-    @media (max-width: 380px) {
-      .drive-buttons { flex-direction: column; align-items: stretch; }
-      .drive-btn { width: 100%; justify-content: center; }
-      .sub-buttons-row { flex-direction: column; align-items: stretch; }
-      .sub-link-btn { width: 100%; justify-content: center; }
-      .codes-row { flex-wrap: wrap; }
-      .copy-btn-code { width: 100%; justify-content: center; }
-      .faculty-main { flex-direction: column; align-items: stretch; }
-      .faculty-number { align-self: flex-start; }
-      .copy-btn-fac { align-self: flex-start; }
-      .site-header h1 { font-size: 0.9rem; }
-    }
-  </style>
+        .assign-block .assign-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 0.8rem;
+            cursor: pointer;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            min-height: 48px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .assign-block .assign-summary:active { background: rgba(0,0,0,0.02); }
+        .assign-block .assign-summary .assign-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .assign-block .assign-summary .assign-left .assign-date {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+        .assign-block .assign-summary .assign-left .assign-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1e2a3e;
+            word-break: break-word;
+        }
+        .assign-block .assign-summary .assign-left .badge {
+            font-weight: 600;
+            font-size: 0.55rem;
+            background: #fef3c7;
+            color: #b45309;
+            padding: 0 6px;
+            border-radius: 8px;
+            border: 1px solid #fde68a;
+            white-space: nowrap;
+        }
+        .assign-block .assign-summary .assign-toggle {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            font-size: 0.7rem;
+            color: #4a6cf7;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: background 0.15s;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .assign-block .assign-summary .assign-toggle:active { background: rgba(74,108,247,0.1); }
+        .assign-block .assign-summary .assign-toggle i {
+            font-size: 0.6rem;
+            transition: transform 0.25s ease;
+        }
+        .assign-block .assign-summary .assign-toggle.open i { transform: rotate(180deg); }
+
+        .assign-block .assign-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease, opacity 0.25s ease;
+            padding: 0 0.8rem;
+            opacity: 0;
+        }
+        .assign-block .assign-details.open {
+            max-height: 400px;
+            padding: 0 0.8rem 0.7rem;
+            opacity: 1;
+        }
+        .assign-block .assign-details .assign-meta {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.1rem;
+        }
+        .assign-block .assign-details .assign-meta strong { color: #1e2a3e; }
+        .assign-block .assign-details .assign-topic {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #1e40af;
+            background: #eff6ff;
+            padding: 0 6px;
+            border-radius: 6px;
+            border: 1px solid #dbeafe;
+            display: inline-block;
+            margin-bottom: 0.1rem;
+        }
+        .assign-block .assign-details .assign-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.15rem 0.5rem;
+            font-size: 0.65rem;
+            color: #4b5563;
+            padding-top: 0.1rem;
+        }
+        .assign-block .assign-details .assign-items span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+        .assign-block .assign-details .assign-items .opt {
+            color: #6b7280;
+            font-style: italic;
+        }
+        .assign-block .assign-details .assign-note {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #7c2d12;
+            background: #fef3c7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 0.2rem;
+            border: 1px solid #fde68a;
+        }
+        .assign-block .assign-details .assign-note.blue {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #dbeafe;
+        }
+        .assign-block .assign-details .assign-note.green {
+            background: #ecfdf5;
+            color: #065f46;
+            border-color: #a7f3d0;
+        }
+        .assign-block .assign-details .mkt-team {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #6d28d9;
+            background: #f5f3ff;
+            border: 1px solid #ede9fe;
+            padding: 0.1rem 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 0.1rem;
+        }
+        .assign-block .assign-details .topic-badge {
+            font-size: 0.55rem;
+            font-weight: 500;
+            background: #e5e7eb;
+            color: #1e2a3e;
+            padding: 0 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* ===== ROUTINE ===== */
+        .routine-outer-wrapper {
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            background: transparent;
+        }
+        .routine-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            background: #0d2b4e;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 46px;
+            touch-action: manipulation;
+            box-shadow: 0 4px 14px rgba(13,43,78,0.15);
+            transition: background 0.3s ease, transform 0.15s ease;
+        }
+        .routine-toggle-btn:active { transform: scale(0.97); background: #14365e; }
+        .btn-arrow {
+            display: inline-flex;
+            font-size: 0.9rem;
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            transform: rotate(0deg);
+        }
+        .routine-toggle-btn.expanded .btn-arrow { transform: rotate(90deg); }
+        .routine-collapse-wrapper {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+            border-radius: 0 0 14px 14px;
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #eef2f6;
+            border-top: none;
+            margin-top: -1px;
+        }
+        .routine-collapse-wrapper.open {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06), 0 0 0 1px #eef2f6;
+        }
+        .routine-inner { padding: 10px 6px 12px 6px; }
+        .table-scrollable {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #cdd4de transparent;
+            position: relative;
+        }
+        .table-scrollable::-webkit-scrollbar { height: 4px; }
+        .table-scrollable::-webkit-scrollbar-thumb { background: #cdd4de; border-radius: 10px; }
+        .table-responsive {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+            min-width: 340px;
+        }
+        .schedule-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            background-color: white;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.3;
+            min-width: 340px;
+        }
+        .schedule-table thead tr {
+            background-color: #fafafc;
+            border-bottom: 1.5px solid #d0d4da;
+        }
+        .schedule-table th {
+            text-align: left;
+            padding: 5px 6px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            color: #1e2a3e;
+            border-bottom: 1px solid #e9edf2;
+            background-color: #fafafc;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .schedule-table td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+            background-color: white;
+            color: #1f2a3e;
+            white-space: nowrap;
+        }
+        .schedule-table tbody tr.section-end td { border-bottom: 1.5px solid #1a1a1a; }
+        .day-cell { font-weight: 700; color: #0f2b46; font-size: 0.65rem; }
+        .course-code {
+            font-weight: 700;
+            color: #0d2b4e;
+            background: #f0f3f7;
+            padding: 1px 5px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            display: inline-block;
+        }
+        .schedule-table colgroup .col-day { width: 14%; }
+        .schedule-table colgroup .col-time { width: 32%; }
+        .schedule-table colgroup .col-room { width: 14%; }
+        .schedule-table colgroup .col-course { width: 40%; }
+
+        .sub-buttons-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            justify-content: stretch;
+            margin-top: 2px;
+        }
+        .sub-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: transparent;
+            border: 1.5px solid #cdd6e4;
+            color: #0d2b4e;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 30px;
+            background-color: #ffffff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-height: 28px;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .sub-link-btn:active { transform: scale(0.95); background: #e5eaf2; }
+        .sub-link-btn .external-icon { font-size: 0.6rem; opacity: 0.7; }
+
+        /* ===== STUDY MATERIALS ===== */
+        .drive-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 0.8rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .drive-buttons { display: flex; justify-content: center; }
+        .drive-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: white;
+            background: #0d2b4e;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 2px 8px rgba(13,43,78,0.15);
+            white-space: nowrap;
+            min-height: 44px;
+            width: 100%;
+            max-width: 280px;
+        }
+        .drive-btn:active { transform: scale(0.96); background: #14365e; }
+        .drive-btn i { font-size: 0.9rem; }
+
+        /* ===== NOTICES (only 3) ===== */
+        .notice-board {
+            background: white;
+            border: 1px solid #eef2f6;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .notice-header {
+            background: #fff;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .notice-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-header h2 i { color: #4a6cf7; }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 380px;
+        }
+        .notice-table th {
+            background: #f8fafc;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 0.5rem 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid #eef2f6;
+        }
+        .notice-table td {
+            padding: 0.5rem 0.7rem;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: middle;
+        }
+        .notice-table tr:last-child td { border-bottom: none; }
+        .clickable-title {
+            color: #0a2540;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            word-break: break-word;
+            display: inline-block;
+            min-height: 40px;
+            line-height: 1.3;
+        }
+        .clickable-title:active { color: #2563eb; }
+        .loading, .error {
+            text-align: center;
+            padding: 1.5rem;
+            color: #5d6f83;
+            font-size: 0.8rem;
+        }
+
+        /* ===== CLASSROOM CODES ===== */
+        .codes-list {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .codes-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 0.35rem 0.6rem;
+            border: 1px solid #eef2f6;
+            min-height: 40px;
+            flex-wrap: nowrap;
+        }
+        .codes-sub {
+            font-weight: 600;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            min-width: 60px;
+            color: #0f2b46;
+            flex-shrink: 0;
+        }
+        .code-box {
+            flex: 1;
+            background: #f0f3f7;
+            border-radius: 6px;
+            padding: 0.1rem 0.5rem;
+            border: 1px solid #e2e6ec;
+            text-align: center;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .code-text {
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #0d2b4e;
+            white-space: nowrap;
+        }
+        .code-text.empty {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.6rem;
+            font-style: italic;
+            text-transform: none;
+        }
+        .copy-btn-code {
+            flex-shrink: 0;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            border: none;
+            background: #e5e7eb;
+            color: #374151;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .copy-btn-code:active { background: #d1d5db; }
+        .copy-btn-code.dim { opacity: 0.4; pointer-events: none; }
+        .codes-section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* ================================================================
+        FACULTY – REBUILT FROM SCRATCH – NO GAP, LARGER BUTTONS & TEXT
+        ================================================================ */
+        .faculty-root {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            margin: 0; padding: 0;
+            line-height: 1.4;
+            color: #1e2a3e;
+        }
+        .faculty-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 1rem 0.6rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .faculty-heading {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            color: #1e2a3e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid #e9edf2;
+            position: relative;
+        }
+        .faculty-heading i { color: #4a6cf7; }
+        .faculty-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 2px;
+        }
+
+        .faculty-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        /* Individual card – simple block, no flex gaps */
+        .faculty-item {
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            padding: 0.6rem 0.7rem;
+            display: block; /* no flex */
+        }
+
+        /* Name + number on the same line */
+        .faculty-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.2rem 0.4rem;
+            margin-bottom: 0.15rem; /* tiny space before actions */
+        }
+
+        .faculty-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0d2b4e;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .faculty-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e40af;
+            background: #eff6ff;
+            padding: 0.1rem 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #dbeafe;
+            white-space: nowrap;
+            font-family: 'Poppins', monospace;
+            margin: 0;
+        }
+
+        /* Actions – bigger buttons */
+        .faculty-actions {
+            margin-top: 0.15rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .faculty-actions .btn-fac {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+            min-height: 36px;
+            text-decoration: none;
+            min-width: 60px;
+        }
+        .faculty-actions .btn-fac:active { transform: scale(0.95); }
+        .faculty-actions .btn-copy {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .faculty-actions .btn-copy:active { background: #d1d5db; }
+        .faculty-actions .btn-call {
+            background: #0d2b4e;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(13,43,78,0.12);
+        }
+        .faculty-actions .btn-call:active { background: #14365e; }
+        .faculty-actions .btn-call i { font-size: 0.8rem; }
+
+        /* Details – no extra margin/padding */
+        .faculty-details {
+            font-size: 0.7rem;
+            color: #4b5563;
+            border-top: 1px dashed #e9edf2;
+            padding-top: 0.2rem;
+            margin-top: 0.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.1rem 0.6rem;
+        }
+        .faculty-details span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+        .faculty-details .label {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        .faculty-details .value {
+            color: #1e2a3e;
+            font-weight: 400;
+        }
+
+        /* ===== CTA ===== */
+        .cta-card {
+            background: #f9fafb;
+            border-radius: 14px;
+            padding: 1rem 1rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+        }
+        .cta-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1e2a3e;
+            margin-bottom: 0.1rem;
+        }
+        .cta-title span { color: #0d2b4e; }
+        .cta-desc {
+            font-size: 0.75rem;
+            color: #4b5563;
+            margin: 0.1rem 0 0.5rem;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: #fff;
+            background: #1877f2;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 3px 12px rgba(24,119,242,0.25);
+            min-height: 42px;
+        }
+        .cta-btn:active { transform: scale(0.96); }
+        .cta-btn i { font-size: 0.9rem; }
+
+        /* ===== FOOTER (SEO – invisible) ===== */
+        .footer-seo {
+            background: #f4f7fc;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+            color: #f4f7fc;
+            font-size: 0.01rem;
+            line-height: 0.01;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            margin: 0;
+        }
+        .footer-seo p,
+        .footer-seo .brand,
+        .footer-seo .tags {
+            color: #f4f7fc !important;
+            background: transparent !important;
+            font-size: 0.01rem !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* ================================================================
+        MOBILE OPTIMIZATION
+        ================================================================ */
+        @media (max-width: 480px) {
+            body { padding: 10px 12px; }
+            .dashboard { gap: 0.9rem; }
+            .site-header { padding: 0.6rem 0.7rem; border-radius: 14px; gap: 0.4rem; }
+            .site-header h1 { font-size: 1rem; }
+            .search-toggle { width: 36px; height: 36px; font-size: 0.9rem; }
+            .search-toggle i { font-size: 0.9rem; }
+            .search-bar-wrap.open { padding: 0.4rem 0.5rem; }
+            .search-bar-wrap input { font-size: 0.75rem; padding: 0.4rem 0.5rem; }
+            .glance { padding: 1rem 0.7rem; border-radius: 16px; }
+            .section-title { font-size: 0.9rem; }
+            .clock-display { font-size: 1.8rem; }
+            .message-box { font-size: 0.8rem; min-height: 44px; }
+            .next-class-bar { font-size: 0.65rem; padding: 0.4rem 0.5rem; gap: 0.25rem; min-height: 38px; }
+            .assign-card { padding: 0.8rem 0.7rem 0.4rem; }
+            .assign-heading { font-size: 0.8rem; }
+            .assign-block .assign-summary { padding: 0.5rem 0.6rem; min-height: 40px; }
+            .assign-block .assign-summary .assign-left .assign-date { font-size: 0.55rem; }
+            .assign-block .assign-summary .assign-left .assign-name { font-size: 0.7rem; }
+            .assign-block .assign-summary .assign-toggle { font-size: 0.6rem; min-height: 28px; padding: 0.1rem 0.4rem; }
+            .assign-block .assign-details .assign-meta { font-size: 0.6rem; }
+            .assign-block .assign-details .assign-items { font-size: 0.6rem; }
+            .assign-block .assign-details .assign-note { font-size: 0.6rem; }
+            .routine-toggle-btn { font-size: 0.7rem; padding: 10px 14px; min-height: 42px; border-radius: 10px; }
+            .schedule-table { font-size: 0.55rem; min-width: 300px; }
+            .schedule-table th, .schedule-table td { padding: 4px 5px; }
+            .course-code { font-size: 0.5rem; padding: 1px 4px; }
+            .day-cell { font-size: 0.55rem; }
+            .sub-link-btn { font-size: 0.5rem; padding: 3px 6px; min-height: 24px; border-radius: 20px; }
+            .drive-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 40px; max-width: 100%; }
+            .notice-header h2 { font-size: 0.85rem; }
+            .notice-table { font-size: 0.65rem; min-width: 320px; }
+            .notice-table th, .notice-table td { padding: 0.4rem 0.5rem; }
+            .clickable-title { font-size: 0.65rem; min-height: 34px; }
+            .codes-list { gap: 0.3rem; }
+            .codes-row { padding: 0.25rem 0.5rem; min-height: 34px; gap: 0.3rem; }
+            .codes-sub { font-size: 0.65rem; min-width: 50px; }
+            .code-text { font-size: 0.65rem; }
+            .copy-btn-code { font-size: 0.55rem; min-height: 24px; min-width: 40px; padding: 0.05rem 0.5rem; }
+            .codes-section-title { font-size: 0.8rem; }
+            /* Faculty mobile – bigger buttons on mobile too */
+            .faculty-heading { font-size: 0.85rem; }
+            .faculty-item { padding: 0.5rem 0.5rem; }
+            .faculty-name { font-size: 0.85rem; }
+            .faculty-number { font-size: 0.75rem; }
+            .faculty-actions .btn-fac { font-size: 0.7rem; min-height: 32px; min-width: 50px; padding: 0.15rem 0.7rem; }
+            .faculty-details { font-size: 0.6rem; }
+            .assign-card, .drive-card, .faculty-card, .notice-board { border-radius: 14px; }
+            .cta-card { padding: 0.7rem 0.7rem; }
+            .cta-title { font-size: 0.8rem; }
+            .cta-desc { font-size: 0.7rem; }
+            .cta-btn { font-size: 0.7rem; padding: 0.4rem 1rem; min-height: 38px; width: 100%; justify-content: center; }
+        }
+        @media (max-width: 380px) {
+            body { padding: 8px 10px; }
+            .dashboard { gap: 0.7rem; }
+            .drive-buttons { flex-direction: column; align-items: stretch; }
+            .drive-btn { width: 100%; justify-content: center; }
+            .sub-buttons-row { flex-wrap: wrap; }
+            .sub-link-btn { flex: 1 1 45%; min-width: 60px; }
+            .codes-row { flex-wrap: nowrap; padding: 0.2rem 0.4rem; min-height: 30px; }
+            .codes-sub { font-size: 0.55rem; min-width: 40px; }
+            .code-text { font-size: 0.55rem; }
+            .copy-btn-code { font-size: 0.5rem; min-height: 20px; min-width: 32px; padding: 0.05rem 0.4rem; }
+            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
+            .faculty-actions .btn-fac { flex: 1; }
+            .site-header h1 { font-size: 0.9rem; }
+            .clock-display { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="dashboard">
+    <div class="dashboard">
 
-    <!-- ==============================================================
-    HEADER WITH SEARCH (RIGHT)
-    ============================================================== -->
-    <header class="site-header">
-      <h1>66<span>Notes</span> BUBT</h1>
-      <div class="header-right">
-        <button class="search-toggle" id="searchToggle" aria-label="Search sections">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-    </header>
+        <!-- ==============================================================
+        HEADER WITH SEARCH
+        ============================================================== -->
+        <header class="site-header">
+            <h1>66<span>Notes</span> BUBT</h1>
+            <div class="header-right">
+                <button class="search-toggle" id="searchToggle" aria-label="Search sections">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </header>
 
-    <!-- Search Bar -->
-    <div class="search-bar-wrap" id="searchBarWrap">
-      <input type="text" id="searchInput" placeholder="Search for teachers, codes, assignments..." autocomplete="off" />
-      <ul class="search-results" id="searchResults"></ul>
-    </div>
-
-    <!-- ==============================================================
-    SECTION 1 – AI REMINDER
-    ============================================================== -->
-    <div class="glance" id="section-ai">
-      <h2 class="section-title">
-        <span class="live-indicator"></span> AI Reminder
-      </h2>
-      <div class="message-box" id="messageBox">
-        <div class="message-line active">Loading...</div>
-      </div>
-      <div class="next-class-bar" id="nextClassBar">
-        <span class="status-dot" id="barDot"></span>
-        <span class="next-label" id="barLabel">...</span>
-        <span id="barDetail">...</span>
-      </div>
-      <div class="dhaka-time-below" id="dhakaTimeBelow">Loading time...</div>
-    </div>
-
-    <!-- ==============================================================
-    SECTION 2 – ASSIGNMENTS
-    ============================================================== -->
-    <div class="assign-root" id="section-assignments">
-      <div class="assign-card">
-        <div class="assign-header">
-          <h2 class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</h2>
+        <!-- Search Bar -->
+        <div class="search-bar-wrap" id="searchBarWrap">
+            <input type="text" id="searchInput" placeholder="Search for teachers, codes, assignments..." autocomplete="off" />
+            <ul class="search-results" id="searchResults"></ul>
         </div>
 
-        <!-- ICT CT Exam -->
-        <div class="assign-block pinned" data-date="2026-07-19">
-          <div class="assign-title"><span>ICT CT Exam</span><span class="badge ct">CT</span></div>
-          <div class="assign-meta"><strong>Date:</strong> 19th July (Sunday) &nbsp;|&nbsp; <span class="assign-topic">During class time</span></div>
-          <div class="assign-items"><span><strong>Topics:</strong> <span class="topic-badge">Chapter 2</span> <span class="topic-badge">Chapter 10</span></span></div>
-          <div class="assign-note green"><i class="fas fa-clock"></i> Exam will be held during class time.</div>
+        <!-- ==============================================================
+        SECTION 1 – CLOCK (only time, no labels)
+        ============================================================== -->
+        <div class="glance" id="section-ai">
+            <div class="section-title">
+                <span class="live-indicator"></span> AI Reminder
+            </div>
+            <div class="clock-display" id="clockDisplay">Loading...</div>
+            <div class="message-box" id="messageBox">
+                <div class="message-line active">Loading schedule...</div>
+            </div>
+            <div class="next-class-bar" id="nextClassBar">
+                <span class="status-dot" id="barDot"></span>
+                <span class="next-label" id="barLabel">...</span>
+                <span id="barDetail">...</span>
+            </div>
         </div>
 
-        <!-- Bangla Assignment -->
-        <div class="assign-block pinned" data-date="2026-08-11">
-          <div class="assign-title"><span>Bangla Assignment (Sahitya)</span><span class="badge">Deadline</span></div>
-          <div class="assign-meta"><strong>Date:</strong> 11th August &nbsp;|&nbsp; <span class="assign-topic">তোমার পঠিত যেকোনো সাহিত্য কর্ম নিয়ে আলোচনা</span></div>
-          <div class="assign-items">
-            <span>১. লেখক/কবি পরিচিতি</span>
-            <span>২. সাহিত্যের মূল বিষয় বস্তু</span>
-            <span>৩. চরিত্র (যদি থাকে)</span>
-            <span>৪. শিল্পমূল্য</span>
-            <span>৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ</span>
-            <span>৬. উপসংহার</span>
-          </div>
-          <div class="assign-note blue"><i class="fas fa-book"></i> Prepare a full analysis as per the guidelines above.</div>
+        <!-- ==============================================================
+        SECTION 2 – ASSIGNMENTS (Expandable cards)
+        ============================================================== -->
+        <div class="assign-root" id="section-assignments">
+            <div class="assign-card">
+                <div class="assign-header">
+                    <h2 class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</h2>
+                </div>
+
+                <!-- 1. Star Cineplex -->
+                <div class="assign-block" data-date="2026-07-27">
+                    <div class="assign-summary" onclick="toggleAssign(this)">
+                        <div class="assign-left">
+                            <span class="assign-date">27 Jul</span>
+                            <span class="assign-name">Case Presentation (Star Cineplex)</span>
+                            <span class="badge">CT 2</span>
+                        </div>
+                        <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
+                            See More <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="assign-details">
+                        <div class="assign-meta"><strong>Full Date:</strong> 27th July</div>
+                        <div class="assign-items"><span>• Presentation</span><span>• Assignment (Printed)</span></div>
+                        <div class="assign-note"><i class="fas fa-exclamation-circle"></i> Slide is important! Check Classroom / All PDFs / WhatsApp for details.</div>
+                    </div>
+                </div>
+
+                <!-- 2. Strawberry Juice -->
+                <div class="assign-block" data-date="2026-08-04">
+                    <div class="assign-summary" onclick="toggleAssign(this)">
+                        <div class="assign-left">
+                            <span class="assign-date">4 Aug</span>
+                            <span class="assign-name">Poster Presentation (Strawberry Juice)</span>
+                            <span class="badge">CT 2</span>
+                        </div>
+                        <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
+                            See More <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="assign-details">
+                        <div class="assign-meta"><strong>Full Date:</strong> Aug 4th</div>
+                        <div class="assign-items"><span>• Presentation</span><span>• Poster</span><span>• Assignment (Printed) + Poster</span><span class="opt">• Product/Preview (Optional)</span></div>
+                        <div style="margin-top:.1rem;background:#f0f7ff;padding:.15rem .4rem;border-radius:6px;font-size:.6rem;color:#1e2a3e"><strong>Topics:</strong> 4Ps, STP, Name, Category, Ingredients</div>
+                        <div class="assign-note blue"><i class="fas fa-info-circle"></i> Slide is not required (optional).</div>
+                        <div class="mkt-team">Team Members: 5/6 (Free will)</div>
+                    </div>
+                </div>
+
+                <!-- 3. Bangla Sahitya -->
+                <div class="assign-block pinned" data-date="2026-08-11">
+                    <div class="assign-summary" onclick="toggleAssign(this)">
+                        <div class="assign-left">
+                            <span class="assign-date">11 Aug</span>
+                            <span class="assign-name">Bangla Assignment (Sahitya)</span>
+                            <span class="badge">Deadline</span>
+                        </div>
+                        <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
+                            See More <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="assign-details">
+                        <div class="assign-meta"><strong>Full Date:</strong> 11th August</div>
+                        <div class="assign-items">
+                            <span>১. লেখক/কবি পরিচিতি</span>
+                            <span>২. সাহিত্যের মূল বিষয় বস্তু</span>
+                            <span>৩. চরিত্র (যদি থাকে)</span>
+                            <span>৪. শিল্পমূল্য</span>
+                            <span>৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ</span>
+                            <span>৬. উপসংহার</span>
+                        </div>
+                        <div class="assign-note blue"><i class="fas fa-book"></i> Prepare a full analysis as per the guidelines above.</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Star Cineplex -->
-        <div class="assign-block" data-date="2026-07-27">
-          <div class="assign-title"><span>1. Case Presentation (CT 2)</span><span class="badge">CT 2</span></div>
-          <div class="assign-meta"><strong>Date:</strong> 27th July &nbsp;|&nbsp; <span class="assign-topic">Star Cineplex</span></div>
-          <div class="assign-items"><span>• Presentation</span><span>• Assignment (Printed)</span></div>
-          <div class="assign-note"><i class="fas fa-exclamation-circle"></i> Slide is important! Check Classroom / All PDFs / WhatsApp for details.</div>
+        <!-- ==============================================================
+        SECTION 3 – CLASS ROUTINE
+        ============================================================== -->
+        <div class="routine-outer-wrapper" id="section-routine">
+            <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
+                <h3 class="btn-text">SEE FULL CLASS ROUTINE</h3>
+                <span class="btn-arrow" aria-hidden="true">▸</span>
+            </button>
+            <div class="routine-collapse-wrapper" id="routineCollapseWrapper">
+                <div class="routine-inner">
+                    <div class="table-scrollable" id="tableScrollContainer">
+                        <div class="table-responsive">
+                            <table class="schedule-table">
+                                <colgroup>
+                                    <col class="col-day">
+                                    <col class="col-time">
+                                    <col class="col-room">
+                                    <col class="col-course">
+                                </colgroup>
+                                <thead>
+                                    <tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="day-cell" rowspan="2">SUN</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4801</td><td><span class="course-code">ICT 1101</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">MON</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4201</td><td><span class="course-code">ICT 1101</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">MKT 1101</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">TUE</td><td>2:45 – 4:15</td><td class="room-cell" rowspan="2">4705</td><td><span class="course-code">MKT 1101</span></td></tr>
+                                    <tr class="section-end"><td>4:15 – 5:45</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">WED</td><td>1:15 – 2:45</td><td class="room-cell" rowspan="2">4303</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                    <tr class="section-end"><td>2:45 – 4:15</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-buttons-row">
+                <a href="https://66notes.weebly.com/routine.html" target="_blank" rel="noopener" class="sub-link-btn"><span>ROUTINE PIC</span><span class="external-icon">↗</span></a>
+                <a href="https://annex.bubt.edu.bd/global_file/routine.php?p=001&semNo=067,501,613,901" target="_blank" rel="noopener" class="sub-link-btn"><span>BUBT ROUTINE</span><span class="external-icon">↗</span></a>
+            </div>
         </div>
 
-        <!-- Strawberry Juice -->
-        <div class="assign-block" data-date="2026-08-04">
-          <div class="assign-title"><span>2. Assignment + Poster Presentation</span><span class="badge">CT 2</span></div>
-          <div class="assign-meta"><strong>Date:</strong> Aug 4th &nbsp;|&nbsp; <span class="assign-topic">Strawberry Juice / Milkshake</span></div>
-          <div class="assign-items"><span>• Presentation</span><span>• Poster</span><span>• Assignment (Printed) + Poster</span><span class="opt">• Product/Preview (Optional)</span></div>
-          <div style="margin-top:.1rem;background:#f0f7ff;padding:.2rem .4rem;border-radius:6px;font-size:.6rem;color:#1e2a3e"><strong>Topics:</strong> 4Ps, STP, Name, Category, Ingredients</div>
-          <div class="assign-note blue"><i class="fas fa-info-circle"></i> Slide is not required (optional).</div>
-          <div class="mkt-team">Team Members: 5/6 (Free will)</div>
+        <!-- ==============================================================
+        SECTION 4 – PDFs (No changes)
+        ============================================================== -->
+        <div class="drive-card" id="section-materials">
+            <div class="drive-buttons">
+                <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" rel="noopener" class="drive-btn"><i class="fas fa-file-pdf"></i> ALL PDFs</a>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- ==============================================================
-    SECTION 3 – CLASS ROUTINE
-    ============================================================== -->
-    <div class="routine-outer-wrapper" id="section-routine">
-      <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
-        <h3 class="btn-text">SEE FULL CLASS ROUTINE</h3>
-        <span class="btn-arrow" aria-hidden="true">▸</span>
-      </button>
-      <div class="routine-collapse-wrapper" id="routineCollapseWrapper">
-        <div class="routine-inner">
-          <div class="table-scrollable" id="tableScrollContainer">
-            <div class="table-responsive">
-              <table class="schedule-table">
-                <colgroup>
-                  <col class="col-day">
-                  <col class="col-time">
-                  <col class="col-room">
-                  <col class="col-course">
-                </colgroup>
-                <thead>
-                  <tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td class="day-cell" rowspan="2">SUN</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4801</td><td><span class="course-code">ICT 1101</span></td></tr>
-                  <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">HUM 1102</span></td></tr>
-                  <tr><td class="day-cell" rowspan="2">MON</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4201</td><td><span class="course-code">ICT 1101</span></td></tr>
-                  <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">MKT 1101</span></td></tr>
-                  <tr><td class="day-cell" rowspan="2">TUE</td><td>2:45 – 4:15</td><td class="room-cell" rowspan="2">4705</td><td><span class="course-code">MKT 1101</span></td></tr>
-                  <tr class="section-end"><td>4:15 – 5:45</td><td><span class="course-code">HUM 1102</span></td></tr>
-                  <tr><td class="day-cell" rowspan="2">WED</td><td>1:15 – 2:45</td><td class="room-cell" rowspan="2">4303</td><td><span class="course-code">ICT 1102</span></td></tr>
-                  <tr class="section-end"><td>2:45 – 4:15</td><td><span class="course-code">ICT 1102</span></td></tr>
-                </tbody>
-              </table>
+        <!-- ==============================================================
+        SECTION 5 – NOTICES (only 3 notices)
+        ============================================================== -->
+        <div class="notice-board" id="section-notices">
+            <div class="notice-header">
+                <h2><i class="fas fa-bullhorn"></i> Latest Notices</h2>
             </div>
-          </div>
+            <div id="noticeContainer"><div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading notices...</div></div>
         </div>
-      </div>
-      <div class="sub-buttons-row">
-        <a href="https://66notes.weebly.com/routine.html" target="_blank" rel="noopener" class="sub-link-btn"><span>ROUTINE PIC</span><span class="external-icon">↗</span></a>
-        <a href="https://annex.bubt.edu.bd/global_file/routine.php?p=001&semNo=067,501,613,901" target="_blank" rel="noopener" class="sub-link-btn"><span>BUBT ROUTINE</span><span class="external-icon">↗</span></a>
-      </div>
-    </div>
 
-    <!-- ==============================================================
-    SECTION 4 – STUDY MATERIALS
-    ============================================================== -->
-    <div class="drive-card" id="section-materials">
-      <div class="drive-header">
-        <h2 class="drive-heading"><i class="fas fa-folder-open"></i> Study Materials</h2>
-      </div>
-      <div class="drive-buttons">
-        <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" rel="noopener" class="drive-btn"><i class="fas fa-file-pdf"></i> ALL PDFs</a>
-        <a href="https://drive.google.com/drive/folders/199VzmGjr7lO2WBDqMUKTT5XdvgWQa-UJ?usp=sharing" target="_blank" rel="noopener" class="drive-btn outline"><i class="fas fa-list-ul"></i> Outlines</a>
-      </div>
-    </div>
-
-    <!-- ==============================================================
-    SECTION 5 – LATEST NOTICES
-    ============================================================== -->
-    <div class="notice-board" id="section-notices">
-      <div class="notice-header">
-        <h2><i class="fas fa-bullhorn"></i> Latest Notices</h2>
-      </div>
-      <div id="noticeContainer"><div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading notices...</div></div>
-    </div>
-
-    <!-- ==============================================================
-    SECTION 6 – CLASSROOM CODES
-    ============================================================== -->
-    <div id="section-codes">
-      <h3 class="codes-section-title">Classroom Codes</h3>
-      <div class="codes-list" id="codeList"></div>
-    </div>
-
-    <!-- ==============================================================
-    SECTION 7 – FACULTY INFO (Always Expanded)
-    ============================================================== -->
-    <div class="faculty-root" id="section-faculty">
-      <div class="faculty-card">
-        <div class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</div>
-        <div class="faculty-list">
-          <div class="faculty-item">
-            <div class="faculty-main">
-              <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
-              <span class="faculty-number">01742068119</span>
-              <button class="copy-btn-fac" data-number="01742068119">Copy</button>
-            </div>
-            <div class="faculty-details">
-              <span><span class="label">Email:</span> <span class="value">maliha.ahmed@bubt.edu.bd</span></span>
-              <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
-            </div>
-          </div>
-          <div class="faculty-item">
-            <div class="faculty-main">
-              <span class="faculty-name">Shabuj Mia</span>
-              <span class="faculty-number">01791471867</span>
-              <button class="copy-btn-fac" data-number="01791471867">Copy</button>
-            </div>
-            <div class="faculty-details">
-              <span><span class="label">Course:</span> <span class="value">HUM 1102 (BNQF-023201) – Bangla Language</span></span>
-              <span><span class="label">Also:</span> <span class="value">ICT 1102 – Intro to Computer Science Lab</span></span>
-            </div>
-          </div>
-          <div class="faculty-item">
-            <div class="faculty-main">
-              <span class="faculty-name">Hasibul Hossain Shajeeb</span>
-              <span class="faculty-number">01966901950</span>
-              <button class="copy-btn-fac" data-number="01966901950">Copy</button>
-            </div>
-            <div class="faculty-details">
-              <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
-              <span><span class="label">Email:</span> <span class="value">shajeeb@bubt.edu.bd</span></span>
-              <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
-            </div>
-          </div>
+        <!-- ==============================================================
+        SECTION 6 – CLASSROOM CODES
+        ============================================================== -->
+        <div id="section-codes">
+            <h3 class="codes-section-title">Classroom Codes</h3>
+            <div class="codes-list" id="codeList"></div>
         </div>
-      </div>
+
+        <!-- ==============================================================
+        SECTION 7 – FACULTY (REBUILT – NO GAP, LARGER BUTTONS)
+        ============================================================== -->
+        <div class="faculty-root" id="section-faculty">
+            <div class="faculty-card">
+                <div class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</div>
+                <div class="faculty-list">
+
+                    <!-- Maliha -->
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
+                            <span class="faculty-number">01742068119</span>
+                        </div>
+                        <div class="faculty-actions">
+                            <button class="btn-fac btn-copy" data-number="01742068119">Copy</button>
+                            <a href="tel:01742068119" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        </div>
+                        <div class="faculty-details">
+                            <span><span class="label">Email:</span> <span class="value">maliha.ahmed@bubt.edu.bd</span></span>
+                            <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Shabuj -->
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">Shabuj Mia</span>
+                            <span class="faculty-number">01791471867</span>
+                        </div>
+                        <div class="faculty-actions">
+                            <button class="btn-fac btn-copy" data-number="01791471867">Copy</button>
+                            <a href="tel:01791471867" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        </div>
+                        <div class="faculty-details">
+                            <span><span class="label">Course:</span> <span class="value">HUM 1102 (BNQF-023201) – Bangla Language</span></span>
+                            <span><span class="label">Also:</span> <span class="value">ICT 1102 – Intro to Computer Science Lab</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Hasibul -->
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">Hasibul Hossain Shajeeb</span>
+                            <span class="faculty-number">01966901950</span>
+                        </div>
+                        <div class="faculty-actions">
+                            <button class="btn-fac btn-copy" data-number="01966901950">Copy</button>
+                            <a href="tel:01966901950" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        </div>
+                        <div class="faculty-details">
+                            <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
+                            <span><span class="label">Email:</span> <span class="value">shajeeb@bubt.edu.bd</span></span>
+                            <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 8 – CTA
+        ============================================================== -->
+        <div class="cta-card" id="section-cta">
+            <h3 class="cta-title"><span>Want website like this for you too?</span></h3>
+            <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
+            <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
+                <i class="fab fa-facebook"></i> Message Us
+            </a>
+        </div>
+
+        <!-- ==============================================================
+        FOOTER (invisible but SEO-friendly)
+        ============================================================== -->
+        <div class="footer-seo">
+            <p>
+                <span class="brand">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized.
+                From lecture slides to assignment deadlines, this dashboard keeps everything in one place.
+            </p>
+            <p class="tags">
+                66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT
+            </p>
+        </div>
+
     </div>
 
-    <!-- ==============================================================
-    SECTION 8 – CTA
-    ============================================================== -->
-    <div class="cta-card" id="section-cta">
-      <h3 class="cta-title"><span>Want website like this for you too?</span></h3>
-      <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
-      <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
-        <i class="fab fa-facebook"></i> Message Us
-      </a>
-    </div>
-
-    <!-- ==============================================================
-    FOOTER SEO
-    ============================================================== -->
-    <div class="footer-seo">
-      <p>
-        <span class="brand">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized. 
-        From lecture slides to assignment deadlines, this dashboard keeps everything in one place.
-      </p>
-      <p class="tags">
-        66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT
-      </p>
-    </div>
-
-  </div>
-
-  <!-- ================================================================ -->
-  <!-- SCRIPTS                                                          -->
-  <!-- ================================================================ -->
-  <script>
-    // ================================================================
-    // SECTION 1 – GLANCE WIDGET (AI Reminder)
-    // ================================================================
-    (function() {
-      const classes = [
-        { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
-        { day: 0, startH: 13, startM: 15, endH: 14, endM: 45, course: 'HUM 1102', room: '4801' },
-        { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
-        { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
-        { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
-        { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
-        { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '4303' },
-        { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '4303' }
-      ];
-      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-      const events = [
-        { year: 2026, month: 6, day: 19, label: 'ICT CT Exam', style: 'cta-reminder' },
-        { year: 2026, month: 7, day: 11, label: 'Bangla Assignment (Sahitya)', style: 'mkt-reminder' },
-        { year: 2026, month: 6, day: 27, label: 'MKT Case Presentation (Star Cineplex)', style: 'mkt-reminder' },
-        { year: 2026, month: 7, day: 4, label: 'MKT Poster Presentation (Strawberry Juice)', style: 'mkt-reminder' }
-      ];
-
-      function getDhaka() {
-        const n = new Date();
-        let h = n.getUTCHours() + 6,
-          d = n.getUTCDate(),
-          m = n.getUTCMonth(),
-          y = n.getUTCFullYear();
-        if (h >= 24) { h -= 24;
-          d++; }
-        const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-        if (d > dim) { d = 1;
-          m++; }
-        if (m > 11) { m = 0;
-          y++; }
-        const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
-        return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(),
-          timestamp: ts };
-      }
-
-      function getEventReminders(dhaka) {
-        const now = new Date(Date.UTC(dhaka.year, dhaka.month, dhaka.day, 0, 0, 0));
-        const msgs = [];
-        for (let ev of events) {
-          const evDate = new Date(Date.UTC(ev.year, ev.month, ev.day, 0, 0, 0));
-          const diffDays = Math.floor((evDate - now) / 86400000);
-          if (diffDays < 0) continue;
-          let msg = '';
-          if (diffDays === 0) msg = ev.label + ' is TODAY!';
-          else if (diffDays === 1) msg = ev.label + ' is TOMORROW!';
-          else msg = ev.label + ' is on ' + (ev.month + 1) + '/' + ev.day + '! (' + diffDays + ' days left)';
-          msgs.push('<span class="' + ev.style + '">' + msg + '</span>');
-        }
-        return msgs;
-      }
-
-      function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
-
-      function getStatus(dh) {
-        const day = dh.dayOfWeek,
-          min = dh.hours * 60 + dh.minutes;
-        if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
-          const l = (13 * 60 + 15) - min;
-          const nx = classes.find(c => c.day === day && c.startH === 13 && c.startM === 15);
-          return { s: 'break', timer: String(Math.floor(l)).padStart(2, '0') + ':00', nextClass: nx };
-        }
-        if ((day === 0 || day === 1) && min >= 13 * 60 + 15 && min < 13 * 60 + 25) {
-          const cls = classes.find(c => c.day === day && c.startH === 13 && c.startM === 15);
-          if (cls) return { s: 'postBreak', cls };
-        }
-        const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
-        if (run) return { s: 'running', cls: run };
-        for (let off = 0; off < 14; off++) {
-          const fut = new Date(dh.timestamp + off * 86400000);
-          const cd = fut.getUTCDay();
-          const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b
-            .startM));
-          for (let c of dayCls) {
-            const st = c.startH * 60 + c.startM;
-            if (off === 0 && st <= min) continue;
-            return { s: 'upcoming', cls: c, offset: off };
-          }
-        }
-        return { s: 'none' };
-      }
-
-      function buildSlides(st, dhaka) {
-        let slides = [];
-        const eventMsgs = getEventReminders(dhaka);
-        slides = slides.concat(eventMsgs);
-
-        let clsSlides = [];
-        switch (st.s) {
-          case 'break':
-            clsSlides.push('Break Time', 'Resumes in <span class="break-timer">' + st.timer + '</span>');
-            break;
-          case 'postBreak':
-            clsSlides.push('Class Started!', '<strong>' + st.cls.course + '</strong> is running', 'Ends at ' + to12(st.cls
-              .endH, st.cls.endM));
-            break;
-          case 'running':
-            clsSlides.push('<strong>' + st.cls.course + '</strong> is running', 'Ends at ' + to12(st.cls.endH, st.cls
-              .endM));
-            break;
-          case 'upcoming': {
-            const cd = new Date(Date.now() + st.offset * 86400000);
-            const dn = dayNames[cd.getDay()];
-            const dur = st.offset === 0 ? 'Today' : dn;
-            clsSlides.push('Next: ' + dur, '<strong>' + st.cls.course + '</strong> at ' + to12(st.cls.startH, st.cls
-              .startM), 'Room ' + st.cls.room);
-            break;
-          }
-          default:
-            clsSlides.push('No classes scheduled today', 'Enjoy your free time!');
-        }
-        slides = slides.concat(clsSlides);
-        return slides;
-      }
-
-      let slideTimer, breakTimer;
-
-      function showSlides(slides) {
-        const box = document.getElementById('messageBox');
-        box.innerHTML = '';
-        slides.forEach(h => { const d = document.createElement('div');
-          d.className = 'message-line';
-          d.innerHTML = h;
-          box.appendChild(d); });
-        if (slideTimer) clearInterval(slideTimer);
-        let cur = -1;
-        const items = document.querySelectorAll('.message-line');
-        if (items.length) {
-          const nxt = () => { items.forEach(i => i.classList.remove('active'));
-            cur = (cur + 1) % items.length;
-            items[cur].classList.add('active'); };
-          nxt();
-          slideTimer = setInterval(nxt, 4000);
-        }
-      }
-
-      function updateBar(st, dh) {
-        const label = document.getElementById('barLabel'),
-          detail = document.getElementById('barDetail'),
-          dot = document.getElementById('barDot');
-        dot.className = 'status-dot';
-        dot.style.background = '';
-        if (st.s === 'break') {
-          label.textContent = 'BREAK';
-          dot.classList.add('running');
-          dot.style.background = '#f59e0b';
-          const c = st.nextClass;
-          detail.innerHTML = 'Resumes at 1:15 · <span class="nc-course">' + c.course + '</span> · <span class="nc-room">' + c
-            .room + '</span>';
-        } else if (st.s === 'running' || st.s === 'postBreak') {
-          label.textContent = 'RUNNING';
-          dot.classList.add('running');
-          const c = st.cls;
-          detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + c.course +
-            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) +
-            '</span> · <span class="nc-room">' + c.room + '</span>';
-        } else if (st.s === 'upcoming' && st.offset === 0) {
-          label.textContent = 'TODAY';
-          const c = st.cls;
-          detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + c.course +
-            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) +
-            '</span> · <span class="nc-room">' + c.room + '</span>';
-        } else if (st.s === 'upcoming') {
-          label.textContent = 'NEXT';
-          const fd = dayNames[(dh.dayOfWeek + st.offset) % 7];
-          const c = st.cls;
-          detail.innerHTML = '<span class="nc-day">' + fd + '</span> · <span class="nc-course">' + c.course +
-            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) +
-            '</span> · <span class="nc-room">' + c.room + '</span>';
-        } else {
-          label.textContent = 'IDLE';
-          detail.innerHTML = 'No class scheduled.';
-        }
-      }
-
-      function refresh() {
-        const dh = getDhaka();
-        const st = getStatus(dh);
-        document.getElementById('dhakaTimeBelow').textContent = 'Clock ' + dh.hours + ':' + String(dh.minutes).padStart(2,
-          '0') + ' (Dhaka)';
-        if (st.s === 'break') {
-          if (breakTimer) clearInterval(breakTimer);
-          breakTimer = setInterval(() => {
-            const fr = getDhaka(),
-              frSt = getStatus(fr);
-            if (frSt.s !== 'break') { clearInterval(breakTimer);
-              refresh(); return; }
-            const t = document.querySelector('.break-timer');
-            if (t) t.textContent = frSt.timer;
-            updateBar(frSt, fr);
-          }, 1000);
-        } else { if (breakTimer) clearInterval(breakTimer); }
-        const slides = buildSlides(st, dh);
-        showSlides(slides);
-        updateBar(st, dh);
-      }
-      setTimeout(refresh, 500);
-      setInterval(refresh, 30000);
-    })();
-
-
-    // ================================================================
-    // SECTION 2 – DEADLINE EXPIRY LOGIC
-    // ================================================================
-    (function() {
-      const blocks = document.querySelectorAll('.assign-block');
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const passedBlocks = [];
-      const activeBlocks = [];
-
-      blocks.forEach(block => {
-        const dateAttr = block.getAttribute('data-date');
-        if (dateAttr) {
-          const parts = dateAttr.split('-');
-          const blockDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-          blockDate.setHours(0, 0, 0, 0);
-          if (blockDate < today) {
-            block.classList.add('passed');
-            passedBlocks.push(block);
-          } else {
-            activeBlocks.push(block);
-          }
-        } else {
-          activeBlocks.push(block);
-        }
-      });
-
-      const container = blocks[0]?.parentNode;
-      if (container) {
-        activeBlocks.forEach(b => container.appendChild(b));
-        passedBlocks.forEach(b => container.appendChild(b));
-      }
-    })();
-
-
-    // ================================================================
-    // SECTION 3 – ROUTINE TOGGLE
-    // ================================================================
-    (function() {
-      const btn = document.getElementById('routineToggleBtn');
-      const wrapper = document.getElementById('routineCollapseWrapper');
-      const txt = btn.querySelector('.btn-text');
-      let expanded = false,
-        timer = null;
-
-      function toggle() {
-        if (timer) { clearTimeout(timer);
-          timer = null; }
-        if (!expanded) {
-          const h = wrapper.scrollHeight;
-          wrapper.style.maxHeight = h + 'px';
-          wrapper.classList.add('open');
-          btn.classList.add('expanded');
-          txt.textContent = 'HIDE FULL ROUTINE';
-          btn.setAttribute('aria-expanded', 'true');
-          expanded = true;
-          timer = setTimeout(() => { wrapper.style.maxHeight = 'none';
-            timer = null; }, 580);
-        } else {
-          const h = wrapper.scrollHeight;
-          wrapper.style.maxHeight = h + 'px';
-          requestAnimationFrame(() => { requestAnimationFrame(() => { wrapper.style.maxHeight = '0';
-              wrapper.classList.remove('open'); }); });
-          btn.classList.remove('expanded');
-          txt.textContent = 'SEE FULL CLASS ROUTINE';
-          btn.setAttribute('aria-expanded', 'false');
-          expanded = false;
-          timer = setTimeout(() => { wrapper.style.maxHeight = '0';
-            timer = null; }, 580);
-        }
-      }
-      btn.addEventListener('click', toggle);
-      wrapper.style.maxHeight = '0';
-      wrapper.classList.remove('open');
-      btn.classList.remove('expanded');
-      btn.setAttribute('aria-expanded', 'false');
-      txt.textContent = 'SEE FULL CLASS ROUTINE';
-      expanded = false;
-    })();
-
-
-    // ================================================================
-    // SECTION 5 – NOTICES (Google Sheets)
-    // ================================================================
-    (function() {
-      const SHEET_URL =
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPYpyQkSTbE8ClVX9uC2kmo3MZUNJ6qxnYa9vZgwoV9FXdMfL5eC-PU8is6ggflcTmj8iWrHjus65A/pub?output=csv';
-
-      async function loadNotices() {
-        const c = document.getElementById('noticeContainer');
-        c.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Fetching notices...</div>';
-        try {
-          const r = await fetch(SHEET_URL);
-          if (!r.ok) throw new Error('Sheet error');
-          const txt = await r.text();
-          const rows = [];
-          let inQ = false,
-            cur = [],
-            field = '';
-          for (let i = 0; i < txt.length; i++) {
-            const ch = txt[i];
-            if (ch === '"') inQ = !inQ;
-            else if (ch === ',' && !inQ) { cur.push(field.trim());
-              field = ''; } else if (ch === '\n' && !inQ) { cur.push(field.trim()); if (cur.length) rows.push(cur);
-              cur = [];
-              field = ''; } else field += ch;
-          }
-          if (field.trim() || cur.length) { cur.push(field.trim()); if (cur.length) rows.push(cur); }
-          if (rows.length < 2) throw new Error('No data');
-          const h = rows[0].map(x => x.toLowerCase().replace(/^"|"$/g, ''));
-          const di = h.indexOf('date'),
-            ti = h.indexOf('title'),
-            li = h.indexOf('link'),
-            pi = h.indexOf('pinned');
-          if (di === -1 || ti === -1 || li === -1) throw new Error('Missing columns');
-          const notices = [];
-          for (let i = 1; i < rows.length; i++) {
-            const f = rows[i];
-            const dateRaw = (f[di] || '').replace(/^"|"$/g, '');
-            const title = (f[ti] || '').replace(/^"|"$/g, '');
-            if (!title) continue;
-            let link = (f[li] || '').replace(/^"|"$/g, '');
-            if (link && !link.startsWith('http')) link = 'https://' + link;
-            const pinnedRaw = (pi !== -1 ? (f[pi] || '').replace(/^"|"$/g, '').toLowerCase() : 'n');
-            const isPinned = (pinnedRaw === 'y' || pinnedRaw === 'yes');
-            let dateObj = null;
-            try { dateObj = new Date(dateRaw); if (isNaN(dateObj)) dateObj = null; } catch (e) {}
-            if (!dateObj) {
-              const parts = dateRaw.match(/(\w+)\s+(\d+),\s+(\d+)/);
-              if (parts) {
-                const mo = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10,
-                  Dec: 11 };
-                const month = mo[parts[1]];
-                if (month !== undefined) dateObj = new Date(parseInt(parts[3]), month, parseInt(parts[2]));
-              }
+    <!-- ================================================================ -->
+    <!-- SCRIPTS (unchanged)                                              -->
+    <!-- ================================================================ -->
+    <script>
+        // ================================================================
+        // CLOCK
+        // ================================================================
+        (function() {
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                document.getElementById('clockDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
             }
-            notices.push({ dateRaw, dateObj, title, link, isPinned });
-          }
-          if (!notices.length) throw new Error('No valid notices');
-          notices.sort((a, b) => (b.dateObj || 0) - (a.dateObj || 0));
-          const vis = notices.slice(0, 3),
-            hid = notices.slice(3);
-          let html =
-            '<div class="table-wrapper"><table class="notice-table"><thead><tr><th><i class="far fa-calendar-alt"></i> Published</th><th><i class="fas fa-info-circle"></i> Title</th></tr></thead><tbody id="visBody">';
-          for (const n of vis) {
-            const pc = n.isPinned ? 'pinned-row' : '';
-            html += '<tr class="' + pc + '"><td>' + esc(n.dateRaw) + '</td><td><a class="clickable-title" data-link="' +
-              esc(n.link) + '">' + esc(n.title) + '</a></td></tr>';
-          }
-          html += '</tbody>';
-          if (hid.length) {
-            html += '<tbody id="hidBody" class="hidden-notices">';
-            for (const n of hid) {
-              const pc = n.isPinned ? 'pinned-row' : '';
-              html += '<tr class="' + pc + '"><td>' + esc(n.dateRaw) + '</td><td><a class="clickable-title" data-link="' +
-                esc(n.link) + '">' + esc(n.title) + '</a></td></tr>';
+            updateClock();
+            setInterval(updateClock, 30000);
+        })();
+
+        // ================================================================
+        // GLANCE WIDGET (AI Reminder)
+        // ================================================================
+        (function() {
+            const classes = [
+                { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
+                { day: 0, startH: 13, startM: 15, endH: 14, endM: 45, course: 'HUM 1102', room: '4801' },
+                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
+                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
+                { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
+                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
+                { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '4303' },
+                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '4303' }
+            ];
+            const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const events = [
+                { year: 2026, month: 6, day: 19, label: 'ICT CT Exam', style: 'cta-reminder' },
+                { year: 2026, month: 7, day: 11, label: 'Bangla Assignment (Sahitya)', style: 'mkt-reminder' },
+                { year: 2026, month: 6, day: 27, label: 'MKT Case Presentation (Star Cineplex)', style: 'mkt-reminder' },
+                { year: 2026, month: 7, day: 4, label: 'MKT Poster Presentation (Strawberry Juice)', style: 'mkt-reminder' }
+            ];
+            function getDhaka() {
+                const n = new Date();
+                let h = n.getUTCHours() + 6, d = n.getUTCDate(), m = n.getUTCMonth(), y = n.getUTCFullYear();
+                if (h >= 24) { h -= 24; d++; }
+                const dim = new Date(Date.UTC(y, m+1, 0)).getUTCDate();
+                if (d > dim) { d = 1; m++; }
+                if (m > 11) { m = 0; y++; }
+                const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
+                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(), timestamp: ts };
             }
-            html += '</tbody>';
-          }
-          html += '</table></div>';
-          if (hid.length) {
-            html +=
-              '<button id="smBtn" class="see-more-btn"><i class="fas fa-chevron-down"></i> See other notices (' + hid.length +
-              ') <i class="fas fa-chevron-down"></i></button>';
-          }
-          c.innerHTML = html;
-          document.querySelectorAll('.clickable-title').forEach(el => {
-            el.addEventListener('click', (e) => {
-              e.preventDefault();
-              const url = el.getAttribute('data-link');
-              if (url && url !== '#') window.open(url, '_blank');
+            function getEventReminders(dhaka) {
+                const now = new Date(Date.UTC(dhaka.year, dhaka.month, dhaka.day, 0, 0, 0));
+                const msgs = [];
+                for (let ev of events) {
+                    const evDate = new Date(Date.UTC(ev.year, ev.month, ev.day, 0, 0, 0));
+                    const diffDays = Math.floor((evDate - now) / 86400000);
+                    if (diffDays < 0) continue;
+                    let msg = '';
+                    if (diffDays === 0) msg = ev.label + ' is TODAY!';
+                    else if (diffDays === 1) msg = ev.label + ' is TOMORROW!';
+                    else msg = ev.label + ' is on ' + (ev.month+1) + '/' + ev.day + '! (' + diffDays + ' days left)';
+                    msgs.push('<span class="' + ev.style + '">' + msg + '</span>');
+                }
+                return msgs;
+            }
+            function to12(h, m) { return (h%12||12) + ':' + String(m).padStart(2, '0'); }
+            function getStatus(dh) {
+                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                if ((day === 0 || day === 1) && min >= 12*60+45 && min < 13*60+15) {
+                    const l = (13*60+15) - min;
+                    const nx = classes.find(c => c.day === day && c.startH === 13 && c.startM === 15);
+                    return { s: 'break', timer: String(Math.floor(l)).padStart(2, '0') + ':00', nextClass: nx };
+                }
+                if ((day === 0 || day === 1) && min >= 13*60+15 && min < 13*60+25) {
+                    const cls = classes.find(c => c.day === day && c.startH === 13 && c.startM === 15);
+                    if (cls) return { s: 'postBreak', cls };
+                }
+                const run = classes.find(c => c.day === day && min >= c.startH*60+c.startM && min < c.endH*60+c.endM);
+                if (run) return { s: 'running', cls: run };
+                for (let off = 0; off < 14; off++) {
+                    const fut = new Date(dh.timestamp + off*86400000);
+                    const cd = fut.getUTCDay();
+                    const dayCls = classes.filter(c => c.day === cd).sort((a,b) => (a.startH*60+a.startM) - (b.startH*60+b.startM));
+                    for (let c of dayCls) {
+                        const st = c.startH*60 + c.startM;
+                        if (off === 0 && st <= min) continue;
+                        return { s: 'upcoming', cls: c, offset: off };
+                    }
+                }
+                return { s: 'none' };
+            }
+            function buildSlides(st, dhaka) {
+                let slides = [];
+                const eventMsgs = getEventReminders(dhaka);
+                slides = slides.concat(eventMsgs);
+                let clsSlides = [];
+                switch (st.s) {
+                    case 'break': clsSlides.push('Break Time', 'Resumes in <span class="break-timer">' + st.timer + '</span>'); break;
+                    case 'postBreak': clsSlides.push('Class Started!', '<strong>' + st.cls.course + '</strong> is running', 'Ends at ' + to12(st.cls.endH, st.cls.endM)); break;
+                    case 'running': clsSlides.push('<strong>' + st.cls.course + '</strong> is running', 'Ends at ' + to12(st.cls.endH, st.cls.endM)); break;
+                    case 'upcoming': {
+                        const cd = new Date(Date.now() + st.offset * 86400000);
+                        const dn = dayNames[cd.getDay()];
+                        const dur = st.offset === 0 ? 'Today' : dn;
+                        clsSlides.push('Next: ' + dur, '<strong>' + st.cls.course + '</strong> at ' + to12(st.cls.startH, st.cls.startM), 'Room ' + st.cls.room);
+                        break;
+                    }
+                    default: clsSlides.push('No classes scheduled today', 'Enjoy your free time!');
+                }
+                slides = slides.concat(clsSlides);
+                return slides;
+            }
+            let slideTimer, breakTimer;
+            function showSlides(slides) {
+                const box = document.getElementById('messageBox');
+                box.innerHTML = '';
+                slides.forEach(h => { const d = document.createElement('div'); d.className = 'message-line'; d.innerHTML = h; box.appendChild(d); });
+                if (slideTimer) clearInterval(slideTimer);
+                let cur = -1;
+                const items = document.querySelectorAll('.message-line');
+                if (items.length) {
+                    const nxt = () => { items.forEach(i => i.classList.remove('active')); cur = (cur+1)%items.length; items[cur].classList.add('active'); };
+                    nxt();
+                    slideTimer = setInterval(nxt, 4000);
+                }
+            }
+            function updateBar(st, dh) {
+                const label = document.getElementById('barLabel'), detail = document.getElementById('barDetail'), dot = document.getElementById('barDot');
+                dot.className = 'status-dot'; dot.style.background = '';
+                if (st.s === 'break') {
+                    label.textContent = 'BREAK';
+                    dot.classList.add('running');
+                    dot.style.background = '#f59e0b';
+                    const c = st.nextClass;
+                    detail.innerHTML = 'Resumes at 1:15 · <span class="nc-course">' + c.course + '</span> · <span class="nc-room">' + c.room + '</span>';
+                } else if (st.s === 'running' || st.s === 'postBreak') {
+                    label.textContent = 'RUNNING';
+                    dot.classList.add('running');
+                    const c = st.cls;
+                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
+                } else if (st.s === 'upcoming' && st.offset === 0) {
+                    label.textContent = 'TODAY';
+                    const c = st.cls;
+                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
+                } else if (st.s === 'upcoming') {
+                    label.textContent = 'NEXT';
+                    const fd = dayNames[(dh.dayOfWeek + st.offset) % 7];
+                    const c = st.cls;
+                    detail.innerHTML = '<span class="nc-day">' + fd + '</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
+                } else {
+                    label.textContent = 'IDLE';
+                    detail.innerHTML = 'No class scheduled.';
+                }
+            }
+            function refresh() {
+                const dh = getDhaka();
+                const st = getStatus(dh);
+                if (st.s === 'break') {
+                    if (breakTimer) clearInterval(breakTimer);
+                    breakTimer = setInterval(() => {
+                        const fr = getDhaka(), frSt = getStatus(fr);
+                        if (frSt.s !== 'break') { clearInterval(breakTimer); refresh(); return; }
+                        const t = document.querySelector('.break-timer');
+                        if (t) t.textContent = frSt.timer;
+                        updateBar(frSt, fr);
+                    }, 1000);
+                } else { if (breakTimer) clearInterval(breakTimer); }
+                const slides = buildSlides(st, dh);
+                showSlides(slides);
+                updateBar(st, dh);
+            }
+            setTimeout(refresh, 500);
+            setInterval(refresh, 30000);
+        })();
+
+        // ================================================================
+        // ASSIGNMENT EXPAND TOGGLE
+        // ================================================================
+        function toggleAssign(block) {
+            const details = block.querySelector('.assign-details');
+            const toggleBtn = block.querySelector('.assign-toggle');
+            if (!details) return;
+            const isOpen = details.classList.toggle('open');
+            if (toggleBtn) {
+                toggleBtn.classList.toggle('open', isOpen);
+                toggleBtn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' : 'See More <i class="fas fa-chevron-down"></i>';
+            }
+        }
+
+        // ================================================================
+        // ROUTINE TOGGLE
+        // ================================================================
+        (function() {
+            const btn = document.getElementById('routineToggleBtn');
+            const wrapper = document.getElementById('routineCollapseWrapper');
+            const txt = btn.querySelector('.btn-text');
+            let expanded = false, timer = null;
+            function toggle() {
+                if (timer) { clearTimeout(timer); timer = null; }
+                if (!expanded) {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    wrapper.classList.add('open');
+                    btn.classList.add('expanded');
+                    txt.textContent = 'HIDE FULL ROUTINE';
+                    btn.setAttribute('aria-expanded', 'true');
+                    expanded = true;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = 'none'; timer = null; }, 580);
+                } else {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    requestAnimationFrame(() => { requestAnimationFrame(() => { wrapper.style.maxHeight = '0'; wrapper.classList.remove('open'); }); });
+                    btn.classList.remove('expanded');
+                    txt.textContent = 'SEE FULL CLASS ROUTINE';
+                    btn.setAttribute('aria-expanded', 'false');
+                    expanded = false;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = '0'; timer = null; }, 580);
+                }
+            }
+            btn.addEventListener('click', toggle);
+            wrapper.style.maxHeight = '0';
+            wrapper.classList.remove('open');
+            btn.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
+            txt.textContent = 'SEE FULL CLASS ROUTINE';
+            expanded = false;
+        })();
+
+        // ================================================================
+        // NOTICES (only 3, no See More)
+        // ================================================================
+        (function() {
+            const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPYpyQkSTbE8ClVX9uC2kmo3MZUNJ6qxnYa9vZgwoV9FXdMfL5eC-PU8is6ggflcTmj8iWrHjus65A/pub?output=csv';
+            async function loadNotices() {
+                const c = document.getElementById('noticeContainer');
+                c.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Fetching notices...</div>';
+                try {
+                    const r = await fetch(SHEET_URL);
+                    if (!r.ok) throw new Error('Sheet error');
+                    const txt = await r.text();
+                    const rows = [];
+                    let inQ = false, cur = [], field = '';
+                    for (let i = 0; i < txt.length; i++) {
+                        const ch = txt[i];
+                        if (ch === '"') inQ = !inQ;
+                        else if (ch === ',' && !inQ) { cur.push(field.trim()); field = ''; }
+                        else if (ch === '\n' && !inQ) { cur.push(field.trim()); if (cur.length) rows.push(cur); cur = []; field = ''; }
+                        else field += ch;
+                    }
+                    if (field.trim() || cur.length) { cur.push(field.trim()); if (cur.length) rows.push(cur); }
+                    if (rows.length < 2) throw new Error('No data');
+                    const h = rows[0].map(x => x.toLowerCase().replace(/^"|"$/g, ''));
+                    const di = h.indexOf('date'), ti = h.indexOf('title'), li = h.indexOf('link');
+                    if (di === -1 || ti === -1 || li === -1) throw new Error('Missing columns: Date, Title, Link');
+                    const notices = [];
+                    for (let i = 1; i < rows.length; i++) {
+                        const f = rows[i];
+                        const dateRaw = (f[di] || '').replace(/^"|"$/g, '');
+                        const title = (f[ti] || '').replace(/^"|"$/g, '');
+                        if (!title) continue;
+                        let link = (f[li] || '').replace(/^"|"$/g, '');
+                        if (link && !link.startsWith('http')) link = 'https://' + link;
+                        let dateObj = null;
+                        try { dateObj = new Date(dateRaw); if (isNaN(dateObj)) dateObj = null; } catch(e) {}
+                        if (!dateObj) {
+                            const parts = dateRaw.match(/(\w+)\s+(\d+),\s+(\d+)/);
+                            if (parts) {
+                                const mo = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+                                const month = mo[parts[1]];
+                                if (month !== undefined) dateObj = new Date(parseInt(parts[3]), month, parseInt(parts[2]));
+                            }
+                        }
+                        notices.push({ dateRaw, dateObj, title, link });
+                    }
+                    if (!notices.length) throw new Error('No valid notices');
+                    notices.sort((a,b) => (b.dateObj || 0) - (a.dateObj || 0));
+                    const vis = notices.slice(0, 3); // only first 3
+                    let html = '<div class="table-wrapper"><table class="notice-table"><thead><tr><th><i class="far fa-calendar-alt"></i> Published</th><th><i class="fas fa-info-circle"></i> Title</th></tr></thead><tbody>';
+                    for (const n of vis) {
+                        html += '<tr><td>' + esc(n.dateRaw) + '</td><td><a class="clickable-title" data-link="' + esc(n.link) + '">' + esc(n.title) + '</a></td></tr>';
+                    }
+                    html += '</tbody></table></div>';
+                    c.innerHTML = html;
+                    document.querySelectorAll('.clickable-title').forEach(el => {
+                        el.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const url = el.getAttribute('data-link');
+                            if (url && url !== '#') window.open(url, '_blank');
+                        });
+                    });
+                } catch (err) {
+                    c.innerHTML = '<div class="error">⚠️ ' + err.message + '<br><small>Make sure your Google Sheet is published as CSV with columns: Date, Title, Link</small></div>';
+                }
+            }
+            function esc(s) { if (!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+            loadNotices();
+        })();
+
+        // ================================================================
+        // CLASSROOM CODES
+        // ================================================================
+        (function() {
+            const data = [
+                { sub: 'ICT 1101', code: 'TYFAJJUM' },
+                { sub: 'HUM 1102', code: '3NHHKKL7' },
+                { sub: 'MKT 1101', code: 'BQS76V5Z' }
+            ];
+            const list = document.getElementById('codeList');
+            function build() {
+                list.innerHTML = '';
+                data.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'codes-row';
+                    const sub = document.createElement('span');
+                    sub.className = 'codes-sub';
+                    sub.textContent = item.sub;
+                    const box = document.createElement('div');
+                    box.className = 'code-box';
+                    const code = document.createElement('span');
+                    code.className = 'code-text';
+                    if (item.code) { code.textContent = item.code; } else { code.textContent = 'not given yet'; code.classList.add('empty'); }
+                    box.appendChild(code);
+                    const btn = document.createElement('button');
+                    btn.className = 'copy-btn-code';
+                    if (!item.code) btn.classList.add('dim');
+                    btn.textContent = 'Copy';
+                    btn.setAttribute('data-code', item.code || '');
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (btn.classList.contains('dim')) return;
+                        const code = this.getAttribute('data-code');
+                        if (!code) return;
+                        copyText(code).then(() => {
+                            btn.textContent = 'Copied';
+                            setTimeout(() => { btn.textContent = 'Copy'; }, 1200);
+                        }).catch(() => {
+                            btn.textContent = 'Error';
+                            setTimeout(() => { btn.textContent = 'Copy'; }, 1000);
+                        });
+                    });
+                    row.appendChild(sub);
+                    row.appendChild(box);
+                    row.appendChild(btn);
+                    list.appendChild(row);
+                });
+            }
+            function copyText(t) {
+                if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
+                return new Promise((res, rej) => {
+                    try {
+                        const ta = document.createElement('textarea');
+                        ta.value = t;
+                        ta.style.position = 'fixed';
+                        ta.style.left = '-9999px';
+                        ta.style.opacity = '0';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        const ok = document.execCommand('copy');
+                        document.body.removeChild(ta);
+                        if (ok) res(); else rej();
+                    } catch (e) { rej(e); }
+                });
+            }
+            build();
+        })();
+
+        // ================================================================
+        // FACULTY COPY BUTTON HANDLERS
+        // ================================================================
+        (function() {
+            const copyButtons = document.querySelectorAll('.btn-copy');
+            copyButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const number = this.getAttribute('data-number');
+                    if (!number) return;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(number).then(() => {
+                            showCopied(this);
+                        }).catch(() => fallbackCopy(number, this));
+                    } else {
+                        fallbackCopy(number, this);
+                    }
+                });
             });
-          });
-          const btn = document.getElementById('smBtn');
-          if (btn) {
-            const hb = document.getElementById('hidBody');
-            btn.addEventListener('click', () => {
-              const isHidden = hb.classList.contains('hidden-notices');
-              if (isHidden) {
-                hb.classList.remove('hidden-notices');
-                hb.classList.add('show');
-                btn.innerHTML = '<i class="fas fa-chevron-up"></i> Show less <i class="fas fa-chevron-up"></i>';
-              } else {
-                hb.classList.add('hidden-notices');
-                hb.classList.remove('show');
-                btn.innerHTML =
-                  '<i class="fas fa-chevron-down"></i> See other notices (' + hid.length +
-                  ') <i class="fas fa-chevron-down"></i>';
-              }
-            });
-          }
-        } catch (err) {
-          c.innerHTML =
-            '<div class="error">⚠️ ' + err.message +
-            '<br><small>Make sure your Google Sheet is published as CSV with columns: Date, Title, Link, Pinned (y/n)</small></div>';
-        }
-      }
-
-      function esc(s) { if (!s) return ''; return s.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[
-          m
-        ]); }
-      loadNotices();
-    })();
-
-
-    // ================================================================
-    // SECTION 6 – CLASSROOM CODES
-    // ================================================================
-    (function() {
-      const data = [
-        { sub: 'ICT 1101', code: 'TYFAJJUM' },
-        { sub: 'HUM 1102', code: '3NHHKKL7' },
-        { sub: 'MKT 1101', code: 'BQS76V5Z' }
-      ];
-      const list = document.getElementById('codeList');
-
-      function build() {
-        list.innerHTML = '';
-        data.forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'codes-row';
-          const sub = document.createElement('span');
-          sub.className = 'codes-sub';
-          sub.textContent = item.sub;
-          const box = document.createElement('div');
-          box.className = 'code-box';
-          const code = document.createElement('span');
-          code.className = 'code-text';
-          if (item.code) { code.textContent = item.code; } else { code.textContent = 'not given yet';
-            code.classList.add('empty'); }
-          box.appendChild(code);
-          const btn = document.createElement('button');
-          btn.className = 'copy-btn-code';
-          if (!item.code) btn.classList.add('dim');
-          btn.textContent = 'Copy';
-          btn.setAttribute('data-code', item.code || '');
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (btn.classList.contains('loading') || btn.classList.contains('copied') || btn.classList.contains(
-                'dim')) return;
-            handle(btn, item.code);
-          });
-          btn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            if (btn.classList.contains('loading') || btn.classList.contains('copied') || btn.classList.contains(
-                'dim')) return;
-            handle(btn, item.code);
-          });
-          row.appendChild(sub);
-          row.appendChild(box);
-          row.appendChild(btn);
-          list.appendChild(row);
-        });
-      }
-
-      function handle(btn, code) {
-        if (!code) return;
-        const orig = btn.textContent;
-        btn.classList.add('loading');
-        btn.innerHTML = '<span class="spinner"></span>Copy';
-        setTimeout(() => {
-          copyText(code).then(() => {
-            btn.classList.remove('loading');
-            btn.classList.add('copied');
-            btn.innerHTML = '✓';
-            setTimeout(() => { btn.classList.remove('copied');
-              btn.textContent = orig; }, 1200);
-          }).catch(() => {
-            btn.classList.remove('loading');
-            btn.textContent = 'Err';
-            setTimeout(() => { btn.textContent = orig; }, 1000);
-          });
-        }, 200);
-      }
-
-      function copyText(t) {
-        if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t);
-        return new Promise((res, rej) => {
-          try {
-            const ta = document.createElement('textarea');
-            ta.value = t;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            const ok = document.execCommand('copy');
-            document.body.removeChild(ta);
-            if (ok) res();
-            else rej();
-          } catch (e) { rej(e); }
-        });
-      }
-      build();
-    })();
-
-
-    // ================================================================
-    // SEARCH FUNCTIONALITY (Full text search)
-    // ================================================================
-    (function() {
-      const toggleBtn = document.getElementById('searchToggle');
-      const searchWrap = document.getElementById('searchBarWrap');
-      const searchInput = document.getElementById('searchInput');
-      const resultsList = document.getElementById('searchResults');
-      let isOpen = false;
-
-      // ------ BUILD SEARCH INDEX (maps keywords/phrases to section IDs) ------
-      const searchIndex = [];
-
-      // Section names + common keywords
-      function addEntry(text, sectionId, icon) {
-        if (!text || !sectionId) return;
-        searchIndex.push({ text: text.trim(), sectionId: sectionId, icon: icon || 'fa-tag' });
-      }
-
-      // Helper to add multiple variations
-      function addVariations(text, sectionId, icon) {
-        addEntry(text, sectionId, icon);
-        // Also add lowercase version (case-insensitive search handled later)
-      }
-
-      // 1. AI Reminder section
-      addEntry('AI Reminder', 'section-ai', 'fa-brain');
-      addEntry('Class Status', 'section-ai', 'fa-brain');
-      addEntry('Today\'s Class', 'section-ai', 'fa-brain');
-      addEntry('Break Time', 'section-ai', 'fa-brain');
-      addEntry('Running Class', 'section-ai', 'fa-brain');
-      addEntry('ICT CT Exam', 'section-ai', 'fa-brain');
-      addEntry('Bangla Assignment', 'section-ai', 'fa-brain');
-      addEntry('Sahitya', 'section-ai', 'fa-brain');
-      addEntry('Star Cineplex', 'section-ai', 'fa-brain');
-      addEntry('Strawberry Juice', 'section-ai', 'fa-brain');
-
-      // 2. Assignments section
-      addEntry('Assignments', 'section-assignments', 'fa-tasks');
-      addEntry('Presentations', 'section-assignments', 'fa-tasks');
-      addEntry('CT 2', 'section-assignments', 'fa-tasks');
-      addEntry('Case Presentation', 'section-assignments', 'fa-tasks');
-      addEntry('Poster Presentation', 'section-assignments', 'fa-tasks');
-      addEntry('MKT', 'section-assignments', 'fa-tasks');
-      addEntry('4Ps', 'section-assignments', 'fa-tasks');
-      addEntry('STP', 'section-assignments', 'fa-tasks');
-
-      // 3. Routine section
-      addEntry('Class Routine', 'section-routine', 'fa-table');
-      addEntry('Schedule', 'section-routine', 'fa-table');
-      addEntry('SUN', 'section-routine', 'fa-table');
-      addEntry('MON', 'section-routine', 'fa-table');
-      addEntry('TUE', 'section-routine', 'fa-table');
-      addEntry('WED', 'section-routine', 'fa-table');
-      addEntry('ICT 1101', 'section-routine', 'fa-table');
-      addEntry('HUM 1102', 'section-routine', 'fa-table');
-      addEntry('MKT 1101', 'section-routine', 'fa-table');
-      addEntry('ICT 1102', 'section-routine', 'fa-table');
-      addEntry('Room 4801', 'section-routine', 'fa-table');
-      addEntry('Room 4201', 'section-routine', 'fa-table');
-      addEntry('Room 4705', 'section-routine', 'fa-table');
-      addEntry('Room 4303', 'section-routine', 'fa-table');
-
-      // 4. Study Materials
-      addEntry('Study Materials', 'section-materials', 'fa-folder-open');
-      addEntry('PDF', 'section-materials', 'fa-file-pdf');
-      addEntry('Outlines', 'section-materials', 'fa-list-ul');
-      addEntry('Google Drive', 'section-materials', 'fa-folder-open');
-
-      // 5. Notices
-      addEntry('Notices', 'section-notices', 'fa-bullhorn');
-      addEntry('Bulletin', 'section-notices', 'fa-bullhorn');
-      addEntry('Latest News', 'section-notices', 'fa-bullhorn');
-
-      // 6. Codes
-      addEntry('Classroom Codes', 'section-codes', 'fa-key');
-      addEntry('TYFAJJUM', 'section-codes', 'fa-key');
-      addEntry('3NHHKKL7', 'section-codes', 'fa-key');
-      addEntry('BQS76V5Z', 'section-codes', 'fa-key');
-      addEntry('ICT Code', 'section-codes', 'fa-key');
-
-      // 7. Faculty (Critical for teacher name search)
-      addEntry('Faculty', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Teacher', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Professor', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Maliha Ahmed Siddique', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('MAHS', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Maliha', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Shabuj Mia', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Shabuj', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Hasibul Hossain Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('01742068119', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('01791471867', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('01966901950', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('maliha.ahmed@bubt.edu.bd', 'section-faculty', 'fa-chalkboard-teacher');
-      addEntry('shajeeb@bubt.edu.bd', 'section-faculty', 'fa-chalkboard-teacher');
-
-      // 8. CTA
-      addEntry('Contact', 'section-cta', 'fa-message');
-      addEntry('Facebook', 'section-cta', 'fa-message');
-      addEntry('Message', 'section-cta', 'fa-message');
-      addEntry('Website', 'section-cta', 'fa-message');
-
-      // ------ SEARCH LOGIC ------
-      function performSearch(query) {
-        if (!query) return [];
-        const q = query.toLowerCase().trim();
-        const results = [];
-        const seen = new Set();
-        for (let entry of searchIndex) {
-          if (entry.text.toLowerCase().includes(q)) {
-            const key = entry.sectionId;
-            if (!seen.has(key)) {
-              seen.add(key);
-              // Find the best matching text for this section (first match)
-              const matchedText = entry.text;
-              results.push({
-                sectionId: entry.sectionId,
-                label: matchedText,
-                icon: entry.icon || 'fa-tag'
-              });
+            function fallbackCopy(text, btn) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    const ok = document.execCommand('copy');
+                    if (ok) { showCopied(btn); } else { alert('Could not copy number. Please copy manually.'); }
+                } catch (e) { alert('Could not copy number. Please copy manually.'); }
+                document.body.removeChild(ta);
             }
-          }
-        }
-        // Limit to 6 results for clarity
-        return results.slice(0, 6);
-      }
+            function showCopied(btn) {
+                const orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = orig;
+                    btn.classList.remove('copied');
+                }, 1800);
+            }
+        })();
 
-      function renderResults(results) {
-        resultsList.innerHTML = '';
-        if (results.length === 0) {
-          resultsList.innerHTML = '<li class="no-results">No matching sections found</li>';
-          resultsList.classList.add('show');
-          return;
-        }
-        let html = '';
-        results.forEach(r => {
-          html += `<li data-section="${r.sectionId}">
-            <i class="fas ${r.icon} match-icon"></i>
-            <span class="match-label">${r.label}</span>
-            <span class="match-hint">Go to section</span>
-          </li>`;
-        });
-        resultsList.innerHTML = html;
-        resultsList.classList.add('show');
-
-        // Click/touch handlers
-        resultsList.querySelectorAll('li[data-section]').forEach(item => {
-          const handler = function(e) {
-            e.preventDefault();
-            const sectionId = this.getAttribute('data-section');
-            scrollToSection(sectionId);
-            // Close search
-            isOpen = false;
-            searchWrap.classList.remove('open');
-            resultsList.classList.remove('show');
-            searchInput.value = '';
-          };
-          item.addEventListener('click', handler);
-          item.addEventListener('touchend', handler);
-        });
-      }
-
-      function scrollToSection(sectionId) {
-        const target = document.getElementById(sectionId);
-        if (target) {
-          document.querySelectorAll('.section-highlight').forEach(el => el.classList.remove('section-highlight'));
-          const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
-          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
-          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-          setTimeout(() => {
-            target.classList.add('section-highlight');
-            setTimeout(() => target.classList.remove('section-highlight'), 4000);
-          }, 500);
-        }
-      }
-
-      // Toggle search bar
-      toggleBtn.addEventListener('click', function() {
-        isOpen = !isOpen;
-        searchWrap.classList.toggle('open', isOpen);
-        if (isOpen) {
-          searchInput.focus();
-          searchInput.value = '';
-          resultsList.classList.remove('show');
-          resultsList.innerHTML = '';
-        }
-      });
-
-      // Close on Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && isOpen) {
-          isOpen = false;
-          searchWrap.classList.remove('open');
-          resultsList.classList.remove('show');
-          searchInput.value = '';
-        }
-      });
-
-      // Input handler
-      searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        if (!query) {
-          resultsList.classList.remove('show');
-          resultsList.innerHTML = '';
-          return;
-        }
-        const matches = performSearch(query);
-        renderResults(matches);
-      });
-
-      // Click outside to close
-      document.addEventListener('click', function(e) {
-        if (isOpen && !searchWrap.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e.target)) {
-          isOpen = false;
-          searchWrap.classList.remove('open');
-          resultsList.classList.remove('show');
-          searchInput.value = '';
-        }
-      });
-    })();
-  </script>
+        // ================================================================
+        // SEARCH FUNCTIONALITY
+        // ================================================================
+        (function() {
+            const toggleBtn = document.getElementById('searchToggle');
+            const searchWrap = document.getElementById('searchBarWrap');
+            const searchInput = document.getElementById('searchInput');
+            const resultsList = document.getElementById('searchResults');
+            let isOpen = false;
+            const searchIndex = [];
+            function addEntry(text, sectionId, icon) {
+                if (!text || !sectionId) return;
+                searchIndex.push({ text: text.trim(), sectionId: sectionId, icon: icon || 'fa-tag' });
+            }
+            addEntry('AI Reminder', 'section-ai', 'fa-brain');
+            addEntry('Class Status', 'section-ai', 'fa-brain');
+            addEntry('Today\'s Class', 'section-ai', 'fa-brain');
+            addEntry('Break Time', 'section-ai', 'fa-brain');
+            addEntry('Running Class', 'section-ai', 'fa-brain');
+            addEntry('ICT CT Exam', 'section-ai', 'fa-brain');
+            addEntry('Bangla Assignment', 'section-ai', 'fa-brain');
+            addEntry('Sahitya', 'section-ai', 'fa-brain');
+            addEntry('Star Cineplex', 'section-ai', 'fa-brain');
+            addEntry('Strawberry Juice', 'section-ai', 'fa-brain');
+            addEntry('Assignments', 'section-assignments', 'fa-tasks');
+            addEntry('Presentations', 'section-assignments', 'fa-tasks');
+            addEntry('CT 2', 'section-assignments', 'fa-tasks');
+            addEntry('Case Presentation', 'section-assignments', 'fa-tasks');
+            addEntry('Poster Presentation', 'section-assignments', 'fa-tasks');
+            addEntry('MKT', 'section-assignments', 'fa-tasks');
+            addEntry('4Ps', 'section-assignments', 'fa-tasks');
+            addEntry('STP', 'section-assignments', 'fa-tasks');
+            addEntry('Class Routine', 'section-routine', 'fa-table');
+            addEntry('Schedule', 'section-routine', 'fa-table');
+            addEntry('SUN', 'section-routine', 'fa-table');
+            addEntry('MON', 'section-routine', 'fa-table');
+            addEntry('TUE', 'section-routine', 'fa-table');
+            addEntry('WED', 'section-routine', 'fa-table');
+            addEntry('ICT 1101', 'section-routine', 'fa-table');
+            addEntry('HUM 1102', 'section-routine', 'fa-table');
+            addEntry('MKT 1101', 'section-routine', 'fa-table');
+            addEntry('ICT 1102', 'section-routine', 'fa-table');
+            addEntry('Room 4801', 'section-routine', 'fa-table');
+            addEntry('Room 4201', 'section-routine', 'fa-table');
+            addEntry('Room 4705', 'section-routine', 'fa-table');
+            addEntry('Room 4303', 'section-routine', 'fa-table');
+            addEntry('Study Materials', 'section-materials', 'fa-folder-open');
+            addEntry('PDF', 'section-materials', 'fa-file-pdf');
+            addEntry('Google Drive', 'section-materials', 'fa-folder-open');
+            addEntry('Notices', 'section-notices', 'fa-bullhorn');
+            addEntry('Bulletin', 'section-notices', 'fa-bullhorn');
+            addEntry('Latest News', 'section-notices', 'fa-bullhorn');
+            addEntry('Classroom Codes', 'section-codes', 'fa-key');
+            addEntry('TYFAJJUM', 'section-codes', 'fa-key');
+            addEntry('3NHHKKL7', 'section-codes', 'fa-key');
+            addEntry('BQS76V5Z', 'section-codes', 'fa-key');
+            addEntry('Faculty', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Teacher', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Maliha Ahmed Siddique', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('MAHS', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Maliha', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Shabuj Mia', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Shabuj', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Hasibul Hossain Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Shajeeb', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('01742068119', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('01791471867', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('01966901950', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Contact', 'section-cta', 'fa-message');
+            addEntry('Facebook', 'section-cta', 'fa-message');
+            addEntry('Message', 'section-cta', 'fa-message');
+            function performSearch(query) {
+                if (!query) return [];
+                const q = query.toLowerCase().trim();
+                const results = [];
+                const seen = new Set();
+                for (let entry of searchIndex) {
+                    if (entry.text.toLowerCase().includes(q)) {
+                        const key = entry.sectionId;
+                        if (!seen.has(key)) {
+                            seen.add(key);
+                            results.push({ sectionId: entry.sectionId, label: entry.text, icon: entry.icon || 'fa-tag' });
+                        }
+                    }
+                }
+                return results.slice(0, 6);
+            }
+            function renderResults(results) {
+                resultsList.innerHTML = '';
+                if (results.length === 0) {
+                    resultsList.innerHTML = '<li class="no-results">No matching sections found</li>';
+                    resultsList.classList.add('show');
+                    return;
+                }
+                let html = '';
+                results.forEach(r => {
+                    html += `<li data-section="${r.sectionId}">
+                        <i class="fas ${r.icon} match-icon"></i>
+                        <span class="match-label">${r.label}</span>
+                        <span class="match-hint">Go to section</span>
+                    </li>`;
+                });
+                resultsList.innerHTML = html;
+                resultsList.classList.add('show');
+                resultsList.querySelectorAll('li[data-section]').forEach(item => {
+                    const handler = function(e) {
+                        e.preventDefault();
+                        const sectionId = this.getAttribute('data-section');
+                        scrollToSection(sectionId);
+                        isOpen = false;
+                        searchWrap.classList.remove('open');
+                        resultsList.classList.remove('show');
+                        searchInput.value = '';
+                    };
+                    item.addEventListener('click', handler);
+                    item.addEventListener('touchend', handler);
+                });
+            }
+            function scrollToSection(sectionId) {
+                const target = document.getElementById(sectionId);
+                if (target) {
+                    document.querySelectorAll('.section-highlight').forEach(el => el.classList.remove('section-highlight'));
+                    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    setTimeout(() => {
+                        target.classList.add('section-highlight');
+                        setTimeout(() => target.classList.remove('section-highlight'), 4000);
+                    }, 500);
+                }
+            }
+            toggleBtn.addEventListener('click', function() {
+                isOpen = !isOpen;
+                searchWrap.classList.toggle('open', isOpen);
+                if (isOpen) {
+                    searchInput.focus();
+                    searchInput.value = '';
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                if (!query) {
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                    return;
+                }
+                const matches = performSearch(query);
+                renderResults(matches);
+            });
+            document.addEventListener('click', function(e) {
+                if (isOpen && !searchWrap.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e.target)) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+        })();
+    </script>
 
 </body>
 </html>
