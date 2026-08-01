@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>66Notes – Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: #f4f7fc;
+            font-family: 'Poppins', sans-serif;
+            padding: 1rem;
+            color: #1e2a3e;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .admin-header {
+            background: #0d2b4e;
+            border-radius: 18px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            box-shadow: 0 4px 16px rgba(13,43,78,0.15);
+        }
+        .admin-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .admin-header h1 i { color: #4a6cf7; }
+        .admin-header .subhead {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.08);
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+        }
+        .admin-header .back-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.06);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            transition: background 0.2s;
+        }
+        .admin-header .back-link:hover { background: rgba(255,255,255,0.12); }
+
+        .status-bar {
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            background: #eef2f6;
+            color: #4b5563;
+        }
+        .status-bar.success { background: #d1fae5; color: #065f46; }
+        .status-bar.error { background: #fecaca; color: #7c2d12; }
+        .status-bar.loading { background: #fef3c7; color: #92400e; }
+        .status-bar i { font-size: 1rem; }
+
+        .section-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.2rem 1.2rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s;
+        }
+        .section-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .section-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .section-header h2 i { color: #4a6cf7; }
+        .section-header .count {
+            font-size: 0.7rem;
+            background: #eef2f6;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            color: #4b5563;
+        }
+
+        .item-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.6rem;
+            border: 1px solid #eef2f6;
+            transition: background 0.15s;
+        }
+        .item-card:hover { background: #f1f3f5; }
+
+        .item-card .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .item-card .field-row .full { grid-column: 1 / -1; }
+
+        .item-card label {
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #4b5563;
+            display: block;
+            margin-bottom: 0.05rem;
+        }
+        .item-card label i { margin-right: 0.2rem; color: #9ca3af; }
+
+        .item-card input,
+        .item-card select,
+        .item-card textarea {
+            width: 100%;
+            padding: 0.35rem 0.6rem;
+            border: 1.5px solid #e2e6ec;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            transition: border 0.2s;
+            background: #ffffff;
+        }
+        .item-card input:focus,
+        .item-card select:focus,
+        .item-card textarea:focus {
+            border-color: #4a6cf7;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74,108,247,0.1);
+        }
+        .item-card textarea { min-height: 40px; resize: vertical; }
+
+        .item-actions {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+            justify-content: flex-end;
+        }
+
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.1rem;
+        }
+        .toggle-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4a6cf7;
+            cursor: pointer;
+        }
+        .toggle-wrapper label {
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #374151;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            touch-action: manipulation;
+            min-height: 40px;
+        }
+        .btn:active { transform: scale(0.96); }
+
+        .btn-primary {
+            background: #0d2b4e;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(13,43,78,0.15);
+        }
+        .btn-primary:hover { background: #14365e; }
+
+        .btn-success {
+            background: #065f46;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(6,95,70,0.2);
+        }
+        .btn-success:hover { background: #047857; }
+
+        .btn-danger {
+            background: #b45309;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(180,83,9,0.15);
+        }
+        .btn-danger:hover { background: #92400e; }
+
+        .btn-outline {
+            background: transparent;
+            color: #4b5563;
+            border: 1.5px solid #d1d5db;
+        }
+        .btn-outline:hover { background: #f1f3f5; }
+
+        .btn-sm { font-size: 0.7rem; padding: 0.2rem 0.8rem; min-height: 32px; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        .save-bar {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            border: 1px solid #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            position: sticky;
+            bottom: 0;
+            margin-top: 0.5rem;
+        }
+        .save-bar .save-status {
+            font-size: 0.8rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .save-bar .save-status .saved { color: #065f46; }
+        .save-bar .save-status .error { color: #b45309; }
+
+        @media (max-width: 600px) {
+            body { padding: 0.6rem; }
+            .admin-header { padding: 0.8rem 1rem; flex-direction: column; align-items: flex-start; }
+            .admin-header h1 { font-size: 1.2rem; }
+            .item-card .field-row { grid-template-columns: 1fr; }
+            .section-card { padding: 0.8rem; }
+            .save-bar { flex-direction: column; align-items: stretch; text-align: center; }
+            .btn-block { width: 100%; justify-content: center; }
+        }
+
+        .mt-1 { margin-top: 0.4rem; }
+        .mb-1 { margin-bottom: 0.4rem; }
+        .flex { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
+        .text-muted { color: #6b7280; font-size: 0.75rem; }
+        .text-center { text-align: center; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="admin-header">
+        <div>
+            <h1><i class="fas fa-pen-fancy"></i> 66Notes Admin</h1>
+            <span class="subhead">Click, type, save – no coding needed</span>
+        </div>
+        <a href="https://66notes.github.io/" class="back-link" target="_blank">
+            <i class="fas fa-arrow-left"></i> View Dashboard
+        </a>
+    </header>
+
+    <div id="statusBar" class="status-bar">
+        <i class="fas fa-info-circle"></i>
+        <span id="statusText">Loading your data...</span>
+    </div>
+
+    <div id="sectionsContainer"></div>
+
+    <div class="save-bar">
+        <div class="save-status" id="saveStatus">
+            <i class="fas fa-check-circle saved"></i>
+            <span id="saveStatusText">All changes saved</span>
+        </div>
+        <button class="btn btn-success" onclick="saveAll()" id="saveBtn">
+            <i class="fas fa-save"></i> Save All Changes
+        </button>
+    </div>
+
+</div>
+
+<script>
+    // ================================================================
+    // CONFIG – Replace with your GitHub details
+    // ================================================================
+    const GITHUB_TOKEN = 'GG69';  // <-- REPLACE THIS
+    const REPO_OWNER = '66notes';
+    const REPO_NAME = '66notes.github.io';
+    const FILE_PATH = 'data.json';
+    const RAW_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${FILE_PATH}`;
+
+    // ================================================================
+    // SECTION CONFIG – Exam now has Date, Subject, Room, and Show toggle
+    // ================================================================
+    const SECTION_CONFIG = {
+        notices: {
+            label: 'Notices',
+            icon: 'fa-bullhorn',
+            fields: ['date', 'title', 'link'],
+            fieldLabels: { date: 'Date', title: 'Title', link: 'Link (URL)' },
+            fieldIcons: { date: 'fa-calendar', title: 'fa-heading', link: 'fa-link' },
+            placeholder: { date: 'e.g. 31 Jul 2026', title: 'Notice title', link: 'https://...' }
+        },
+        routine: {
+            label: 'Class Routine',
+            icon: 'fa-table',
+            fields: ['day', 'time', 'room', 'course'],
+            fieldLabels: { day: 'Day', time: 'Time', room: 'Room', course: 'Course' },
+            fieldIcons: { day: 'fa-calendar-day', time: 'fa-clock', room: 'fa-door-open', course: 'fa-book' },
+            placeholder: { day: 'e.g. SUN', time: '11:15 – 12:45', room: '4801', course: 'ICT 1101' }
+        },
+        faculty: {
+            label: 'Faculty',
+            icon: 'fa-chalkboard-teacher',
+            fields: ['name', 'phone', 'email', 'room', 'designation', 'course', 'also'],
+            fieldLabels: { name: 'Name', phone: 'Phone', email: 'Email', room: 'Room', designation: 'Designation',
+                course: 'Course', also: 'Also (optional)' },
+            fieldIcons: { name: 'fa-user', phone: 'fa-phone', email: 'fa-envelope', room: 'fa-door-open',
+                designation: 'fa-badge', course: 'fa-book', also: 'fa-plus' },
+            placeholder: { name: 'Full name', phone: '017xxxxxxxx', email: 'email@bubt.edu.bd', room: '5501',
+                designation: 'Professor', course: 'ICT 1101', also: 'Additional info' }
+        },
+        codes: {
+            label: 'Classroom Codes',
+            icon: 'fa-key',
+            fields: ['subject', 'code'],
+            fieldLabels: { subject: 'Subject', code: 'Code' },
+            fieldIcons: { subject: 'fa-book', code: 'fa-key' },
+            placeholder: { subject: 'e.g. ICT 1101', code: 'TYFAJJUM' }
+        },
+        assignments: {
+            label: 'Assignments',
+            icon: 'fa-tasks',
+            fields: ['title', 'date', 'items', 'pinned', 'note'],
+            fieldLabels: { title: 'Title', date: 'Date', items: 'Items (comma separated)', pinned: 'Pinned (yes/no)',
+                note: 'Note (optional)' },
+            fieldIcons: { title: 'fa-heading', date: 'fa-calendar', items: 'fa-list', pinned: 'fa-thumbtack',
+                note: 'fa-sticky-note' },
+            placeholder: { title: 'e.g. MKT Presentation', date: '4 Aug 2026', items: 'Presentation, Poster',
+                pinned: 'yes', note: 'Slide is important' }
+        },
+        aiSuggest: {
+            label: 'AI Suggest (Fallback)',
+            icon: 'fa-robot',
+            fields: ['message'],
+            fieldLabels: { message: 'Message' },
+            fieldIcons: { message: 'fa-comment' },
+            placeholder: { message: 'Type AI suggestion...' }
+        },
+        pinned: {
+            label: 'Pinned (Fallback)',
+            icon: 'fa-thumbtack',
+            fields: ['message'],
+            fieldLabels: { message: 'Message' },
+            fieldIcons: { message: 'fa-comment' },
+            placeholder: { message: 'Type pinned message...' }
+        },
+        // ===== UPDATED EXAM SECTION – with Show toggle =====
+        exam: {
+            label: 'Exam Routine (Priority)',
+            icon: 'fa-graduation-cap',
+            fields: ['date', 'subject', 'room', 'show'],
+            fieldLabels: { date: 'Date', subject: 'Subject', room: 'Room', show: 'Show' },
+            fieldIcons: { date: 'fa-calendar', subject: 'fa-book', room: 'fa-door-open', show: 'fa-eye' },
+            placeholder: { date: 'e.g. 22 Aug 2026', subject: 'Final Exam', room: '5501' },
+            // Special rendering for 'show' field (checkbox)
+            specialFields: ['show']
+        }
+    };
+
+    let data = {};
+
+    // ================================================================
+    // FETCH DATA
+    // ================================================================
+    async function fetchData() {
+        const status = document.getElementById('statusText');
+        const statusBar = document.getElementById('statusBar');
+        statusBar.className = 'status-bar loading';
+        status.textContent = 'Loading your data...';
+
+        try {
+            const res = await fetch(RAW_URL);
+            if (!res.ok) throw new Error('File not found. Creating new data file...');
+            data = await res.json();
+            statusBar.className = 'status-bar success';
+            status.textContent = '✅ Data loaded successfully! You can now edit.';
+        } catch (err) {
+            statusBar.className = 'status-bar error';
+            status.textContent = '⚠️ ' + err.message + ' Starting with empty data.';
+            data = {
+                notices: [], routine: [], faculty: [], codes: [], assignments: [],
+                aiSuggest: [], pinned: [], exam: []
+            };
+        }
+        renderAll();
+    }
+
+    // ================================================================
+    // RENDER ALL SECTIONS
+    // ================================================================
+    function renderAll() {
+        const container = document.getElementById('sectionsContainer');
+        let html = '';
+
+        for (const [key, config] of Object.entries(SECTION_CONFIG)) {
+            const items = data[key] || [];
+            const specialFields = config.specialFields || [];
+
+            html += `
+                <div class="section-card" data-section="${key}">
+                    <div class="section-header">
+                        <h2><i class="fas ${config.icon}"></i> ${config.label}</h2>
+                        <span class="count">${items.length} item${items.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div id="${key}Container">
+            `;
+
+            items.forEach((item, idx) => {
+                html += `
+                    <div class="item-card" data-index="${idx}">
+                        <div class="field-row">
+                `;
+
+                config.fields.forEach(field => {
+                    const val = item[field] !== undefined ? item[field] : '';
+                    const label = config.fieldLabels[field] || field;
+                    const icon = config.fieldIcons[field] || 'fa-tag';
+                    const placeholder = config.placeholder[field] || '';
+
+                    // Special handling for "show" checkbox
+                    if (specialFields.includes(field)) {
+                        const isChecked = val === true || val === 'true' || val === 1 || val === 'on';
+                        html += `
+                            <div class="full toggle-wrapper">
+                                <input type="checkbox" id="show_${key}_${idx}" ${isChecked ? 'checked' : ''}
+                                       data-section="${key}" data-index="${idx}" data-field="${field}" />
+                                <label for="show_${key}_${idx}"><i class="fas fa-eye"></i> Show on dashboard</label>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="${config.fields.length > 2 ? '' : 'full'}">
+                                <label><i class="fas ${icon}"></i> ${label}</label>
+                                <input type="text" value="${escHtml(String(val))}"
+                                       data-section="${key}" data-index="${idx}" data-field="${field}"
+                                       placeholder="${escHtml(placeholder)}" />
+                            </div>
+                        `;
+                    }
+                });
+
+                html += `
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-danger btn-sm" onclick="removeItem('${key}', ${idx})">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <button class="btn btn-primary btn-sm mt-1" onclick="addItem('${key}')">
+                        <i class="fas fa-plus"></i> Add ${config.label.slice(0, -1)}
+                    </button>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+
+        // Attach listeners for text inputs
+        document.querySelectorAll('.item-card input[type="text"]').forEach(inp => {
+            inp.addEventListener('input', function() {
+                const section = this.dataset.section;
+                const idx = parseInt(this.dataset.index);
+                const field = this.dataset.field;
+                if (data[section] && data[section][idx]) {
+                    data[section][idx][field] = this.value;
+                }
+                updateSaveStatus('unsaved');
+            });
+        });
+
+        // Attach listeners for checkboxes
+        document.querySelectorAll('.item-card input[type="checkbox"]').forEach(chk => {
+            chk.addEventListener('change', function() {
+                const section = this.dataset.section;
+                const idx = parseInt(this.dataset.index);
+                const field = this.dataset.field;
+                if (data[section] && data[section][idx]) {
+                    data[section][idx][field] = this.checked;
+                }
+                updateSaveStatus('unsaved');
+            });
+        });
+    }
+
+    // ================================================================
+    // ADD / REMOVE ITEMS
+    // ================================================================
+    function addItem(section) {
+        if (!data[section]) data[section] = [];
+        const newItem = {};
+        const fields = SECTION_CONFIG[section].fields;
+        fields.forEach(f => {
+            if (f === 'show') {
+                newItem[f] = true; // default: show
+            } else {
+                newItem[f] = '';
+            }
+        });
+        data[section].push(newItem);
+        renderAll();
+        updateSaveStatus('unsaved');
+    }
+
+    function removeItem(section, index) {
+        if (data[section]) {
+            data[section].splice(index, 1);
+            renderAll();
+            updateSaveStatus('unsaved');
+        }
+    }
+
+    // ================================================================
+    // SAVE STATUS
+    // ================================================================
+    function updateSaveStatus(state) {
+        const statusText = document.getElementById('saveStatusText');
+        const statusIcon = document.querySelector('#saveStatus i');
+        if (state === 'unsaved') {
+            statusText.textContent = 'You have unsaved changes';
+            statusIcon.className = 'fas fa-exclamation-circle';
+            statusIcon.style.color = '#b45309';
+        } else {
+            statusText.textContent = 'All changes saved ✓';
+            statusIcon.className = 'fas fa-check-circle';
+            statusIcon.style.color = '#065f46';
+        }
+    }
+
+    // ================================================================
+    // SAVE TO GITHUB
+    // ================================================================
+    async function saveAll() {
+        const btn = document.getElementById('saveBtn');
+        const statusText = document.getElementById('saveStatusText');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        statusText.textContent = 'Saving...';
+
+        try {
+            const headRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
+            });
+            let sha = null;
+            if (headRes.ok) {
+                const headData = await headRes.json();
+                sha = headData.sha;
+            }
+
+            const content = JSON.stringify(data, null, 2);
+            const payload = {
+                message: 'Update data.json via admin panel',
+                content: btoa(content),
+                sha: sha
+            };
+
+            const putRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token ' + GITHUB_TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (putRes.ok) {
+                statusText.textContent = '✅ Saved successfully! Changes are live.';
+                document.getElementById('statusBar').className = 'status-bar success';
+                document.getElementById('statusText').textContent = '✅ Data saved to GitHub. Dashboard will update shortly.';
+                updateSaveStatus('saved');
+            } else {
+                const err = await putRes.json();
+                statusText.textContent = '❌ Error: ' + (err.message || 'Unknown error');
+                document.getElementById('statusBar').className = 'status-bar error';
+                document.getElementById('statusText').textContent = '❌ Failed to save. Check your token.';
+            }
+        } catch (err) {
+            statusText.textContent = '❌ Error: ' + err.message;
+            document.getElementById('statusBar').className = 'status-bar error';
+            document.getElementById('statusText').textContent = '❌ Network error. Try again.';
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> Save All Changes';
+    }
+
+    // ================================================================
+    // HELPERS
+    // ================================================================
+    function escHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m]);
+    }
+
+    // ================================================================
+    // INIT
+    // ================================================================
+    fetchData();
+</script>
+
+</body>
+</html>
