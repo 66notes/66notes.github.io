@@ -3,7 +3,15 @@
   "routine": [],
   "faculty": [],
   "codes": [],
-  "assignments": [],
+  "assignments": [
+    {
+      "title": "MKT Presentation",
+      "date": "4 Aug",
+      "items": "Poster, Presentation",
+      "pinned": "yes",
+      "note": "no slides"
+    }
+  ],
   "aiSuggest": [],
   "pinned": [],
   "exam": []
