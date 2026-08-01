@@ -345,7 +345,7 @@
         }
 
         /* ================================================================
-           PINNED EVENTS (Redesigned with Timeline)
+           PINNED EVENTS (Redesigned with Timeline + Expandable)
            ================================================================ */
         .events-root {
             font-family: 'Poppins', system-ui, -apple-system, sans-serif;
@@ -403,10 +403,10 @@
         .event-block {
             display: flex;
             gap: 0.5rem;
-            align-items: flex-start;
+            align-items: stretch;
             background: #f9fafb;
             border-radius: 12px;
-            padding: 0.2rem 0.2rem 0.2rem 0;
+            padding: 0;
             border: 1px solid #eef2f6;
             overflow: hidden;
             transition: all 0.2s ease;
@@ -423,8 +423,9 @@
         .event-block.passed .event-meta,
         .event-block.passed .event-items,
         .event-block.passed .event-note,
-        .event-block.passed .event-team {
-            text-decoration: line-through;
+        .event-block.passed .event-team,
+        .event-block.passed .event-details * {
+            text-decoration: line-through !important;
             color: #6b7280 !important;
         }
         .event-block.passed .event-badge {
@@ -452,6 +453,7 @@
             padding: 0.2rem 0.1rem;
             text-align: center;
             margin-right: 0.1rem;
+            align-self: stretch;
         }
         .event-date-badge .day {
             font-size: 1.2rem;
@@ -471,9 +473,22 @@
         .event-content {
             flex: 1;
             padding: 0.4rem 0.5rem 0.4rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             min-width: 0;
         }
-        .event-title {
+
+        .event-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.3rem;
+            cursor: pointer;
+            user-select: none;
+            padding: 0.1rem 0;
+        }
+        .event-summary .event-title {
             font-weight: 700;
             font-size: 0.8rem;
             color: #1e2a3e;
@@ -481,6 +496,7 @@
             flex-wrap: wrap;
             align-items: baseline;
             gap: 0.3rem 0.5rem;
+            flex: 1;
         }
         .event-badge {
             font-weight: 600;
@@ -492,6 +508,46 @@
             border: 1px solid #fde68a;
             white-space: nowrap;
             flex-shrink: 0;
+        }
+        .event-toggle-btn {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            color: #4a6cf7;
+            font-weight: 600;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: background 0.15s;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .event-toggle-btn:active {
+            background: rgba(74,108,247,0.1);
+        }
+        .event-toggle-btn i {
+            font-size: 0.6rem;
+            transition: transform 0.25s ease;
+        }
+        .event-toggle-btn.open i {
+            transform: rotate(180deg);
+        }
+
+        .event-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease, opacity 0.25s ease;
+            padding: 0 0.2rem 0 0;
+            opacity: 0;
+        }
+        .event-details.open {
+            max-height: 600px;
+            padding: 0.2rem 0.2rem 0.1rem 0;
+            opacity: 1;
         }
         .event-meta {
             font-size: 0.6rem;
@@ -1181,7 +1237,7 @@
             .event-title { font-size: 0.7rem; }
             .event-meta { font-size: 0.55rem; }
             .event-items { font-size: 0.55rem; }
-            .event-block { padding: 0.1rem 0.1rem 0.1rem 0; }
+            .event-block { padding: 0; }
             .event-content { padding: 0.3rem 0.3rem 0.3rem 0; }
             .routine-toggle-btn { font-size: 0.7rem; padding: 10px 14px; min-height: 42px; border-radius: 10px; }
             .schedule-table { font-size: 0.55rem; min-width: 300px; }
@@ -1271,7 +1327,7 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 2 – PINNED EVENTS (New Timeline Design)
+        SECTION 2 – PINNED EVENTS (with Expandable "See More")
         ============================================================== -->
         <div class="events-root" id="section-events">
             <div class="events-card">
@@ -1590,7 +1646,7 @@
         }
 
         // ================================================================
-        // PINNED EVENTS – Data & Rendering
+        // PINNED EVENTS – Data & Rendering (with Expandable "See More")
         // ================================================================
         (function() {
             const eventsData = [
@@ -1622,7 +1678,7 @@
                 },
                 {
                     date: '11 Aug',
-                    title: 'Bangla Assignment',
+                    title: 'Bangla Assignment & Presentation Group 1 (01-028)',
                     badge: 'Deadline',
                     meta: '3-4 Pages (A4) • Written',
                     items: [
@@ -1633,12 +1689,12 @@
                         '৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ',
                         '৬. উপসংহার'
                     ],
-                    note: 'Group 1 – Roll 0-28',
+                    note: 'Group 1 – Roll 01-028',
                     dateObj: new Date(2026, 7, 11) // Aug 11, 2026
                 },
                 {
                     date: '16 Aug',
-                    title: 'Bangla Presentation (Group 2)',
+                    title: 'Bangla Presentation Group 2 (28-end)',
                     badge: 'Presentation',
                     meta: 'After Roll 28',
                     items: [
@@ -1687,11 +1743,24 @@
                 return upcomingIdx;
             }
 
+            function toggleEvent(eventBlock) {
+                const details = eventBlock.querySelector('.event-details');
+                const btn = eventBlock.querySelector('.event-toggle-btn');
+                if (!details) return;
+                const isOpen = details.classList.toggle('open');
+                if (btn) {
+                    btn.classList.toggle('open', isOpen);
+                    btn.innerHTML = isOpen ?
+                        'See Less <i class="fas fa-chevron-up"></i>' :
+                        'See More <i class="fas fa-chevron-down"></i>';
+                }
+            }
+
             function renderEvents() {
                 const container = document.getElementById('eventsList');
                 if (!container) return;
 
-                // Sort: upcoming first (by date), then passed (by date descending so newest passed first)
+                // Sort: upcoming first (by date), then passed (by date descending)
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
 
@@ -1729,7 +1798,7 @@
                     const month = getMonthAbbr(ev.dateObj);
                     const day = getDayNum(ev.dateObj);
 
-                    // Build items list
+                    // Build items list for details
                     let itemsHtml = '';
                     if (ev.items && ev.items.length > 0) {
                         itemsHtml = `<div class="event-items">`;
@@ -1739,6 +1808,15 @@
                         itemsHtml += `</div>`;
                     }
 
+                    // Details section (hidden initially)
+                    let detailsHtml = `
+                        <div class="event-details">
+                            ${ev.meta ? `<div class="event-meta">${ev.meta}</div>` : ''}
+                            ${itemsHtml}
+                            ${ev.note ? `<div class="event-note blue">${ev.note}</div>` : ''}
+                        </div>
+                    `;
+
                     html += `
                         <div class="event-block ${isUpcoming ? 'upcoming' : ''} ${isPast ? 'passed' : ''}">
                             <div class="event-date-badge">
@@ -1746,13 +1824,16 @@
                                 <span class="month">${month}</span>
                             </div>
                             <div class="event-content">
-                                <div class="event-title">
-                                    ${ev.title}
-                                    ${ev.badge ? `<span class="event-badge">${ev.badge}</span>` : ''}
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">
+                                        ${ev.title}
+                                        ${ev.badge ? `<span class="event-badge">${ev.badge}</span>` : ''}
+                                    </div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">
+                                        See More <i class="fas fa-chevron-down"></i>
+                                    </button>
                                 </div>
-                                ${ev.meta ? `<div class="event-meta">${ev.meta}</div>` : ''}
-                                ${itemsHtml}
-                                ${ev.note ? `<div class="event-note blue">${ev.note}</div>` : ''}
+                                ${detailsHtml}
                             </div>
                         </div>
                     `;
@@ -1760,6 +1841,9 @@
 
                 container.innerHTML = html;
             }
+
+            // Expose toggleEvent globally
+            window.toggleEvent = toggleEvent;
 
             // Initial render
             renderEvents();
