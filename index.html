@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
+
+    <title>66notes bubt - Student Dashboard, Routine & Assignments</title>
+
+    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
+    <link rel="canonical" href="https://66notes.github.io/" />
+
+    <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
+    <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://66notes.github.io/" />
+    <meta property="og:image" content="https://66notes.github.io/og-image.png" />
+    <meta property="og:site_name" content="66Notes BUBT" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
+    <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
+    <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ================================================================
+           ALL STYLES (same as before – kept for completeness)
+           ================================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+        body {
+            background: #f4f7fc;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            padding: 12px 14px;
+            color: #1e2a3e;
+            line-height: 1.4;
+            min-height: 100vh;
+        }
+        .dashboard {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .site-header {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+        .site-header h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0d2b4e;
+            letter-spacing: -0.3px;
+        }
+        .site-header h1 span {
+            color: #4a6cf7;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .search-toggle {
+            background: #ffffff;
+            border: 1.5px solid #e2e6ec;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            color: #0d2b4e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+            touch-action: manipulation;
+        }
+        .search-toggle:active {
+            background: #f0f2f5;
+            border-color: #4a6cf7;
+        }
+        .search-toggle i {
+            font-size: 1rem;
+        }
+
+        .search-bar-wrap {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            margin-top: 0;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            padding: 0 0.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .search-bar-wrap.open {
+            max-height: 260px;
+            opacity: 1;
+            margin-top: 0.4rem;
+            padding: 0.6rem 0.8rem;
+        }
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #e2e6ec;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+            background: #f8fafc;
+        }
+        .search-bar-wrap input:focus {
+            border-color: #4a6cf7;
+            background: #fff;
+        }
+        .search-bar-wrap input::placeholder {
+            color: #9ca3af;
+        }
+        .search-results {
+            list-style: none;
+            padding: 0.3rem 0 0;
+            margin: 0;
+            max-height: 160px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-results li {
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #1e2a3e;
+            transition: background 0.15s;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .search-results li:last-child {
+            border-bottom: none;
+        }
+        .search-results li:active,
+        .search-results li:hover {
+            background: #eef2f6;
+        }
+        .search-results li .match-icon {
+            color: #4a6cf7;
+            font-size: 0.7rem;
+            width: 1.2rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .search-results li .match-label {
+            font-weight: 500;
+            flex: 1;
+        }
+        .search-results li .match-hint {
+            font-size: 0.6rem;
+            color: #9ca3af;
+            background: #f1f3f5;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .no-results {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        .section-highlight {
+            animation: highlightPulse 1.2s ease 3;
+            border-left: 4px solid #4a6cf7 !important;
+            background: #ebf0ff !important;
+        }
+        @keyframes highlightPulse {
+            0% {
+                background: #ebf0ff;
+            }
+            50% {
+                background: #d6e4ff;
+            }
+            100% {
+                background: #ebf0ff;
+            }
+        }
+
+        .glance {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1e2a3e;
+            margin-bottom: 0.6rem;
+        }
+        .section-title i {
+            color: #4a6cf7;
+        }
+        .live-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse 1.8s infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+        .message-box {
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #2d3748;
+            position: relative;
+            margin-bottom: 0.6rem;
+        }
+        .message-line {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(12px);
+            transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+            pointer-events: none;
+            padding: 0 0.2rem;
+        }
+        .message-line.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        .message-line strong {
+            font-weight: 700;
+            color: #0d2b4e;
+        }
+        .message-line.cta-reminder {
+            color: #7c2d12;
+            font-weight: 600;
+        }
+        .message-line.mkt-reminder {
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .break-timer {
+            font-weight: 700;
+            color: #b45309;
+            font-size: 1.1rem;
+        }
+
+        .clock-display {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .next-class-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #eef2f6;
+            font-weight: 500;
+            justify-content: center;
+            flex-wrap: wrap;
+            min-height: 44px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+            flex-shrink: 0;
+        }
+        .status-dot.running {
+            background: #22c55e;
+        }
+        .next-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #4b5563;
+            font-size: 0.7rem;
+        }
+        .nc-day,
+        .nc-course,
+        .nc-time {
+            font-weight: 600;
+        }
+        .nc-room {
+            font-weight: 600;
+            background: #eef2f6;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+        }
+
+        .assign-root {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+            color: #1e2a3e;
+        }
+        .assign-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 1rem 0.6rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+        .assign-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid #e9edf2;
+            position: relative;
+        }
+        .assign-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 2px;
+        }
+        .assign-heading {
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            color: #1e2a3e;
+        }
+        .assign-heading i {
+            color: #4a6cf7;
+            margin-right: 0.3rem;
+        }
+
+        .assign-block {
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            margin-bottom: 8px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .assign-block:last-child {
+            margin-bottom: 0;
+        }
+        .assign-block .assign-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 0.8rem;
+            cursor: pointer;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            min-height: 48px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .assign-block .assign-summary:active {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        .assign-block .assign-summary .assign-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .assign-block .assign-summary .assign-left .assign-date {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+        .assign-block .assign-summary .assign-left .assign-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1e2a3e;
+            word-break: break-word;
+        }
+        .assign-block .assign-summary .assign-left .badge {
+            font-weight: 600;
+            font-size: 0.55rem;
+            background: #fef3c7;
+            color: #b45309;
+            padding: 0 6px;
+            border-radius: 8px;
+            border: 1px solid #fde68a;
+            white-space: nowrap;
+        }
+        .assign-block .assign-summary .assign-toggle {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            font-size: 0.7rem;
+            color: #4a6cf7;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .assign-block .assign-summary .assign-toggle:active {
+            background: rgba(74, 108, 247, 0.1);
+        }
+        .assign-block .assign-summary .assign-toggle i {
+            font-size: 0.6rem;
+            transition: transform 0.25s ease;
+        }
+        .assign-block .assign-summary .assign-toggle.open i {
+            transform: rotate(180deg);
+        }
+
+        .assign-block .assign-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.25s ease;
+            padding: 0 0.8rem;
+            opacity: 0;
+        }
+        .assign-block .assign-details.open {
+            max-height: 400px;
+            padding: 0 0.8rem 0.7rem;
+            opacity: 1;
+        }
+        .assign-block .assign-details .assign-meta {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.1rem;
+        }
+        .assign-block .assign-details .assign-meta strong {
+            color: #1e2a3e;
+        }
+        .assign-block .assign-details .assign-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.15rem 0.5rem;
+            font-size: 0.65rem;
+            color: #4b5563;
+            padding-top: 0.1rem;
+        }
+        .assign-block .assign-details .assign-items span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+        .assign-block .assign-details .assign-note {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #7c2d12;
+            background: #fef3c7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 0.2rem;
+            border: 1px solid #fde68a;
+        }
+        .assign-block .assign-details .assign-note.blue {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #dbeafe;
+        }
+
+        .routine-outer-wrapper {
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            background: transparent;
+        }
+        .routine-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            background: #0d2b4e;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 46px;
+            touch-action: manipulation;
+            box-shadow: 0 4px 14px rgba(13, 43, 78, 0.15);
+            transition: background 0.3s ease, transform 0.15s ease;
+        }
+        .routine-toggle-btn:active {
+            transform: scale(0.97);
+            background: #14365e;
+        }
+        .btn-arrow {
+            display: inline-flex;
+            font-size: 0.9rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(0deg);
+        }
+        .routine-toggle-btn.expanded .btn-arrow {
+            transform: rotate(90deg);
+        }
+        .routine-collapse-wrapper {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 14px 14px;
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f6;
+            border-top: none;
+            margin-top: -1px;
+        }
+        .routine-collapse-wrapper.open {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 0 0 1px #eef2f6;
+        }
+        .routine-inner {
+            padding: 10px 6px 12px 6px;
+        }
+        .table-scrollable {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #cdd4de transparent;
+            position: relative;
+        }
+        .table-scrollable::-webkit-scrollbar {
+            height: 4px;
+        }
+        .table-scrollable::-webkit-scrollbar-thumb {
+            background: #cdd4de;
+            border-radius: 10px;
+        }
+        .table-responsive {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+            min-width: 340px;
+        }
+        .schedule-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            background-color: white;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.3;
+            min-width: 340px;
+        }
+        .schedule-table thead tr {
+            background-color: #fafafc;
+            border-bottom: 1.5px solid #d0d4da;
+        }
+        .schedule-table th {
+            text-align: left;
+            padding: 5px 6px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            color: #1e2a3e;
+            border-bottom: 1px solid #e9edf2;
+            background-color: #fafafc;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .schedule-table td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+            background-color: white;
+            color: #1f2a3e;
+            white-space: nowrap;
+        }
+        .schedule-table tbody tr.section-end td {
+            border-bottom: 1.5px solid #1a1a1a;
+        }
+        .day-cell {
+            font-weight: 700;
+            color: #0f2b46;
+            font-size: 0.65rem;
+        }
+        .course-code {
+            font-weight: 700;
+            color: #0d2b4e;
+            background: #f0f3f7;
+            padding: 1px 5px;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            display: inline-block;
+        }
+        .schedule-table colgroup .col-day {
+            width: 14%;
+        }
+        .schedule-table colgroup .col-time {
+            width: 32%;
+        }
+        .schedule-table colgroup .col-room {
+            width: 14%;
+        }
+        .schedule-table colgroup .col-course {
+            width: 40%;
+        }
+
+        .sub-buttons-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            justify-content: stretch;
+            margin-top: 2px;
+        }
+        .sub-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: transparent;
+            border: 1.5px solid #cdd6e4;
+            color: #0d2b4e;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 30px;
+            background-color: #ffffff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-height: 28px;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .sub-link-btn:active {
+            transform: scale(0.95);
+            background: #e5eaf2;
+        }
+        .sub-link-btn .external-icon {
+            font-size: 0.6rem;
+            opacity: 0.7;
+        }
+
+        .drive-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 0.8rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+        .drive-buttons {
+            display: flex;
+            justify-content: center;
+        }
+        .drive-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: white;
+            background: #0d2b4e;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15);
+            white-space: nowrap;
+            min-height: 44px;
+            width: 100%;
+            max-width: 280px;
+        }
+        .drive-btn:active {
+            transform: scale(0.96);
+            background: #14365e;
+        }
+        .drive-btn i {
+            font-size: 0.9rem;
+        }
+
+        .notice-board {
+            background: white;
+            border: 1px solid #eef2f6;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+        .notice-header {
+            background: #fff;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .notice-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-header h2 i {
+            color: #4a6cf7;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 380px;
+        }
+        .notice-table th {
+            background: #f8fafc;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 0.5rem 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid #eef2f6;
+        }
+        .notice-table td {
+            padding: 0.5rem 0.7rem;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: middle;
+        }
+        .notice-table tr:last-child td {
+            border-bottom: none;
+        }
+        .clickable-title {
+            color: #0a2540;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            word-break: break-word;
+            display: inline-block;
+            min-height: 40px;
+            line-height: 1.3;
+        }
+        .clickable-title:active {
+            color: #2563eb;
+        }
+        .loading,
+        .error {
+            text-align: center;
+            padding: 1.5rem;
+            color: #5d6f83;
+            font-size: 0.8rem;
+        }
+
+        .codes-list {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .codes-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 0.35rem 0.6rem;
+            border: 1px solid #eef2f6;
+            min-height: 40px;
+            flex-wrap: nowrap;
+        }
+        .codes-sub {
+            font-weight: 600;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            min-width: 60px;
+            color: #0f2b46;
+            flex-shrink: 0;
+        }
+        .code-box {
+            flex: 1;
+            background: #f0f3f7;
+            border-radius: 6px;
+            padding: 0.1rem 0.5rem;
+            border: 1px solid #e2e6ec;
+            text-align: center;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .code-text {
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #0d2b4e;
+            white-space: nowrap;
+        }
+        .code-text.empty {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.6rem;
+            font-style: italic;
+            text-transform: none;
+        }
+        .copy-btn-code {
+            flex-shrink: 0;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            border: none;
+            background: #e5e7eb;
+            color: #374151;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .copy-btn-code:active {
+            background: #d1d5db;
+        }
+        .copy-btn-code.dim {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .codes-section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .faculty-root {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+            color: #1e2a3e;
+        }
+        .faculty-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 1rem 0.6rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+        .faculty-heading {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            color: #1e2a3e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid #e9edf2;
+            position: relative;
+        }
+        .faculty-heading i {
+            color: #4a6cf7;
+        }
+        .faculty-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 2px;
+        }
+
+        .faculty-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .faculty-item {
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            padding: 0.6rem 0.7rem;
+            display: block;
+        }
+        .faculty-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.2rem 0.4rem;
+            margin-bottom: 0.15rem;
+        }
+        .faculty-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0d2b4e;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .faculty-number {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e40af;
+            background: #eff6ff;
+            padding: 0.1rem 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #dbeafe;
+            white-space: nowrap;
+            font-family: 'Poppins', monospace;
+            margin: 0;
+        }
+        .faculty-actions {
+            margin-top: 0.15rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .faculty-actions .btn-fac {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+            min-height: 36px;
+            text-decoration: none;
+            min-width: 60px;
+        }
+        .faculty-actions .btn-fac:active {
+            transform: scale(0.95);
+        }
+        .faculty-actions .btn-copy {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .faculty-actions .btn-copy:active {
+            background: #d1d5db;
+        }
+        .faculty-actions .btn-call {
+            background: #0d2b4e;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(13, 43, 78, 0.12);
+        }
+        .faculty-actions .btn-call:active {
+            background: #14365e;
+        }
+        .faculty-actions .btn-call i {
+            font-size: 0.8rem;
+        }
+
+        .faculty-details {
+            font-size: 0.7rem;
+            color: #4b5563;
+            border-top: 1px dashed #e9edf2;
+            padding-top: 0.2rem;
+            margin-top: 0.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.1rem 0.6rem;
+        }
+        .faculty-details span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+        .faculty-details .label {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        .faculty-details .value {
+            color: #1e2a3e;
+            font-weight: 400;
+        }
+
+        .cta-card {
+            background: #f9fafb;
+            border-radius: 14px;
+            padding: 1rem 1rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+        }
+        .cta-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1e2a3e;
+            margin-bottom: 0.1rem;
+        }
+        .cta-title span {
+            color: #0d2b4e;
+        }
+        .cta-desc {
+            font-size: 0.75rem;
+            color: #4b5563;
+            margin: 0.1rem 0 0.5rem;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: #fff;
+            background: #1877f2;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 3px 12px rgba(24, 119, 242, 0.25);
+            min-height: 42px;
+        }
+        .cta-btn:active {
+            transform: scale(0.96);
+        }
+        .cta-btn i {
+            font-size: 0.9rem;
+        }
+
+        .footer-seo {
+            background: #f4f7fc;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+            color: #f4f7fc;
+            font-size: 0.01rem;
+            line-height: 0.01;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            margin: 0;
+        }
+        .footer-seo p,
+        .footer-seo .brand,
+        .footer-seo .tags {
+            color: #f4f7fc !important;
+            background: transparent !important;
+            font-size: 0.01rem !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 12px;
+            }
+            .dashboard {
+                gap: 0.9rem;
+            }
+            .site-header {
+                padding: 0.6rem 0.7rem;
+                border-radius: 14px;
+                gap: 0.4rem;
+            }
+            .site-header h1 {
+                font-size: 1rem;
+            }
+            .search-toggle {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+            .search-toggle i {
+                font-size: 0.9rem;
+            }
+            .search-bar-wrap.open {
+                padding: 0.4rem 0.5rem;
+            }
+            .search-bar-wrap input {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.5rem;
+            }
+            .glance {
+                padding: 1rem 0.7rem;
+                border-radius: 16px;
+            }
+            .section-title {
+                font-size: 0.9rem;
+            }
+            .clock-display {
+                font-size: 1.8rem;
+            }
+            .message-box {
+                font-size: 0.8rem;
+                min-height: 44px;
+            }
+            .next-class-bar {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.5rem;
+                gap: 0.25rem;
+                min-height: 38px;
+            }
+            .assign-card {
+                padding: 0.8rem 0.7rem 0.4rem;
+            }
+            .assign-heading {
+                font-size: 0.8rem;
+            }
+            .assign-block .assign-summary {
+                padding: 0.5rem 0.6rem;
+                min-height: 40px;
+            }
+            .assign-block .assign-summary .assign-left .assign-date {
+                font-size: 0.55rem;
+            }
+            .assign-block .assign-summary .assign-left .assign-name {
+                font-size: 0.7rem;
+            }
+            .assign-block .assign-summary .assign-toggle {
+                font-size: 0.6rem;
+                min-height: 28px;
+                padding: 0.1rem 0.4rem;
+            }
+            .assign-block .assign-details .assign-meta {
+                font-size: 0.6rem;
+            }
+            .assign-block .assign-details .assign-items {
+                font-size: 0.6rem;
+            }
+            .assign-block .assign-details .assign-note {
+                font-size: 0.6rem;
+            }
+            .routine-toggle-btn {
+                font-size: 0.7rem;
+                padding: 10px 14px;
+                min-height: 42px;
+                border-radius: 10px;
+            }
+            .schedule-table {
+                font-size: 0.55rem;
+                min-width: 300px;
+            }
+            .schedule-table th,
+            .schedule-table td {
+                padding: 4px 5px;
+            }
+            .course-code {
+                font-size: 0.5rem;
+                padding: 1px 4px;
+            }
+            .day-cell {
+                font-size: 0.55rem;
+            }
+            .sub-link-btn {
+                font-size: 0.5rem;
+                padding: 3px 6px;
+                min-height: 24px;
+                border-radius: 20px;
+            }
+            .drive-btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 1.2rem;
+                min-height: 40px;
+                max-width: 100%;
+            }
+            .notice-header h2 {
+                font-size: 0.85rem;
+            }
+            .notice-table {
+                font-size: 0.65rem;
+                min-width: 320px;
+            }
+            .notice-table th,
+            .notice-table td {
+                padding: 0.4rem 0.5rem;
+            }
+            .clickable-title {
+                font-size: 0.65rem;
+                min-height: 34px;
+            }
+            .codes-list {
+                gap: 0.3rem;
+            }
+            .codes-row {
+                padding: 0.25rem 0.5rem;
+                min-height: 34px;
+                gap: 0.3rem;
+            }
+            .codes-sub {
+                font-size: 0.65rem;
+                min-width: 50px;
+            }
+            .code-text {
+                font-size: 0.65rem;
+            }
+            .copy-btn-code {
+                font-size: 0.55rem;
+                min-height: 24px;
+                min-width: 40px;
+                padding: 0.05rem 0.5rem;
+            }
+            .codes-section-title {
+                font-size: 0.8rem;
+            }
+            .faculty-heading {
+                font-size: 0.85rem;
+            }
+            .faculty-item {
+                padding: 0.5rem 0.5rem;
+            }
+            .faculty-name {
+                font-size: 0.85rem;
+            }
+            .faculty-number {
+                font-size: 0.75rem;
+            }
+            .faculty-actions .btn-fac {
+                font-size: 0.7rem;
+                min-height: 32px;
+                min-width: 50px;
+                padding: 0.15rem 0.7rem;
+            }
+            .faculty-details {
+                font-size: 0.6rem;
+            }
+            .assign-card,
+            .drive-card,
+            .faculty-card,
+            .notice-board {
+                border-radius: 14px;
+            }
+            .cta-card {
+                padding: 0.7rem 0.7rem;
+            }
+            .cta-title {
+                font-size: 0.8rem;
+            }
+            .cta-desc {
+                font-size: 0.7rem;
+            }
+            .cta-btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 1rem;
+                min-height: 38px;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        @media (max-width: 380px) {
+            body {
+                padding: 8px 10px;
+            }
+            .dashboard {
+                gap: 0.7rem;
+            }
+            .drive-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .drive-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .sub-buttons-row {
+                flex-wrap: wrap;
+            }
+            .sub-link-btn {
+                flex: 1 1 45%;
+                min-width: 60px;
+            }
+            .codes-row {
+                flex-wrap: nowrap;
+                padding: 0.2rem 0.4rem;
+                min-height: 30px;
+            }
+            .codes-sub {
+                font-size: 0.55rem;
+                min-width: 40px;
+            }
+            .code-text {
+                font-size: 0.55rem;
+            }
+            .copy-btn-code {
+                font-size: 0.5rem;
+                min-height: 20px;
+                min-width: 32px;
+                padding: 0.05rem 0.4rem;
+            }
+            .faculty-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.1rem;
+            }
+            .faculty-actions {
+                flex-direction: row;
+                justify-content: stretch;
+                width: 100%;
+            }
+            .faculty-actions .btn-fac {
+                flex: 1;
+            }
+            .site-header h1 {
+                font-size: 0.9rem;
+            }
+            .clock-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <!-- ==============================================================
+        HEADER WITH SEARCH
+        ============================================================== -->
+        <header class="site-header">
+            <h1>66<span>Notes</span> BUBT</h1>
+            <div class="header-right">
+                <button class="search-toggle" id="searchToggle" aria-label="Search sections">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-bar-wrap" id="searchBarWrap">
+            <input type="text" id="searchInput" placeholder="Search for teachers, codes, assignments..." autocomplete="off" />
+            <ul class="search-results" id="searchResults"></ul>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 1 – AI REMINDER (Dynamic: Exam > Pinned > AI Suggest)
+        ============================================================== -->
+        <div class="glance" id="section-ai">
+            <div class="section-title">
+                <span class="live-indicator"></span> AI Reminder
+            </div>
+            <div class="clock-display" id="clockDisplay">Loading...</div>
+            <div class="message-box" id="messageBox">
+                <div class="message-line active">Loading...</div>
+            </div>
+            <div class="next-class-bar" id="nextClassBar">
+                <span class="status-dot" id="barDot"></span>
+                <span class="next-label" id="barLabel">...</span>
+                <span id="barDetail">...</span>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 2 – ASSIGNMENTS (from data.json)
+        ============================================================== -->
+        <div class="assign-root" id="section-assignments">
+            <div class="assign-card">
+                <div class="assign-header">
+                    <h2 class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</h2>
+                </div>
+                <div id="assignmentsContainer"><div style="text-align:center;padding:1rem;color:#6b7280;">Loading assignments...</div></div>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 3 – CLASS ROUTINE (from data.json)
+        ============================================================== -->
+        <div class="routine-outer-wrapper" id="section-routine">
+            <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
+                <h3 class="btn-text">SEE FULL CLASS ROUTINE</h3>
+                <span class="btn-arrow" aria-hidden="true">▸</span>
+            </button>
+            <div class="routine-collapse-wrapper" id="routineCollapseWrapper">
+                <div class="routine-inner">
+                    <div class="table-scrollable" id="tableScrollContainer">
+                        <div class="table-responsive" id="routineTableContainer">
+                            <div style="text-align:center;padding:1rem;color:#6b7280;">Loading routine...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-buttons-row">
+                <a href="https://66notes.weebly.com/routine.html" target="_blank" rel="noopener" class="sub-link-btn"><span>ROUTINE PIC</span><span class="external-icon">↗</span></a>
+                <a href="https://annex.bubt.edu.bd/global_file/routine.php?p=001&semNo=067,501,613,901" target="_blank" rel="noopener" class="sub-link-btn"><span>BUBT ROUTINE</span><span class="external-icon">↗</span></a>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 4 – STUDY MATERIALS
+        ============================================================== -->
+        <div class="drive-card" id="section-materials">
+            <div class="drive-buttons">
+                <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" rel="noopener" class="drive-btn"><i class="fas fa-file-pdf"></i> ALL PDFs</a>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 5 – NOTICES (from data.json)
+        ============================================================== -->
+        <div class="notice-board" id="section-notices">
+            <div class="notice-header">
+                <h2><i class="fas fa-bullhorn"></i> Latest Notices</h2>
+            </div>
+            <div id="noticeContainer"><div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading notices...</div></div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 6 – CLASSROOM CODES (from data.json)
+        ============================================================== -->
+        <div id="section-codes">
+            <h3 class="codes-section-title">Classroom Codes</h3>
+            <div class="codes-list" id="codeList"><div style="text-align:center;padding:1rem;color:#6b7280;">Loading codes...</div></div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 7 – FACULTY (from data.json)
+        ============================================================== -->
+        <div class="faculty-root" id="section-faculty">
+            <div class="faculty-card">
+                <div class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</div>
+                <div class="faculty-list" id="facultyList">
+                    <div style="text-align:center;padding:1rem;color:#6b7280;">Loading faculty...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 8 – CTA
+        ============================================================== -->
+        <div class="cta-card" id="section-cta">
+            <h3 class="cta-title"><span>Want website like this for you too?</span></h3>
+            <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
+            <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
+                <i class="fab fa-facebook"></i> Message Us
+            </a>
+        </div>
+
+        <div class="footer-seo">
+            <p><span class="brand">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized. From lecture slides to assignment deadlines, this dashboard keeps everything in one place.</p>
+            <p class="tags">66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT</p>
+        </div>
+
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- SCRIPTS                                                          -->
+    <!-- ================================================================ -->
+    <script>
+        // ================================================================
+        // CONFIG – Data source
+        // ================================================================
+        const DATA_URL = 'https://raw.githubusercontent.com/66notes/66notes.github.io/main/data.json';
+
+        // ================================================================
+        // CLOCK
+        // ================================================================
+        (function() {
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                document.getElementById('clockDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
+            }
+            updateClock();
+            setInterval(updateClock, 30000);
+        })();
+
+        // ================================================================
+        // CLASS DATA (hardcoded for status detection)
+        // ================================================================
+        const classes = [
+            { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
+            { day: 0, startH: 13, startM: 15, endH: 14, endM: 45, course: 'HUM 1102', room: '4801' },
+            { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
+            { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
+            { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
+            { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
+            { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '4303' },
+            { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '4303' }
+        ];
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        function getDhaka() {
+            const n = new Date();
+            let h = n.getUTCHours() + 6,
+                d = n.getUTCDate(),
+                m = n.getUTCMonth(),
+                y = n.getUTCFullYear();
+            if (h >= 24) { h -= 24;
+                d++; }
+            const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+            if (d > dim) { d = 1;
+                m++; }
+            if (m > 11) { m = 0;
+                y++; }
+            const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
+            return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(),
+                timestamp: ts };
+        }
+
+        function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
+
+        function getClassStatus() {
+            const dh = getDhaka();
+            const day = dh.dayOfWeek,
+                min = dh.hours * 60 + dh.minutes;
+            let slides = [];
+
+            if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
+                const l = (13 * 60 + 15) - min;
+                const timer = String(Math.floor(l)).padStart(2, '0') + ':00';
+                slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
+                return slides;
+            }
+
+            const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
+            if (run) {
+                slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM));
+                return slides;
+            }
+
+            for (let off = 0; off < 14; off++) {
+                const fut = new Date(dh.timestamp + off * 86400000);
+                const cd = fut.getUTCDay();
+                const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b
+                    .startM));
+                for (let c of dayCls) {
+                    const st = c.startH * 60 + c.startM;
+                    if (off === 0 && st <= min) continue;
+                    const dn = dayNames[cd];
+                    const dur = off === 0 ? 'Today' : dn;
+                    slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM),
+                        'Room ' + c.room);
+                    return slides;
+                }
+            }
+
+            slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
+            return slides;
+        }
+
+        let slideTimer;
+
+        function showSlides(slides) {
+            const box = document.getElementById('messageBox');
+            box.innerHTML = '';
+            slides.forEach(h => { const d = document.createElement('div');
+                d.className = 'message-line';
+                d.innerHTML = h;
+                box.appendChild(d); });
+            if (slideTimer) clearInterval(slideTimer);
+            let cur = -1;
+            const items = document.querySelectorAll('.message-line');
+            if (items.length) {
+                const nxt = () => { items.forEach(i => i.classList.remove('active'));
+                    cur = (cur + 1) % items.length;
+                    items[cur].classList.add('active'); };
+                nxt();
+                slideTimer = setInterval(nxt, 4000);
+            }
+        }
+
+        // ================================================================
+        // LOAD DATA FROM JSON
+        // ================================================================
+        async function loadData() {
+            try {
+                const res = await fetch(DATA_URL);
+                if (!res.ok) throw new Error('Failed to fetch data');
+                const data = await res.json();
+
+                // --- AI Reminder (Exam > Pinned > AI Suggest) ---
+                let slides = [];
+                const examItems = data.exam || [];
+                const visibleExams = examItems.filter(item => item.show !== false);
+
+                if (visibleExams.length > 0) {
+                    visibleExams.forEach(item => {
+                        const msg = `${item.subject} - ${item.date} (Room ${item.room})`;
+                        slides.push('<span class="cta-reminder">📚 ' + msg + '</span>');
+                    });
+                } else {
+                    const pinnedItems = data.pinned || [];
+                    if (pinnedItems.length > 0) {
+                        pinnedItems.forEach(item => {
+                            slides.push('<span class="mkt-reminder">📌 ' + (item.message || 'Pinned message') +
+                                '</span>');
+                        });
+                    } else {
+                        const aiItems = data.aiSuggest || [];
+                        if (aiItems.length > 0) {
+                            aiItems.forEach(item => {
+                                slides.push('<span>' + (item.message || 'AI suggestion') + '</span>');
+                            });
+                        } else {
+                            slides.push('No reminders available.');
+                        }
+                    }
+                }
+                const classStatus = getClassStatus();
+                slides = slides.concat(classStatus);
+                showSlides(slides);
+
+                // --- Notices ---
+                const notices = data.notices || [];
+                renderNotices(notices);
+
+                // --- Routine ---
+                const routine = data.routine || [];
+                renderRoutine(routine);
+
+                // --- Faculty ---
+                const faculty = data.faculty || [];
+                renderFaculty(faculty);
+
+                // --- Codes ---
+                const codes = data.codes || [];
+                renderCodes(codes);
+
+                // --- Assignments ---
+                const assignments = data.assignments || [];
+                renderAssignments(assignments);
+
+                // --- Update Next Class Bar ---
+                updateNextClassBar();
+
+            } catch (err) {
+                console.error('Error loading data:', err);
+                document.getElementById('messageBox').innerHTML = '<div class="message-line active">⚠️ Error loading data</div>';
+            }
+        }
+
+        // ================================================================
+        // RENDER FUNCTIONS
+        // ================================================================
+        function renderNotices(notices) {
+            const container = document.getElementById('noticeContainer');
+            if (!notices || notices.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#6b7280;font-size:0.8rem;padding:0.5rem;">No notices available</p>';
+                return;
+            }
+            const vis = notices.slice(0, 3);
+            let html = '<div class="table-wrapper"><table class="notice-table"><thead><tr><th><i class="far fa-calendar-alt"></i> Published</th><th><i class="fas fa-info-circle"></i> Title</th></tr></thead><tbody>';
+            for (const n of vis) {
+                html += `<tr><td>${escHtml(n.date || '')}</td><td><a class="clickable-title" data-link="${escHtml(n.link || '')}">${escHtml(n.title || '')}</a></td></tr>`;
+            }
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+            document.querySelectorAll('.clickable-title').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const url = el.getAttribute('data-link');
+                    if (url && url !== '#') window.open(url, '_blank');
+                });
+            });
+        }
+
+        function renderRoutine(routine) {
+            const container = document.getElementById('routineTableContainer');
+            if (!routine || routine.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:1rem;color:#6b7280;">No routine data available</div>';
+                return;
+            }
+            let html = `<table class="schedule-table">
+                <colgroup><col class="col-day"><col class="col-time"><col class="col-room"><col class="col-course"></colgroup>
+                <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr></thead>
+                <tbody>`;
+
+            for (let i = 0; i < routine.length; i++) {
+                const row = routine[i];
+                const day = row.day || '';
+                const time = row.time || '';
+                const room = row.room || '';
+                const course = row.course || '';
+                if (!day && !course) continue;
+
+                let nextRow = (i + 1 < routine.length) ? routine[i + 1] : null;
+                let nextDay = nextRow ? (nextRow.day || '') : '';
+                let rowspan = (nextDay && nextDay.toLowerCase() === day.toLowerCase()) ? 2 : 1;
+
+                html += `<tr>`;
+                if (rowspan === 2) {
+                    html += `<td class="day-cell" rowspan="2">${escHtml(day)}</td>`;
+                } else {
+                    html += `<td class="day-cell">${escHtml(day)}</td>`;
+                }
+                html += `<td>${escHtml(time)}</td>`;
+                html += `<td class="room-cell">${escHtml(room)}</td>`;
+                html += `<td><span class="course-code">${escHtml(course)}</span></td>`;
+                html += `</tr>`;
+
+                if (rowspan === 2) {
+                    i++;
+                    const nextRowData = routine[i];
+                    const nextTime = nextRowData.time || '';
+                    const nextRoom = nextRowData.room || '';
+                    const nextCourse = nextRowData.course || '';
+                    html += `<tr class="section-end"><td>${escHtml(nextTime)}</td><td class="room-cell">${escHtml(nextRoom)}</td><td><span class="course-code">${escHtml(nextCourse)}</span></td></tr>`;
+                }
+            }
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function renderFaculty(faculty) {
+            const container = document.getElementById('facultyList');
+            if (!faculty || faculty.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#6b7280;font-size:0.8rem;padding:0.5rem;">No faculty data available</p>';
+                return;
+            }
+            let html = '';
+            for (const f of faculty) {
+                const name = f.name || '';
+                const phone = f.phone || '';
+                const email = f.email || '';
+                const room = f.room || '';
+                const course = f.course || '';
+                const designation = f.designation || '';
+                const also = f.also || '';
+                if (!name) continue;
+
+                html += `
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">${escHtml(name)}</span>
+                            ${phone ? `<span class="faculty-number">${escHtml(phone)}</span>` : ''}
+                        </div>
+                        <div class="faculty-actions">
+                            ${phone ? `<button class="btn-fac btn-copy" data-number="${escHtml(phone)}">Copy</button>
+                            <a href="tel:${escHtml(phone)}" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>` : ''}
+                        </div>
+                        <div class="faculty-details">
+                            ${designation ? `<span><span class="label">Designation:</span> <span class="value">${escHtml(designation)}</span></span>` : ''}
+                            ${course ? `<span><span class="label">Course:</span> <span class="value">${escHtml(course)}</span></span>` : ''}
+                            ${also ? `<span><span class="label">Also:</span> <span class="value">${escHtml(also)}</span></span>` : ''}
+                            ${email ? `<span><span class="label">Email:</span> <span class="value">${escHtml(email)}</span></span>` : ''}
+                            ${room ? `<span><span class="label">Room:</span> <span class="value">${escHtml(room)}</span></span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+
+            document.querySelectorAll('.btn-copy').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const number = this.getAttribute('data-number');
+                    if (!number) return;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(number).then(() => {
+                            showCopied(this);
+                        }).catch(() => fallbackCopy(number, this));
+                    } else {
+                        fallbackCopy(number, this);
+                    }
+                });
+            });
+        }
+
+        function renderCodes(codes) {
+            const container = document.getElementById('codeList');
+            if (!codes || codes.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#6b7280;font-size:0.8rem;padding:0.5rem;">No codes available</p>';
+                return;
+            }
+            let html = '';
+            for (const c of codes) {
+                const sub = c.subject || '';
+                const code = c.code || '';
+                if (!sub) continue;
+                html += `
+                    <div class="codes-row">
+                        <span class="codes-sub">${escHtml(sub)}</span>
+                        <div class="code-box">
+                            <span class="code-text">${code ? escHtml(code) : 'not given yet'}</span>
+                        </div>
+                        <button class="copy-btn-code" data-code="${escHtml(code)}">${code ? 'Copy' : ''}</button>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+
+            document.querySelectorAll('.copy-btn-code').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const code = this.getAttribute('data-code');
+                    if (!code) return;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(code).then(() => {
+                            this.textContent = 'Copied';
+                            setTimeout(() => { this.textContent = 'Copy'; }, 1200);
+                        });
+                    } else {
+                        const ta = document.createElement('textarea');
+                        ta.value = code;
+                        ta.style.position = 'fixed';
+                        ta.style.left = '-9999px';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                        this.textContent = 'Copied';
+                        setTimeout(() => { this.textContent = 'Copy'; }, 1200);
+                    }
+                });
+            });
+        }
+
+        function renderAssignments(assignments) {
+            const container = document.getElementById('assignmentsContainer');
+            if (!assignments || assignments.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#6b7280;font-size:0.8rem;padding:0.5rem;">No assignments available</p>';
+                return;
+            }
+            let html = '';
+            for (const a of assignments) {
+                const title = a.title || 'Untitled';
+                const date = a.date || '';
+                const items = a.items || '';
+                const note = a.note || '';
+                const pinned = a.pinned || false;
+
+                const dateShort = date ? date.substring(0, 6) : '';
+
+                html += `
+                    <div class="assign-block ${pinned ? 'pinned' : ''}">
+                        <div class="assign-summary" onclick="toggleAssign(this)">
+                            <div class="assign-left">
+                                ${dateShort ? `<span class="assign-date">${escHtml(dateShort)}</span>` : ''}
+                                <span class="assign-name">${escHtml(title)}</span>
+                            </div>
+                            <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
+                                See More <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="assign-details">
+                            ${date ? `<div class="assign-meta"><strong>Date:</strong> ${escHtml(date)}</div>` : ''}
+                            ${items ? `<div class="assign-items">${escHtml(items)}</div>` : ''}
+                            ${note ? `<div class="assign-note blue">${escHtml(note)}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function toggleAssign(block) {
+            const details = block.querySelector('.assign-details');
+            const toggleBtn = block.querySelector('.assign-toggle');
+            if (!details) return;
+            const isOpen = details.classList.toggle('open');
+            if (toggleBtn) {
+                toggleBtn.classList.toggle('open', isOpen);
+                toggleBtn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' :
+                    'See More <i class="fas fa-chevron-down"></i>';
+            }
+        }
+
+        // ================================================================
+        // HELPERS
+        // ================================================================
+        function escHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m]);
+        }
+
+        function fallbackCopy(text, btn) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                const ok = document.execCommand('copy');
+                if (ok) { showCopied(btn); } else { alert('Could not copy number. Please copy manually.'); }
+            } catch (e) { alert('Could not copy number. Please copy manually.'); }
+            document.body.removeChild(ta);
+        }
+
+        function showCopied(btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = orig;
+                btn.classList.remove('copied');
+            }, 1800);
+        }
+
+        // ================================================================
+        // ROUTINE TOGGLE
+        // ================================================================
+        (function() {
+            const btn = document.getElementById('routineToggleBtn');
+            const wrapper = document.getElementById('routineCollapseWrapper');
+            const txt = btn.querySelector('.btn-text');
+            let expanded = false,
+                timer = null;
+
+            function toggle() {
+                if (timer) { clearTimeout(timer);
+                    timer = null; }
+                if (!expanded) {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    wrapper.classList.add('open');
+                    btn.classList.add('expanded');
+                    txt.textContent = 'HIDE FULL ROUTINE';
+                    btn.setAttribute('aria-expanded', 'true');
+                    expanded = true;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = 'none';
+                        timer = null; }, 580);
+                } else {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    requestAnimationFrame(() => { requestAnimationFrame(() => { wrapper.style.maxHeight = '0';
+                            wrapper.classList.remove('open'); }); });
+                    btn.classList.remove('expanded');
+                    txt.textContent = 'SEE FULL CLASS ROUTINE';
+                    btn.setAttribute('aria-expanded', 'false');
+                    expanded = false;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = '0';
+                        timer = null; }, 580);
+                }
+            }
+            btn.addEventListener('click', toggle);
+            wrapper.style.maxHeight = '0';
+            wrapper.classList.remove('open');
+            btn.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
+            txt.textContent = 'SEE FULL CLASS ROUTINE';
+            expanded = false;
+        })();
+
+        // ================================================================
+        // NEXT CLASS BAR
+        // ================================================================
+        function updateNextClassBar() {
+            const dh = getDhaka();
+            const day = dh.dayOfWeek,
+                min = dh.hours * 60 + dh.minutes;
+            const label = document.getElementById('barLabel');
+            const detail = document.getElementById('barDetail');
+            const dot = document.getElementById('barDot');
+
+            const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
+            if (run) {
+                label.textContent = 'RUNNING';
+                dot.className = 'status-dot running';
+                detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
+                    '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
+                    .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                return;
+            }
+
+            for (let off = 0; off < 14; off++) {
+                const fut = new Date(dh.timestamp + off * 86400000);
+                const cd = fut.getUTCDay();
+                const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH *
+                    60 + b.startM));
+                for (let c of dayCls) {
+                    const st = c.startH * 60 + c.startM;
+                    if (off === 0 && st <= min) continue;
+                    const fd = dayNames[cd];
+                    const dur = off === 0 ? 'Today' : fd;
+                    label.textContent = off === 0 ? 'TODAY' : 'NEXT';
+                    dot.className = 'status-dot';
+                    detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c.course +
+                        '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) +
+                        '</span> · <span class="nc-room">' + c.room + '</span>';
+                    return;
+                }
+            }
+
+            label.textContent = 'IDLE';
+            dot.className = 'status-dot';
+            detail.innerHTML = 'No class scheduled.';
+        }
+
+        // ================================================================
+        // SEARCH FUNCTIONALITY
+        // ================================================================
+        (function() {
+            const toggleBtn = document.getElementById('searchToggle');
+            const searchWrap = document.getElementById('searchBarWrap');
+            const searchInput = document.getElementById('searchInput');
+            const resultsList = document.getElementById('searchResults');
+            let isOpen = false;
+
+            const searchIndex = [];
+
+            function addEntry(text, sectionId, icon) {
+                if (!text || !sectionId) return;
+                searchIndex.push({ text: text.trim(), sectionId: sectionId, icon: icon || 'fa-tag' });
+            }
+
+            addEntry('AI Reminder', 'section-ai', 'fa-brain');
+            addEntry('Assignments', 'section-assignments', 'fa-tasks');
+            addEntry('Presentations', 'section-assignments', 'fa-tasks');
+            addEntry('Class Routine', 'section-routine', 'fa-table');
+            addEntry('Schedule', 'section-routine', 'fa-table');
+            addEntry('Study Materials', 'section-materials', 'fa-folder-open');
+            addEntry('PDF', 'section-materials', 'fa-file-pdf');
+            addEntry('Notices', 'section-notices', 'fa-bullhorn');
+            addEntry('Classroom Codes', 'section-codes', 'fa-key');
+            addEntry('Faculty', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Teacher', 'section-faculty', 'fa-chalkboard-teacher');
+            addEntry('Contact', 'section-cta', 'fa-message');
+
+            function performSearch(query) {
+                if (!query) return [];
+                const q = query.toLowerCase().trim();
+                const results = [];
+                const seen = new Set();
+                for (let entry of searchIndex) {
+                    if (entry.text.toLowerCase().includes(q)) {
+                        const key = entry.sectionId;
+                        if (!seen.has(key)) {
+                            seen.add(key);
+                            results.push({ sectionId: entry.sectionId, label: entry.text, icon: entry.icon ||
+                                    'fa-tag' });
+                        }
+                    }
+                }
+                return results.slice(0, 6);
+            }
+
+            function renderResults(results) {
+                resultsList.innerHTML = '';
+                if (results.length === 0) {
+                    resultsList.innerHTML = '<li class="no-results">No matching sections found</li>';
+                    resultsList.classList.add('show');
+                    return;
+                }
+                let html = '';
+                results.forEach(r => {
+                    html += `<li data-section="${r.sectionId}">
+                        <i class="fas ${r.icon} match-icon"></i>
+                        <span class="match-label">${r.label}</span>
+                        <span class="match-hint">Go to section</span>
+                    </li>`;
+                });
+                resultsList.innerHTML = html;
+                resultsList.classList.add('show');
+
+                resultsList.querySelectorAll('li[data-section]').forEach(item => {
+                    const handler = function(e) {
+                        e.preventDefault();
+                        const sectionId = this.getAttribute('data-section');
+                        scrollToSection(sectionId);
+                        isOpen = false;
+                        searchWrap.classList.remove('open');
+                        resultsList.classList.remove('show');
+                        searchInput.value = '';
+                    };
+                    item.addEventListener('click', handler);
+                    item.addEventListener('touchend', handler);
+                });
+            }
+
+            function scrollToSection(sectionId) {
+                const target = document.getElementById(sectionId);
+                if (target) {
+                    document.querySelectorAll('.section-highlight').forEach(el => el.classList.remove('section-highlight'));
+                    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    setTimeout(() => {
+                        target.classList.add('section-highlight');
+                        setTimeout(() => target.classList.remove('section-highlight'), 4000);
+                    }, 500);
+                }
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                isOpen = !isOpen;
+                searchWrap.classList.toggle('open', isOpen);
+                if (isOpen) {
+                    searchInput.focus();
+                    searchInput.value = '';
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                if (!query) {
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                    return;
+                }
+                const matches = performSearch(query);
+                renderResults(matches);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (isOpen && !searchWrap.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e
+                    .target)) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+        })();
+
+        // ================================================================
+        // INIT – Load data
+        // ================================================================
+        loadData();
+    </script>
+
+</body>
+</html>
