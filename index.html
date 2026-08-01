@@ -344,22 +344,24 @@
             font-size: 0.7rem;
         }
 
-        /* ===== ASSIGNMENTS ===== */
-        .assign-root {
+        /* ================================================================
+           PINNED EVENTS (Redesigned with Timeline)
+           ================================================================ */
+        .events-root {
             font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.3;
             color: #1e2a3e;
         }
-        .assign-card {
+        .events-card {
             background: #ffffff;
             border-radius: 18px;
             padding: 1rem 1rem 0.6rem;
             border: 1px solid #eef2f6;
             box-shadow: 0 8px 24px rgba(0,0,0,0.04);
         }
-        .assign-header {
+        .events-header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -369,7 +371,7 @@
             border-bottom: 1.5px solid #e9edf2;
             position: relative;
         }
-        .assign-header::after {
+        .events-header::after {
             content: '';
             position: absolute;
             bottom: -1.5px;
@@ -380,71 +382,107 @@
             background: #4a6cf7;
             border-radius: 2px;
         }
-        .assign-heading {
+        .events-heading {
             font-weight: 700;
             font-size: 0.9rem;
             letter-spacing: 0.3px;
             text-transform: uppercase;
             color: #1e2a3e;
         }
-        .assign-heading i {
+        .events-heading i {
             color: #4a6cf7;
             margin-right: 0.3rem;
         }
 
-        .assign-block {
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .event-block {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
             background: #f9fafb;
             border-radius: 12px;
+            padding: 0.2rem 0.2rem 0.2rem 0;
             border: 1px solid #eef2f6;
-            margin-bottom: 8px;
             overflow: hidden;
             transition: all 0.2s ease;
         }
-        .assign-block:last-child {
+        .event-block:last-child {
             margin-bottom: 0;
         }
-        .assign-block.pinned {
+        .event-block.passed {
+            opacity: 0.5;
+            filter: grayscale(0.8);
+            order: 999;
+        }
+        .event-block.passed .event-title,
+        .event-block.passed .event-meta,
+        .event-block.passed .event-items,
+        .event-block.passed .event-note,
+        .event-block.passed .event-team {
+            text-decoration: line-through;
+            color: #6b7280 !important;
+        }
+        .event-block.passed .event-badge {
+            background: #d1d5db !important;
+            color: #6b7280 !important;
+        }
+
+        .event-block.upcoming {
             background: #fef9e3;
             border-left: 4px solid #f5b042;
             border-color: #fde68a;
         }
 
-        .assign-block .assign-summary {
+        /* Date Badge on Left */
+        .event-date-badge {
+            flex-shrink: 0;
+            width: 50px;
+            min-height: 50px;
+            background: #0d2b4e;
+            border-radius: 0 12px 12px 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 0.7rem 0.8rem;
-            cursor: pointer;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            min-height: 48px;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            justify-content: center;
+            padding: 0.2rem 0.1rem;
+            text-align: center;
+            margin-right: 0.1rem;
         }
-        .assign-block .assign-summary:active {
-            background: rgba(0,0,0,0.02);
+        .event-date-badge .day {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1;
         }
-        .assign-block .assign-summary .assign-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex: 1;
-            min-width: 0;
-            flex-wrap: wrap;
-        }
-        .assign-block .assign-summary .assign-left .assign-date {
-            font-size: 0.65rem;
+        .event-date-badge .month {
+            font-size: 0.55rem;
             font-weight: 500;
-            color: #6b7280;
-            white-space: nowrap;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .assign-block .assign-summary .assign-left .assign-name {
-            font-weight: 600;
+
+        /* Event Content */
+        .event-content {
+            flex: 1;
+            padding: 0.4rem 0.5rem 0.4rem 0;
+            min-width: 0;
+        }
+        .event-title {
+            font-weight: 700;
             font-size: 0.8rem;
             color: #1e2a3e;
-            word-break: break-word;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.5rem;
         }
-        .assign-block .assign-summary .assign-left .badge {
+        .event-badge {
             font-weight: 600;
             font-size: 0.55rem;
             background: #fef3c7;
@@ -453,83 +491,67 @@
             border-radius: 8px;
             border: 1px solid #fde68a;
             white-space: nowrap;
-        }
-        .assign-block .assign-summary .assign-toggle {
             flex-shrink: 0;
-            background: none;
-            border: none;
-            font-size: 0.7rem;
-            color: #4a6cf7;
-            cursor: pointer;
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            min-height: 32px;
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
         }
-        .assign-block .assign-summary .assign-toggle:active {
-            background: rgba(74,108,247,0.1);
-        }
-        .assign-block .assign-summary .assign-toggle i {
+        .event-meta {
             font-size: 0.6rem;
-            transition: transform 0.25s ease;
-        }
-        .assign-block .assign-summary .assign-toggle.open i {
-            transform: rotate(180deg);
-        }
-
-        .assign-block .assign-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease, opacity 0.25s ease;
-            padding: 0 0.8rem;
-            opacity: 0;
-        }
-        .assign-block .assign-details.open {
-            max-height: 400px;
-            padding: 0 0.8rem 0.7rem;
-            opacity: 1;
-        }
-        .assign-block .assign-details .assign-meta {
-            font-size: 0.65rem;
             font-weight: 500;
             color: #374151;
-            margin-bottom: 0.1rem;
+            margin-top: 0.05rem;
         }
-        .assign-block .assign-details .assign-meta strong {
-            color: #1e2a3e;
-        }
-        .assign-block .assign-details .assign-items {
+        .event-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.15rem 0.5rem;
-            font-size: 0.65rem;
+            gap: 0.1rem 0.4rem;
+            font-size: 0.6rem;
             color: #4b5563;
-            padding-top: 0.1rem;
+            margin-top: 0.1rem;
         }
-        .assign-block .assign-details .assign-items span {
+        .event-items span {
             display: inline-flex;
             align-items: center;
             gap: 0.1rem;
         }
-        .assign-block .assign-details .assign-note {
-            font-size: 0.65rem;
+        .event-items .opt {
+            color: #6b7280;
+            font-style: italic;
+        }
+        .event-note {
+            font-size: 0.6rem;
             font-weight: 500;
             color: #7c2d12;
             background: #fef3c7;
-            padding: 0.1rem 0.6rem;
+            padding: 0.05rem 0.5rem;
             border-radius: 6px;
             display: inline-block;
-            margin-top: 0.2rem;
+            margin-top: 0.1rem;
             border: 1px solid #fde68a;
         }
-        .assign-block .assign-details .assign-note.blue {
+        .event-note.blue {
             background: #eff6ff;
             color: #1e40af;
             border-color: #dbeafe;
+        }
+        .event-team {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #6d28d9;
+            background: #f5f3ff;
+            border: 1px solid #ede9fe;
+            padding: 0.05rem 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 0.1rem;
+        }
+        .event-items .topic-badge {
+            font-size: 0.55rem;
+            font-weight: 500;
+            background: #e5e7eb;
+            color: #1e2a3e;
+            padding: 0 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-right: 4px;
         }
 
         /* ===== ROUTINE ===== */
@@ -1151,15 +1173,16 @@
             .clock-display { font-size: 1.8rem; }
             .message-box { font-size: 0.8rem; min-height: 44px; }
             .next-class-bar { font-size: 0.65rem; padding: 0.4rem 0.5rem; gap: 0.25rem; min-height: 38px; }
-            .assign-card { padding: 0.8rem 0.7rem 0.4rem; }
-            .assign-heading { font-size: 0.8rem; }
-            .assign-block .assign-summary { padding: 0.5rem 0.6rem; min-height: 40px; }
-            .assign-block .assign-summary .assign-left .assign-date { font-size: 0.55rem; }
-            .assign-block .assign-summary .assign-left .assign-name { font-size: 0.7rem; }
-            .assign-block .assign-summary .assign-toggle { font-size: 0.6rem; min-height: 28px; padding: 0.1rem 0.4rem; }
-            .assign-block .assign-details .assign-meta { font-size: 0.6rem; }
-            .assign-block .assign-details .assign-items { font-size: 0.6rem; }
-            .assign-block .assign-details .assign-note { font-size: 0.6rem; }
+            .events-card { padding: 0.8rem 0.7rem 0.4rem; }
+            .events-heading { font-size: 0.8rem; }
+            .event-date-badge { width: 40px; min-height: 40px; }
+            .event-date-badge .day { font-size: 1rem; }
+            .event-date-badge .month { font-size: 0.5rem; }
+            .event-title { font-size: 0.7rem; }
+            .event-meta { font-size: 0.55rem; }
+            .event-items { font-size: 0.55rem; }
+            .event-block { padding: 0.1rem 0.1rem 0.1rem 0; }
+            .event-content { padding: 0.3rem 0.3rem 0.3rem 0; }
             .routine-toggle-btn { font-size: 0.7rem; padding: 10px 14px; min-height: 42px; border-radius: 10px; }
             .schedule-table { font-size: 0.55rem; min-width: 300px; }
             .schedule-table th, .schedule-table td { padding: 4px 5px; }
@@ -1230,7 +1253,7 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 1 – AI REMINDER (Hardcoded)
+        SECTION 1 – AI REMINDER
         ============================================================== -->
         <div class="glance" id="section-ai">
             <div class="section-title">
@@ -1238,7 +1261,7 @@
             </div>
             <div class="clock-display" id="clockDisplay">Loading...</div>
             <div class="message-box" id="messageBox">
-                <div class="message-line active">📢 4th Aug Is MKT Assignment & Presentation</div>
+                <div class="message-line active">📢 4th Aug: MKT Assignment & Presentation</div>
             </div>
             <div class="next-class-bar" id="nextClassBar">
                 <span class="status-dot" id="barDot"></span>
@@ -1248,53 +1271,22 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 2 – ASSIGNMENTS (Hardcoded)
+        SECTION 2 – PINNED EVENTS (New Timeline Design)
         ============================================================== -->
-        <div class="assign-root" id="section-assignments">
-            <div class="assign-card">
-                <div class="assign-header">
-                    <h2 class="assign-heading"><i class="fas fa-tasks"></i> Assignments & Presentations</h2>
+        <div class="events-root" id="section-events">
+            <div class="events-card">
+                <div class="events-header">
+                    <h2 class="events-heading"><i class="fas fa-thumbtack"></i> Pinned Events</h2>
                 </div>
-
-                <div class="assign-block pinned">
-                    <div class="assign-summary" onclick="toggleAssign(this)">
-                        <div class="assign-left">
-                            <span class="assign-date">4 Aug</span>
-                            <span class="assign-name">MKT Assignment & Presentation</span>
-                            <span class="badge">CT 2</span>
-                        </div>
-                        <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
-                            See More <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-                    <div class="assign-details">
-                        <div class="assign-meta"><strong>Date:</strong> 4th August</div>
-                        <div class="assign-items"><span>• Marketing Presentation</span><span>• Assignment Submission</span></div>
-                    </div>
+                <div class="events-list" id="eventsList">
+                    <!-- Events will be rendered by JavaScript -->
+                    <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
                 </div>
-
-                <div class="assign-block pinned">
-                    <div class="assign-summary" onclick="toggleAssign(this)">
-                        <div class="assign-left">
-                            <span class="assign-date">9 Aug</span>
-                            <span class="assign-name">Bangla CT Exam</span>
-                            <span class="badge">Exam</span>
-                        </div>
-                        <button class="assign-toggle" onclick="event.stopPropagation();toggleAssign(this.closest('.assign-block'))">
-                            See More <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-                    <div class="assign-details">
-                        <div class="assign-meta"><strong>Date:</strong> 9th August</div>
-                        <div class="assign-items"><span>• Be prepared!</span></div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
         <!-- ==============================================================
-        SECTION 3 – CLASS ROUTINE (Hardcoded)
+        SECTION 3 – CLASS ROUTINE
         ============================================================== -->
         <div class="routine-outer-wrapper" id="section-routine">
             <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
@@ -1317,13 +1309,13 @@
                                 </thead>
                                 <tbody>
                                     <tr><td class="day-cell" rowspan="2">SUN</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4801</td><td><span class="course-code">ICT 1101</span></td></tr>
-                                    <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td class="room-cell">4801</td><td><span class="course-code">HUM 1102</span></td></tr>
                                     <tr><td class="day-cell" rowspan="2">MON</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4201</td><td><span class="course-code">ICT 1101</span></td></tr>
-                                    <tr class="section-end"><td>1:15 – 2:45</td><td><span class="course-code">MKT 1101</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td class="room-cell">4201</td><td><span class="course-code">MKT 1101</span></td></tr>
                                     <tr><td class="day-cell" rowspan="2">TUE</td><td>2:45 – 4:15</td><td class="room-cell" rowspan="2">4705</td><td><span class="course-code">MKT 1101</span></td></tr>
-                                    <tr class="section-end"><td>4:15 – 5:45</td><td><span class="course-code">HUM 1102</span></td></tr>
-                                    <tr><td class="day-cell" rowspan="2">WED</td><td>1:15 – 2:45</td><td class="room-cell" rowspan="2">4303</td><td><span class="course-code">ICT 1102</span></td></tr>
-                                    <tr class="section-end"><td>2:45 – 4:15</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                    <tr class="section-end"><td>4:15 – 5:45</td><td class="room-cell">4702</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">WED</td><td>1:15 – 2:45</td><td class="room-cell" rowspan="2">5501</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                    <tr class="section-end"><td>2:45 – 4:15</td><td class="room-cell">5502</td><td><span class="course-code">ICT 1102</span></td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1346,7 +1338,7 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 5 – NOTICES (Hardcoded)
+        SECTION 5 – NOTICES
         ============================================================== -->
         <div class="notice-board" id="section-notices">
             <div class="notice-header">
@@ -1365,7 +1357,7 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 6 – CLASSROOM CODES (Hardcoded)
+        SECTION 6 – CLASSROOM CODES
         ============================================================== -->
         <div id="section-codes">
             <h3 class="codes-section-title">Classroom Codes</h3>
@@ -1389,7 +1381,7 @@
         </div>
 
         <!-- ==============================================================
-        SECTION 7 – FACULTY (Hardcoded)
+        SECTION 7 – FACULTY
         ============================================================== -->
         <div class="faculty-root" id="section-faculty">
             <div class="faculty-card">
@@ -1406,7 +1398,7 @@
                             <a href="tel:01742068119" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Email:</span> <span class="value">maliha.ahmed@bubt.edu.bd</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">MKT</span></span>
                             <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
                         </div>
                     </div>
@@ -1421,8 +1413,7 @@
                             <a href="tel:01791471867" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Course:</span> <span class="value">HUM 1102 (BNQF-023201) – Bangla Language</span></span>
-                            <span><span class="label">Also:</span> <span class="value">ICT 1102 – Intro to Computer Science Lab</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">Bangla</span></span>
                         </div>
                     </div>
 
@@ -1436,8 +1427,7 @@
                             <a href="tel:01966901950" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
-                            <span><span class="label">Email:</span> <span class="value">shajeeb@bubt.edu.bd</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">ICT</span></span>
                             <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
                         </div>
                     </div>
@@ -1483,21 +1473,6 @@
             updateClock();
             setInterval(updateClock, 30000);
         })();
-
-        // ================================================================
-        // ASSIGNMENT TOGGLE
-        // ================================================================
-        function toggleAssign(block) {
-            const details = block.querySelector('.assign-details');
-            const toggleBtn = block.querySelector('.assign-toggle');
-            if (!details) return;
-            const isOpen = details.classList.toggle('open');
-            if (toggleBtn) {
-                toggleBtn.classList.toggle('open', isOpen);
-                toggleBtn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' :
-                    'See More <i class="fas fa-chevron-down"></i>';
-            }
-        }
 
         // ================================================================
         // ROUTINE TOGGLE
@@ -1615,6 +1590,185 @@
         }
 
         // ================================================================
+        // PINNED EVENTS – Data & Rendering
+        // ================================================================
+        (function() {
+            const eventsData = [
+                {
+                    date: '4 Aug',
+                    title: 'MKT Assignment & Presentation',
+                    badge: 'CT 2',
+                    meta: 'Team: 5-6 Members',
+                    items: [
+                        '• Presentation (No Slide)',
+                        '• Assignment (Printed)',
+                        '• Poster (Printed)',
+                        '📌 Include: 4Ps, STP, Product-Name, Category, Ingredients'
+                    ],
+                    note: 'Assignment is what you will present. No slide. Only Poster.',
+                    dateObj: new Date(2026, 7, 4) // Aug 4, 2026
+                },
+                {
+                    date: '9 Aug',
+                    title: 'Bangla CT Exam',
+                    badge: 'Exam',
+                    meta: '',
+                    items: [
+                        '১. ব্যাকরনিক শব্দশ্রেণী',
+                        '২. বাক্য'
+                    ],
+                    note: 'Be prepared!',
+                    dateObj: new Date(2026, 7, 9) // Aug 9, 2026
+                },
+                {
+                    date: '11 Aug',
+                    title: 'Bangla Assignment',
+                    badge: 'Deadline',
+                    meta: '3-4 Pages (A4) • Written',
+                    items: [
+                        '১. লেখক/কবি পরিচিতি',
+                        '২. সাহিত্যের মূল বিষয় বস্তু',
+                        '৩. চরিত্র (যদি থাকে)',
+                        '৪. শিল্পমূল্য',
+                        '৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ',
+                        '৬. উপসংহার'
+                    ],
+                    note: 'Group 1 – Roll 0-28',
+                    dateObj: new Date(2026, 7, 11) // Aug 11, 2026
+                },
+                {
+                    date: '16 Aug',
+                    title: 'Bangla Presentation (Group 2)',
+                    badge: 'Presentation',
+                    meta: 'After Roll 28',
+                    items: [
+                        '• Present your Bangla assignment'
+                    ],
+                    note: 'For students after roll 28',
+                    dateObj: new Date(2026, 7, 16) // Aug 16, 2026
+                }
+            ];
+
+            // Helper: get month abbreviation
+            function getMonthAbbr(date) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return months[date.getMonth()];
+            }
+
+            // Helper: get day number
+            function getDayNum(date) {
+                return date.getDate();
+            }
+
+            // Check if a date has passed (today > date)
+            function isPassed(date) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const compareDate = new Date(date);
+                compareDate.setHours(0, 0, 0, 0);
+                return compareDate < today;
+            }
+
+            // Find the next upcoming event (smallest future date)
+            function findUpcomingIndex(events) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                let upcomingIdx = -1;
+                let minDiff = Infinity;
+                for (let i = 0; i < events.length; i++) {
+                    const evDate = new Date(events[i].dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    const diff = evDate - today;
+                    if (diff >= 0 && diff < minDiff) {
+                        minDiff = diff;
+                        upcomingIdx = i;
+                    }
+                }
+                return upcomingIdx;
+            }
+
+            function renderEvents() {
+                const container = document.getElementById('eventsList');
+                if (!container) return;
+
+                // Sort: upcoming first (by date), then passed (by date descending so newest passed first)
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const upcoming = [];
+                const passed = [];
+
+                eventsData.forEach((ev, idx) => {
+                    const evDate = new Date(ev.dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    if (evDate < today) {
+                        passed.push({ ...ev, originalIndex: idx });
+                    } else {
+                        upcoming.push({ ...ev, originalIndex: idx });
+                    }
+                });
+
+                // Sort upcoming by date (earliest first)
+                upcoming.sort((a, b) => a.dateObj - b.dateObj);
+                // Sort passed by date (most recent first)
+                passed.sort((a, b) => b.dateObj - a.dateObj);
+
+                const sortedEvents = [...upcoming, ...passed];
+
+                // Find the first upcoming event (the one with yellow highlight)
+                const upcomingIdx = sortedEvents.findIndex(ev => {
+                    const evDate = new Date(ev.dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    return evDate >= today;
+                });
+
+                let html = '';
+                sortedEvents.forEach((ev, idx) => {
+                    const isUpcoming = idx === upcomingIdx && !isPassed(ev.dateObj);
+                    const isPast = isPassed(ev.dateObj);
+                    const month = getMonthAbbr(ev.dateObj);
+                    const day = getDayNum(ev.dateObj);
+
+                    // Build items list
+                    let itemsHtml = '';
+                    if (ev.items && ev.items.length > 0) {
+                        itemsHtml = `<div class="event-items">`;
+                        ev.items.forEach(item => {
+                            itemsHtml += `<span>${item}</span>`;
+                        });
+                        itemsHtml += `</div>`;
+                    }
+
+                    html += `
+                        <div class="event-block ${isUpcoming ? 'upcoming' : ''} ${isPast ? 'passed' : ''}">
+                            <div class="event-date-badge">
+                                <span class="day">${day}</span>
+                                <span class="month">${month}</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-title">
+                                    ${ev.title}
+                                    ${ev.badge ? `<span class="event-badge">${ev.badge}</span>` : ''}
+                                </div>
+                                ${ev.meta ? `<div class="event-meta">${ev.meta}</div>` : ''}
+                                ${itemsHtml}
+                                ${ev.note ? `<div class="event-note blue">${ev.note}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+
+            // Initial render
+            renderEvents();
+
+            // Re-render every minute to check for date changes
+            setInterval(renderEvents, 60000);
+        })();
+
+        // ================================================================
         // SEARCH
         // ================================================================
         (function() {
@@ -1626,8 +1780,8 @@
 
             const searchIndex = [
                 { text: 'AI Reminder', section: 'section-ai', icon: 'fa-brain' },
-                { text: 'Assignments', section: 'section-assignments', icon: 'fa-tasks' },
-                { text: 'Presentations', section: 'section-assignments', icon: 'fa-tasks' },
+                { text: 'Pinned Events', section: 'section-events', icon: 'fa-thumbtack' },
+                { text: 'Assignments', section: 'section-events', icon: 'fa-thumbtack' },
                 { text: 'Class Routine', section: 'section-routine', icon: 'fa-table' },
                 { text: 'Schedule', section: 'section-routine', icon: 'fa-table' },
                 { text: 'Study Materials', section: 'section-materials', icon: 'fa-folder-open' },
@@ -1754,9 +1908,9 @@
                 { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
                 { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
                 { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
-                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
-                { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '4303' },
-                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '4303' }
+                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4702' },
+                { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '5501' },
+                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '5502' }
             ];
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
