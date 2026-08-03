@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting to Strawbee-4-U</title>
+
+    <!-- Meta redirect after 0 seconds -->
+    <meta http-equiv="refresh" content="0; url=https://ryanahammad630-stack.github.io/Strawbee-4-U/" />
+
+    <style>
+        /* ── Reset & base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0e14;
+            color: #f0f4fa;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.01);
+        }
+
+        /* ── Icon ── */
+        .icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2d9cdb, #1a6b8f);
+            margin-bottom: 1.8rem;
+            box-shadow: 0 12px 28px rgba(45, 156, 219, 0.25);
+        }
+
+        .icon-wrap svg {
+            width: 44px;
+            height: 44px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ── Typography ── */
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #eef6ff, #a0c9f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            font-size: 1rem;
+            color: #9bb0c9;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid #2d9cdb;
+            border-radius: 50%;
+            animation: spin 0.9s cubic-bezier(0.65, 0.0, 0.35, 1.0) infinite;
+            margin-bottom: 1.8rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Progress bar ── */
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #2d9cdb, #6cb8f0);
+            animation: loadBar 1.6s cubic-bezier(0.65, 0.0, 0.35, 1.0) forwards;
+        }
+
+        @keyframes loadBar {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* ── Fallback link ── */
+        .fallback {
+            font-size: 0.95rem;
+            color: #8aa3be;
+        }
+
+        .fallback a {
+            color: #6cb8f0;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed rgba(108, 184, 240, 0.3);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .fallback a:hover {
+            color: #a0d0ff;
+            border-bottom-color: #a0d0ff;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card" role="main" aria-label="Redirecting">
+
+        <!-- Icon -->
+        <div class="icon-wrap" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2v4M12 22v-4M4 12H2M22 12h-2M19.07 4.93l-2.83 2.83M6.34 17.66l-2.83 2.83M17.66 6.34l2.83-2.83M4.93 19.07l2.83-2.83" />
+                <circle cx="12" cy="12" r="4" />
+            </svg>
+        </div>
+
+        <!-- Heading -->
+        <h1>Taking you to<br />Strawbee&#8209;4&#8209;U</h1>
+        <p class="sub">You'll be there in just a moment &hellip;</p>
+
+        <!-- Spinner -->
+        <div class="spinner" aria-hidden="true"></div>
+
+        <!-- Progress bar -->
+        <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Fallback link (shown if redirect fails) -->
+        <p class="fallback">
+            Not redirecting?&ensp;
+            <a href="https://ryanahammad630-stack.github.io/Strawbee-4-U/">
+                Click here to go now
+            </a>
+        </p>
+    </div>
+
+    <!-- ─── JavaScript fallback redirect ─── -->
+    <script>
+        (function() {
+            const TARGET_URL = 'https://ryanahammad630-stack.github.io/Strawbee-4-U/';
+
+            // If the meta refresh doesn't fire (rare), this ensures redirect
+            // after a tiny delay. Also handles cases where meta is blocked.
+            setTimeout(function() {
+                window.location.replace(TARGET_URL);
+            }, 1200); // 1.2s – gives time for the progress bar to finish
+        })();
+    </script>
+
+</body>
+</html>
