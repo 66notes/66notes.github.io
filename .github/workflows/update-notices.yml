@@ -21,10 +21,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      name: Install dependencies
         run: |
           pip install -r scripts/requirements.txt
-          playwright install —with-deps chromium
+          playwright install chromium
+          playwright install-deps chromium
 
       - name: Run scraper
         run: python scripts/scrape_notices.py
