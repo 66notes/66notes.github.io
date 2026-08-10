@@ -299,6 +299,57 @@
             font-size: 0.6rem;
         }
 
+        /* ── BUBT NOTICES ────────────────────────── */
+        .notice-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: #f9fafb;
+            text-decoration: none;
+            transition: all var(--transition);
+        }
+        .notice-item .notice-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cdd4de;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .notice-item.is-new .notice-dot {
+            background: var(--accent);
+        }
+        .notice-item .notice-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .notice-item .notice-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.35;
+        }
+        .notice-item .notice-date {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .notice-item .new-badge {
+            flex-shrink: 0;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: #eef2ff;
+            border: 1px solid #dbeafe;
+            padding: 2px 7px;
+            border-radius: 20px;
+            align-self: center;
+            white-space: nowrap;
+        }
+
         /* ── PINNED EVENTS ──────────────────────── */
         .events-root {
             font-family: 'Poppins', sans-serif;
@@ -1408,6 +1459,21 @@
                 </div>
             </div>
 
+            <div class="events-root" id="section-notices">
+                <div class="events-card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-bullhorn"></i> BUBT Notices</span>
+                    </div>
+                    <div style="text-align:center;font-size:0.65rem;color:var(--text-muted);margin:-0.35rem 0 0.6rem;" id="noticesUpdated"></div>
+                    <div class="events-list" id="noticesList">
+                        <div style="text-align:center;padding:1rem;color:#6b7280;">Loading notices...</div>
+                    </div>
+                    <div style="text-align:center;margin-top:0.6rem;">
+                        <a href="https://bubt.edu.bd/notice" target="_blank" rel="noopener" style="font-size:0.7rem;font-weight:600;color:var(--accent);text-decoration:none;">View all on BUBT site →</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="cta-footer">
                 <span class="cta-icon material-symbols-rounded">code</span>
                 <div class="cta-title">Want a website like this for you too?</div>
@@ -2077,6 +2143,92 @@
 
             renderEvents();
             setInterval(renderEvents, 60000);
+        })();
+
+        // ── BUBT NOTICES ───────────────────────────
+        (function() {
+            const NOTICES_URL = 'notices.json';
+            const SEEN_KEY = 'bubtNoticesSeenIds';
+            const listEl = document.getElementById('noticesList');
+            const updatedEl = document.getElementById('noticesUpdated');
+            if (!listEl) return;
+
+            function timeAgo(iso) {
+                if (!iso) return '';
+                const d = new Date(iso);
+                if (isNaN(d)) return '';
+                const diffMs = Date.now() - d.getTime();
+                const mins = Math.floor(diffMs / 60000);
+                if (mins < 1) return 'just now';
+                if (mins < 60) return mins + 'm ago';
+                const hrs = Math.floor(mins / 60);
+                if (hrs < 24) return hrs + 'h ago';
+                const days = Math.floor(hrs / 24);
+                if (days < 30) return days + 'd ago';
+                return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
+
+            function getSeenIds() {
+                try {
+                    return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]'));
+                } catch (e) {
+                    return new Set();
+                }
+            }
+
+            function saveSeenIds(ids) {
+                try {
+                    localStorage.setItem(SEEN_KEY, JSON.stringify(Array.from(ids)));
+                } catch (e) {}
+            }
+
+            function render(notices, fetchedAt) {
+                if (!notices || notices.length === 0) {
+                    listEl.innerHTML = '<div style="text-align:center;padding:1rem;color:#6b7280;">No notices found.</div>';
+                    return;
+                }
+                const seen = getSeenIds();
+                const isFirstVisit = seen.size === 0;
+
+                let html = '';
+                notices.slice(0, 10).forEach((n) => {
+                    const id = n.id || n.url || n.title;
+                    const isNew = !isFirstVisit && !seen.has(id);
+                    html +=
+                        '<a class="notice-item' + (isNew ? ' is-new' : '') + '" href="' +
+                        (n.url || 'https://bubt.edu.bd/notice') + '" target="_blank" rel="noopener">' +
+                        '<span class="notice-dot"></span>' +
+                        '<span class="notice-body">' +
+                        '<span class="notice-title">' + n.title + '</span>' +
+                        '<span class="notice-date">' + (n.date || timeAgo(n.published_at) || '') + '</span>' +
+                        '</span>' +
+                        (isNew ? '<span class="new-badge">NEW</span>' : '') +
+                        '</a>';
+                    seen.add(id);
+                });
+                listEl.innerHTML = html;
+                saveSeenIds(seen);
+
+                if (updatedEl) {
+                    updatedEl.textContent = fetchedAt ? 'Updated ' + timeAgo(fetchedAt) : '';
+                }
+            }
+
+            fetch(NOTICES_URL, { cache: 'no-store' })
+                .then((res) => {
+                    if (!res.ok) throw new Error('notices.json not found');
+                    return res.json();
+                })
+                .then((data) => {
+                    const notices = Array.isArray(data) ? data : (data.notices || []);
+                    const fetchedAt = Array.isArray(data) ? null : data.updated_at;
+                    render(notices, fetchedAt);
+                })
+                .catch(() => {
+                    listEl.innerHTML =
+                        '<div style="text-align:center;padding:1rem;color:#6b7280;">Notices unavailable right now.<br>' +
+                        '<a href="https://bubt.edu.bd/notice" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;">Check on BUBT site →</a></div>';
+                });
         })();
     </script>
 
