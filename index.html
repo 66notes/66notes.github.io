@@ -3,185 +3,221 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+
     <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
-    <title>66notes bubt - Student Dashboard</title>
+
+    <title>66notes bubt - Student Dashboard, Routine & Assignments</title>
+
     <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
     <link rel="canonical" href="https://66notes.github.io/" />
+
     <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
     <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://66notes.github.io/" />
     <meta property="og:image" content="https://66notes.github.io/og-image.png" />
     <meta property="og:site_name" content="66Notes BUBT" />
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
     <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
     <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
-        :root {
-            --bg: #f4f7fc;
-            --surface: #ffffff;
-            --border: #eef2f6;
-            --border-strong: #e0e5ec;
-            --text: #1e2a3e;
-            --text-secondary: #6b7280;
-            --text-muted: #9ca3af;
-            --navy: #0d2b4e;
-            --accent: #4a6cf7;
-            --accent-light: #eef2ff;
-            --accent-glow: rgba(74, 108, 247, 0.15);
-            --green: #22c55e;
-            --amber: #f59e0b;
-            --orange: #f97316;
-            --red-soft: #fef2f2;
-            --radius-sm: 10px;
-            --radius: 14px;
-            --radius-lg: 18px;
-            --radius-xl: 20px;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
-            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
+        /* ================================================================
+           ALL STYLES (same as before)
+           ================================================================ */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         html {
             font-size: 16px;
             -webkit-text-size-adjust: 100%;
             -webkit-tap-highlight-color: transparent;
             scroll-behavior: smooth;
         }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 80px;
+            background: #f4f7fc;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            padding: 12px 14px;
+            color: #1e2a3e;
+            line-height: 1.4;
             min-height: 100vh;
-            line-height: 1.5;
+        }
+        .dashboard {
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .material-symbols-rounded {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            font-size: 24px;
-            line-height: 1;
-        }
-
-        /* ── TOP APP BAR ─────────────────────────── */
-        .top-app-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        .site-header {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #eef2f6;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 56px;
-            padding: 0 14px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            backdrop-filter: blur(10px);
+            gap: 0.8rem;
         }
-        .top-app-bar__title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.15rem;
+        .site-header h1 {
+            font-size: 1.2rem;
             font-weight: 800;
-            color: var(--navy);
+            color: #0d2b4e;
             letter-spacing: -0.3px;
-            flex-shrink: 0;
         }
-        .top-app-bar__title span {
-            color: var(--accent);
+        .site-header h1 span {
+            color: #4a6cf7;
         }
-        .top-app-bar__right {
+        .header-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.3rem;
+            flex-shrink: 0;
         }
-        .notices-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 7px 15px;
-            border-radius: 30px;
-            background: var(--accent-light);
-            color: var(--accent);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: 1px solid #dbeafe;
-            transition: background var(--transition), transform 0.15s;
-            min-height: 34px;
-            white-space: nowrap;
+        .search-toggle {
+            background: #ffffff;
+            border: 1.5px solid #e2e6ec;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            color: #0d2b4e;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+            touch-action: manipulation;
         }
-        .notices-btn:active {
-            transform: scale(0.96);
-            background: #e0e9ff;
+        .search-toggle:active {
+            background: #f0f2f5;
+            border-color: #4a6cf7;
         }
-        .notices-btn .material-symbols-rounded {
-            font-size: 16px;
+        .search-toggle i {
+            font-size: 1rem;
         }
 
-        /* ── CONTENT ────────────────────────────── */
-        .content {
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 14px 14px 100px;
-            min-height: calc(100vh - 56px);
+        .search-bar-wrap {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            margin-top: 0;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            padding: 0 0.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
-        .page {
-            animation: fade-in 0.3s ease;
+        .search-bar-wrap.open {
+            max-height: 260px;
+            opacity: 1;
+            margin-top: 0.4rem;
+            padding: 0.6rem 0.8rem;
         }
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .page {
-                animation: none;
-            }
-        }
-        .page h2 {
+        .search-bar-wrap input {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #e2e6ec;
+            border-radius: 10px;
             font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.15rem;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+            background: #f8fafc;
         }
-        .page .subtitle {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.9rem;
+        .search-bar-wrap input:focus {
+            border-color: #4a6cf7;
+            background: #fff;
+        }
+        .search-bar-wrap input::placeholder {
+            color: #9ca3af;
+        }
+        .search-results {
+            list-style: none;
+            padding: 0.3rem 0 0;
+            margin: 0;
+            max-height: 160px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-results.show {
+            display: block;
+        }
+        .search-results li {
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #1e2a3e;
+            transition: background 0.15s;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .search-results li:last-child {
+            border-bottom: none;
+        }
+        .search-results li:active,
+        .search-results li:hover {
+            background: #eef2f6;
+        }
+        .search-results li .match-icon {
+            color: #4a6cf7;
+            font-size: 0.7rem;
+            width: 1.2rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .search-results li .match-label {
+            font-weight: 500;
+            flex: 1;
+        }
+        .search-results li .match-hint {
+            font-size: 0.6rem;
+            color: #9ca3af;
+            background: #f1f3f5;
+            padding: 0.1rem 0.5rem;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .no-results {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            text-align: center;
         }
 
-        /* ── AI REMINDER ────────────────────────── */
+        .section-highlight {
+            animation: highlightPulse 1.2s ease 3;
+            border-left: 4px solid #4a6cf7 !important;
+            background: #ebf0ff !important;
+        }
+        @keyframes highlightPulse {
+            0% { background: #ebf0ff; }
+            50% { background: #d6e4ff; }
+            100% { background: #ebf0ff; }
+        }
+
         .glance {
-            background: var(--surface);
-            border-radius: var(--radius-xl);
+            background: #ffffff;
+            border-radius: 20px;
             padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            border: 1px solid #eef2f6;
             text-align: center;
-            margin-bottom: 1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
         }
         .section-title {
             display: flex;
@@ -190,48 +226,36 @@
             gap: 0.5rem;
             font-weight: 700;
             font-size: 1rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
+            color: #1e2a3e;
+            margin-bottom: 0.6rem;
         }
         .section-title i {
-            color: var(--accent);
+            color: #4a6cf7;
         }
         .live-indicator {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.7);
             animation: pulse 1.8s infinite;
             flex-shrink: 0;
         }
         @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-            }
-        }
-        .reminder-main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
         }
         .message-box {
-            min-height: 48px;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #2d3748;
             position: relative;
-            width: 100%;
+            margin-bottom: 0.6rem;
         }
         .message-line {
             position: absolute;
@@ -239,7 +263,7 @@
             text-align: center;
             opacity: 0;
             transform: translateX(12px);
-            transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+            transition: opacity 0.5s cubic-bezier(0.2,0.9,0.3,1), transform 0.5s cubic-bezier(0.2,0.9,0.3,1);
             pointer-events: none;
             padding: 0 0.2rem;
         }
@@ -251,35 +275,44 @@
         }
         .message-line strong {
             font-weight: 700;
-            color: var(--navy);
+            color: #0d2b4e;
+        }
+        .message-line.cta-reminder {
+            color: #7c2d12;
+            font-weight: 600;
+        }
+        .message-line.mkt-reminder {
+            color: #1e40af;
+            font-weight: 600;
         }
         .break-timer {
             font-weight: 700;
             color: #b45309;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
+
         .clock-display {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            letter-spacing: 0.3px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
             font-variant-numeric: tabular-nums;
-            margin-top: 0.1rem;
         }
+
         .next-class-bar {
             display: flex;
             align-items: center;
             gap: 0.4rem;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             background: #f8fafc;
             border-radius: 12px;
-            padding: 0.4rem 0.7rem;
-            border: 1px solid var(--border);
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #eef2f6;
             font-weight: 500;
             justify-content: center;
             flex-wrap: wrap;
-            min-height: 38px;
-            margin-top: 0.4rem;
+            min-height: 44px;
         }
         .status-dot {
             width: 8px;
@@ -289,33 +322,46 @@
             flex-shrink: 0;
         }
         .status-dot.running {
-            background: var(--green);
+            background: #22c55e;
         }
         .next-label {
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             color: #4b5563;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
+        }
+        .nc-day,
+        .nc-course,
+        .nc-time {
+            font-weight: 600;
+        }
+        .nc-room {
+            font-weight: 600;
+            background: #eef2f6;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
         }
 
-        /* ── PINNED EVENTS ──────────────────────── */
+        /* ================================================================
+           PINNED EVENTS (Redesigned with Timeline + Expandable)
+           ================================================================ */
         .events-root {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.3;
-            color: var(--text);
+            color: #1e2a3e;
         }
         .events-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
+            background: #ffffff;
+            border-radius: 18px;
             padding: 1rem 1rem 0.6rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
         }
-        .card-header {
+        .events-header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -325,7 +371,7 @@
             border-bottom: 1.5px solid #e9edf2;
             position: relative;
         }
-        .card-header::after {
+        .events-header::after {
             content: '';
             position: absolute;
             bottom: -1.5px;
@@ -333,25 +379,27 @@
             transform: translateX(-50%);
             width: 40px;
             height: 3px;
-            background: var(--accent);
+            background: #4a6cf7;
             border-radius: 2px;
         }
-        .card-title {
+        .events-heading {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 0.3px;
             text-transform: uppercase;
-            color: var(--text);
+            color: #1e2a3e;
         }
-        .card-title i {
-            color: var(--accent);
+        .events-heading i {
+            color: #4a6cf7;
             margin-right: 0.3rem;
         }
+
         .events-list {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
+
         .event-block {
             display: flex;
             gap: 0.5rem;
@@ -359,9 +407,12 @@
             background: #f9fafb;
             border-radius: 12px;
             padding: 0;
-            border: 1px solid var(--border);
+            border: 1px solid #eef2f6;
             overflow: hidden;
-            transition: all var(--transition);
+            transition: all 0.2s ease;
+        }
+        .event-block:last-child {
+            margin-bottom: 0;
         }
         .event-block.passed {
             opacity: 0.5;
@@ -372,6 +423,7 @@
         .event-block.passed .event-meta,
         .event-block.passed .event-items,
         .event-block.passed .event-note,
+        .event-block.passed .event-team,
         .event-block.passed .event-details * {
             text-decoration: line-through !important;
             color: #6b7280 !important;
@@ -380,41 +432,44 @@
             background: #d1d5db !important;
             color: #6b7280 !important;
         }
+
         .event-block.upcoming {
             background: #fef9e3;
             border-left: 4px solid #f5b042;
             border-color: #fde68a;
         }
+
+        /* Date Badge on Left */
         .event-date-badge {
             flex-shrink: 0;
-            align-self: center;
-            width: 60px;
-            height: 60px;
-            background: var(--navy);
-            border-radius: 14px;
+            width: 50px;
+            min-height: 50px;
+            background: #0d2b4e;
+            border-radius: 0 12px 12px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.1rem;
+            padding: 0.2rem 0.1rem;
             text-align: center;
-            margin-left: 0.1rem;
-            flex-grow: 0;
+            margin-right: 0.1rem;
+            align-self: stretch;
         }
         .event-date-badge .day {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #ffffff;
-            line-height: 1.1;
+            line-height: 1;
         }
         .event-date-badge .month {
             font-size: 0.55rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            color: #9ca3af;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            line-height: 1.2;
         }
+
+        /* Event Content */
         .event-content {
             flex: 1;
             padding: 0.4rem 0.5rem 0.4rem 0;
@@ -423,6 +478,7 @@
             justify-content: center;
             min-width: 0;
         }
+
         .event-summary {
             display: flex;
             align-items: center;
@@ -434,8 +490,8 @@
         }
         .event-summary .event-title {
             font-weight: 700;
-            font-size: 0.78rem;
-            color: var(--text);
+            font-size: 0.8rem;
+            color: #1e2a3e;
             display: flex;
             flex-wrap: wrap;
             align-items: baseline;
@@ -444,7 +500,7 @@
         }
         .event-badge {
             font-weight: 600;
-            font-size: 0.5rem;
+            font-size: 0.55rem;
             background: #fef3c7;
             color: #b45309;
             padding: 0 6px;
@@ -457,33 +513,34 @@
             flex-shrink: 0;
             background: none;
             border: none;
-            color: var(--accent);
+            color: #4a6cf7;
             font-weight: 600;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             padding: 0.1rem 0.4rem;
             border-radius: 6px;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
-            transition: background var(--transition);
+            transition: background 0.15s;
             min-height: 28px;
             display: flex;
             align-items: center;
             gap: 0.2rem;
         }
         .event-toggle-btn:active {
-            background: rgba(74, 108, 247, 0.1);
+            background: rgba(74,108,247,0.1);
         }
         .event-toggle-btn i {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             transition: transform 0.25s ease;
         }
         .event-toggle-btn.open i {
             transform: rotate(180deg);
         }
+
         .event-details {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.25s ease;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease, opacity 0.25s ease;
             padding: 0 0.2rem 0 0;
             opacity: 0;
         }
@@ -493,16 +550,16 @@
             opacity: 1;
         }
         .event-meta {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-weight: 500;
-            color: #4b5563;
+            color: #374151;
             margin-top: 0.05rem;
         }
         .event-items {
             display: flex;
             flex-wrap: wrap;
             gap: 0.1rem 0.4rem;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             color: #4b5563;
             margin-top: 0.1rem;
         }
@@ -511,8 +568,12 @@
             align-items: center;
             gap: 0.1rem;
         }
+        .event-items .opt {
+            color: #6b7280;
+            font-style: italic;
+        }
         .event-note {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-weight: 500;
             color: #7c2d12;
             background: #fef3c7;
@@ -527,376 +588,452 @@
             color: #1e40af;
             border-color: #dbeafe;
         }
-
-        /* ── ROUTINE & CODES (REDESIGNED) ───────── */
-        .routine-section {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.1rem 1rem 0.9rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
+        .event-team {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #6d28d9;
+            background: #f5f3ff;
+            border: 1px solid #ede9fe;
+            padding: 0.05rem 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 0.1rem;
         }
-        .routine-section .section-label {
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
+        .event-items .topic-badge {
+            font-size: 0.55rem;
+            font-weight: 500;
+            background: #e5e7eb;
+            color: #1e2a3e;
+            padding: 0 6px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+
+        /* ===== ROUTINE ===== */
+        .routine-outer-wrapper {
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            background: transparent;
+        }
+        .routine-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            background: #0d2b4e;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
             text-transform: uppercase;
-            color: var(--text);
-            text-align: center;
-            margin-bottom: 0.7rem;
-            padding-bottom: 0.45rem;
-            border-bottom: 1.5px solid #e9edf2;
-            position: relative;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 46px;
+            touch-action: manipulation;
+            box-shadow: 0 4px 14px rgba(13,43,78,0.15);
+            transition: background 0.3s ease, transform 0.15s ease;
         }
-        .routine-section .section-label::after {
-            content: '';
-            position: absolute;
-            bottom: -1.5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 44px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
+        .routine-toggle-btn:active {
+            transform: scale(0.97);
+            background: #14365e;
         }
-        .routine-section .section-label i {
-            color: var(--accent);
-            margin-right: 0.35rem;
+        .btn-arrow {
+            display: inline-flex;
+            font-size: 0.9rem;
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            transform: rotate(0deg);
         }
-
-        .routine-table-wrap {
+        .routine-toggle-btn.expanded .btn-arrow {
+            transform: rotate(90deg);
+        }
+        .routine-collapse-wrapper {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+            border-radius: 0 0 14px 14px;
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid #eef2f6;
+            border-top: none;
+            margin-top: -1px;
+        }
+        .routine-collapse-wrapper.open {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06), 0 0 0 1px #eef2f6;
+        }
+        .routine-inner {
+            padding: 10px 6px 12px 6px;
+        }
+        .table-scrollable {
             width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
             scrollbar-color: #cdd4de transparent;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: #fafbfc;
+            position: relative;
         }
-        .routine-table-wrap::-webkit-scrollbar {
-            height: 5px;
+        .table-scrollable::-webkit-scrollbar {
+            height: 4px;
         }
-        .routine-table-wrap::-webkit-scrollbar-thumb {
+        .table-scrollable::-webkit-scrollbar-thumb {
             background: #cdd4de;
             border-radius: 10px;
         }
-        .routine-table-wrap::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .routine-table {
+        .table-responsive {
             width: 100%;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+            min-width: 340px;
+        }
+        .schedule-table {
+            width: 100%;
+            table-layout: fixed;
             border-collapse: collapse;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
+            background-color: white;
             font-family: 'Poppins', sans-serif;
-            min-width: 380px;
+            line-height: 1.3;
+            min-width: 340px;
         }
-        .routine-table thead tr {
-            background: #f5f6f9;
+        .schedule-table thead tr {
+            background-color: #fafafc;
+            border-bottom: 1.5px solid #d0d4da;
         }
-        .routine-table th {
+        .schedule-table th {
             text-align: left;
-            padding: 10px 12px;
-            font-weight: 700;
-            font-size: 0.62rem;
-            color: var(--navy);
-            border-bottom: 2px solid #dde1e8;
-            background: #f5f6f9;
+            padding: 5px 6px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            color: #1e2a3e;
+            border-bottom: 1px solid #e9edf2;
+            background-color: #fafafc;
             white-space: nowrap;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
-        .routine-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
+        .schedule-table td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #eef2f6;
             vertical-align: middle;
-            background: #ffffff;
+            background-color: white;
             color: #1f2a3e;
             white-space: nowrap;
         }
-        .routine-table tbody tr.day-group-start td {
-            border-top: 2px solid #e9edf2;
+        .schedule-table tbody tr.section-end td {
+            border-bottom: 1.5px solid #1a1a1a;
         }
-        .routine-table tbody tr.day-group-start td.day-cell {
-            border-top: 2px solid #e9edf2;
-        }
-        .routine-table tbody tr.day-group-end td {
-            border-bottom: 2px solid #d5dae2;
-        }
-        .routine-table tbody tr:hover td {
-            background: #fafcff;
-            transition: background 0.15s ease;
-        }
-        .routine-table .day-cell {
+        .day-cell {
             font-weight: 700;
-            color: var(--navy);
-            font-size: 0.68rem;
-            background: #f8f9fc !important;
-            text-align: center;
-            letter-spacing: 0.02em;
+            color: #0f2b46;
+            font-size: 0.65rem;
         }
-        .routine-table .course-code {
+        .course-code {
             font-weight: 700;
-            color: #1a3a5c;
-            background: #eef3f9;
-            padding: 3px 10px;
+            color: #0d2b4e;
+            background: #f0f3f7;
+            padding: 1px 5px;
             border-radius: 8px;
-            font-size: 0.64rem;
+            font-size: 0.6rem;
             display: inline-block;
-            letter-spacing: 0.02em;
-            border: 1px solid #dde4ee;
         }
-        .routine-table .course-code.ict {
-            background: #eef2ff;
-            border-color: #d4ddfc;
-            color: #1e3a8a;
+        .schedule-table colgroup .col-day {
+            width: 14%;
         }
-        .routine-table .course-code.hum {
-            background: #f0fdf4;
-            border-color: #c6e9d0;
-            color: #14532d;
+        .schedule-table colgroup .col-time {
+            width: 32%;
         }
-        .routine-table .course-code.mkt {
-            background: #fff7ed;
-            border-color: #fddcab;
-            color: #7c2d12;
+        .schedule-table colgroup .col-room {
+            width: 14%;
         }
-        .routine-table .room-badge {
-            display: inline-block;
-            font-weight: 700;
-            font-size: 0.66rem;
-            color: #374151;
-            background: #f1f4f8;
-            padding: 3px 10px;
-            border-radius: 7px;
-            border: 1px solid #e2e6ec;
-            letter-spacing: 0.03em;
-            text-align: center;
-            min-width: 44px;
-        }
-        .routine-table .time-cell {
-            font-weight: 500;
-            color: #374151;
-            letter-spacing: 0.02em;
-        }
-        .routine-table colgroup .col-day {
-            width: 15%;
-        }
-        .routine-table colgroup .col-time {
-            width: 30%;
-        }
-        .routine-table colgroup .col-room {
-            width: 15%;
-        }
-        .routine-table colgroup .col-course {
+        .schedule-table colgroup .col-course {
             width: 40%;
         }
 
-        /* ── CODES SECTION (REDESIGNED) ─────────── */
-        .codes-section {
-            margin-top: 1.1rem;
-            padding-top: 0.9rem;
-            border-top: 1.5px solid #e9edf2;
+        .sub-buttons-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            justify-content: stretch;
+            margin-top: 2px;
         }
-        .codes-section .codes-label {
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: var(--navy);
-            text-align: center;
-            margin-bottom: 0.6rem;
+        .sub-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: transparent;
+            border: 1.5px solid #cdd6e4;
+            color: #0d2b4e;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 600;
             letter-spacing: 0.02em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 30px;
+            background-color: #ffffff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-height: 28px;
+            flex: 1 1 0;
+            min-width: 0;
         }
-        .codes-section .codes-label i {
-            color: var(--accent);
-            margin-right: 0.35rem;
+        .sub-link-btn:active {
+            transform: scale(0.95);
+            background: #e5eaf2;
+        }
+        .sub-link-btn .external-icon {
+            font-size: 0.6rem;
+            opacity: 0.7;
         }
 
-        .codes-grid {
-            max-width: 520px;
+        .drive-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 0.8rem;
+            border: 1px solid #eef2f6;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .drive-buttons {
+            display: flex;
+            justify-content: center;
+        }
+        .drive-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: white;
+            background: #0d2b4e;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 2px 8px rgba(13,43,78,0.15);
+            white-space: nowrap;
+            min-height: 44px;
+            width: 100%;
+            max-width: 280px;
+        }
+        .drive-btn:active {
+            transform: scale(0.96);
+            background: #14365e;
+        }
+        .drive-btn i {
+            font-size: 0.9rem;
+        }
+
+        .notice-board {
+            background: white;
+            border: 1px solid #eef2f6;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .notice-header {
+            background: #fff;
+            padding: 0.8rem 1rem;
+            border-bottom: 2px solid #eef2f6;
+        }
+        .notice-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a2540;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-header h2 i {
+            color: #4a6cf7;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 380px;
+        }
+        .notice-table th {
+            background: #f8fafc;
+            color: #1e3a8a;
+            font-weight: 600;
+            padding: 0.5rem 0.7rem;
+            text-align: left;
+            border-bottom: 1px solid #eef2f6;
+        }
+        .notice-table td {
+            padding: 0.5rem 0.7rem;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: middle;
+        }
+        .notice-table tr:last-child td {
+            border-bottom: none;
+        }
+        .clickable-title {
+            color: #0a2540;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            word-break: break-word;
+            display: inline-block;
+            min-height: 40px;
+            line-height: 1.3;
+        }
+        .clickable-title:active {
+            color: #2563eb;
+        }
+
+        .codes-list {
+            max-width: 500px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 0.55rem;
+            gap: 0.4rem;
         }
-        .codes-grid .code-card {
+        .codes-row {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            background: #fafbfc;
-            border-radius: var(--radius);
-            padding: 0.5rem 0.7rem;
-            border: 1px solid var(--border);
-            min-height: 46px;
-            transition: box-shadow var(--transition), border-color var(--transition);
+            gap: 0.4rem;
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 0.35rem 0.6rem;
+            border: 1px solid #eef2f6;
+            min-height: 40px;
+            flex-wrap: nowrap;
         }
-        .codes-grid .code-card:hover {
-            border-color: #d0d7e2;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-        }
-        .codes-grid .code-card .code-icon-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .codes-grid .code-card .code-icon-dot.ict-dot {
-            background: #4a6cf7;
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.18);
-        }
-        .codes-grid .code-card .code-icon-dot.hum-dot {
-            background: #22c55e;
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
-        }
-        .codes-grid .code-card .code-icon-dot.mkt-dot {
-            background: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
-        }
-        .codes-grid .code-card .code-subject {
-            font-weight: 700;
-            font-size: 0.72rem;
+        .codes-sub {
+            font-weight: 600;
+            font-size: 0.7rem;
             white-space: nowrap;
-            min-width: 62px;
-            color: var(--navy);
+            min-width: 60px;
+            color: #0f2b46;
             flex-shrink: 0;
-            letter-spacing: 0.02em;
         }
-        .codes-grid .code-card .code-value-box {
+        .code-box {
             flex: 1;
-            background: #f0f3f8;
-            border-radius: 8px;
-            padding: 0.2rem 0.7rem;
-            border: 1px solid #e2e6ed;
+            background: #f0f3f7;
+            border-radius: 6px;
+            padding: 0.1rem 0.5rem;
+            border: 1px solid #e2e6ec;
             text-align: center;
             min-width: 0;
             overflow: hidden;
-            transition: background var(--transition);
         }
-        .codes-grid .code-card .code-value {
+        .code-text {
             font-weight: 700;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            color: var(--navy);
+            color: #0d2b4e;
             white-space: nowrap;
-            font-family: 'Poppins', monospace;
         }
-        .codes-grid .code-card .copy-btn {
+        .code-text.empty {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.6rem;
+            font-style: italic;
+            text-transform: none;
+        }
+        .copy-btn-code {
             flex-shrink: 0;
-            padding: 0.25rem 0.85rem;
+            padding: 0.1rem 0.7rem;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 0.62rem;
+            font-size: 0.6rem;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
             border: none;
-            background: #e8ecf2;
+            background: #e5e7eb;
             color: #374151;
-            min-height: 30px;
+            min-height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             min-width: 50px;
-            transition: all var(--transition);
+            transition: background 0.15s;
             white-space: nowrap;
-            letter-spacing: 0.02em;
         }
-        .codes-grid .code-card .copy-btn:hover {
-            background: #dde2ea;
+        .copy-btn-code:active {
+            background: #d1d5db;
         }
-        .codes-grid .code-card .copy-btn:active {
-            transform: scale(0.94);
-            background: #d1d7e0;
+        .copy-btn-code.dim {
+            opacity: 0.4;
+            pointer-events: none;
         }
-        .codes-grid .code-card .copy-btn.copied-flash {
-            background: #d1fae5 !important;
-            color: #065f46 !important;
-            border: 1px solid #a7f3d0 !important;
-        }
-
-        /* ── ALL PDFs ───────────────────────────── */
-        .drive-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            margin-top: 0.5rem;
-        }
-        .drive-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
+        .codes-section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0d2b4e;
+            margin-bottom: 0.5rem;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            transition: box-shadow var(--transition);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-        }
-        .drive-card:hover {
-            box-shadow: var(--shadow-lg);
-        }
-        .drive-card .drive-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-        }
-        .drive-card .drive-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text);
-        }
-        .drive-card .drive-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .btn {
-            height: 40px;
-            padding: 0 24px;
-            border-radius: 40px;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: box-shadow 0.15s ease, background-color 0.15s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        .btn--filled {
-            background: var(--navy);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15);
-        }
-        .btn--filled:hover {
-            box-shadow: 0 4px 16px rgba(13, 43, 78, 0.2);
-        }
-        .btn--tonal {
-            background: #d9e3ff;
-            color: #101b32;
-        }
-        .btn--tonal:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-        .btn--large {
-            height: 48px;
-            padding: 0 32px;
-            font-size: 16px;
-            width: 100%;
-            justify-content: center;
+            letter-spacing: 0.5px;
         }
 
-        /* ── FACULTY ────────────────────────────── */
         .faculty-root {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.4;
-            color: var(--text);
+            color: #1e2a3e;
         }
+        .faculty-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1rem 1rem 0.6rem;
+            border: 1px solid #eef2f6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+        }
+        .faculty-heading {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            color: #1e2a3e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1.5px solid #e9edf2;
+            position: relative;
+        }
+        .faculty-heading i {
+            color: #4a6cf7;
+        }
+        .faculty-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 2px;
+        }
+
         .faculty-list {
             display: flex;
             flex-direction: column;
@@ -905,7 +1042,7 @@
         .faculty-item {
             background: #f9fafb;
             border-radius: 12px;
-            border: 1px solid var(--border);
+            border: 1px solid #eef2f6;
             padding: 0.6rem 0.7rem;
             display: block;
         }
@@ -919,13 +1056,13 @@
         }
         .faculty-name {
             font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--navy);
+            font-size: 0.95rem;
+            color: #0d2b4e;
             margin: 0;
             line-height: 1.3;
         }
         .faculty-number {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #1e40af;
             background: #eff6ff;
@@ -947,17 +1084,17 @@
             align-items: center;
             justify-content: center;
             gap: 0.3rem;
-            padding: 0.15rem 0.9rem;
+            padding: 0.2rem 0.9rem;
             border-radius: 40px;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             border: none;
             cursor: pointer;
-            transition: background var(--transition), transform 0.15s;
-            min-height: 34px;
+            transition: background 0.15s, transform 0.15s;
+            min-height: 36px;
             text-decoration: none;
-            min-width: 56px;
+            min-width: 60px;
         }
         .faculty-actions .btn-fac:active {
             transform: scale(0.95);
@@ -970,9 +1107,9 @@
             background: #d1d5db;
         }
         .faculty-actions .btn-call {
-            background: var(--navy);
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15);
+            background: #0d2b4e;
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(13,43,78,0.12);
         }
         .faculty-actions .btn-call:active {
             background: #14365e;
@@ -980,8 +1117,9 @@
         .faculty-actions .btn-call i {
             font-size: 0.8rem;
         }
+
         .faculty-details {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: #4b5563;
             border-top: 1px dashed #e9edf2;
             padding-top: 0.2rem;
@@ -997,554 +1135,315 @@
         }
         .faculty-details .label {
             font-weight: 500;
-            color: var(--text-secondary);
+            color: #6b7280;
         }
         .faculty-details .value {
-            color: var(--text);
+            color: #1e2a3e;
             font-weight: 400;
         }
 
-        /* ── CTA FOOTER ─────────────────────────── */
-        .cta-footer {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
+        .cta-card {
+            background: #f9fafb;
+            border-radius: 14px;
+            padding: 1rem 1rem;
+            border: 1px solid #eef2f6;
             text-align: center;
-            box-shadow: var(--shadow);
-            margin-top: 0.5rem;
         }
-        .cta-footer .cta-icon {
-            font-size: 2rem;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 0.2rem;
-        }
-        .cta-footer .cta-title {
+        .cta-title {
             font-weight: 700;
-            font-size: 1rem;
-            color: var(--navy);
+            font-size: 0.95rem;
+            color: #1e2a3e;
             margin-bottom: 0.1rem;
         }
-        .cta-footer .cta-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.6rem;
+        .cta-title span {
+            color: #0d2b4e;
         }
-        .cta-footer .cta-btn {
+        .cta-desc {
+            font-size: 0.75rem;
+            color: #4b5563;
+            margin: 0.1rem 0 0.5rem;
+        }
+        .cta-btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 1.6rem;
+            padding: 0.5rem 1.4rem;
             border-radius: 40px;
-            background: #1877f2;
-            color: #ffffff;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             font-size: 0.8rem;
             text-decoration: none;
-            transition: background var(--transition), transform 0.15s;
-            box-shadow: 0 3px 12px rgba(24, 119, 242, 0.25);
+            color: #fff;
+            background: #1877f2;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 3px 12px rgba(24,119,242,0.25);
             min-height: 42px;
         }
-        .cta-footer .cta-btn:active {
+        .cta-btn:active {
             transform: scale(0.96);
         }
-        .cta-footer .cta-btn i {
+        .cta-btn i {
             font-size: 0.9rem;
         }
 
-        /* ── BOTTOM NAV ─────────────────────────── */
-        .bottom-nav {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 30;
-            display: flex;
-            height: 72px;
-            padding-bottom: env(safe-area-inset-bottom, 0);
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-        }
-        .bottom-nav__item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
+        .footer-seo {
+            background: #f4f7fc;
+            border-radius: 0;
+            padding: 0;
             border: none;
-            background: transparent;
-            cursor: pointer;
-            padding: 6px 0 10px;
-            color: var(--text-secondary);
-            font-family: 'Poppins', sans-serif;
-            transition: color var(--transition);
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
-        }
-        .bottom-nav__item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 0 0 3px 3px;
+            color: #f4f7fc;
+            font-size: 0.01rem;
+            line-height: 0.01;
+            height: 0;
+            overflow: hidden;
             opacity: 0;
-            transition: opacity var(--transition);
+            pointer-events: none;
+            margin: 0;
         }
-        .bottom-nav__item.is-active::after {
-            opacity: 1;
-        }
-        .bottom-nav__item.is-active {
-            color: var(--navy);
-        }
-        .bottom-nav__icon {
-            width: 48px;
-            height: 28px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color var(--transition);
-        }
-        .bottom-nav__item.is-active .bottom-nav__icon {
-            background: #eef2f6;
-        }
-        .bottom-nav__icon .material-symbols-rounded {
-            font-size: 22px;
-        }
-        .bottom-nav__label {
-            font-size: 10px;
-            font-weight: 500;
+        .footer-seo p,
+        .footer-seo .brand,
+        .footer-seo .tags {
+            color: #f4f7fc !important;
+            background: transparent !important;
+            font-size: 0.01rem !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
 
-        /* ── SECTION HIGHLIGHT ──────────────────── */
-        .section-highlight {
-            animation: highlightPulse 1.2s ease 3;
-            border-left: 4px solid var(--accent) !important;
-            background: #ebf0ff !important;
-        }
-        @keyframes highlightPulse {
-            0% {
-                background: #ebf0ff;
-            }
-            50% {
-                background: #d6e4ff;
-            }
-            100% {
-                background: #ebf0ff;
-            }
-        }
-
-        /* ── RESPONSIVE ─────────────────────────── */
         @media (max-width: 480px) {
-            .content {
-                padding: 10px 10px 90px;
-            }
-            .top-app-bar__title {
-                font-size: 1rem;
-            }
-            .notices-btn {
-                font-size: 0.6rem;
-                padding: 5px 10px;
-                min-height: 28px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 14px;
-            }
-            .glance {
-                padding: 1rem 0.7rem;
-            }
-            .message-box {
-                font-size: 0.85rem;
-                min-height: 44px;
-            }
-            .clock-display {
-                font-size: 0.65rem;
-            }
-            .next-class-bar {
-                font-size: 0.6rem;
-                padding: 0.3rem 0.5rem;
-                min-height: 34px;
-            }
-            .event-date-badge {
-                width: 50px;
-                height: 50px;
-            }
-            .event-date-badge .day {
-                font-size: 1.1rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.5rem;
-            }
-            .event-title {
-                font-size: 0.7rem;
-            }
-            .routine-table {
-                font-size: 0.62rem;
-                min-width: 320px;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 7px 8px;
-            }
-            .routine-table .course-code {
-                font-size: 0.55rem;
-                padding: 2px 7px;
-            }
-            .routine-table .day-cell {
-                font-size: 0.6rem;
-            }
-            .routine-table .room-badge {
-                font-size: 0.56rem;
-                padding: 2px 7px;
-                min-width: 36px;
-            }
-            .codes-grid .code-card {
-                padding: 0.4rem 0.55rem;
-                gap: 0.4rem;
-                min-height: 40px;
-            }
-            .codes-grid .code-card .code-subject {
-                font-size: 0.64rem;
-                min-width: 50px;
-            }
-            .codes-grid .code-card .code-value {
-                font-size: 0.68rem;
-                letter-spacing: 0.05em;
-            }
-            .codes-grid .code-card .copy-btn {
-                font-size: 0.55rem;
-                min-height: 26px;
-                min-width: 42px;
-                padding: 0.2rem 0.6rem;
-            }
-            .faculty-name {
-                font-size: 0.75rem;
-            }
-            .faculty-number {
-                font-size: 0.65rem;
-            }
-            .faculty-actions .btn-fac {
-                font-size: 0.6rem;
-                min-height: 30px;
-                min-width: 48px;
-                padding: 0.1rem 0.6rem;
-            }
-            .drive-card .drive-icon {
-                font-size: 2rem;
-            }
-            .drive-card .drive-title {
-                font-size: 0.85rem;
-            }
-            .btn--large {
-                font-size: 13px;
-                height: 42px;
-            }
-            .bottom-nav {
-                height: 64px;
-            }
-            .bottom-nav__label {
-                font-size: 9px;
-            }
-            .bottom-nav__icon .material-symbols-rounded {
-                font-size: 20px;
-            }
-            .bottom-nav__icon {
-                width: 44px;
-                height: 24px;
-            }
-            .routine-section {
-                padding: 0.8rem 0.7rem 0.7rem;
-            }
-            .cta-footer {
-                padding: 1rem 0.8rem;
-            }
-            .cta-footer .cta-icon {
-                font-size: 1.6rem;
-            }
-            .cta-footer .cta-title {
-                font-size: 0.9rem;
-            }
-            .cta-footer .cta-desc {
-                font-size: 0.7rem;
-            }
-            .cta-footer .cta-btn {
-                font-size: 0.7rem;
-                padding: 0.4rem 1.2rem;
-                min-height: 38px;
-                width: 100%;
-                justify-content: center;
-            }
+            body { padding: 10px 12px; }
+            .dashboard { gap: 0.9rem; }
+            .site-header { padding: 0.6rem 0.7rem; border-radius: 14px; gap: 0.4rem; }
+            .site-header h1 { font-size: 1rem; }
+            .search-toggle { width: 36px; height: 36px; font-size: 0.9rem; }
+            .search-toggle i { font-size: 0.9rem; }
+            .search-bar-wrap.open { padding: 0.4rem 0.5rem; }
+            .search-bar-wrap input { font-size: 0.75rem; padding: 0.4rem 0.5rem; }
+            .glance { padding: 1rem 0.7rem; border-radius: 16px; }
+            .section-title { font-size: 0.9rem; }
+            .clock-display { font-size: 1.8rem; }
+            .message-box { font-size: 0.8rem; min-height: 44px; }
+            .next-class-bar { font-size: 0.65rem; padding: 0.4rem 0.5rem; gap: 0.25rem; min-height: 38px; }
+            .events-card { padding: 0.8rem 0.7rem 0.4rem; }
+            .events-heading { font-size: 0.8rem; }
+            .event-date-badge { width: 40px; min-height: 40px; }
+            .event-date-badge .day { font-size: 1rem; }
+            .event-date-badge .month { font-size: 0.5rem; }
+            .event-title { font-size: 0.7rem; }
+            .event-meta { font-size: 0.55rem; }
+            .event-items { font-size: 0.55rem; }
+            .event-block { padding: 0; }
+            .event-content { padding: 0.3rem 0.3rem 0.3rem 0; }
+            .routine-toggle-btn { font-size: 0.7rem; padding: 10px 14px; min-height: 42px; border-radius: 10px; }
+            .schedule-table { font-size: 0.55rem; min-width: 300px; }
+            .schedule-table th, .schedule-table td { padding: 4px 5px; }
+            .course-code { font-size: 0.5rem; padding: 1px 4px; }
+            .day-cell { font-size: 0.55rem; }
+            .sub-link-btn { font-size: 0.5rem; padding: 3px 6px; min-height: 24px; border-radius: 20px; }
+            .drive-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 40px; max-width: 100%; }
+            .notice-header h2 { font-size: 0.85rem; }
+            .notice-table { font-size: 0.65rem; min-width: 320px; }
+            .notice-table th, .notice-table td { padding: 0.4rem 0.5rem; }
+            .clickable-title { font-size: 0.65rem; min-height: 34px; }
+            .codes-list { gap: 0.3rem; }
+            .codes-row { padding: 0.25rem 0.5rem; min-height: 34px; gap: 0.3rem; }
+            .codes-sub { font-size: 0.65rem; min-width: 50px; }
+            .code-text { font-size: 0.65rem; }
+            .copy-btn-code { font-size: 0.55rem; min-height: 24px; min-width: 40px; padding: 0.05rem 0.5rem; }
+            .codes-section-title { font-size: 0.8rem; }
+            .faculty-heading { font-size: 0.85rem; }
+            .faculty-item { padding: 0.5rem 0.5rem; }
+            .faculty-name { font-size: 0.85rem; }
+            .faculty-number { font-size: 0.75rem; }
+            .faculty-actions .btn-fac { font-size: 0.7rem; min-height: 32px; min-width: 50px; padding: 0.15rem 0.7rem; }
+            .faculty-details { font-size: 0.6rem; }
+            .assign-card, .drive-card, .faculty-card, .notice-board { border-radius: 14px; }
+            .cta-card { padding: 0.7rem 0.7rem; }
+            .cta-title { font-size: 0.8rem; }
+            .cta-desc { font-size: 0.7rem; }
+            .cta-btn { font-size: 0.7rem; padding: 0.4rem 1rem; min-height: 38px; width: 100%; justify-content: center; }
         }
-
         @media (max-width: 380px) {
-            .content {
-                padding: 6px 6px 80px;
-            }
-            .event-date-badge {
-                width: 42px;
-                height: 42px;
-            }
-            .event-date-badge .day {
-                font-size: 0.9rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.4rem;
-            }
-            .event-title {
-                font-size: 0.6rem;
-            }
-            .faculty-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.1rem;
-            }
-            .faculty-actions {
-                flex-direction: row;
-                justify-content: stretch;
-                width: 100%;
-            }
-            .faculty-actions .btn-fac {
-                flex: 1;
-            }
-            .codes-grid .code-card {
-                flex-wrap: wrap;
-            }
-            .codes-grid .code-card .copy-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .top-app-bar__title {
-                font-size: 0.9rem;
-            }
-            .message-box {
-                font-size: 0.75rem;
-                min-height: 38px;
-            }
-            .glance {
-                padding: 0.8rem 0.5rem;
-            }
-            .notices-btn {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-                min-height: 24px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 12px;
-            }
-            .routine-table {
-                min-width: 290px;
-                font-size: 0.56rem;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 5px 5px;
-            }
-            .routine-table .course-code {
-                font-size: 0.5rem;
-                padding: 1px 5px;
-            }
-            .routine-table .room-badge {
-                font-size: 0.5rem;
-                padding: 1px 5px;
-                min-width: 30px;
-            }
+            body { padding: 8px 10px; }
+            .dashboard { gap: 0.7rem; }
+            .drive-buttons { flex-direction: column; align-items: stretch; }
+            .drive-btn { width: 100%; justify-content: center; }
+            .sub-buttons-row { flex-wrap: wrap; }
+            .sub-link-btn { flex: 1 1 45%; min-width: 60px; }
+            .codes-row { flex-wrap: nowrap; padding: 0.2rem 0.4rem; min-height: 30px; }
+            .codes-sub { font-size: 0.55rem; min-width: 40px; }
+            .code-text { font-size: 0.55rem; }
+            .copy-btn-code { font-size: 0.5rem; min-height: 20px; min-width: 32px; padding: 0.05rem 0.4rem; }
+            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
+            .faculty-actions .btn-fac { flex: 1; }
+            .site-header h1 { font-size: 0.9rem; }
+            .clock-display { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ══════════════════════════════════════════
-    TOP APP BAR
-    ═══════════════════════════════════════════ -->
-    <header class="top-app-bar">
-        <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
-        <div class="top-app-bar__right">
-            <a href="http://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
-                <span class="material-symbols-rounded">description</span> Notices
-            </a>
+    <div class="dashboard">
+
+        <!-- ==============================================================
+        HEADER WITH SEARCH
+        ============================================================== -->
+        <header class="site-header">
+            <h1>66<span>Notes</span> BUBT</h1>
+            <div class="header-right">
+                <button class="search-toggle" id="searchToggle" aria-label="Search sections">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-bar-wrap" id="searchBarWrap">
+            <input type="text" id="searchInput" placeholder="Search for teachers, codes, assignments..." autocomplete="off" />
+            <ul class="search-results" id="searchResults"></ul>
         </div>
-    </header>
 
-    <!-- ══════════════════════════════════════════
-    CONTENT
-    ═══════════════════════════════════════════ -->
-    <main class="content">
+        <!-- ==============================================================
+        SECTION 1 – AI REMINDER
+        ============================================================== -->
+        <div class="glance" id="section-ai">
+            <div class="section-title">
+                <span class="live-indicator"></span> AI Reminder
+            </div>
+            <div class="clock-display" id="clockDisplay">Loading...</div>
+            <div class="message-box" id="messageBox">
+                <div class="message-line active">📢 4th Aug: MKT Assignment & Presentation</div>
+            </div>
+            <div class="next-class-bar" id="nextClassBar">
+                <span class="status-dot" id="barDot"></span>
+                <span class="next-label" id="barLabel">...</span>
+                <span id="barDetail">...</span>
+            </div>
+        </div>
 
-        <!-- ── PAGE 1 – HOME ────────────────────── -->
-        <section class="page" id="page-home">
-
-            <div class="glance" id="section-ai">
-                <div class="section-title">
-                    <span class="live-indicator"></span> AI Reminder
+        <!-- ==============================================================
+        SECTION 2 – PINNED EVENTS (with Expandable "See More")
+        ============================================================== -->
+        <div class="events-root" id="section-events">
+            <div class="events-card">
+                <div class="events-header">
+                    <h2 class="events-heading"><i class="fas fa-thumbtack"></i> Pinned Events</h2>
                 </div>
-                <div class="reminder-main">
-                    <div class="message-box" id="messageBox">
-                        <div class="message-line active">📢 4th Aug: MKT Assignment & Presentation</div>
-                    </div>
-                    <div class="clock-display" id="clockDisplay">Loading...</div>
-                </div>
-                <div class="next-class-bar" id="nextClassBar">
-                    <span class="status-dot" id="barDot"></span>
-                    <span class="next-label" id="barLabel">...</span>
-                    <span id="barDetail">...</span>
+                <div class="events-list" id="eventsList">
+                    <!-- Events will be rendered by JavaScript -->
+                    <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
                 </div>
             </div>
+        </div>
 
-            <div class="events-root" id="section-events">
-                <div class="events-card">
-                    <div class="card-header">
-                        <span class="card-title"><i class="fas fa-thumbtack"></i> Pinned Events</span>
-                    </div>
-                    <div class="events-list" id="eventsList">
-                        <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-footer">
-                <span class="cta-icon material-symbols-rounded">code</span>
-                <div class="cta-title">Want a website like this for you too?</div>
-                <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
-                <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
-                    <i class="fab fa-facebook"></i> Message Us
-                </a>
-            </div>
-
-        </section>
-
-        <!-- ── PAGE 2 – ALL PDFs ────────────────── -->
-        <section class="page" id="page-pdfs" hidden>
-            <h2>All PDFs</h2>
-            <p class="subtitle">Quick access to all your study materials</p>
-            <div class="drive-grid">
-                <div class="drive-card">
-                    <span class="drive-icon material-symbols-rounded">folder</span>
-                    <div class="drive-title">Google Drive</div>
-                    <div class="drive-desc">All PDFs, notes, and study materials</div>
-                    <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" class="btn btn--filled btn--large" rel="noopener">
-                        <span class="material-symbols-rounded">open_in_new</span> Open Drive
-                    </a>
-                </div>
-                <div class="drive-card">
-                    <span class="drive-icon material-symbols-rounded">classroom</span>
-                    <div class="drive-title">Google Classroom</div>
-                    <div class="drive-desc">Join our class: fqv76kik</div>
-                    <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="btn btn--tonal btn--large" rel="noopener">
-                        <span class="material-symbols-rounded">open_in_new</span> Open Classroom
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── PAGE 3 – ROUTINE & CODES (REDESIGNED) ── -->
-        <section class="page" id="page-routine" hidden>
-            <div class="routine-section">
-                <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                <div class="routine-table-wrap">
-                    <table class="routine-table">
-                        <colgroup>
-                            <col class="col-day">
-                            <col class="col-time">
-                            <col class="col-room">
-                            <col class="col-course">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Room</th>
-                                <th>Course</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- SUNDAY -->
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">SUN</td>
-                                <td class="time-cell">11:15 – 12:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td>
-                                <td><span class="course-code ict">ICT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td><span class="course-code hum">HUM 1102</span></td>
-                            </tr>
-                            <!-- MONDAY -->
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">MON</td>
-                                <td class="time-cell">11:15 – 12:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td>
-                                <td><span class="course-code ict">ICT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td><span class="course-code mkt">MKT 1101</span></td>
-                            </tr>
-                            <!-- TUESDAY -->
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">TUE</td>
-                                <td class="time-cell">2:45 – 4:15</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td>
-                                <td><span class="course-code mkt">MKT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">4:15 – 5:45</td>
-                                <td><span class="course-code hum">HUM 1102</span></td>
-                            </tr>
-                            <!-- WEDNESDAY -->
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">WED</td>
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td>
-                                <td><span class="course-code ict">ICT 1102</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">2:45 – 4:15</td>
-                                <td><span class="course-code ict">ICT 1102</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Classroom Codes (Redesigned) -->
-                <div class="codes-section">
-                    <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                    <div class="codes-grid">
-                        <div class="code-card">
-                            <span class="code-icon-dot ict-dot"></span>
-                            <span class="code-subject">ICT 1101</span>
-                            <div class="code-value-box"><span class="code-value">TYFAJJUM</span></div>
-                            <button class="copy-btn" data-code="TYFAJJUM">Copy</button>
-                        </div>
-                        <div class="code-card">
-                            <span class="code-icon-dot hum-dot"></span>
-                            <span class="code-subject">HUM 1102</span>
-                            <div class="code-value-box"><span class="code-value">3NHHKKL7</span></div>
-                            <button class="copy-btn" data-code="3NHHKKL7">Copy</button>
-                        </div>
-                        <div class="code-card">
-                            <span class="code-icon-dot mkt-dot"></span>
-                            <span class="code-subject">MKT 1101</span>
-                            <div class="code-value-box"><span class="code-value">BQS76V5Z</span></div>
-                            <button class="copy-btn" data-code="BQS76V5Z">Copy</button>
+        <!-- ==============================================================
+        SECTION 3 – CLASS ROUTINE
+        ============================================================== -->
+        <div class="routine-outer-wrapper" id="section-routine">
+            <button class="routine-toggle-btn" id="routineToggleBtn" aria-expanded="false">
+                <h3 class="btn-text">SEE FULL CLASS ROUTINE</h3>
+                <span class="btn-arrow" aria-hidden="true">▸</span>
+            </button>
+            <div class="routine-collapse-wrapper" id="routineCollapseWrapper">
+                <div class="routine-inner">
+                    <div class="table-scrollable" id="tableScrollContainer">
+                        <div class="table-responsive">
+                            <table class="schedule-table">
+                                <colgroup>
+                                    <col class="col-day">
+                                    <col class="col-time">
+                                    <col class="col-room">
+                                    <col class="col-course">
+                                </colgroup>
+                                <thead>
+                                    <tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="day-cell" rowspan="2">SUN</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4801</td><td><span class="course-code">ICT 1101</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td class="room-cell">4801</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">MON</td><td>11:15 – 12:45</td><td class="room-cell" rowspan="2">4201</td><td><span class="course-code">ICT 1101</span></td></tr>
+                                    <tr class="section-end"><td>1:15 – 2:45</td><td class="room-cell">4201</td><td><span class="course-code">MKT 1101</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">TUE</td><td>2:45 – 4:15</td><td class="room-cell" rowspan="2">4705</td><td><span class="course-code">MKT 1101</span></td></tr>
+                                    <tr class="section-end"><td>4:15 – 5:45</td><td class="room-cell">4702</td><td><span class="course-code">HUM 1102</span></td></tr>
+                                    <tr><td class="day-cell" rowspan="2">WED</td><td>1:15 – 2:45</td><td class="room-cell" rowspan="2">5501</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                    <tr class="section-end"><td>2:45 – 4:15</td><td class="room-cell">5502</td><td><span class="course-code">ICT 1102</span></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="sub-buttons-row">
+                <a href="https://66notes.weebly.com/routine.html" target="_blank" rel="noopener" class="sub-link-btn"><span>ROUTINE PIC</span><span class="external-icon">↗</span></a>
+                <a href="https://annex.bubt.edu.bd/global_file/routine.php?p=001&semNo=067,501,613,901" target="_blank" rel="noopener" class="sub-link-btn"><span>BUBT ROUTINE</span><span class="external-icon">↗</span></a>
+            </div>
+        </div>
 
-        <!-- ── PAGE 4 – FACULTY ──────────────────── -->
-        <section class="page" id="page-faculty" hidden>
-            <h2>Faculty</h2>
-            <p class="subtitle">Contact your instructors</p>
-            <div class="faculty-root" id="section-faculty">
+        <!-- ==============================================================
+        SECTION 4 – STUDY MATERIALS
+        ============================================================== -->
+        <div class="drive-card" id="section-materials">
+            <div class="drive-buttons">
+                <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" rel="noopener" class="drive-btn"><i class="fas fa-file-pdf"></i> ALL PDFs</a>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 5 – NOTICES
+        ============================================================== -->
+        <div class="notice-board" id="section-notices">
+            <div class="notice-header">
+                <h2><i class="fas fa-bullhorn"></i> Latest Notices</h2>
+            </div>
+            <div class="table-wrapper">
+                <table class="notice-table">
+                    <thead><tr><th><i class="far fa-calendar-alt"></i> Published</th><th><i class="fas fa-info-circle"></i> Title</th></tr></thead>
+                    <tbody>
+                        <tr><td>1 Aug 2026</td><td><a class="clickable-title" href="#">🎉 Welcome to 66Notes Dashboard!</a></td></tr>
+                        <tr><td>31 Jul 2026</td><td><a class="clickable-title" href="#">Please Join Our 66notes Google Classroom!</a></td></tr>
+                        <tr><td>30 Jul 2026</td><td><a class="clickable-title" href="#">Check your class routine below</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 6 – CLASSROOM CODES
+        ============================================================== -->
+        <div id="section-codes">
+            <h3 class="codes-section-title">Classroom Codes</h3>
+            <div class="codes-list">
+                <div class="codes-row">
+                    <span class="codes-sub">ICT 1101</span>
+                    <div class="code-box"><span class="code-text">TYFAJJUM</span></div>
+                    <button class="copy-btn-code" data-code="TYFAJJUM">Copy</button>
+                </div>
+                <div class="codes-row">
+                    <span class="codes-sub">HUM 1102</span>
+                    <div class="code-box"><span class="code-text">3NHHKKL7</span></div>
+                    <button class="copy-btn-code" data-code="3NHHKKL7">Copy</button>
+                </div>
+                <div class="codes-row">
+                    <span class="codes-sub">MKT 1101</span>
+                    <div class="code-box"><span class="code-text">BQS76V5Z</span></div>
+                    <button class="copy-btn-code" data-code="BQS76V5Z">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================================================
+        SECTION 7 – FACULTY
+        ============================================================== -->
+        <div class="faculty-root" id="section-faculty">
+            <div class="faculty-card">
+                <div class="faculty-heading"><i class="fas fa-chalkboard-teacher"></i> Faculty Info & Numbers</div>
                 <div class="faculty-list">
+
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
@@ -1552,13 +1451,14 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01742068119">Copy</button>
-                            <a href="tel:01742068119" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01742068119" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
                             <span><span class="label">Subject:</span> <span class="value">MKT</span></span>
                             <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
                         </div>
                     </div>
+
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Shabuj Mia</span>
@@ -1566,14 +1466,13 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01791471867">Copy</button>
-                            <a href="tel:01791471867" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01791471867" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
                             <span><span class="label">Subject:</span> <span class="value">Bangla</span></span>
-                            <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
-                            <span><span class="label">Department:</span> <span class="value">English</span></span>
                         </div>
                     </div>
+
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Hasibul Hossain Shajeeb</span>
@@ -1581,76 +1480,43 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01966901950">Copy</button>
-                            <a href="tel:01966901950" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01966901950" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         </div>
                         <div class="faculty-details">
                             <span><span class="label">Subject:</span> <span class="value">ICT</span></span>
-                            <span><span class="label">Course:</span> <span class="value">Introduction to Computer Science</span></span>
-                            <span><span class="label">Department:</span> <span class="value">CSE</span></span>
                             <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
                         </div>
                     </div>
+
                 </div>
             </div>
-        </section>
+        </div>
 
-    </main>
+        <!-- ==============================================================
+        SECTION 8 – CTA
+        ============================================================== -->
+        <div class="cta-card" id="section-cta">
+            <h3 class="cta-title"><span>Want website like this for you too?</span></h3>
+            <div class="cta-desc">Message us on Facebook for a custom dashboard.</div>
+            <a href="https://www.facebook.com/ridwan.nafi.2025/" target="_blank" rel="noopener" class="cta-btn">
+                <i class="fab fa-facebook"></i> Message Us
+            </a>
+        </div>
 
-    <!-- ══════════════════════════════════════════
-    BOTTOM NAVIGATION
-    ═══════════════════════════════════════════ -->
-    <nav class="bottom-nav">
-        <button class="bottom-nav__item is-active" data-target="page-home">
-            <span class="bottom-nav__icon"><span class="material-symbols-rounded">home</span></span>
-            <span class="bottom-nav__label">Home</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-pdfs">
-            <span class="bottom-nav__icon"><span class="material-symbols-rounded">folder</span></span>
-            <span class="bottom-nav__label">PDFs</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-routine">
-            <span class="bottom-nav__icon"><span class="material-symbols-rounded">schedule</span></span>
-            <span class="bottom-nav__label">Routine</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-faculty">
-            <span class="bottom-nav__icon"><span class="material-symbols-rounded">contacts</span></span>
-            <span class="bottom-nav__label">Faculty</span>
-        </button>
-    </nav>
+        <div class="footer-seo">
+            <p><span class="brand">66Notes BUBT</span> – built by a student from Intake66 to help classmates stay organized. From lecture slides to assignment deadlines, this dashboard keeps everything in one place.</p>
+            <p class="tags">66notes bubt · 66Notes BUBT · 66NOTES BUBT · 66 Notes BUBT · 66Notes bubt · 66_notes_bubt · 66-NOTES BUBT</p>
+        </div>
 
-    <!-- ══════════════════════════════════════════
-    SCRIPTS
-    ═══════════════════════════════════════════ -->
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- SCRIPTS                                                          -->
+    <!-- ================================================================ -->
     <script>
-        // ── BOTTOM NAVIGATION ──────────────────────
-        (function() {
-            const navItems = document.querySelectorAll('.bottom-nav__item');
-            const pages = document.querySelectorAll('.page');
-            const titleEl = document.querySelector('.top-app-bar__title');
-            const titles = {
-                'page-home': '66Notes',
-                'page-pdfs': 'All PDFs',
-                'page-routine': 'Routine & Codes',
-                'page-faculty': 'Faculty'
-            };
-
-            navItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const targetId = item.dataset.target;
-                    navItems.forEach(i => i.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    pages.forEach(page => {
-                        page.hidden = page.id !== targetId;
-                    });
-                    if (titleEl && titles[targetId]) {
-                        titleEl.innerHTML = titles[targetId];
-                    }
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            });
-        })();
-
-        // ── CLOCK ──────────────────────────────────
+        // ================================================================
+        // CLOCK
+        // ================================================================
         (function() {
             function updateClock() {
                 const now = new Date();
@@ -1664,7 +1530,496 @@
             setInterval(updateClock, 30000);
         })();
 
-        // ── CLASS STATUS ──────────────────────────
+        // ================================================================
+        // ROUTINE TOGGLE
+        // ================================================================
+        (function() {
+            const btn = document.getElementById('routineToggleBtn');
+            const wrapper = document.getElementById('routineCollapseWrapper');
+            const txt = btn.querySelector('.btn-text');
+            let expanded = false,
+                timer = null;
+
+            function toggle() {
+                if (timer) { clearTimeout(timer);
+                    timer = null; }
+                if (!expanded) {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    wrapper.classList.add('open');
+                    btn.classList.add('expanded');
+                    txt.textContent = 'HIDE FULL ROUTINE';
+                    btn.setAttribute('aria-expanded', 'true');
+                    expanded = true;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = 'none';
+                        timer = null; }, 580);
+                } else {
+                    const h = wrapper.scrollHeight;
+                    wrapper.style.maxHeight = h + 'px';
+                    requestAnimationFrame(() => { requestAnimationFrame(() => { wrapper.style.maxHeight = '0';
+                            wrapper.classList.remove('open'); }); });
+                    btn.classList.remove('expanded');
+                    txt.textContent = 'SEE FULL CLASS ROUTINE';
+                    btn.setAttribute('aria-expanded', 'false');
+                    expanded = false;
+                    timer = setTimeout(() => { wrapper.style.maxHeight = '0';
+                        timer = null; }, 580);
+                }
+            }
+            btn.addEventListener('click', toggle);
+            wrapper.style.maxHeight = '0';
+            wrapper.classList.remove('open');
+            btn.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
+            txt.textContent = 'SEE FULL CLASS ROUTINE';
+            expanded = false;
+        })();
+
+        // ================================================================
+        // COPY CODE
+        // ================================================================
+        document.querySelectorAll('.copy-btn-code').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const code = this.getAttribute('data-code');
+                if (!code) return;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        this.textContent = 'Copied';
+                        setTimeout(() => { this.textContent = 'Copy'; }, 1200);
+                    });
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = code;
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    this.textContent = 'Copied';
+                    setTimeout(() => { this.textContent = 'Copy'; }, 1200);
+                }
+            });
+        });
+
+        // ================================================================
+        // FACULTY COPY
+        // ================================================================
+        document.querySelectorAll('.btn-copy').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const number = this.getAttribute('data-number');
+                if (!number) return;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(number).then(() => {
+                        showCopied(this);
+                    }).catch(() => fallbackCopy(number, this));
+                } else {
+                    fallbackCopy(number, this);
+                }
+            });
+        });
+
+        function fallbackCopy(text, btn) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                const ok = document.execCommand('copy');
+                if (ok) { showCopied(btn); } else { alert('Could not copy number. Please copy manually.'); }
+            } catch (e) { alert('Could not copy number. Please copy manually.'); }
+            document.body.removeChild(ta);
+        }
+
+        function showCopied(btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = orig;
+                btn.classList.remove('copied');
+            }, 1800);
+        }
+
+        // ================================================================
+        // PINNED EVENTS – Data & Rendering (with Expandable "See More")
+        // ================================================================
+        (function() {
+            const eventsData = [
+                {
+                    date: '4 Aug',
+                    title: 'MKT Assignment & Presentation',
+                    badge: 'CT 2',
+                    meta: 'Team: 5-6 Members',
+                    items: [
+                        '• Presentation (No Slide)',
+                        '• Assignment (Printed)',
+                        '• Poster (Printed)',
+                        '📌 Include: 4Ps, STP, Product-Name, Category, Ingredients'
+                    ],
+                    note: 'Assignment is what you will present. No slide. Only Poster.',
+                    dateObj: new Date(2026, 7, 4) // Aug 4, 2026
+                },
+                {
+                    date: '9 Aug',
+                    title: 'ICT Assignment: OSI Layer',
+                    badge: 'Assignment',
+                    meta: 'Check PDF & Picture in ALL PDFs > ICT',
+                    items: [
+                        '• OSI Layer'
+                    ],
+                    note: 'Check PDF & Picture in ALL PDFs > ICT',
+                    dateObj: new Date(2026, 7, 9) // Aug 9, 2026
+                },
+                {
+                    date: '9 Aug',
+                    title: 'Bangla CT Exam',
+                    badge: 'Exam',
+                    meta: '',
+                    items: [
+                        '১. ব্যাকরনিক শব্দশ্রেণী',
+                        '২. বাক্য'
+                    ],
+                    note: 'Be prepared!',
+                    dateObj: new Date(2026, 7, 9) // Aug 9, 2026
+                },
+                {
+                    date: '11 Aug',
+                    title: 'Bangla Assignment & Presentation Group 1 (01-028)',
+                    badge: 'Deadline',
+                    meta: '3-4 Pages (A4) • Written',
+                    items: [
+                        '১. লেখক/কবি পরিচিতি',
+                        '২. সাহিত্যের মূল বিষয় বস্তু',
+                        '৩. চরিত্র (যদি থাকে)',
+                        '৪. শিল্পমূল্য',
+                        '৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ',
+                        '৬. উপসংহার'
+                    ],
+                    note: 'Group 1 – Roll 01-028',
+                    dateObj: new Date(2026, 7, 11) // Aug 11, 2026
+                },
+                {
+                    date: '16 Aug',
+                    title: 'Bangla Presentation Group 2 (28-end)',
+                    badge: 'Presentation',
+                    meta: 'After Roll 28',
+                    items: [
+                        '• Present your Bangla assignment'
+                    ],
+                    note: 'For students after roll 28',
+                    dateObj: new Date(2026, 7, 16) // Aug 16, 2026
+                },
+                {
+                    date: '18 Aug',
+                    title: 'Bangla Results',
+                    badge: 'Results',
+                    meta: '',
+                    items: [
+                        '• Bangla Assignment Results',
+                        '• Bangla CT Exam Results'
+                    ],
+                    note: 'Check your results!',
+                    dateObj: new Date(2026, 7, 18) // Aug 18, 2026
+                },
+                {
+                    date: '22 Aug',
+                    title: 'Semester Final Exams!',
+                    badge: 'Exam',
+                    meta: 'All PDFs are in PDF Section',
+                    items: [
+                        '• Bangla Syllabus: Check Syllabus Picture in PDF section',
+                        '• ICT: Check PDF section, Google Classroom, Messenger/WhatsApp chats'
+                    ],
+                    note: 'All PDFs are in PDF Section. Bangla syllabus in Syllabus Picture. ICT materials in PDF section, Google Classroom, and Messenger/WhatsApp.',
+                    dateObj: new Date(2026, 7, 22) // Aug 22, 2026
+                }
+            ];
+
+            // Helper: get month abbreviation
+            function getMonthAbbr(date) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return months[date.getMonth()];
+            }
+
+            // Helper: get day number
+            function getDayNum(date) {
+                return date.getDate();
+            }
+
+            // Check if a date has passed (today > date)
+            function isPassed(date) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const compareDate = new Date(date);
+                compareDate.setHours(0, 0, 0, 0);
+                return compareDate < today;
+            }
+
+            // Find the next upcoming event (smallest future date)
+            function findUpcomingIndex(events) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                let upcomingIdx = -1;
+                let minDiff = Infinity;
+                for (let i = 0; i < events.length; i++) {
+                    const evDate = new Date(events[i].dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    const diff = evDate - today;
+                    if (diff >= 0 && diff < minDiff) {
+                        minDiff = diff;
+                        upcomingIdx = i;
+                    }
+                }
+                return upcomingIdx;
+            }
+
+            function toggleEvent(eventBlock) {
+                const details = eventBlock.querySelector('.event-details');
+                const btn = eventBlock.querySelector('.event-toggle-btn');
+                if (!details) return;
+                const isOpen = details.classList.toggle('open');
+                if (btn) {
+                    btn.classList.toggle('open', isOpen);
+                    btn.innerHTML = isOpen ?
+                        'See Less <i class="fas fa-chevron-up"></i>' :
+                        'See More <i class="fas fa-chevron-down"></i>';
+                }
+            }
+
+            function renderEvents() {
+                const container = document.getElementById('eventsList');
+                if (!container) return;
+
+                // Sort: upcoming first (by date), then passed (by date descending)
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const upcoming = [];
+                const passed = [];
+
+                eventsData.forEach((ev, idx) => {
+                    const evDate = new Date(ev.dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    if (evDate < today) {
+                        passed.push({ ...ev, originalIndex: idx });
+                    } else {
+                        upcoming.push({ ...ev, originalIndex: idx });
+                    }
+                });
+
+                // Sort upcoming by date (earliest first)
+                upcoming.sort((a, b) => a.dateObj - b.dateObj);
+                // Sort passed by date (most recent first)
+                passed.sort((a, b) => b.dateObj - a.dateObj);
+
+                const sortedEvents = [...upcoming, ...passed];
+
+                // Find the first upcoming event (the one with yellow highlight)
+                const upcomingIdx = sortedEvents.findIndex(ev => {
+                    const evDate = new Date(ev.dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    return evDate >= today;
+                });
+
+                let html = '';
+                sortedEvents.forEach((ev, idx) => {
+                    const isUpcoming = idx === upcomingIdx && !isPassed(ev.dateObj);
+                    const isPast = isPassed(ev.dateObj);
+                    const month = getMonthAbbr(ev.dateObj);
+                    const day = getDayNum(ev.dateObj);
+
+                    // Build items list for details
+                    let itemsHtml = '';
+                    if (ev.items && ev.items.length > 0) {
+                        itemsHtml = `<div class="event-items">`;
+                        ev.items.forEach(item => {
+                            itemsHtml += `<span>${item}</span>`;
+                        });
+                        itemsHtml += `</div>`;
+                    }
+
+                    // Details section (hidden initially)
+                    let detailsHtml = `
+                        <div class="event-details">
+                            ${ev.meta ? `<div class="event-meta">${ev.meta}</div>` : ''}
+                            ${itemsHtml}
+                            ${ev.note ? `<div class="event-note blue">${ev.note}</div>` : ''}
+                        </div>
+                    `;
+
+                    html += `
+                        <div class="event-block ${isUpcoming ? 'upcoming' : ''} ${isPast ? 'passed' : ''}">
+                            <div class="event-date-badge">
+                                <span class="day">${day}</span>
+                                <span class="month">${month}</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">
+                                        ${ev.title}
+                                        ${ev.badge ? `<span class="event-badge">${ev.badge}</span>` : ''}
+                                    </div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">
+                                        See More <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                ${detailsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+
+            // Expose toggleEvent globally
+            window.toggleEvent = toggleEvent;
+
+            // Initial render
+            renderEvents();
+
+            // Re-render every minute to check for date changes
+            setInterval(renderEvents, 60000);
+        })();
+
+        // ================================================================
+        // SEARCH
+        // ================================================================
+        (function() {
+            const toggleBtn = document.getElementById('searchToggle');
+            const searchWrap = document.getElementById('searchBarWrap');
+            const searchInput = document.getElementById('searchInput');
+            const resultsList = document.getElementById('searchResults');
+            let isOpen = false;
+
+            const searchIndex = [
+                { text: 'AI Reminder', section: 'section-ai', icon: 'fa-brain' },
+                { text: 'Pinned Events', section: 'section-events', icon: 'fa-thumbtack' },
+                { text: 'Assignments', section: 'section-events', icon: 'fa-thumbtack' },
+                { text: 'Class Routine', section: 'section-routine', icon: 'fa-table' },
+                { text: 'Schedule', section: 'section-routine', icon: 'fa-table' },
+                { text: 'Study Materials', section: 'section-materials', icon: 'fa-folder-open' },
+                { text: 'PDF', section: 'section-materials', icon: 'fa-file-pdf' },
+                { text: 'Notices', section: 'section-notices', icon: 'fa-bullhorn' },
+                { text: 'Classroom Codes', section: 'section-codes', icon: 'fa-key' },
+                { text: 'Faculty', section: 'section-faculty', icon: 'fa-chalkboard-teacher' },
+                { text: 'Teacher', section: 'section-faculty', icon: 'fa-chalkboard-teacher' },
+                { text: 'Contact', section: 'section-cta', icon: 'fa-message' }
+            ];
+
+            function performSearch(query) {
+                if (!query) return [];
+                const q = query.toLowerCase().trim();
+                const results = [];
+                const seen = new Set();
+                for (let entry of searchIndex) {
+                    if (entry.text.toLowerCase().includes(q)) {
+                        if (!seen.has(entry.section)) {
+                            seen.add(entry.section);
+                            results.push(entry);
+                        }
+                    }
+                }
+                return results.slice(0, 6);
+            }
+
+            function renderResults(results) {
+                resultsList.innerHTML = '';
+                if (results.length === 0) {
+                    resultsList.innerHTML = '<li class="no-results">No matching sections found</li>';
+                    resultsList.classList.add('show');
+                    return;
+                }
+                let html = '';
+                results.forEach(r => {
+                    html += `<li data-section="${r.section}">
+                        <i class="fas ${r.icon} match-icon"></i>
+                        <span class="match-label">${r.text}</span>
+                        <span class="match-hint">Go to section</span>
+                    </li>`;
+                });
+                resultsList.innerHTML = html;
+                resultsList.classList.add('show');
+
+                resultsList.querySelectorAll('li[data-section]').forEach(item => {
+                    const handler = function(e) {
+                        e.preventDefault();
+                        const sectionId = this.getAttribute('data-section');
+                        scrollToSection(sectionId);
+                        isOpen = false;
+                        searchWrap.classList.remove('open');
+                        resultsList.classList.remove('show');
+                        searchInput.value = '';
+                    };
+                    item.addEventListener('click', handler);
+                    item.addEventListener('touchend', handler);
+                });
+            }
+
+            function scrollToSection(sectionId) {
+                const target = document.getElementById(sectionId);
+                if (target) {
+                    document.querySelectorAll('.section-highlight').forEach(el => el.classList.remove('section-highlight'));
+                    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    setTimeout(() => {
+                        target.classList.add('section-highlight');
+                        setTimeout(() => target.classList.remove('section-highlight'), 4000);
+                    }, 500);
+                }
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                isOpen = !isOpen;
+                searchWrap.classList.toggle('open', isOpen);
+                if (isOpen) {
+                    searchInput.focus();
+                    searchInput.value = '';
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isOpen) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                if (!query) {
+                    resultsList.classList.remove('show');
+                    resultsList.innerHTML = '';
+                    return;
+                }
+                const matches = performSearch(query);
+                renderResults(matches);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (isOpen && !searchWrap.contains(e.target) && e.target !== toggleBtn && !toggleBtn.contains(e
+                    .target)) {
+                    isOpen = false;
+                    searchWrap.classList.remove('open');
+                    resultsList.classList.remove('show');
+                    searchInput.value = '';
+                }
+            });
+        })();
+
+        // ================================================================
+        // NEXT CLASS BAR
+        // ================================================================
         (function() {
             const classes = [
                 { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
@@ -1672,9 +2027,9 @@
                 { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
                 { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
                 { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
-                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
+                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4702' },
                 { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '5501' },
-                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '5501' }
+                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '5502' }
             ];
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -1697,73 +2052,6 @@
             }
 
             function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
-
-            function getClassStatus() {
-                const dh = getDhaka();
-                const day = dh.dayOfWeek,
-                    min = dh.hours * 60 + dh.minutes;
-                let slides = [];
-
-                if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
-                    const l = (13 * 60 + 15) - min;
-                    const timer = String(Math.floor(l)).padStart(2, '0') + ':00';
-                    slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
-                    return slides;
-                }
-
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                .endM);
-                if (run) {
-                    slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM));
-                    return slides;
-                }
-
-                for (let off = 0; off < 14; off++) {
-                    const fut = new Date(dh.timestamp + off * 86400000);
-                    const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                    .startH * 60 + b.startM));
-                    for (let c of dayCls) {
-                        const st = c.startH * 60 + c.startM;
-                        if (off === 0 && st <= min) continue;
-                        const dn = dayNames[cd];
-                        const dur = off === 0 ? 'Today' : dn;
-                        slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM),
-                            'Room ' + c.room);
-                        return slides;
-                    }
-                }
-
-                slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
-                return slides;
-            }
-
-            let slideTimer;
-
-            function showSlides(slides) {
-                const box = document.getElementById('messageBox');
-                box.innerHTML = '';
-                slides.forEach(h => {
-                    const d = document.createElement('div');
-                    d.className = 'message-line';
-                    d.innerHTML = h;
-                    box.appendChild(d);
-                });
-                if (slideTimer) clearInterval(slideTimer);
-                let cur = -1;
-                const items = document.querySelectorAll('.message-line');
-                if (items.length) {
-                    const nxt = () => {
-                        items.forEach(i => i.classList.remove('active'));
-                        cur = (cur + 1) % items.length;
-                        items[cur].classList.add('active');
-                    };
-                    nxt();
-                    slideTimer = setInterval(nxt, 4000);
-                }
-            }
-
-            showSlides(getClassStatus());
 
             function updateNextClassBar() {
                 const dh = getDhaka();
@@ -1812,271 +2100,6 @@
 
             updateNextClassBar();
             setInterval(updateNextClassBar, 30000);
-        })();
-
-        // ── COPY CLASSROOM CODES ──────────────────
-        document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const code = this.getAttribute('data-code');
-                if (!code) return;
-                const origText = this.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(code).then(() => {
-                        flashCopied(this, origText);
-                    }).catch(() => fallbackCopyCode(code, this, origText));
-                } else {
-                    fallbackCopyCode(code, this, origText);
-                }
-            });
-        });
-
-        function fallbackCopyCode(text, btn, origText) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                flashCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy code. Please copy manually.');
-            }
-            document.body.removeChild(ta);
-        }
-
-        function flashCopied(btn, origText) {
-            btn.textContent = '✓ Copied';
-            btn.classList.add('copied-flash');
-            setTimeout(() => {
-                btn.textContent = origText;
-                btn.classList.remove('copied-flash');
-            }, 1500);
-        }
-
-        // ── FACULTY COPY ──────────────────────────
-        document.querySelectorAll('.btn-copy').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const number = this.getAttribute('data-number');
-                if (!number) return;
-                const origText = this.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(number).then(() => {
-                        showFacCopied(this, origText);
-                    }).catch(() => fallbackFacCopy(number, this, origText));
-                } else {
-                    fallbackFacCopy(number, this, origText);
-                }
-            });
-        });
-
-        function fallbackFacCopy(text, btn, origText) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                showFacCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy number. Please copy manually.');
-            }
-            document.body.removeChild(ta);
-        }
-
-        function showFacCopied(btn, origText) {
-            btn.textContent = 'Copied!';
-            btn.style.background = '#d1fae5';
-            btn.style.color = '#065f46';
-            setTimeout(() => {
-                btn.textContent = origText;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 1800);
-        }
-
-        // ── PINNED EVENTS ─────────────────────────
-        (function() {
-            const eventsData = [{
-                date: '4 Aug',
-                title: 'MKT Assignment & Presentation',
-                badge: 'CT 2',
-                meta: 'Team: 5-6 Members',
-                items: [
-                    '• Presentation (No Slide)',
-                    '• Assignment (Printed)',
-                    '• Poster (Printed)',
-                    '📌 Include: 4Ps, STP, Product-Name, Category, Ingredients'
-                ],
-                note: 'Assignment is what you will present. No slide. Only Poster.',
-                dateObj: new Date(2026, 7, 4)
-            }, {
-                date: '9 Aug',
-                title: 'ICT Assignment: OSI Layer',
-                badge: 'Assignment',
-                meta: 'Check PDF & Picture in ALL PDFs > ICT',
-                items: ['• OSI Layer'],
-                note: 'Check PDF & Picture in ALL PDFs > ICT',
-                dateObj: new Date(2026, 7, 9)
-            }, {
-                date: '9 Aug',
-                title: 'Bangla CT Exam',
-                badge: 'Exam',
-                meta: '',
-                items: ['১. ব্যাকরনিক শব্দশ্রেণী', '২. বাক্য'],
-                note: 'Be prepared!',
-                dateObj: new Date(2026, 7, 9)
-            }, {
-                date: '11 Aug',
-                title: 'Bangla Assignment & Presentation Group 1 (01-028)',
-                badge: 'Deadline',
-                meta: '3-4 Pages (A4) • Written',
-                items: [
-                    '১. লেখক/কবি পরিচিতি',
-                    '২. সাহিত্যের মূল বিষয় বস্তু',
-                    '৩. চরিত্র (যদি থাকে)',
-                    '৪. শিল্পমূল্য',
-                    '৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ',
-                    '৬. উপসংহার'
-                ],
-                note: 'Group 1 – Roll 01-028',
-                dateObj: new Date(2026, 7, 11)
-            }, {
-                date: '16 Aug',
-                title: 'Bangla Presentation Group 2 (28-end)',
-                badge: 'Presentation',
-                meta: 'After Roll 28',
-                items: ['• Present your Bangla assignment'],
-                note: 'For students after roll 28',
-                dateObj: new Date(2026, 7, 16)
-            }, {
-                date: '18 Aug',
-                title: 'Bangla Results',
-                badge: 'Results',
-                meta: '',
-                items: ['• Bangla Assignment Results', '• Bangla CT Exam Results'],
-                note: 'Check your results!',
-                dateObj: new Date(2026, 7, 18)
-            }, {
-                date: '22 Aug',
-                title: 'Semester Final Exams!',
-                badge: 'Exam',
-                meta: 'All PDFs are in PDF Section',
-                items: [
-                    '• Bangla Syllabus: Check Syllabus Picture in PDF section',
-                    '• ICT: Check PDF section, Google Classroom, Messenger/WhatsApp chats'
-                ],
-                note: 'All PDFs are in PDF Section. Bangla syllabus in Syllabus Picture. ICT materials in PDF section, Google Classroom, and Messenger/WhatsApp.',
-                dateObj: new Date(2026, 7, 22)
-            }];
-
-            function getMonthAbbr(date) {
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                return months[date.getMonth()];
-            }
-
-            function getDayNum(date) { return date.getDate(); }
-
-            function isPassed(date) {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const compareDate = new Date(date);
-                compareDate.setHours(0, 0, 0, 0);
-                return compareDate < today;
-            }
-
-            function toggleEvent(eventBlock) {
-                const details = eventBlock.querySelector('.event-details');
-                const btn = eventBlock.querySelector('.event-toggle-btn');
-                if (!details) return;
-                const isOpen = details.classList.toggle('open');
-                if (btn) {
-                    btn.classList.toggle('open', isOpen);
-                    btn.innerHTML = isOpen ?
-                        'See Less <i class="fas fa-chevron-up"></i>' :
-                        'See More <i class="fas fa-chevron-down"></i>';
-                }
-            }
-            window.toggleEvent = toggleEvent;
-
-            function renderEvents() {
-                const container = document.getElementById('eventsList');
-                if (!container) return;
-
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const upcoming = [];
-                const passed = [];
-
-                eventsData.forEach((ev) => {
-                    const evDate = new Date(ev.dateObj);
-                    evDate.setHours(0, 0, 0, 0);
-                    if (evDate < today) {
-                        passed.push({ ...ev });
-                    } else {
-                        upcoming.push({ ...ev });
-                    }
-                });
-
-                upcoming.sort((a, b) => a.dateObj - b.dateObj);
-                passed.sort((a, b) => b.dateObj - a.dateObj);
-                const sortedEvents = [...upcoming, ...passed];
-
-                let html = '';
-                sortedEvents.forEach((ev) => {
-                    const isPast = isPassed(ev.dateObj);
-                    const isUpcoming = !isPast && (upcoming.includes(ev));
-                    const month = getMonthAbbr(ev.dateObj);
-                    const day = getDayNum(ev.dateObj);
-
-                    let itemsHtml = '';
-                    if (ev.items && ev.items.length > 0) {
-                        itemsHtml = '<div class="event-items">';
-                        ev.items.forEach(item => {
-                            itemsHtml += '<span>' + item + '</span>';
-                        });
-                        itemsHtml += '</div>';
-                    }
-
-                    let detailsHtml =
-                        '<div class="event-details">' +
-                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
-                        itemsHtml +
-                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
-                        '</div>';
-
-                    html +=
-                        '<div class="event-block' + (isUpcoming ? ' upcoming' : '') + (isPast ? ' passed' : '') + '">' +
-                        '<div class="event-date-badge">' +
-                        '<span class="day">' + day + '</span>' +
-                        '<span class="month">' + month + '</span>' +
-                        '</div>' +
-                        '<div class="event-content">' +
-                        '<div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">' +
-                        '<div class="event-title">' +
-                        ev.title +
-                        (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') +
-                        '</div>' +
-                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">' +
-                        'See More <i class="fas fa-chevron-down"></i>' +
-                        '</button>' +
-                        '</div>' +
-                        detailsHtml +
-                        '</div>' +
-                        '</div>';
-                });
-
-                container.innerHTML = html;
-            }
-
-            renderEvents();
-            setInterval(renderEvents, 60000);
         })();
     </script>
 
