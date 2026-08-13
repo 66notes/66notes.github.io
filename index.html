@@ -179,7 +179,26 @@
             box-shadow: var(--shadow);
             text-align: center;
             margin-bottom: 1rem;
+            position: relative;
         }
+        .routine-published-banner {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #92400e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .routine-published-banner i {
+            color: #d97706;
+        }
+
         .section-title {
             display: flex;
             align-items: center;
@@ -296,6 +315,7 @@
             font-size: 0.6rem;
         }
 
+        /* ── EVENTS ─────────────────────────────── */
         .events-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -364,6 +384,21 @@
             border-left: 4px solid #f5b042;
             border-color: #fde68a;
         }
+        /* Final exam highlight */
+        .event-block.final-exam {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            border-color: #fecaca;
+        }
+        .event-block.final-exam .event-title {
+            color: #991b1b;
+        }
+        .event-block.final-exam .event-badge {
+            background: #fecaca;
+            color: #991b1b;
+            border-color: #fca5a5;
+        }
+
         .event-date-badge {
             flex-shrink: 0;
             align-self: center;
@@ -379,6 +414,9 @@
             text-align: center;
             margin-left: 0.1rem;
             flex-grow: 0;
+        }
+        .event-block.final-exam .event-date-badge {
+            background: #991b1b;
         }
         .event-date-badge .day {
             font-size: 1.3rem;
@@ -512,6 +550,7 @@
             border-color: #dbeafe;
         }
 
+        /* ── ROUTINE SECTION ────────────────────── */
         .routine-section {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -557,6 +596,10 @@
             border-radius: var(--radius);
             border: 1px solid var(--border);
             background: #fafbfc;
+            margin-bottom: 1rem;
+        }
+        .routine-table-wrap:last-child {
+            margin-bottom: 0;
         }
         .routine-table-wrap::-webkit-scrollbar {
             height: 5px;
@@ -599,75 +642,28 @@
             color: #1f2a3e;
             white-space: nowrap;
         }
-        .routine-table tbody tr.day-group-start td {
-            border-top: 2px solid #e9edf2;
-        }
-        .routine-table tbody tr.day-group-start td.day-cell {
-            border-top: 2px solid #e9edf2;
-        }
-        .routine-table tbody tr.day-group-end td {
-            border-bottom: 2px solid #d5dae2;
+        .routine-table tbody tr:last-child td {
+            border-bottom: none;
         }
         .routine-table tbody tr:hover td {
             background: #fafcff;
             transition: background 0.15s ease;
         }
-        .routine-table .day-cell {
-            font-weight: 700;
-            color: var(--navy);
-            font-size: 0.68rem;
-            background: #f8f9fc !important;
+
+        .routine-expired-msg {
             text-align: center;
-            letter-spacing: 0.02em;
+            padding: 1.5rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            background: #f9fafb;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
         }
-        .routine-table .course-code {
-            font-weight: 700;
-            color: #1a3a5c;
-            background: #eef3f9;
-            padding: 3px 10px;
-            border-radius: 8px;
-            font-size: 0.64rem;
-            display: inline-block;
-            letter-spacing: 0.02em;
-            border: 1px solid #dde4ee;
+        .routine-expired-msg a {
+            color: var(--accent);
+            text-decoration: underline;
+            font-weight: 600;
         }
-        .routine-table .course-code.ict {
-            background: #eef2ff;
-            border-color: #d4ddfc;
-            color: #1e3a8a;
-        }
-        .routine-table .course-code.hum {
-            background: #f0fdf4;
-            border-color: #c6e9d0;
-            color: #14532d;
-        }
-        .routine-table .course-code.mkt {
-            background: #fff7ed;
-            border-color: #fddcab;
-            color: #7c2d12;
-        }
-        .routine-table .room-badge {
-            display: inline-block;
-            font-weight: 700;
-            font-size: 0.66rem;
-            color: #374151;
-            background: #f1f4f8;
-            padding: 3px 10px;
-            border-radius: 7px;
-            border: 1px solid #e2e6ec;
-            letter-spacing: 0.03em;
-            text-align: center;
-            min-width: 44px;
-        }
-        .routine-table .time-cell {
-            font-weight: 500;
-            color: #374151;
-            letter-spacing: 0.02em;
-        }
-        .routine-table colgroup .col-day { width: 15%; }
-        .routine-table colgroup .col-time { width: 30%; }
-        .routine-table colgroup .col-room { width: 15%; }
-        .routine-table colgroup .col-course { width: 40%; }
 
         .codes-section {
             margin-top: 1.1rem;
@@ -789,6 +785,7 @@
             border: 1px solid #a7f3d0 !important;
         }
 
+        /* ── ALL PDFs ───────────────────────────── */
         .drive-grid {
             display: flex;
             flex-direction: column;
@@ -862,6 +859,7 @@
             justify-content: center;
         }
 
+        /* ── FACULTY ────────────────────────────── */
         .faculty-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -976,6 +974,7 @@
             font-weight: 400;
         }
 
+        /* ── CTA FOOTER ─────────────────────────── */
         .cta-footer {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -1025,6 +1024,7 @@
             font-size: 0.9rem;
         }
 
+        /* ── BOTTOM NAV ─────────────────────────── */
         .bottom-nav {
             position: fixed;
             left: 0;
@@ -1082,226 +1082,63 @@
         }
 
         @media (max-width: 480px) {
-            .content {
-                padding: 10px 10px 90px;
-            }
-            .top-app-bar__title {
-                font-size: 1rem;
-            }
-            .notices-btn {
-                font-size: 0.6rem;
-                padding: 5px 10px;
-                min-height: 28px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 14px;
-            }
-            .glance {
-                padding: 1rem 0.7rem;
-            }
-            .message-box {
-                font-size: 0.85rem;
-                min-height: 44px;
-            }
-            .clock-display {
-                font-size: 0.65rem;
-            }
-            .next-class-bar {
-                font-size: 0.6rem;
-                padding: 0.3rem 0.5rem;
-                min-height: 34px;
-            }
-            .event-date-badge {
-                width: 50px;
-                height: 50px;
-            }
-            .event-date-badge .day {
-                font-size: 1.1rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.5rem;
-            }
-            .event-title {
-                font-size: 0.7rem;
-            }
-            .event-details .event-items {
-                font-size: 0.65rem;
-            }
-            .routine-table {
-                font-size: 0.62rem;
-                min-width: 320px;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 7px 8px;
-            }
-            .routine-table .course-code {
-                font-size: 0.55rem;
-                padding: 2px 7px;
-            }
-            .routine-table .day-cell {
-                font-size: 0.6rem;
-            }
-            .routine-table .room-badge {
-                font-size: 0.56rem;
-                padding: 2px 7px;
-                min-width: 36px;
-            }
-            .codes-grid .code-card {
-                padding: 0.4rem 0.55rem;
-                gap: 0.4rem;
-                min-height: 40px;
-            }
-            .codes-grid .code-card .code-subject {
-                font-size: 0.64rem;
-                min-width: 50px;
-            }
-            .codes-grid .code-card .code-value {
-                font-size: 0.68rem;
-                letter-spacing: 0.05em;
-            }
-            .codes-grid .code-card .copy-btn {
-                font-size: 0.55rem;
-                min-height: 26px;
-                min-width: 42px;
-                padding: 0.2rem 0.6rem;
-            }
-            .faculty-name {
-                font-size: 0.75rem;
-            }
-            .faculty-number {
-                font-size: 0.65rem;
-            }
-            .faculty-actions .btn-fac {
-                font-size: 0.6rem;
-                min-height: 30px;
-                min-width: 48px;
-                padding: 0.1rem 0.6rem;
-            }
-            .drive-card .drive-icon {
-                font-size: 2rem;
-            }
-            .drive-card .drive-title {
-                font-size: 0.85rem;
-            }
-            .btn--large {
-                font-size: 13px;
-                height: 42px;
-            }
-            .bottom-nav {
-                height: 64px;
-            }
-            .bottom-nav__label {
-                font-size: 9px;
-            }
-            .bottom-nav__icon .material-symbols-rounded {
-                font-size: 20px;
-            }
-            .bottom-nav__icon {
-                width: 44px;
-                height: 24px;
-            }
-            .routine-section {
-                padding: 0.8rem 0.7rem 0.7rem;
-            }
-            .cta-footer {
-                padding: 1rem 0.8rem;
-            }
-            .cta-footer .cta-icon {
-                font-size: 1.6rem;
-            }
-            .cta-footer .cta-title {
-                font-size: 0.9rem;
-            }
-            .cta-footer .cta-desc {
-                font-size: 0.7rem;
-            }
-            .cta-footer .cta-btn {
-                font-size: 0.7rem;
-                padding: 0.4rem 1.2rem;
-                min-height: 38px;
-                width: 100%;
-                justify-content: center;
-            }
+            .content { padding: 10px 10px 90px; }
+            .top-app-bar__title { font-size: 1rem; }
+            .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
+            .notices-btn .material-symbols-rounded { font-size: 14px; }
+            .glance { padding: 1rem 0.7rem; }
+            .message-box { font-size: 0.85rem; min-height: 44px; }
+            .clock-display { font-size: 0.65rem; }
+            .next-class-bar { font-size: 0.6rem; padding: 0.3rem 0.5rem; min-height: 34px; }
+            .event-date-badge { width: 50px; height: 50px; }
+            .event-date-badge .day { font-size: 1.1rem; }
+            .event-date-badge .month { font-size: 0.5rem; }
+            .event-title { font-size: 0.7rem; }
+            .event-details .event-items { font-size: 0.65rem; }
+            .routine-table { font-size: 0.62rem; min-width: 320px; }
+            .routine-table th, .routine-table td { padding: 7px 8px; }
+            .codes-grid .code-card { padding: 0.4rem 0.55rem; gap: 0.4rem; min-height: 40px; }
+            .codes-grid .code-card .code-subject { font-size: 0.64rem; min-width: 50px; }
+            .codes-grid .code-card .code-value { font-size: 0.68rem; letter-spacing: 0.05em; }
+            .codes-grid .code-card .copy-btn { font-size: 0.55rem; min-height: 26px; min-width: 42px; padding: 0.2rem 0.6rem; }
+            .faculty-name { font-size: 0.75rem; }
+            .faculty-number { font-size: 0.65rem; }
+            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 48px; padding: 0.1rem 0.6rem; }
+            .drive-card .drive-icon { font-size: 2rem; }
+            .drive-card .drive-title { font-size: 0.85rem; }
+            .btn--large { font-size: 13px; height: 42px; }
+            .bottom-nav { height: 64px; }
+            .bottom-nav__label { font-size: 9px; }
+            .bottom-nav__icon .material-symbols-rounded { font-size: 20px; }
+            .bottom-nav__icon { width: 44px; height: 24px; }
+            .routine-section { padding: 0.8rem 0.7rem 0.7rem; }
+            .cta-footer { padding: 1rem 0.8rem; }
+            .cta-footer .cta-icon { font-size: 1.6rem; }
+            .cta-footer .cta-title { font-size: 0.9rem; }
+            .cta-footer .cta-desc { font-size: 0.7rem; }
+            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
+            .routine-published-banner { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
         }
 
         @media (max-width: 380px) {
-            .content {
-                padding: 6px 6px 80px;
-            }
-            .event-date-badge {
-                width: 42px;
-                height: 42px;
-            }
-            .event-date-badge .day {
-                font-size: 0.9rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.4rem;
-            }
-            .event-title {
-                font-size: 0.6rem;
-            }
-            .event-toggle-btn {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.6rem;
-                min-height: 24px;
-            }
-            .faculty-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.1rem;
-            }
-            .faculty-actions {
-                flex-direction: row;
-                justify-content: stretch;
-                width: 100%;
-            }
-            .faculty-actions .btn-fac {
-                flex: 1;
-            }
-            .codes-grid .code-card {
-                flex-wrap: wrap;
-            }
-            .codes-grid .code-card .copy-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .top-app-bar__title {
-                font-size: 0.9rem;
-            }
-            .message-box {
-                font-size: 0.75rem;
-                min-height: 38px;
-            }
-            .glance {
-                padding: 0.8rem 0.5rem;
-            }
-            .notices-btn {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-                min-height: 24px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 12px;
-            }
-            .routine-table {
-                min-width: 290px;
-                font-size: 0.56rem;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 5px 5px;
-            }
-            .routine-table .course-code {
-                font-size: 0.5rem;
-                padding: 1px 5px;
-            }
-            .routine-table .room-badge {
-                font-size: 0.5rem;
-                padding: 1px 5px;
-                min-width: 30px;
-            }
+            .content { padding: 6px 6px 80px; }
+            .event-date-badge { width: 42px; height: 42px; }
+            .event-date-badge .day { font-size: 0.9rem; }
+            .event-date-badge .month { font-size: 0.4rem; }
+            .event-title { font-size: 0.6rem; }
+            .event-toggle-btn { font-size: 0.5rem; padding: 0.15rem 0.6rem; min-height: 24px; }
+            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
+            .faculty-actions .btn-fac { flex: 1; }
+            .codes-grid .code-card { flex-wrap: wrap; }
+            .codes-grid .code-card .copy-btn { width: 100%; justify-content: center; }
+            .top-app-bar__title { font-size: 0.9rem; }
+            .message-box { font-size: 0.75rem; min-height: 38px; }
+            .glance { padding: 0.8rem 0.5rem; }
+            .notices-btn { font-size: 0.55rem; padding: 3px 8px; min-height: 24px; }
+            .notices-btn .material-symbols-rounded { font-size: 12px; }
+            .routine-table { min-width: 290px; font-size: 0.56rem; }
+            .routine-table th, .routine-table td { padding: 5px 5px; }
         }
     </style>
 </head>
@@ -1318,9 +1155,14 @@
 
     <main class="content">
 
+        <!-- ── PAGE 1 – HOME ────────────────────── -->
         <section class="page" id="page-home">
 
             <div class="glance" id="section-ai">
+                <!-- Banner: Routine Published (visible until 18 Aug) -->
+                <div id="routineBanner" class="routine-published-banner">
+                    <i class="fas fa-calendar-check"></i> 📢 Exam Routine Published! Check the <strong>Routine</strong> tab or <strong>Pinned Events</strong>.
+                </div>
                 <div class="section-title">
                     <span class="live-indicator"></span> AI Reminder
                 </div>
@@ -1359,6 +1201,7 @@
 
         </section>
 
+        <!-- ── PAGE 2 – ALL PDFs ────────────────── -->
         <section class="page" id="page-pdfs" hidden>
             <h2>All PDFs</h2>
             <p class="subtitle">Quick access to all your study materials</p>
@@ -1382,96 +1225,15 @@
             </div>
         </section>
 
+        <!-- ── PAGE 3 – ROUTINE & CODES ──────────── -->
         <section class="page" id="page-routine" hidden>
-            <div class="routine-section">
-                <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                <div class="routine-table-wrap">
-                    <table class="routine-table">
-                        <colgroup>
-                            <col class="col-day">
-                            <col class="col-time">
-                            <col class="col-room">
-                            <col class="col-course">
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Room</th>
-                                <th>Course</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">SUN</td>
-                                <td class="time-cell">11:15 – 12:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td>
-                                <td><span class="course-code ict">ICT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td><span class="course-code hum">HUM 1102</span></td>
-                            </tr>
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">MON</td>
-                                <td class="time-cell">11:15 – 12:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td>
-                                <td><span class="course-code ict">ICT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td><span class="course-code mkt">MKT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">TUE</td>
-                                <td class="time-cell">2:45 – 4:15</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td>
-                                <td><span class="course-code mkt">MKT 1101</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">4:15 – 5:45</td>
-                                <td><span class="course-code hum">HUM 1102</span></td>
-                            </tr>
-                            <tr class="day-group-start">
-                                <td class="day-cell" rowspan="2">WED</td>
-                                <td class="time-cell">1:15 – 2:45</td>
-                                <td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td>
-                                <td><span class="course-code ict">ICT 1102</span></td>
-                            </tr>
-                            <tr class="day-group-end">
-                                <td class="time-cell">2:45 – 4:15</td>
-                                <td><span class="course-code ict">ICT 1102</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="codes-section">
-                    <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                    <div class="codes-grid">
-                        <div class="code-card">
-                            <span class="code-icon-dot ict-dot"></span>
-                            <span class="code-subject">ICT 1101</span>
-                            <div class="code-value-box"><span class="code-value">TYFAJJUM</span></div>
-                            <button class="copy-btn" data-code="TYFAJJUM">Copy</button>
-                        </div>
-                        <div class="code-card">
-                            <span class="code-icon-dot hum-dot"></span>
-                            <span class="code-subject">HUM 1102</span>
-                            <div class="code-value-box"><span class="code-value">3NHHKKL7</span></div>
-                            <button class="copy-btn" data-code="3NHHKKL7">Copy</button>
-                        </div>
-                        <div class="code-card">
-                            <span class="code-icon-dot mkt-dot"></span>
-                            <span class="code-subject">MKT 1101</span>
-                            <div class="code-value-box"><span class="code-value">BQS76V5Z</span></div>
-                            <button class="copy-btn" data-code="BQS76V5Z">Copy</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="routine-section" id="routineContainer">
+                <!-- DYNAMIC ROUTINE CONTENT (injected by JS) -->
+                <div id="routineContent"></div>
             </div>
         </section>
 
+        <!-- ── PAGE 4 – FACULTY ──────────────────── -->
         <section class="page" id="page-faculty" hidden>
             <h2>Faculty</h2>
             <p class="subtitle">Contact your instructors</p>
@@ -1589,6 +1351,7 @@
             setInterval(updateClock, 30000);
         })();
 
+        // ── CLASS / EXAM STATUS FOR AI REMINDER ──
         (function() {
             const classes = [
                 { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
@@ -1600,6 +1363,15 @@
                 { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '5501' },
                 { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '5501' }
             ];
+
+            const exams = [
+                { date: '19 Aug', title: 'LAB FINAL (ICT)', time: '1:15 – 4:15', room: 'Class' },
+                { date: '22 Aug', title: 'MKT 1101 Final', time: '3:00 – 5:00', room: '4506' },
+                { date: '24 Aug', title: 'HUM 1102 Final', time: '3:00 – 5:00', room: '4901' },
+                { date: '27 Aug', title: 'ICT 1101 Final', time: '3:00 – 5:00', room: '4901' }
+            ];
+            const examDates = exams.map(e => new Date(e.date + ' 2026'));
+
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             function getDhaka() {
@@ -1624,42 +1396,75 @@
 
             function getClassStatus() {
                 const dh = getDhaka();
-                const day = dh.dayOfWeek,
-                    min = dh.hours * 60 + dh.minutes;
-                let slides = [];
+                const now = new Date();
+                const switchDate = new Date(2026, 7, 19); // 19 Aug 2026
 
-                if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
-                    const l = (13 * 60 + 15) - min;
-                    const timer = String(Math.floor(l / 60)).padStart(2, '0') + ':' + String(l % 60).padStart(2, '0');
-                    slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
-                    return slides;
-                }
+                // ---- IF BEFORE 19 AUG: SHOW CLASS ROUTINE ----
+                if (now < switchDate) {
+                    const day = dh.dayOfWeek,
+                        min = dh.hours * 60 + dh.minutes;
+                    let slides = [];
 
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                    .endM);
-                if (run) {
-                    slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM));
-                    return slides;
-                }
-
-                for (let off = 0; off < 14; off++) {
-                    const fut = new Date(dh.timestamp + off * 86400000);
-                    const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                        .startH * 60 + b.startM));
-                    for (let c of dayCls) {
-                        const st = c.startH * 60 + c.startM;
-                        if (off === 0 && st <= min) continue;
-                        const dn = dayNames[cd];
-                        const dur = off === 0 ? 'Today' : dn;
-                        slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM),
-                            'Room ' + c.room);
+                    if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
+                        const l = (13 * 60 + 15) - min;
+                        const timer = String(Math.floor(l / 60)).padStart(2, '0') + ':' + String(l % 60).padStart(2, '0');
+                        slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
                         return slides;
                     }
+
+                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
+                        .endM);
+                    if (run) {
+                        slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run
+                        .endM));
+                        return slides;
+                    }
+
+                    for (let off = 0; off < 14; off++) {
+                        const fut = new Date(dh.timestamp + off * 86400000);
+                        const cd = fut.getUTCDay();
+                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
+                            .startH * 60 + b.startM));
+                        for (let c of dayCls) {
+                            const st = c.startH * 60 + c.startM;
+                            if (off === 0 && st <= min) continue;
+                            const dn = dayNames[cd];
+                            const dur = off === 0 ? 'Today' : dn;
+                            slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c
+                                .startM),
+                                'Room ' + c.room);
+                            return slides;
+                        }
+                    }
+                    slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
+                    return slides;
                 }
 
-                slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
-                return slides;
+                // ---- AFTER 19 AUG: SHOW EXAM REMINDER ----
+                else {
+                    let slides = [];
+                    const nowMs = now.getTime();
+
+                    // Find the next upcoming exam
+                    let nextExam = null;
+                    for (let e of exams) {
+                        const d = new Date(e.date + ' 2026');
+                        // Set to 3:00 PM for comparison, but we just need date.
+                        d.setHours(0, 0, 0, 0);
+                        if (d.getTime() >= nowMs) {
+                            nextExam = e;
+                            break;
+                        }
+                    }
+
+                    if (nextExam) {
+                        slides.push('📅 Next Exam: <strong>' + nextExam.title + '</strong>');
+                        slides.push('⏰ ' + nextExam.time + ' · Room ' + nextExam.room);
+                    } else {
+                        slides.push('🎉 All exams are over!', 'Good luck with your results!');
+                    }
+                    return slides;
+                }
             }
 
             let slideTimer;
@@ -1688,58 +1493,106 @@
                 }
             }
 
-            showSlides(getClassStatus());
-
-            function updateNextClassBar() {
+            // ── NEXT CLASS / EXAM BAR ──────────────
+            function updateNextBar() {
                 const dh = getDhaka();
-                const day = dh.dayOfWeek,
-                    min = dh.hours * 60 + dh.minutes;
+                const now = new Date();
+                const switchDate = new Date(2026, 7, 19);
                 const label = document.getElementById('barLabel');
                 const detail = document.getElementById('barDetail');
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
 
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                    .endM);
-                if (run) {
-                    label.textContent = 'RUNNING';
-                    dot.className = 'status-dot running';
-                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
-                        '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
-                            .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                // ---- BEFORE 19 AUG: CLASS BAR ----
+                if (now < switchDate) {
+                    const day = dh.dayOfWeek,
+                        min = dh.hours * 60 + dh.minutes;
+                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
+                        .endM);
+                    if (run) {
+                        label.textContent = 'RUNNING';
+                        dot.className = 'status-dot running';
+                        detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
+                            '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
+                                .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                        return;
+                    }
+
+                    for (let off = 0; off < 14; off++) {
+                        const fut = new Date(dh.timestamp + off * 86400000);
+                        const cd = fut.getUTCDay();
+                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
+                            .startH * 60 + b.startM));
+                        for (let c of dayCls) {
+                            const st = c.startH * 60 + c.startM;
+                            if (off === 0 && st <= min) continue;
+                            const fd = dayNames[cd];
+                            const dur = off === 0 ? 'Today' : fd;
+                            label.textContent = off === 0 ? 'TODAY' : 'NEXT';
+                            dot.className = 'status-dot';
+                            detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
+                                .course +
+                                '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
+                                    .endM) +
+                                '</span> · <span class="nc-room">' + c.room + '</span>';
+                            return;
+                        }
+                    }
+                    label.textContent = 'IDLE';
+                    dot.className = 'status-dot';
+                    detail.innerHTML = 'No class scheduled.';
                     return;
                 }
 
-                for (let off = 0; off < 14; off++) {
-                    const fut = new Date(dh.timestamp + off * 86400000);
-                    const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                        .startH * 60 + b.startM));
-                    for (let c of dayCls) {
-                        const st = c.startH * 60 + c.startM;
-                        if (off === 0 && st <= min) continue;
-                        const fd = dayNames[cd];
-                        const dur = off === 0 ? 'Today' : fd;
-                        label.textContent = off === 0 ? 'TODAY' : 'NEXT';
+                // ---- AFTER 19 AUG: EXAM BAR ----
+                else {
+                    const nowMs = now.getTime();
+                    let nextExam = null;
+                    for (let e of exams) {
+                        const d = new Date(e.date + ' 2026');
+                        d.setHours(0, 0, 0, 0);
+                        if (d.getTime() >= nowMs) {
+                            nextExam = e;
+                            break;
+                        }
+                    }
+                    if (nextExam) {
+                        label.textContent = 'UPCOMING EXAM';
+                        dot.className = 'status-dot running';
+                        detail.innerHTML = '<span class="nc-course">' + nextExam.title + '</span> · <span class="nc-time">' +
+                            nextExam.time + '</span> · <span class="nc-room">Room ' + nextExam.room + '</span>';
+                    } else {
+                        label.textContent = 'DONE';
                         dot.className = 'status-dot';
-                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
-                            .course +
-                            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
-                                .endM) +
-                            '</span> · <span class="nc-room">' + c.room + '</span>';
-                        return;
+                        detail.innerHTML = 'All exams finished.';
                     }
                 }
-
-                label.textContent = 'IDLE';
-                dot.className = 'status-dot';
-                detail.innerHTML = 'No class scheduled.';
             }
 
-            updateNextClassBar();
-            setInterval(updateNextClassBar, 30000);
+            // INITIAL RENDER
+            showSlides(getClassStatus());
+            updateNextBar();
+
+            // UPDATE EVERY 30 SECONDS
+            setInterval(() => {
+                showSlides(getClassStatus());
+                updateNextBar();
+            }, 30000);
+
+            // Toggle banner visibility (hide after 18 Aug)
+            (function() {
+                const banner = document.getElementById('routineBanner');
+                if (!banner) return;
+                const now = new Date();
+                const expiry = new Date(2026, 7, 19); // 19 Aug 2026
+                if (now >= expiry) {
+                    banner.style.display = 'none';
+                }
+            })();
+
         })();
 
+        // ── COPY CLASSROOM CODES ──────────────────
         document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const code = this.getAttribute('data-code');
@@ -1781,6 +1634,7 @@
             }, 1500);
         }
 
+        // ── FACULTY COPY ──────────────────────────
         document.querySelectorAll('.btn-copy').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1825,6 +1679,103 @@
             }, 1800);
         }
 
+        // ── ROUTINE SECTION (DYNAMIC + EXPIRY) ──
+        (function() {
+            function renderRoutine() {
+                const container = document.getElementById('routineContent');
+                if (!container) return;
+
+                const now = new Date();
+                const expiryDate = new Date(2026, 7, 27, 17, 0, 0); // 27 Aug 2026 5:00 PM
+
+                if (now >= expiryDate) {
+                    container.innerHTML = `
+                        <div class="routine-expired-msg">
+                            <i class="fas fa-clock" style="font-size:1.5rem;display:block;margin-bottom:0.5rem;color:var(--text-muted);"></i>
+                            Classroom codes and routines are expired. 
+                            When the new semester routine arrives, you will get it here or check 
+                            <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // ── Exam Routine Table ──
+                let html = `
+                    <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
+                    <div class="routine-table-wrap">
+                        <table class="routine-table">
+                            <thead><tr><th>Date</th><th>Day</th><th>Time</th><th>Course</th><th>Faculty</th><th>Room</th></tr></thead>
+                            <tbody>
+                                <tr><td>22/08/26</td><td>Sat</td><td>3:00 – 5:00</td><td>MKT 1101</td><td>MAHS</td><td>4506</td></tr>
+                                <tr><td>24/08/26</td><td>Mon</td><td>3:00 – 5:00</td><td>HUM 1102</td><td>SHAK</td><td>4901</td></tr>
+                                <tr><td>27/08/26</td><td>Thu</td><td>3:00 – 5:00</td><td>ICT 1101</td><td>HHS</td><td>4901</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                // ── Class Routine Table ──
+                html += `
+                    <div style="margin-top:1.5rem;">
+                        <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                        <div class="routine-table-wrap">
+                            <table class="routine-table">
+                                <colgroup>
+                                    <col class="col-day"><col class="col-time"><col class="col-room"><col class="col-course">
+                                </colgroup>
+                                <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr></thead>
+                                <tbody>
+                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">SUN</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
+                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
+                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">MON</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
+                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code mkt">MKT 1101</span></td></tr>
+                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">TUE</td><td class="time-cell">2:45 – 4:15</td><td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td><td><span class="course-code mkt">MKT 1101</span></td></tr>
+                                    <tr class="day-group-end"><td class="time-cell">4:15 – 5:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
+                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">WED</td><td class="time-cell">1:15 – 2:45</td><td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td><td><span class="course-code ict">ICT 1102</span></td></tr>
+                                    <tr class="day-group-end"><td class="time-cell">2:45 – 4:15</td><td><span class="course-code ict">ICT 1102</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                // ── Classroom Codes ──
+                html += `
+                    <div class="codes-section">
+                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
+                        <div class="codes-grid">
+                            <div class="code-card"><span class="code-icon-dot ict-dot"></span><span class="code-subject">ICT 1101</span><div class="code-value-box"><span class="code-value">TYFAJJUM</span></div><button class="copy-btn" data-code="TYFAJJUM">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot hum-dot"></span><span class="code-subject">HUM 1102</span><div class="code-value-box"><span class="code-value">3NHHKKL7</span></div><button class="copy-btn" data-code="3NHHKKL7">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot mkt-dot"></span><span class="code-subject">MKT 1101</span><div class="code-value-box"><span class="code-value">BQS76V5Z</span></div><button class="copy-btn" data-code="BQS76V5Z">Copy</button></div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML = html;
+
+                // Re-bind copy events for dynamically added buttons
+                document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const code = this.getAttribute('data-code');
+                        if (!code) return;
+                        const origText = this.textContent;
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(code).then(() => {
+                                flashCopied(this, origText);
+                            }).catch(() => fallbackCopyCode(code, this, origText));
+                        } else {
+                            fallbackCopyCode(code, this, origText);
+                        }
+                    });
+                });
+            }
+
+            renderRoutine();
+            setInterval(renderRoutine, 30000);
+        })();
+
+        // ── PINNED EVENTS ─────────────────────────
         (function() {
             const eventsData = [
                 {
@@ -1836,7 +1787,6 @@
                     note: 'For students after roll 28',
                     dateObj: new Date(2026, 7, 16)
                 },
-                // ── NEW EVENT: 17 Aug ICT CT (Optional) ──
                 {
                     date: '17 Aug',
                     title: 'ICT CT (Optional)',
@@ -1865,60 +1815,53 @@
                     dateObj: new Date(2026, 7, 18),
                     rangeEnd: new Date(2026, 7, 18)
                 },
+                // ── FINAL EXAMS (HIGHLIGHTED) ──
                 {
                     date: '19 Aug',
                     title: 'LAB FINAL (ICT)',
-                    badge: 'Exam',
+                    badge: 'Final Exam',
                     meta: 'Time: 1:15 – 4:15',
                     items: [
                         '• Excel: COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP'
                     ],
                     note: 'In class time.',
-                    dateObj: new Date(2026, 7, 19)
+                    dateObj: new Date(2026, 7, 19),
+                    isFinal: true
                 },
                 {
                     date: '22 Aug',
-                    title: 'Semester Final Exams!',
-                    badge: 'Exam',
-                    meta: 'Date & Time TBD',
-                    items: ['• All subjects'],
-                    note: 'Stay tuned for schedule.',
-                    dateObj: new Date(2026, 7, 22)
+                    title: 'MKT 1101 Final (MAHS)',
+                    badge: 'Final Exam',
+                    meta: 'Time: 3:00 – 5:00 | Room: 4506',
+                    items: ['• Full syllabus (Ch.7, 8, 9, 11, 14)'],
+                    note: 'Check the Routine tab for details.',
+                    dateObj: new Date(2026, 7, 22),
+                    isFinal: true
                 },
                 {
-                    date: '? Aug',
-                    title: '? ICT FINAL',
-                    badge: 'TBD',
-                    meta: 'Room & Time TBD',
+                    date: '24 Aug',
+                    title: 'HUM 1102 Final (SHAK)',
+                    badge: 'Final Exam',
+                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
+                    items: ['• Full syllabus'],
+                    note: 'Check the Routine tab for details.',
+                    dateObj: new Date(2026, 7, 24),
+                    isFinal: true
+                },
+                {
+                    date: '27 Aug',
+                    title: 'ICT 1101 Final (HHS)',
+                    badge: 'Final Exam',
+                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
                     items: [
                         '• Ch.2 DC17 (Connect internet, www, safe browsing)',
                         '• Ch.10 DC17 (Intranet, extranet, peer to peer etc.)',
                         '• OSI MODEL',
                         '• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)'
                     ],
-                    note: 'Syllabus updated.',
-                    isPlaceholder: true,
-                    dateObj: new Date(2026, 11, 31)
-                },
-                {
-                    date: '? Aug',
-                    title: '? MKT FINAL',
-                    badge: 'TBD',
-                    meta: 'Syllabus',
-                    items: ['• Ch.7', '• Ch.8', '• Ch.9', '• Ch.11', '• Ch.14'],
-                    note: 'Can be updated later.',
-                    isPlaceholder: true,
-                    dateObj: new Date(2026, 11, 30)
-                },
-                {
-                    date: '? Aug',
-                    title: '? Bangla FINAL',
-                    badge: 'TBD',
-                    meta: 'Syllabus',
-                    items: ['• Syllabus is in ALL PDFs > Bangla > Final Syllabus'],
-                    note: 'Check PDF section.',
-                    isPlaceholder: true,
-                    dateObj: new Date(2026, 11, 29)
+                    note: 'Check the Routine tab for details.',
+                    dateObj: new Date(2026, 7, 27),
+                    isFinal: true
                 }
             ];
 
@@ -1962,15 +1905,8 @@
 
                 let html = '';
                 visible.forEach((ev) => {
-                    let day, month;
-                    if (ev.isPlaceholder) {
-                        const parts = ev.date.split(' ');
-                        day = parts[0] || '?';
-                        month = parts[1] || 'Aug';
-                    } else {
-                        month = getMonthAbbr(ev.dateObj);
-                        day = getDayNum(ev.dateObj);
-                    }
+                    const month = getMonthAbbr(ev.dateObj);
+                    const day = getDayNum(ev.dateObj);
 
                     let itemsHtml = '';
                     if (ev.items && ev.items.length > 0) {
@@ -1988,8 +1924,11 @@
                         (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
                         '</div>';
 
+                    // Add final-exam class if it's a final
+                    const finalClass = ev.isFinal ? ' final-exam' : '';
+
                     html +=
-                        '<div class="event-block">' +
+                        '<div class="event-block' + finalClass + '">' +
                         '<div class="event-date-badge">' +
                         '<span class="day">' + day + '</span>' +
                         '<span class="month">' + month + '</span>' +
