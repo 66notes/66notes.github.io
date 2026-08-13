@@ -32,9 +32,9 @@
             --text-secondary: #6b7280;
             --text-muted: #9ca3af;
             --navy: #0d2b4e;
-            --accent: #4a6cf7;
-            --accent-light: #eef2ff;
-            --accent-glow: rgba(74, 108, 247, 0.15);
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --accent-glow: rgba(37, 99, 235, 0.15);
             --green: #22c55e;
             --amber: #f59e0b;
             --orange: #f97316;
@@ -78,7 +78,6 @@
             line-height: 1;
         }
 
-        /* ── TOP APP BAR ─────────────────────────── */
         .top-app-bar {
             position: sticky;
             top: 0;
@@ -135,7 +134,6 @@
             font-size: 16px;
         }
 
-        /* ── CONTENT ────────────────────────────── */
         .content {
             max-width: 780px;
             margin: 0 auto;
@@ -173,7 +171,6 @@
             margin-bottom: 0.9rem;
         }
 
-        /* ── AI REMINDER ────────────────────────── */
         .glance {
             background: var(--surface);
             border-radius: var(--radius-xl);
@@ -299,7 +296,6 @@
             font-size: 0.6rem;
         }
 
-        /* ── PINNED EVENTS ──────────────────────── */
         .events-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -362,23 +358,6 @@
             border: 1px solid var(--border);
             overflow: hidden;
             transition: all var(--transition);
-        }
-        .event-block.passed {
-            opacity: 0.5;
-            filter: grayscale(0.8);
-            order: 999;
-        }
-        .event-block.passed .event-title,
-        .event-block.passed .event-meta,
-        .event-block.passed .event-items,
-        .event-block.passed .event-note,
-        .event-block.passed .event-details * {
-            text-decoration: line-through !important;
-            color: #6b7280 !important;
-        }
-        .event-block.passed .event-badge {
-            background: #d1d5db !important;
-            color: #6b7280 !important;
         }
         .event-block.upcoming {
             background: #fef9e3;
@@ -455,27 +434,33 @@
         }
         .event-toggle-btn {
             flex-shrink: 0;
-            background: none;
-            border: none;
+            background: #f0f4ff;
+            border: 1px solid #dbeafe;
+            border-radius: 30px;
             color: var(--accent);
             font-weight: 600;
             font-size: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 6px;
+            padding: 0.25rem 0.9rem;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
-            transition: background var(--transition);
-            min-height: 28px;
+            transition: all 0.2s ease;
+            min-height: 30px;
             display: flex;
             align-items: center;
-            gap: 0.2rem;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+        .event-toggle-btn:hover {
+            background: #dbeafe;
+            border-color: #b9d0fc;
+            transform: scale(1.02);
         }
         .event-toggle-btn:active {
-            background: rgba(74, 108, 247, 0.1);
+            transform: scale(0.96);
         }
         .event-toggle-btn i {
-            font-size: 0.55rem;
-            transition: transform 0.25s ease;
+            font-size: 0.5rem;
+            transition: transform 0.3s ease;
         }
         .event-toggle-btn.open i {
             transform: rotate(180deg);
@@ -483,52 +468,50 @@
         .event-details {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.25s ease;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease;
             padding: 0 0.2rem 0 0;
             opacity: 0;
         }
         .event-details.open {
-            max-height: 600px;
-            padding: 0.2rem 0.2rem 0.1rem 0;
+            max-height: 800px;
+            padding: 0.3rem 0.2rem 0.1rem 0;
             opacity: 1;
         }
-        .event-meta {
-            font-size: 0.55rem;
+        .event-details .event-meta {
+            font-size: 0.6rem;
             font-weight: 500;
             color: #4b5563;
-            margin-top: 0.05rem;
+            margin-bottom: 0.1rem;
         }
-        .event-items {
+        .event-details .event-items {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.1rem 0.4rem;
-            font-size: 0.55rem;
-            color: #4b5563;
-            margin-top: 0.1rem;
-        }
-        .event-items span {
-            display: inline-flex;
-            align-items: center;
+            flex-direction: column;
             gap: 0.1rem;
+            font-size: 0.7rem;
+            color: #1f2937;
+            padding-left: 0.2rem;
         }
-        .event-note {
-            font-size: 0.55rem;
+        .event-details .event-items span {
+            display: block;
+            padding: 0.05rem 0;
+        }
+        .event-details .event-note {
+            font-size: 0.65rem;
             font-weight: 500;
             color: #7c2d12;
             background: #fef3c7;
-            padding: 0.05rem 0.5rem;
+            padding: 0.1rem 0.6rem;
             border-radius: 6px;
             display: inline-block;
-            margin-top: 0.1rem;
+            margin-top: 0.2rem;
             border: 1px solid #fde68a;
         }
-        .event-note.blue {
+        .event-details .event-note.blue {
             background: #eff6ff;
             color: #1e40af;
             border-color: #dbeafe;
         }
 
-        /* ── ROUTINE & CODES (REDESIGNED) ───────── */
         .routine-section {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -681,20 +664,11 @@
             color: #374151;
             letter-spacing: 0.02em;
         }
-        .routine-table colgroup .col-day {
-            width: 15%;
-        }
-        .routine-table colgroup .col-time {
-            width: 30%;
-        }
-        .routine-table colgroup .col-room {
-            width: 15%;
-        }
-        .routine-table colgroup .col-course {
-            width: 40%;
-        }
+        .routine-table colgroup .col-day { width: 15%; }
+        .routine-table colgroup .col-time { width: 30%; }
+        .routine-table colgroup .col-room { width: 15%; }
+        .routine-table colgroup .col-course { width: 40%; }
 
-        /* ── CODES SECTION (REDESIGNED) ─────────── */
         .codes-section {
             margin-top: 1.1rem;
             padding-top: 0.9rem;
@@ -742,8 +716,8 @@
             flex-shrink: 0;
         }
         .codes-grid .code-card .code-icon-dot.ict-dot {
-            background: #4a6cf7;
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.18);
+            background: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
         }
         .codes-grid .code-card .code-icon-dot.hum-dot {
             background: #22c55e;
@@ -815,7 +789,6 @@
             border: 1px solid #a7f3d0 !important;
         }
 
-        /* ── ALL PDFs ───────────────────────────── */
         .drive-grid {
             display: flex;
             flex-direction: column;
@@ -889,7 +862,6 @@
             justify-content: center;
         }
 
-        /* ── FACULTY ────────────────────────────── */
         .faculty-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -1004,7 +976,6 @@
             font-weight: 400;
         }
 
-        /* ── CTA FOOTER ─────────────────────────── */
         .cta-footer {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -1054,7 +1025,6 @@
             font-size: 0.9rem;
         }
 
-        /* ── BOTTOM NAV ─────────────────────────── */
         .bottom-nav {
             position: fixed;
             left: 0;
@@ -1086,19 +1056,7 @@
             position: relative;
         }
         .bottom-nav__item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 0 0 3px 3px;
-            opacity: 0;
-            transition: opacity var(--transition);
-        }
-        .bottom-nav__item.is-active::after {
-            opacity: 1;
+            display: none;
         }
         .bottom-nav__item.is-active {
             color: var(--navy);
@@ -1123,25 +1081,6 @@
             font-weight: 500;
         }
 
-        /* ── SECTION HIGHLIGHT ──────────────────── */
-        .section-highlight {
-            animation: highlightPulse 1.2s ease 3;
-            border-left: 4px solid var(--accent) !important;
-            background: #ebf0ff !important;
-        }
-        @keyframes highlightPulse {
-            0% {
-                background: #ebf0ff;
-            }
-            50% {
-                background: #d6e4ff;
-            }
-            100% {
-                background: #ebf0ff;
-            }
-        }
-
-        /* ── RESPONSIVE ─────────────────────────── */
         @media (max-width: 480px) {
             .content {
                 padding: 10px 10px 90px;
@@ -1184,6 +1123,9 @@
             }
             .event-title {
                 font-size: 0.7rem;
+            }
+            .event-details .event-items {
+                font-size: 0.65rem;
             }
             .routine-table {
                 font-size: 0.62rem;
@@ -1300,6 +1242,11 @@
             .event-title {
                 font-size: 0.6rem;
             }
+            .event-toggle-btn {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.6rem;
+                min-height: 24px;
+            }
             .faculty-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1360,9 +1307,6 @@
 </head>
 <body>
 
-    <!-- ══════════════════════════════════════════
-    TOP APP BAR
-    ═══════════════════════════════════════════ -->
     <header class="top-app-bar">
         <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
         <div class="top-app-bar__right">
@@ -1372,12 +1316,8 @@
         </div>
     </header>
 
-    <!-- ══════════════════════════════════════════
-    CONTENT
-    ═══════════════════════════════════════════ -->
     <main class="content">
 
-        <!-- ── PAGE 1 – HOME ────────────────────── -->
         <section class="page" id="page-home">
 
             <div class="glance" id="section-ai">
@@ -1419,7 +1359,6 @@
 
         </section>
 
-        <!-- ── PAGE 2 – ALL PDFs ────────────────── -->
         <section class="page" id="page-pdfs" hidden>
             <h2>All PDFs</h2>
             <p class="subtitle">Quick access to all your study materials</p>
@@ -1443,7 +1382,6 @@
             </div>
         </section>
 
-        <!-- ── PAGE 3 – ROUTINE & CODES (REDESIGNED) ── -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section">
                 <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
@@ -1464,7 +1402,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- SUNDAY -->
                             <tr class="day-group-start">
                                 <td class="day-cell" rowspan="2">SUN</td>
                                 <td class="time-cell">11:15 – 12:45</td>
@@ -1475,7 +1412,6 @@
                                 <td class="time-cell">1:15 – 2:45</td>
                                 <td><span class="course-code hum">HUM 1102</span></td>
                             </tr>
-                            <!-- MONDAY -->
                             <tr class="day-group-start">
                                 <td class="day-cell" rowspan="2">MON</td>
                                 <td class="time-cell">11:15 – 12:45</td>
@@ -1486,7 +1422,6 @@
                                 <td class="time-cell">1:15 – 2:45</td>
                                 <td><span class="course-code mkt">MKT 1101</span></td>
                             </tr>
-                            <!-- TUESDAY -->
                             <tr class="day-group-start">
                                 <td class="day-cell" rowspan="2">TUE</td>
                                 <td class="time-cell">2:45 – 4:15</td>
@@ -1497,7 +1432,6 @@
                                 <td class="time-cell">4:15 – 5:45</td>
                                 <td><span class="course-code hum">HUM 1102</span></td>
                             </tr>
-                            <!-- WEDNESDAY -->
                             <tr class="day-group-start">
                                 <td class="day-cell" rowspan="2">WED</td>
                                 <td class="time-cell">1:15 – 2:45</td>
@@ -1512,7 +1446,6 @@
                     </table>
                 </div>
 
-                <!-- Classroom Codes (Redesigned) -->
                 <div class="codes-section">
                     <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
                     <div class="codes-grid">
@@ -1539,7 +1472,6 @@
             </div>
         </section>
 
-        <!-- ── PAGE 4 – FACULTY ──────────────────── -->
         <section class="page" id="page-faculty" hidden>
             <h2>Faculty</h2>
             <p class="subtitle">Contact your instructors</p>
@@ -1596,9 +1528,6 @@
 
     </main>
 
-    <!-- ══════════════════════════════════════════
-    BOTTOM NAVIGATION
-    ═══════════════════════════════════════════ -->
     <nav class="bottom-nav">
         <button class="bottom-nav__item is-active" data-target="page-home">
             <span class="bottom-nav__icon"><span class="material-symbols-rounded">home</span></span>
@@ -1618,11 +1547,7 @@
         </button>
     </nav>
 
-    <!-- ══════════════════════════════════════════
-    SCRIPTS
-    ═══════════════════════════════════════════ -->
     <script>
-        // ── BOTTOM NAVIGATION ──────────────────────
         (function() {
             const navItems = document.querySelectorAll('.bottom-nav__item');
             const pages = document.querySelectorAll('.page');
@@ -1650,7 +1575,6 @@
             });
         })();
 
-        // ── CLOCK ──────────────────────────────────
         (function() {
             function updateClock() {
                 const now = new Date();
@@ -1658,13 +1582,13 @@
                 const minutes = now.getMinutes().toString().padStart(2, '0');
                 const ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12 || 12;
-                document.getElementById('clockDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
+                const el = document.getElementById('clockDisplay');
+                if (el) el.textContent = hours + ':' + minutes + ' ' + ampm;
             }
             updateClock();
             setInterval(updateClock, 30000);
         })();
 
-        // ── CLASS STATUS ──────────────────────────
         (function() {
             const classes = [
                 { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
@@ -1706,13 +1630,13 @@
 
                 if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
                     const l = (13 * 60 + 15) - min;
-                    const timer = String(Math.floor(l)).padStart(2, '0') + ':00';
+                    const timer = String(Math.floor(l / 60)).padStart(2, '0') + ':' + String(l % 60).padStart(2, '0');
                     slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
                     return slides;
                 }
 
                 const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                .endM);
+                    .endM);
                 if (run) {
                     slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM));
                     return slides;
@@ -1722,7 +1646,7 @@
                     const fut = new Date(dh.timestamp + off * 86400000);
                     const cd = fut.getUTCDay();
                     const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                    .startH * 60 + b.startM));
+                        .startH * 60 + b.startM));
                     for (let c of dayCls) {
                         const st = c.startH * 60 + c.startM;
                         if (off === 0 && st <= min) continue;
@@ -1742,6 +1666,7 @@
 
             function showSlides(slides) {
                 const box = document.getElementById('messageBox');
+                if (!box) return;
                 box.innerHTML = '';
                 slides.forEach(h => {
                     const d = document.createElement('div');
@@ -1772,15 +1697,16 @@
                 const label = document.getElementById('barLabel');
                 const detail = document.getElementById('barDetail');
                 const dot = document.getElementById('barDot');
+                if (!label || !detail || !dot) return;
 
                 const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                .endM);
+                    .endM);
                 if (run) {
                     label.textContent = 'RUNNING';
                     dot.className = 'status-dot running';
                     detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
                         '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
-                        .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                            .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
                     return;
                 }
 
@@ -1799,7 +1725,7 @@
                         detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
                             .course +
                             '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
-                            .endM) +
+                                .endM) +
                             '</span> · <span class="nc-room">' + c.room + '</span>';
                         return;
                     }
@@ -1814,7 +1740,6 @@
             setInterval(updateNextClassBar, 30000);
         })();
 
-        // ── COPY CLASSROOM CODES ──────────────────
         document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const code = this.getAttribute('data-code');
@@ -1856,7 +1781,6 @@
             }, 1500);
         }
 
-        // ── FACULTY COPY ──────────────────────────
         document.querySelectorAll('.btn-copy').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1901,80 +1825,102 @@
             }, 1800);
         }
 
-        // ── PINNED EVENTS ─────────────────────────
         (function() {
-            const eventsData = [{
-                date: '4 Aug',
-                title: 'MKT Assignment & Presentation',
-                badge: 'CT 2',
-                meta: 'Team: 5-6 Members',
-                items: [
-                    '• Presentation (No Slide)',
-                    '• Assignment (Printed)',
-                    '• Poster (Printed)',
-                    '📌 Include: 4Ps, STP, Product-Name, Category, Ingredients'
-                ],
-                note: 'Assignment is what you will present. No slide. Only Poster.',
-                dateObj: new Date(2026, 7, 4)
-            }, {
-                date: '9 Aug',
-                title: 'ICT Assignment: OSI Layer',
-                badge: 'Assignment',
-                meta: 'Check PDF & Picture in ALL PDFs > ICT',
-                items: ['• OSI Layer'],
-                note: 'Check PDF & Picture in ALL PDFs > ICT',
-                dateObj: new Date(2026, 7, 9)
-            }, {
-                date: '9 Aug',
-                title: 'Bangla CT Exam',
-                badge: 'Exam',
-                meta: '',
-                items: ['১. ব্যাকরনিক শব্দশ্রেণী', '২. বাক্য'],
-                note: 'Be prepared!',
-                dateObj: new Date(2026, 7, 9)
-            }, {
-                date: '11 Aug',
-                title: 'Bangla Assignment & Presentation Group 1 (01-028)',
-                badge: 'Deadline',
-                meta: '3-4 Pages (A4) • Written',
-                items: [
-                    '১. লেখক/কবি পরিচিতি',
-                    '২. সাহিত্যের মূল বিষয় বস্তু',
-                    '৩. চরিত্র (যদি থাকে)',
-                    '৪. শিল্পমূল্য',
-                    '৫. সামাজিক প্রভাব/সাহিত্য নির্বাচনের কারণ',
-                    '৬. উপসংহার'
-                ],
-                note: 'Group 1 – Roll 01-028',
-                dateObj: new Date(2026, 7, 11)
-            }, {
-                date: '16 Aug',
-                title: 'Bangla Presentation Group 2 (28-end)',
-                badge: 'Presentation',
-                meta: 'After Roll 28',
-                items: ['• Present your Bangla assignment'],
-                note: 'For students after roll 28',
-                dateObj: new Date(2026, 7, 16)
-            }, {
-                date: '18 Aug',
-                title: 'Bangla Results',
-                badge: 'Results',
-                meta: '',
-                items: ['• Bangla Assignment Results', '• Bangla CT Exam Results'],
-                note: 'Check your results!',
-                dateObj: new Date(2026, 7, 18)
-            }, {
-                date: '22 Aug',
-                title: 'Semester Final Exams!',
-                badge: 'Exam',
-                meta: 'All PDFs are in PDF Section',
-                items: [
-                    '• Bangla Syllabus: Check Syllabus Picture in PDF section',
-                    '• ICT: Check PDF section, Google Classroom, Messenger/WhatsApp chats'
-                ],
-                note: 'All PDFs are in PDF Section. Bangla syllabus in Syllabus Picture. ICT materials in PDF section, Google Classroom, and Messenger/WhatsApp.',
-                dateObj: new Date(2026, 7, 22)
-            }];
+            const eventsData = [
+                {
+                    date: '16 Aug',
+                    title: 'Bangla Presentation Group 2 (28-end)',
+                    badge: 'Presentation',
+                    meta: 'After Roll 28',
+                    items: ['• Present your Bangla assignment'],
+                    note: 'For students after roll 28',
+                    dateObj: new Date(2026, 7, 16)
+                },
+                // ── NEW EVENT: 17 Aug ICT CT (Optional) ──
+                {
+                    date: '17 Aug',
+                    title: 'ICT CT (Optional)',
+                    badge: 'Optional CT',
+                    meta: '',
+                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)'],
+                    note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
+                    dateObj: new Date(2026, 7, 17)
+                },
+                {
+                    date: '18 Aug',
+                    title: 'Bangla Results',
+                    badge: 'Results',
+                    meta: '',
+                    items: ['• Bangla Assignment Results', '• Bangla CT Exam Results'],
+                    note: 'Check your results!',
+                    dateObj: new Date(2026, 7, 18)
+                },
+                {
+                    date: '10-18 Aug',
+                    title: 'Semester Fee Payment',
+                    badge: 'Important',
+                    meta: 'Pay before deadline',
+                    items: ['• Pay your semester fees'],
+                    note: 'Deadline: 18 Aug',
+                    dateObj: new Date(2026, 7, 18),
+                    rangeEnd: new Date(2026, 7, 18)
+                },
+                {
+                    date: '19 Aug',
+                    title: 'LAB FINAL (ICT)',
+                    badge: 'Exam',
+                    meta: 'Time: 1:15 – 4:15',
+                    items: [
+                        '• Excel: COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP'
+                    ],
+                    note: 'In class time.',
+                    dateObj: new Date(2026, 7, 19)
+                },
+                {
+                    date: '22 Aug',
+                    title: 'Semester Final Exams!',
+                    badge: 'Exam',
+                    meta: 'Date & Time TBD',
+                    items: ['• All subjects'],
+                    note: 'Stay tuned for schedule.',
+                    dateObj: new Date(2026, 7, 22)
+                },
+                {
+                    date: '? Aug',
+                    title: '? ICT FINAL',
+                    badge: 'TBD',
+                    meta: 'Room & Time TBD',
+                    items: [
+                        '• Ch.2 DC17 (Connect internet, www, safe browsing)',
+                        '• Ch.10 DC17 (Intranet, extranet, peer to peer etc.)',
+                        '• OSI MODEL',
+                        '• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)'
+                    ],
+                    note: 'Syllabus updated.',
+                    isPlaceholder: true,
+                    dateObj: new Date(2026, 11, 31)
+                },
+                {
+                    date: '? Aug',
+                    title: '? MKT FINAL',
+                    badge: 'TBD',
+                    meta: 'Syllabus',
+                    items: ['• Ch.7', '• Ch.8', '• Ch.9', '• Ch.11', '• Ch.14'],
+                    note: 'Can be updated later.',
+                    isPlaceholder: true,
+                    dateObj: new Date(2026, 11, 30)
+                },
+                {
+                    date: '? Aug',
+                    title: '? Bangla FINAL',
+                    badge: 'TBD',
+                    meta: 'Syllabus',
+                    items: ['• Syllabus is in ALL PDFs > Bangla > Final Syllabus'],
+                    note: 'Check PDF section.',
+                    isPlaceholder: true,
+                    dateObj: new Date(2026, 11, 29)
+                }
+            ];
 
             function getMonthAbbr(date) {
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -1983,57 +1929,48 @@
 
             function getDayNum(date) { return date.getDate(); }
 
-            function isPassed(date) {
-                const today = new Date();
+            function shouldShowEvent(ev) {
+                const now = new Date();
+                const today = new Date(now);
                 today.setHours(0, 0, 0, 0);
-                const compareDate = new Date(date);
-                compareDate.setHours(0, 0, 0, 0);
-                return compareDate < today;
-            }
 
-            function toggleEvent(eventBlock) {
-                const details = eventBlock.querySelector('.event-details');
-                const btn = eventBlock.querySelector('.event-toggle-btn');
-                if (!details) return;
-                const isOpen = details.classList.toggle('open');
-                if (btn) {
-                    btn.classList.toggle('open', isOpen);
-                    btn.innerHTML = isOpen ?
-                        'See Less <i class="fas fa-chevron-up"></i>' :
-                        'See More <i class="fas fa-chevron-down"></i>';
+                if (ev.rangeEnd) {
+                    const end = new Date(ev.rangeEnd);
+                    end.setHours(0, 0, 0, 0);
+                    if (today > end) return false;
                 }
+
+                const evDate = new Date(ev.dateObj);
+                evDate.setHours(0, 0, 0, 0);
+
+                if (evDate < today) return false;
+                return true;
             }
-            window.toggleEvent = toggleEvent;
 
             function renderEvents() {
                 const container = document.getElementById('eventsList');
                 if (!container) return;
 
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const upcoming = [];
-                const passed = [];
+                const visible = eventsData.filter(ev => shouldShowEvent(ev));
+                visible.sort((a, b) => a.dateObj - b.dateObj);
 
-                eventsData.forEach((ev) => {
-                    const evDate = new Date(ev.dateObj);
-                    evDate.setHours(0, 0, 0, 0);
-                    if (evDate < today) {
-                        passed.push({ ...ev });
-                    } else {
-                        upcoming.push({ ...ev });
-                    }
-                });
-
-                upcoming.sort((a, b) => a.dateObj - b.dateObj);
-                passed.sort((a, b) => b.dateObj - a.dateObj);
-                const sortedEvents = [...upcoming, ...passed];
+                if (visible.length === 0) {
+                    container.innerHTML =
+                        '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
+                    return;
+                }
 
                 let html = '';
-                sortedEvents.forEach((ev) => {
-                    const isPast = isPassed(ev.dateObj);
-                    const isUpcoming = !isPast && (upcoming.includes(ev));
-                    const month = getMonthAbbr(ev.dateObj);
-                    const day = getDayNum(ev.dateObj);
+                visible.forEach((ev) => {
+                    let day, month;
+                    if (ev.isPlaceholder) {
+                        const parts = ev.date.split(' ');
+                        day = parts[0] || '?';
+                        month = parts[1] || 'Aug';
+                    } else {
+                        month = getMonthAbbr(ev.dateObj);
+                        day = getDayNum(ev.dateObj);
+                    }
 
                     let itemsHtml = '';
                     if (ev.items && ev.items.length > 0) {
@@ -2052,7 +1989,7 @@
                         '</div>';
 
                     html +=
-                        '<div class="event-block' + (isUpcoming ? ' upcoming' : '') + (isPast ? ' passed' : '') + '">' +
+                        '<div class="event-block">' +
                         '<div class="event-date-badge">' +
                         '<span class="day">' + day + '</span>' +
                         '<span class="month">' + month + '</span>' +
@@ -2074,6 +2011,19 @@
 
                 container.innerHTML = html;
             }
+
+            window.toggleEvent = function(block) {
+                const details = block.querySelector('.event-details');
+                const btn = block.querySelector('.event-toggle-btn');
+                if (!details) return;
+                const isOpen = details.classList.toggle('open');
+                if (btn) {
+                    btn.classList.toggle('open', isOpen);
+                    btn.innerHTML = isOpen ?
+                        'See Less <i class="fas fa-chevron-up"></i>' :
+                        'See More <i class="fas fa-chevron-down"></i>';
+                }
+            };
 
             renderEvents();
             setInterval(renderEvents, 60000);
