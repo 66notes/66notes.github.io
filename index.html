@@ -384,7 +384,6 @@
             border-left: 4px solid #f5b042;
             border-color: #fde68a;
         }
-        /* Final exam highlight */
         .event-block.final-exam {
             background: #fef2f2;
             border-left: 4px solid #dc2626;
@@ -785,7 +784,6 @@
             border: 1px solid #a7f3d0 !important;
         }
 
-        /* ── ALL PDFs ───────────────────────────── */
         .drive-grid {
             display: flex;
             flex-direction: column;
@@ -859,7 +857,6 @@
             justify-content: center;
         }
 
-        /* ── FACULTY ────────────────────────────── */
         .faculty-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -974,7 +971,6 @@
             font-weight: 400;
         }
 
-        /* ── CTA FOOTER ─────────────────────────── */
         .cta-footer {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -1024,7 +1020,6 @@
             font-size: 0.9rem;
         }
 
-        /* ── BOTTOM NAV ─────────────────────────── */
         .bottom-nav {
             position: fixed;
             left: 0;
@@ -1082,63 +1077,209 @@
         }
 
         @media (max-width: 480px) {
-            .content { padding: 10px 10px 90px; }
-            .top-app-bar__title { font-size: 1rem; }
-            .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
-            .notices-btn .material-symbols-rounded { font-size: 14px; }
-            .glance { padding: 1rem 0.7rem; }
-            .message-box { font-size: 0.85rem; min-height: 44px; }
-            .clock-display { font-size: 0.65rem; }
-            .next-class-bar { font-size: 0.6rem; padding: 0.3rem 0.5rem; min-height: 34px; }
-            .event-date-badge { width: 50px; height: 50px; }
-            .event-date-badge .day { font-size: 1.1rem; }
-            .event-date-badge .month { font-size: 0.5rem; }
-            .event-title { font-size: 0.7rem; }
-            .event-details .event-items { font-size: 0.65rem; }
-            .routine-table { font-size: 0.62rem; min-width: 320px; }
-            .routine-table th, .routine-table td { padding: 7px 8px; }
-            .codes-grid .code-card { padding: 0.4rem 0.55rem; gap: 0.4rem; min-height: 40px; }
-            .codes-grid .code-card .code-subject { font-size: 0.64rem; min-width: 50px; }
-            .codes-grid .code-card .code-value { font-size: 0.68rem; letter-spacing: 0.05em; }
-            .codes-grid .code-card .copy-btn { font-size: 0.55rem; min-height: 26px; min-width: 42px; padding: 0.2rem 0.6rem; }
-            .faculty-name { font-size: 0.75rem; }
-            .faculty-number { font-size: 0.65rem; }
-            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 48px; padding: 0.1rem 0.6rem; }
-            .drive-card .drive-icon { font-size: 2rem; }
-            .drive-card .drive-title { font-size: 0.85rem; }
-            .btn--large { font-size: 13px; height: 42px; }
-            .bottom-nav { height: 64px; }
-            .bottom-nav__label { font-size: 9px; }
-            .bottom-nav__icon .material-symbols-rounded { font-size: 20px; }
-            .bottom-nav__icon { width: 44px; height: 24px; }
-            .routine-section { padding: 0.8rem 0.7rem 0.7rem; }
-            .cta-footer { padding: 1rem 0.8rem; }
-            .cta-footer .cta-icon { font-size: 1.6rem; }
-            .cta-footer .cta-title { font-size: 0.9rem; }
-            .cta-footer .cta-desc { font-size: 0.7rem; }
-            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
-            .routine-published-banner { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
+            .content {
+                padding: 10px 10px 90px;
+            }
+            .top-app-bar__title {
+                font-size: 1rem;
+            }
+            .notices-btn {
+                font-size: 0.6rem;
+                padding: 5px 10px;
+                min-height: 28px;
+            }
+            .notices-btn .material-symbols-rounded {
+                font-size: 14px;
+            }
+            .glance {
+                padding: 1rem 0.7rem;
+            }
+            .message-box {
+                font-size: 0.85rem;
+                min-height: 44px;
+            }
+            .clock-display {
+                font-size: 0.65rem;
+            }
+            .next-class-bar {
+                font-size: 0.6rem;
+                padding: 0.3rem 0.5rem;
+                min-height: 34px;
+            }
+            .event-date-badge {
+                width: 50px;
+                height: 50px;
+            }
+            .event-date-badge .day {
+                font-size: 1.1rem;
+            }
+            .event-date-badge .month {
+                font-size: 0.5rem;
+            }
+            .event-title {
+                font-size: 0.7rem;
+            }
+            .event-details .event-items {
+                font-size: 0.65rem;
+            }
+            .routine-table {
+                font-size: 0.62rem;
+                min-width: 320px;
+            }
+            .routine-table th,
+            .routine-table td {
+                padding: 7px 8px;
+            }
+            .codes-grid .code-card {
+                padding: 0.4rem 0.55rem;
+                gap: 0.4rem;
+                min-height: 40px;
+            }
+            .codes-grid .code-card .code-subject {
+                font-size: 0.64rem;
+                min-width: 50px;
+            }
+            .codes-grid .code-card .code-value {
+                font-size: 0.68rem;
+                letter-spacing: 0.05em;
+            }
+            .codes-grid .code-card .copy-btn {
+                font-size: 0.55rem;
+                min-height: 26px;
+                min-width: 42px;
+                padding: 0.2rem 0.6rem;
+            }
+            .faculty-name {
+                font-size: 0.75rem;
+            }
+            .faculty-number {
+                font-size: 0.65rem;
+            }
+            .faculty-actions .btn-fac {
+                font-size: 0.6rem;
+                min-height: 30px;
+                min-width: 48px;
+                padding: 0.1rem 0.6rem;
+            }
+            .drive-card .drive-icon {
+                font-size: 2rem;
+            }
+            .drive-card .drive-title {
+                font-size: 0.85rem;
+            }
+            .btn--large {
+                font-size: 13px;
+                height: 42px;
+            }
+            .bottom-nav {
+                height: 64px;
+            }
+            .bottom-nav__label {
+                font-size: 9px;
+            }
+            .bottom-nav__icon .material-symbols-rounded {
+                font-size: 20px;
+            }
+            .bottom-nav__icon {
+                width: 44px;
+                height: 24px;
+            }
+            .routine-section {
+                padding: 0.8rem 0.7rem 0.7rem;
+            }
+            .cta-footer {
+                padding: 1rem 0.8rem;
+            }
+            .cta-footer .cta-icon {
+                font-size: 1.6rem;
+            }
+            .cta-footer .cta-title {
+                font-size: 0.9rem;
+            }
+            .cta-footer .cta-desc {
+                font-size: 0.7rem;
+            }
+            .cta-footer .cta-btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 1.2rem;
+                min-height: 38px;
+                width: 100%;
+                justify-content: center;
+            }
+            .routine-published-banner {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.6rem;
+            }
         }
 
         @media (max-width: 380px) {
-            .content { padding: 6px 6px 80px; }
-            .event-date-badge { width: 42px; height: 42px; }
-            .event-date-badge .day { font-size: 0.9rem; }
-            .event-date-badge .month { font-size: 0.4rem; }
-            .event-title { font-size: 0.6rem; }
-            .event-toggle-btn { font-size: 0.5rem; padding: 0.15rem 0.6rem; min-height: 24px; }
-            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
-            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
-            .faculty-actions .btn-fac { flex: 1; }
-            .codes-grid .code-card { flex-wrap: wrap; }
-            .codes-grid .code-card .copy-btn { width: 100%; justify-content: center; }
-            .top-app-bar__title { font-size: 0.9rem; }
-            .message-box { font-size: 0.75rem; min-height: 38px; }
-            .glance { padding: 0.8rem 0.5rem; }
-            .notices-btn { font-size: 0.55rem; padding: 3px 8px; min-height: 24px; }
-            .notices-btn .material-symbols-rounded { font-size: 12px; }
-            .routine-table { min-width: 290px; font-size: 0.56rem; }
-            .routine-table th, .routine-table td { padding: 5px 5px; }
+            .content {
+                padding: 6px 6px 80px;
+            }
+            .event-date-badge {
+                width: 42px;
+                height: 42px;
+            }
+            .event-date-badge .day {
+                font-size: 0.9rem;
+            }
+            .event-date-badge .month {
+                font-size: 0.4rem;
+            }
+            .event-title {
+                font-size: 0.6rem;
+            }
+            .event-toggle-btn {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.6rem;
+                min-height: 24px;
+            }
+            .faculty-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.1rem;
+            }
+            .faculty-actions {
+                flex-direction: row;
+                justify-content: stretch;
+                width: 100%;
+            }
+            .faculty-actions .btn-fac {
+                flex: 1;
+            }
+            .codes-grid .code-card {
+                flex-wrap: wrap;
+            }
+            .codes-grid .code-card .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .top-app-bar__title {
+                font-size: 0.9rem;
+            }
+            .message-box {
+                font-size: 0.75rem;
+                min-height: 38px;
+            }
+            .glance {
+                padding: 0.8rem 0.5rem;
+            }
+            .notices-btn {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+                min-height: 24px;
+            }
+            .notices-btn .material-symbols-rounded {
+                font-size: 12px;
+            }
+            .routine-table {
+                min-width: 290px;
+                font-size: 0.56rem;
+            }
+            .routine-table th,
+            .routine-table td {
+                padding: 5px 5px;
+            }
         }
     </style>
 </head>
@@ -1159,7 +1300,6 @@
         <section class="page" id="page-home">
 
             <div class="glance" id="section-ai">
-                <!-- Banner: Routine Published (visible until 18 Aug) -->
                 <div id="routineBanner" class="routine-published-banner">
                     <i class="fas fa-calendar-check"></i> 📢 Exam Routine Published! Check the <strong>Routine</strong> tab or <strong>Pinned Events</strong>.
                 </div>
@@ -1228,7 +1368,6 @@
         <!-- ── PAGE 3 – ROUTINE & CODES ──────────── -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section" id="routineContainer">
-                <!-- DYNAMIC ROUTINE CONTENT (injected by JS) -->
                 <div id="routineContent"></div>
             </div>
         </section>
@@ -1399,7 +1538,6 @@
                 const now = new Date();
                 const switchDate = new Date(2026, 7, 19); // 19 Aug 2026
 
-                // ---- IF BEFORE 19 AUG: SHOW CLASS ROUTINE ----
                 if (now < switchDate) {
                     const day = dh.dayOfWeek,
                         min = dh.hours * 60 + dh.minutes;
@@ -1438,18 +1576,12 @@
                     }
                     slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
                     return slides;
-                }
-
-                // ---- AFTER 19 AUG: SHOW EXAM REMINDER ----
-                else {
+                } else {
                     let slides = [];
                     const nowMs = now.getTime();
-
-                    // Find the next upcoming exam
                     let nextExam = null;
                     for (let e of exams) {
                         const d = new Date(e.date + ' 2026');
-                        // Set to 3:00 PM for comparison, but we just need date.
                         d.setHours(0, 0, 0, 0);
                         if (d.getTime() >= nowMs) {
                             nextExam = e;
@@ -1493,7 +1625,6 @@
                 }
             }
 
-            // ── NEXT CLASS / EXAM BAR ──────────────
             function updateNextBar() {
                 const dh = getDhaka();
                 const now = new Date();
@@ -1503,7 +1634,6 @@
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
 
-                // ---- BEFORE 19 AUG: CLASS BAR ----
                 if (now < switchDate) {
                     const day = dh.dayOfWeek,
                         min = dh.hours * 60 + dh.minutes;
@@ -1542,10 +1672,7 @@
                     dot.className = 'status-dot';
                     detail.innerHTML = 'No class scheduled.';
                     return;
-                }
-
-                // ---- AFTER 19 AUG: EXAM BAR ----
-                else {
+                } else {
                     const nowMs = now.getTime();
                     let nextExam = null;
                     for (let e of exams) {
@@ -1569,22 +1696,19 @@
                 }
             }
 
-            // INITIAL RENDER
             showSlides(getClassStatus());
             updateNextBar();
 
-            // UPDATE EVERY 30 SECONDS
             setInterval(() => {
                 showSlides(getClassStatus());
                 updateNextBar();
             }, 30000);
 
-            // Toggle banner visibility (hide after 18 Aug)
             (function() {
                 const banner = document.getElementById('routineBanner');
                 if (!banner) return;
                 const now = new Date();
-                const expiry = new Date(2026, 7, 19); // 19 Aug 2026
+                const expiry = new Date(2026, 7, 19);
                 if (now >= expiry) {
                     banner.style.display = 'none';
                 }
@@ -1634,7 +1758,6 @@
             }, 1500);
         }
 
-        // ── FACULTY COPY ──────────────────────────
         document.querySelectorAll('.btn-copy').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1686,7 +1809,7 @@
                 if (!container) return;
 
                 const now = new Date();
-                const expiryDate = new Date(2026, 7, 27, 17, 0, 0); // 27 Aug 2026 5:00 PM
+                const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
 
                 if (now >= expiryDate) {
                     container.innerHTML = `
@@ -1700,7 +1823,6 @@
                     return;
                 }
 
-                // ── Exam Routine Table ──
                 let html = `
                     <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
                     <div class="routine-table-wrap">
@@ -1715,7 +1837,6 @@
                     </div>
                 `;
 
-                // ── Class Routine Table ──
                 html += `
                     <div style="margin-top:1.5rem;">
                         <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
@@ -1740,7 +1861,6 @@
                     </div>
                 `;
 
-                // ── Classroom Codes ──
                 html += `
                     <div class="codes-section">
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
@@ -1754,7 +1874,6 @@
 
                 container.innerHTML = html;
 
-                // Re-bind copy events for dynamically added buttons
                 document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const code = this.getAttribute('data-code');
@@ -1778,21 +1897,26 @@
         // ── PINNED EVENTS ─────────────────────────
         (function() {
             const eventsData = [
+                // MOVED from 16 Aug to 18 Aug
                 {
-                    date: '16 Aug',
+                    date: '18 Aug',
                     title: 'Bangla Presentation Group 2 (28-end)',
                     badge: 'Presentation',
                     meta: 'After Roll 28',
                     items: ['• Present your Bangla assignment'],
                     note: 'For students after roll 28',
-                    dateObj: new Date(2026, 7, 16)
+                    dateObj: new Date(2026, 7, 18)
                 },
                 {
                     date: '17 Aug',
                     title: 'ICT CT (Optional)',
                     badge: 'Optional CT',
                     meta: '',
-                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)'],
+                    items: [
+                        '• OSI Model',
+                        '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)',
+                        '• Chapter 12 (as per syllabus)'
+                    ],
                     note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
                     dateObj: new Date(2026, 7, 17)
                 },
@@ -1815,7 +1939,6 @@
                     dateObj: new Date(2026, 7, 18),
                     rangeEnd: new Date(2026, 7, 18)
                 },
-                // ── FINAL EXAMS (HIGHLIGHTED) ──
                 {
                     date: '19 Aug',
                     title: 'LAB FINAL (ICT)',
@@ -1854,10 +1977,11 @@
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4901',
                     items: [
-                        '• Ch.2 DC17 (Connect internet, www, safe browsing)',
-                        '• Ch.10 DC17 (Intranet, extranet, peer to peer etc.)',
+                        '• Chapter 2 (Connect internet, www, safe browsing)',
+                        '• Chapter 10 (Intranet, extranet, peer to peer etc.)',
                         '• OSI MODEL',
                         '• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)'
+'•Chapter 12'
                     ],
                     note: 'Check the Routine tab for details.',
                     dateObj: new Date(2026, 7, 27),
@@ -1924,7 +2048,6 @@
                         (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
                         '</div>';
 
-                    // Add final-exam class if it's a final
                     const finalClass = ev.isFinal ? ' final-exam' : '';
 
                     html +=
