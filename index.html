@@ -49,1237 +49,290 @@
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: transparent;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 80px;
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        .material-symbols-rounded {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            font-size: 24px;
-            line-height: 1;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; padding-bottom: 80px; min-height: 100vh; line-height: 1.5; }
+        .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
 
         .top-app-bar {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-            padding: 0 14px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+            height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm); backdrop-filter: blur(10px);
         }
-        .top-app-bar__title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--navy);
-            letter-spacing: -0.3px;
-            flex-shrink: 0;
-        }
-        .top-app-bar__title span {
-            color: var(--accent);
-        }
-        .top-app-bar__right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .top-app-bar__title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
+        .top-app-bar__title span { color: var(--accent); }
+        .top-app-bar__right { display: flex; align-items: center; gap: 6px; }
         .notices-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 7px 15px;
-            border-radius: 30px;
-            background: var(--accent-light);
-            color: var(--accent);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: 1px solid #dbeafe;
-            transition: background var(--transition), transform 0.15s;
-            min-height: 34px;
-            white-space: nowrap;
-            cursor: pointer;
+            display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px;
+            background: var(--accent-light); color: var(--accent); font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe;
+            transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer;
         }
-        .notices-btn:active {
-            transform: scale(0.96);
-            background: #e0e9ff;
-        }
-        .notices-btn .material-symbols-rounded {
-            font-size: 16px;
-        }
+        .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
+        .notices-btn .material-symbols-rounded { font-size: 16px; }
 
-        .content {
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 14px 14px 100px;
-            min-height: calc(100vh - 56px);
-        }
-        .page {
-            animation: fade-in 0.3s ease;
-        }
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .page {
-                animation: none;
-            }
-        }
-        .page h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.15rem;
-        }
-        .page .subtitle {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.9rem;
-        }
+        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; min-height: calc(100vh - 56px); }
+        .page { animation: fade-in 0.3s ease; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+        .page h2 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
+        .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
 
         .glance {
-            background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            text-align: center;
-            margin-bottom: 1rem;
-            position: relative;
+            background: var(--surface); border-radius: var(--radius-xl); padding: 1.2rem 1rem;
+            border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem; position: relative;
         }
         .routine-published-banner {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            border-radius: var(--radius-sm);
-            padding: 0.4rem 0.8rem;
-            margin-bottom: 0.7rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #92400e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            background: #fef3c7; border: 1px solid #fcd34d; border-radius: var(--radius-sm);
+            padding: 0.4rem 0.8rem; margin-bottom: 0.7rem; font-size: 0.75rem; font-weight: 600;
+            color: #92400e; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
         }
-        .routine-published-banner i {
-            color: #d97706;
-        }
+        .routine-published-banner i { color: #d97706; }
 
         .section-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text);
-            margin-bottom: 0.5rem;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.5rem;
         }
-        .section-title i {
-            color: var(--accent);
-        }
+        .section-title i { color: var(--accent); }
         .live-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            animation: pulse 1.8s infinite;
-            flex-shrink: 0;
+            width: 10px; height: 10px; border-radius: 50%; background: var(--green);
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); animation: pulse 1.8s infinite; flex-shrink: 0;
         }
         @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
-        .reminder-main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-        }
-        .message-box {
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: #2d3748;
-            position: relative;
-            width: 100%;
-        }
-        .message-line {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            opacity: 0;
-            transform: translateX(12px);
-            transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
-            pointer-events: none;
-            padding: 0 0.2rem;
-        }
-        .message-line.active {
-            opacity: 1;
-            transform: translateX(0);
-            position: relative;
-            pointer-events: auto;
-        }
-        .message-line strong {
-            font-weight: 700;
-            color: var(--navy);
-        }
-        .break-timer {
-            font-weight: 700;
-            color: #b45309;
-            font-size: 1rem;
-        }
-        .clock-display {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            letter-spacing: 0.3px;
-            font-variant-numeric: tabular-nums;
-            margin-top: 0.1rem;
-        }
+        .reminder-main { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        .message-box { min-height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.95rem; color: #2d3748; position: relative; width: 100%; }
+        .message-line { position: absolute; width: 100%; text-align: center; opacity: 0; transform: translateX(12px); transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); pointer-events: none; padding: 0 0.2rem; }
+        .message-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
+        .message-line strong { font-weight: 700; color: var(--navy); }
+        .break-timer { font-weight: 700; color: #b45309; font-size: 1rem; }
+        .clock-display { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; font-variant-numeric: tabular-nums; margin-top: 0.1rem; }
         .next-class-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.7rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 0.4rem 0.7rem;
-            border: 1px solid var(--border);
-            font-weight: 500;
-            justify-content: center;
-            flex-wrap: wrap;
-            min-height: 38px;
-            margin-top: 0.4rem;
+            display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; background: #f8fafc;
+            border-radius: 12px; padding: 0.4rem 0.7rem; border: 1px solid var(--border); font-weight: 500;
+            justify-content: center; flex-wrap: wrap; min-height: 38px; margin-top: 0.4rem;
         }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #3b82f6;
-            flex-shrink: 0;
-        }
-        .status-dot.running {
-            background: var(--green);
-        }
-        .next-label {
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            color: #4b5563;
-            font-size: 0.6rem;
-        }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
+        .status-dot.running { background: var(--green); }
+        .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
         /* ── EVENTS ─────────────────────────────── */
-        .events-root {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.3;
-            color: var(--text);
-        }
-        .events-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1rem 1rem 0.6rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            margin-bottom: 0.6rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 1.5px solid #e9edf2;
-            position: relative;
-        }
-        .card-header::after {
-            content: '';
-            position: absolute;
-            bottom: -1.5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        .card-title {
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            color: var(--text);
-        }
-        .card-title i {
-            color: var(--accent);
-            margin-right: 0.3rem;
-        }
-        .events-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .events-root { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; line-height: 1.3; color: var(--text); }
+        .events-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1rem 1rem 0.6rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
+        .card-header { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
+        .card-header::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--accent); border-radius: 2px; }
+        .card-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); }
+        .card-title i { color: var(--accent); margin-right: 0.3rem; }
+        .events-list { display: flex; flex-direction: column; gap: 6px; }
+
         .event-block {
-            display: flex;
-            gap: 0.5rem;
-            align-items: stretch;
-            background: #f9fafb;
-            border-radius: 12px;
-            padding: 0;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: all var(--transition);
+            display: flex; gap: 0.5rem; align-items: stretch; background: #f9fafb;
+            border-radius: 12px; padding: 0; border: 1px solid var(--border); overflow: hidden; transition: all var(--transition);
         }
-        .event-block.upcoming {
-            background: #fef9e3;
-            border-left: 4px solid #f5b042;
-            border-color: #fde68a;
-        }
-        .event-block.final-exam {
-            background: #fef2f2;
-            border-left: 4px solid #dc2626;
-            border-color: #fecaca;
-        }
-        .event-block.final-exam .event-title {
-            color: #991b1b;
-        }
-        .event-block.final-exam .event-badge {
-            background: #fecaca;
-            color: #991b1b;
-            border-color: #fca5a5;
-        }
+        .event-block.final-exam { background: #fef2f2; border-left: 4px solid #dc2626; border-color: #fecaca; }
+        .event-block.final-exam .event-title { color: #991b1b; }
+        .event-block.final-exam .event-badge { background: #fecaca; color: #991b1b; border-color: #fca5a5; }
+        .event-block.final-exam .event-date-badge { background: #991b1b; }
 
         .event-date-badge {
-            flex-shrink: 0;
-            align-self: center;
-            width: 60px;
-            height: 60px;
-            background: var(--navy);
-            border-radius: 14px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0.1rem;
-            text-align: center;
-            margin-left: 0.1rem;
-            flex-grow: 0;
+            flex-shrink: 0; align-self: center; width: 60px; height: 60px; background: var(--navy);
+            border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 0.1rem; text-align: center; margin-left: 0.1rem; flex-grow: 0;
         }
-        .event-block.final-exam .event-date-badge {
-            background: #991b1b;
-        }
-        .event-date-badge .day {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            line-height: 1.1;
-        }
-        .event-date-badge .month {
-            font-size: 0.55rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-        }
-        .event-content {
-            flex: 1;
-            padding: 0.4rem 0.5rem 0.4rem 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-width: 0;
-        }
-        .event-summary {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.3rem;
-            cursor: pointer;
-            user-select: none;
-            padding: 0.1rem 0;
-        }
-        .event-summary .event-title {
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: var(--text);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            gap: 0.3rem 0.5rem;
-            flex: 1;
-        }
-        .event-badge {
-            font-weight: 600;
-            font-size: 0.5rem;
-            background: #fef3c7;
-            color: #b45309;
-            padding: 0 6px;
-            border-radius: 8px;
-            border: 1px solid #fde68a;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
+        .event-date-badge .day { font-size: 1.3rem; font-weight: 700; color: #ffffff; line-height: 1.1; }
+        .event-date-badge .month { font-size: 0.55rem; font-weight: 600; color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
+        .event-content { flex: 1; padding: 0.4rem 0.5rem 0.4rem 0; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+        .event-summary { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; cursor: pointer; user-select: none; padding: 0.1rem 0; }
+        .event-summary .event-title { font-weight: 700; font-size: 0.78rem; color: var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; flex: 1; }
+        .event-badge { font-weight: 600; font-size: 0.5rem; background: #fef3c7; color: #b45309; padding: 0 6px; border-radius: 8px; border: 1px solid #fde68a; white-space: nowrap; flex-shrink: 0; }
         .event-toggle-btn {
-            flex-shrink: 0;
-            background: #f0f4ff;
-            border: 1px solid #dbeafe;
-            border-radius: 30px;
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 0.6rem;
-            padding: 0.25rem 0.9rem;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.2s ease;
-            min-height: 30px;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            white-space: nowrap;
+            flex-shrink: 0; background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 30px;
+            color: var(--accent); font-weight: 600; font-size: 0.6rem; padding: 0.25rem 0.9rem;
+            cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s ease;
+            min-height: 30px; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap;
         }
-        .event-toggle-btn:hover {
-            background: #dbeafe;
-            border-color: #b9d0fc;
-            transform: scale(1.02);
-        }
-        .event-toggle-btn:active {
-            transform: scale(0.96);
-        }
-        .event-toggle-btn i {
-            font-size: 0.5rem;
-            transition: transform 0.3s ease;
-        }
-        .event-toggle-btn.open i {
-            transform: rotate(180deg);
-        }
+        .event-toggle-btn:hover { background: #dbeafe; border-color: #b9d0fc; transform: scale(1.02); }
+        .event-toggle-btn:active { transform: scale(0.96); }
+        .event-toggle-btn i { font-size: 0.5rem; transition: transform 0.3s ease; }
+        .event-toggle-btn.open i { transform: rotate(180deg); }
         .event-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease;
-            padding: 0 0.2rem 0 0;
-            opacity: 0;
+            max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease;
+            padding: 0 0.2rem 0 0; opacity: 0;
         }
-        .event-details.open {
-            max-height: 800px;
-            padding: 0.3rem 0.2rem 0.1rem 0;
-            opacity: 1;
-        }
-        .event-details .event-meta {
-            font-size: 0.6rem;
-            font-weight: 500;
-            color: #4b5563;
-            margin-bottom: 0.1rem;
-        }
-        .event-details .event-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0.1rem;
-            font-size: 0.7rem;
-            color: #1f2937;
-            padding-left: 0.2rem;
-        }
-        .event-details .event-items span {
-            display: block;
-            padding: 0.05rem 0;
-        }
-        .event-details .event-note {
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: #7c2d12;
-            background: #fef3c7;
-            padding: 0.1rem 0.6rem;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 0.2rem;
-            border: 1px solid #fde68a;
-        }
-        .event-details .event-note.blue {
-            background: #eff6ff;
-            color: #1e40af;
-            border-color: #dbeafe;
-        }
+        .event-details.open { max-height: 800px; padding: 0.3rem 0.2rem 0.1rem 0; opacity: 1; }
+        .event-details .event-meta { font-size: 0.6rem; font-weight: 500; color: #4b5563; margin-bottom: 0.1rem; }
+        .event-details .event-items { display: flex; flex-direction: column; gap: 0.1rem; font-size: 0.7rem; color: #1f2937; padding-left: 0.2rem; }
+        .event-details .event-items span { display: block; padding: 0.05rem 0; }
+        .event-details .event-note { font-size: 0.65rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 0.1rem 0.6rem; border-radius: 6px; display: inline-block; margin-top: 0.2rem; border: 1px solid #fde68a; }
+        .event-details .event-note.blue { background: #eff6ff; color: #1e40af; border-color: #dbeafe; }
 
         /* ── ROUTINE SECTION ────────────────────── */
-        .routine-section {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.1rem 1rem 0.9rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1rem;
-        }
-        .routine-section .section-label {
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            color: var(--text);
-            text-align: center;
-            margin-bottom: 0.7rem;
-            padding-bottom: 0.45rem;
-            border-bottom: 1.5px solid #e9edf2;
-            position: relative;
-        }
-        .routine-section .section-label::after {
-            content: '';
-            position: absolute;
-            bottom: -1.5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 44px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        .routine-section .section-label i {
-            color: var(--accent);
-            margin-right: 0.35rem;
-        }
+        .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
+        .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
+        .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
+        .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
 
-        .routine-table-wrap {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: #cdd4de transparent;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: #fafbfc;
-            margin-bottom: 1rem;
-        }
-        .routine-table-wrap:last-child {
-            margin-bottom: 0;
-        }
-        .routine-table-wrap::-webkit-scrollbar {
-            height: 5px;
-        }
-        .routine-table-wrap::-webkit-scrollbar-thumb {
-            background: #cdd4de;
-            border-radius: 10px;
-        }
-        .routine-table-wrap::-webkit-scrollbar-track {
-            background: transparent;
-        }
+        .routine-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #cdd4de transparent; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
+        .routine-table-wrap:last-child { margin-bottom: 0; }
+        .routine-table-wrap::-webkit-scrollbar { height: 5px; }
+        .routine-table-wrap::-webkit-scrollbar-thumb { background: #cdd4de; border-radius: 10px; }
+        .routine-table-wrap::-webkit-scrollbar-track { background: transparent; }
 
-        .routine-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.72rem;
-            font-family: 'Poppins', sans-serif;
-            min-width: 380px;
-        }
-        .routine-table thead tr {
-            background: #f5f6f9;
-        }
-        .routine-table th {
-            text-align: left;
-            padding: 10px 12px;
-            font-weight: 700;
-            font-size: 0.62rem;
-            color: var(--navy);
-            border-bottom: 2px solid #dde1e8;
-            background: #f5f6f9;
-            white-space: nowrap;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-        .routine-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-            background: #ffffff;
-            color: #1f2a3e;
-            white-space: nowrap;
-        }
-        .routine-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-        .routine-table tbody tr:hover td {
-            background: #fafcff;
-            transition: background 0.15s ease;
-        }
+        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-family: 'Poppins', sans-serif; min-width: 380px; }
+        .routine-table thead tr { background: #f5f6f9; }
+        .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; letter-spacing: 0.04em; text-transform: uppercase; }
+        .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #ffffff; color: #1f2a3e; white-space: nowrap; }
+        .routine-table tbody tr:last-child td { border-bottom: none; }
+        .routine-table tbody tr:hover td { background: #fafcff; transition: background 0.15s ease; }
 
-        .routine-expired-msg {
-            text-align: center;
-            padding: 1.5rem 1rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background: #f9fafb;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-        .routine-expired-msg a {
-            color: var(--accent);
-            text-decoration: underline;
-            font-weight: 600;
-        }
+        .routine-table .day-cell { font-weight: 700; color: var(--navy); font-size: 0.68rem; background: #f8f9fc !important; text-align: center; letter-spacing: 0.02em; }
+        .routine-table .course-code { font-weight: 700; color: #1a3a5c; background: #eef3f9; padding: 3px 10px; border-radius: 8px; font-size: 0.64rem; display: inline-block; letter-spacing: 0.02em; border: 1px solid #dde4ee; }
+        .routine-table .course-code.ict { background: #eef2ff; border-color: #d4ddfc; color: #1e3a8a; }
+        .routine-table .course-code.hum { background: #f0fdf4; border-color: #c6e9d0; color: #14532d; }
+        .routine-table .course-code.mkt { background: #fff7ed; border-color: #fddcab; color: #7c2d12; }
+        .routine-table .room-badge { display: inline-block; font-weight: 700; font-size: 0.66rem; color: #374151; background: #f1f4f8; padding: 3px 10px; border-radius: 7px; border: 1px solid #e2e6ec; letter-spacing: 0.03em; text-align: center; min-width: 44px; }
+        .routine-table .time-cell { font-weight: 500; color: #374151; letter-spacing: 0.02em; }
 
-        .codes-section {
-            margin-top: 1.1rem;
-            padding-top: 0.9rem;
-            border-top: 1.5px solid #e9edf2;
-        }
-        .codes-section .codes-label {
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: var(--navy);
-            text-align: center;
-            margin-bottom: 0.6rem;
-            letter-spacing: 0.02em;
-        }
-        .codes-section .codes-label i {
-            color: var(--accent);
-            margin-right: 0.35rem;
-        }
+        .routine-expired-msg { text-align: center; padding: 1.5rem 1rem; color: var(--text-secondary); font-size: 0.9rem; background: #f9fafb; border-radius: var(--radius); border: 1px solid var(--border); }
+        .routine-expired-msg a { color: var(--accent); text-decoration: underline; font-weight: 600; }
 
-        .codes-grid {
-            max-width: 520px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.55rem;
-        }
-        .codes-grid .code-card {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: #fafbfc;
-            border-radius: var(--radius);
-            padding: 0.5rem 0.7rem;
-            border: 1px solid var(--border);
-            min-height: 46px;
-            transition: box-shadow var(--transition), border-color var(--transition);
-        }
-        .codes-grid .code-card:hover {
-            border-color: #d0d7e2;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-        }
-        .codes-grid .code-card .code-icon-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .codes-grid .code-card .code-icon-dot.ict-dot {
-            background: var(--accent);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
-        }
-        .codes-grid .code-card .code-icon-dot.hum-dot {
-            background: #22c55e;
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
-        }
-        .codes-grid .code-card .code-icon-dot.mkt-dot {
-            background: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
-        }
-        .codes-grid .code-card .code-subject {
-            font-weight: 700;
-            font-size: 0.72rem;
-            white-space: nowrap;
-            min-width: 62px;
-            color: var(--navy);
-            flex-shrink: 0;
-            letter-spacing: 0.02em;
-        }
-        .codes-grid .code-card .code-value-box {
-            flex: 1;
-            background: #f0f3f8;
-            border-radius: 8px;
-            padding: 0.2rem 0.7rem;
-            border: 1px solid #e2e6ed;
-            text-align: center;
-            min-width: 0;
-            overflow: hidden;
-            transition: background var(--transition);
-        }
-        .codes-grid .code-card .code-value {
-            font-weight: 700;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--navy);
-            white-space: nowrap;
-            font-family: 'Poppins', monospace;
-        }
-        .codes-grid .code-card .copy-btn {
-            flex-shrink: 0;
-            padding: 0.25rem 0.85rem;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.62rem;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            border: none;
-            background: #e8ecf2;
-            color: #374151;
-            min-height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 50px;
-            transition: all var(--transition);
-            white-space: nowrap;
-            letter-spacing: 0.02em;
-        }
-        .codes-grid .code-card .copy-btn:hover {
-            background: #dde2ea;
-        }
-        .codes-grid .code-card .copy-btn:active {
-            transform: scale(0.94);
-            background: #d1d7e0;
-        }
-        .codes-grid .code-card .copy-btn.copied-flash {
-            background: #d1fae5 !important;
-            color: #065f46 !important;
-            border: 1px solid #a7f3d0 !important;
-        }
+        .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
+        .codes-section .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; letter-spacing: 0.02em; }
+        .codes-section .codes-label i { color: var(--accent); margin-right: 0.35rem; }
 
-        .drive-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            margin-top: 0.5rem;
-        }
-        .drive-card {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            transition: box-shadow var(--transition);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-        }
-        .drive-card:hover {
-            box-shadow: var(--shadow-lg);
-        }
-        .drive-card .drive-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-        }
-        .drive-card .drive-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text);
-        }
-        .drive-card .drive-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        .btn {
-            height: 40px;
-            padding: 0 24px;
-            border-radius: 40px;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: box-shadow 0.15s ease, background-color 0.15s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        .btn--filled {
-            background: var(--navy);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15);
-        }
-        .btn--filled:hover {
-            box-shadow: 0 4px 16px rgba(13, 43, 78, 0.2);
-        }
-        .btn--tonal {
-            background: #d9e3ff;
-            color: #101b32;
-        }
-        .btn--tonal:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-        .btn--large {
-            height: 48px;
-            padding: 0 32px;
-            font-size: 16px;
-            width: 100%;
-            justify-content: center;
-        }
+        .codes-grid { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.55rem; }
+        .codes-grid .code-card { display: flex; align-items: center; gap: 0.6rem; background: #fafbfc; border-radius: var(--radius); padding: 0.5rem 0.7rem; border: 1px solid var(--border); min-height: 46px; transition: box-shadow var(--transition), border-color var(--transition); }
+        .codes-grid .code-card:hover { border-color: #d0d7e2; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); }
+        .codes-grid .code-card .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .codes-grid .code-card .code-icon-dot.ict-dot { background: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18); }
+        .codes-grid .code-card .code-icon-dot.hum-dot { background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18); }
+        .codes-grid .code-card .code-icon-dot.mkt-dot { background: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18); }
+        .codes-grid .code-card .code-subject { font-weight: 700; font-size: 0.72rem; white-space: nowrap; min-width: 62px; color: var(--navy); flex-shrink: 0; letter-spacing: 0.02em; }
+        .codes-grid .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 8px; padding: 0.2rem 0.7rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; transition: background var(--transition); }
+        .codes-grid .code-card .code-value { font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); white-space: nowrap; font-family: 'Poppins', monospace; }
+        .codes-grid .code-card .copy-btn { flex-shrink: 0; padding: 0.25rem 0.85rem; border-radius: 30px; font-weight: 600; font-size: 0.62rem; font-family: 'Poppins', sans-serif; cursor: pointer; border: none; background: #e8ecf2; color: #374151; min-height: 30px; display: flex; align-items: center; justify-content: center; min-width: 50px; transition: all var(--transition); white-space: nowrap; letter-spacing: 0.02em; }
+        .codes-grid .code-card .copy-btn:hover { background: #dde2ea; }
+        .codes-grid .code-card .copy-btn:active { transform: scale(0.94); background: #d1d7e0; }
+        .codes-grid .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; border: 1px solid #a7f3d0 !important; }
 
-        .faculty-root {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
-            color: var(--text);
-        }
-        .faculty-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-        .faculty-item {
-            background: #f9fafb;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            padding: 0.6rem 0.7rem;
-            display: block;
-        }
-        .faculty-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.2rem 0.4rem;
-            margin-bottom: 0.15rem;
-        }
-        .faculty-name {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--navy);
-            margin: 0;
-            line-height: 1.3;
-        }
-        .faculty-number {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #1e40af;
-            background: #eff6ff;
-            padding: 0.1rem 0.6rem;
-            border-radius: 8px;
-            border: 1px solid #dbeafe;
-            white-space: nowrap;
-            font-family: 'Poppins', monospace;
-            margin: 0;
-        }
-        .faculty-actions {
-            margin-top: 0.15rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-        .faculty-actions .btn-fac {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.3rem;
-            padding: 0.15rem 0.9rem;
-            border-radius: 40px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 0.65rem;
-            border: none;
-            cursor: pointer;
-            transition: background var(--transition), transform 0.15s;
-            min-height: 34px;
-            text-decoration: none;
-            min-width: 56px;
-        }
-        .faculty-actions .btn-fac:active {
-            transform: scale(0.95);
-        }
-        .faculty-actions .btn-copy {
-            background: #e5e7eb;
-            color: #374151;
-        }
-        .faculty-actions .btn-copy:active {
-            background: #d1d5db;
-        }
-        .faculty-actions .btn-call {
-            background: var(--navy);
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15);
-        }
-        .faculty-actions .btn-call:active {
-            background: #14365e;
-        }
-        .faculty-actions .btn-call i {
-            font-size: 0.8rem;
-        }
-        .faculty-details {
-            font-size: 0.6rem;
-            color: #4b5563;
-            border-top: 1px dashed #e9edf2;
-            padding-top: 0.2rem;
-            margin-top: 0.2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.1rem 0.6rem;
-        }
-        .faculty-details span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.1rem;
-        }
-        .faculty-details .label {
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        .faculty-details .value {
-            color: var(--text);
-            font-weight: 400;
-        }
+        .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
+        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: box-shadow var(--transition); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
+        .drive-card:hover { box-shadow: var(--shadow-lg); }
+        .drive-card .drive-icon { font-size: 2.5rem; color: var(--accent); }
+        .drive-card .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
+        .drive-card .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
+        .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: box-shadow 0.15s ease, background-color 0.15s ease; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .btn--filled { background: var(--navy); color: #ffffff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
+        .btn--filled:hover { box-shadow: 0 4px 16px rgba(13, 43, 78, 0.2); }
+        .btn--tonal { background: #d9e3ff; color: #101b32; }
+        .btn--tonal:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+        .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
 
-        .cta-footer {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 1.2rem 1rem;
-            border: 1px solid var(--border);
-            text-align: center;
-            box-shadow: var(--shadow);
-            margin-top: 0.5rem;
-        }
-        .cta-footer .cta-icon {
-            font-size: 2rem;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 0.2rem;
-        }
-        .cta-footer .cta-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--navy);
-            margin-bottom: 0.1rem;
-        }
-        .cta-footer .cta-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.6rem;
-        }
-        .cta-footer .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.6rem;
-            border-radius: 40px;
-            background: #1877f2;
-            color: #ffffff;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-decoration: none;
-            transition: background var(--transition), transform 0.15s;
-            box-shadow: 0 3px 12px rgba(24, 119, 242, 0.25);
-            min-height: 42px;
-        }
-        .cta-footer .cta-btn:active {
-            transform: scale(0.96);
-        }
-        .cta-footer .cta-btn i {
-            font-size: 0.9rem;
-        }
+        .faculty-root { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; line-height: 1.4; color: var(--text); }
+        .faculty-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.6rem 0.7rem; display: block; }
+        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.15rem; }
+        .faculty-name { font-weight: 700; font-size: 0.85rem; color: var(--navy); margin: 0; line-height: 1.3; }
+        .faculty-number { font-size: 0.75rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.1rem 0.6rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; margin: 0; }
+        .faculty-actions { margin-top: 0.15rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.15rem 0.9rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.65rem; border: none; cursor: pointer; transition: background var(--transition), transform 0.15s; min-height: 34px; text-decoration: none; min-width: 56px; }
+        .faculty-actions .btn-fac:active { transform: scale(0.95); }
+        .faculty-actions .btn-copy { background: #e5e7eb; color: #374151; }
+        .faculty-actions .btn-copy:active { background: #d1d5db; }
+        .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
+        .faculty-actions .btn-call:active { background: #14365e; }
+        .faculty-actions .btn-call i { font-size: 0.8rem; }
+        .faculty-details { font-size: 0.6rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.2rem; margin-top: 0.2rem; display: flex; flex-wrap: wrap; gap: 0.1rem 0.6rem; }
+        .faculty-details span { display: inline-flex; align-items: center; gap: 0.1rem; }
+        .faculty-details .label { font-weight: 500; color: var(--text-secondary); }
+        .faculty-details .value { color: var(--text); font-weight: 400; }
+
+        .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 0.5rem; }
+        .cta-footer .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
+        .cta-footer .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
+        .cta-footer .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
+        .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: #1877f2; color: #ffffff; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; text-decoration: none; transition: background var(--transition), transform 0.15s; box-shadow: 0 3px 12px rgba(24, 119, 242, 0.25); min-height: 42px; }
+        .cta-footer .cta-btn:active { transform: scale(0.96); }
+        .cta-footer .cta-btn i { font-size: 0.9rem; }
 
         .bottom-nav {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 30;
-            display: flex;
-            height: 72px;
-            padding-bottom: env(safe-area-inset-bottom, 0);
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex;
+            height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); background: var(--surface);
+            border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
         }
         .bottom-nav__item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            padding: 6px 0 10px;
-            color: var(--text-secondary);
-            font-family: 'Poppins', sans-serif;
-            transition: color var(--transition);
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px;
+            color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition);
+            -webkit-tap-highlight-color: transparent; position: relative;
         }
-        .bottom-nav__item::after {
-            display: none;
-        }
-        .bottom-nav__item.is-active {
-            color: var(--navy);
-        }
-        .bottom-nav__icon {
-            width: 48px;
-            height: 28px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color var(--transition);
-        }
-        .bottom-nav__item.is-active .bottom-nav__icon {
-            background: #eef2f6;
-        }
-        .bottom-nav__icon .material-symbols-rounded {
-            font-size: 22px;
-        }
-        .bottom-nav__label {
-            font-size: 10px;
-            font-weight: 500;
-        }
+        .bottom-nav__item::after { display: none; }
+        .bottom-nav__item.is-active { color: var(--navy); }
+        .bottom-nav__icon { width: 48px; height: 28px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); }
+        .bottom-nav__item.is-active .bottom-nav__icon { background: #eef2f6; }
+        .bottom-nav__icon .material-symbols-rounded { font-size: 22px; }
+        .bottom-nav__label { font-size: 10px; font-weight: 500; }
 
         @media (max-width: 480px) {
-            .content {
-                padding: 10px 10px 90px;
-            }
-            .top-app-bar__title {
-                font-size: 1rem;
-            }
-            .notices-btn {
-                font-size: 0.6rem;
-                padding: 5px 10px;
-                min-height: 28px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 14px;
-            }
-            .glance {
-                padding: 1rem 0.7rem;
-            }
-            .message-box {
-                font-size: 0.85rem;
-                min-height: 44px;
-            }
-            .clock-display {
-                font-size: 0.65rem;
-            }
-            .next-class-bar {
-                font-size: 0.6rem;
-                padding: 0.3rem 0.5rem;
-                min-height: 34px;
-            }
-            .event-date-badge {
-                width: 50px;
-                height: 50px;
-            }
-            .event-date-badge .day {
-                font-size: 1.1rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.5rem;
-            }
-            .event-title {
-                font-size: 0.7rem;
-            }
-            .event-details .event-items {
-                font-size: 0.65rem;
-            }
-            .routine-table {
-                font-size: 0.62rem;
-                min-width: 320px;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 7px 8px;
-            }
-            .codes-grid .code-card {
-                padding: 0.4rem 0.55rem;
-                gap: 0.4rem;
-                min-height: 40px;
-            }
-            .codes-grid .code-card .code-subject {
-                font-size: 0.64rem;
-                min-width: 50px;
-            }
-            .codes-grid .code-card .code-value {
-                font-size: 0.68rem;
-                letter-spacing: 0.05em;
-            }
-            .codes-grid .code-card .copy-btn {
-                font-size: 0.55rem;
-                min-height: 26px;
-                min-width: 42px;
-                padding: 0.2rem 0.6rem;
-            }
-            .faculty-name {
-                font-size: 0.75rem;
-            }
-            .faculty-number {
-                font-size: 0.65rem;
-            }
-            .faculty-actions .btn-fac {
-                font-size: 0.6rem;
-                min-height: 30px;
-                min-width: 48px;
-                padding: 0.1rem 0.6rem;
-            }
-            .drive-card .drive-icon {
-                font-size: 2rem;
-            }
-            .drive-card .drive-title {
-                font-size: 0.85rem;
-            }
-            .btn--large {
-                font-size: 13px;
-                height: 42px;
-            }
-            .bottom-nav {
-                height: 64px;
-            }
-            .bottom-nav__label {
-                font-size: 9px;
-            }
-            .bottom-nav__icon .material-symbols-rounded {
-                font-size: 20px;
-            }
-            .bottom-nav__icon {
-                width: 44px;
-                height: 24px;
-            }
-            .routine-section {
-                padding: 0.8rem 0.7rem 0.7rem;
-            }
-            .cta-footer {
-                padding: 1rem 0.8rem;
-            }
-            .cta-footer .cta-icon {
-                font-size: 1.6rem;
-            }
-            .cta-footer .cta-title {
-                font-size: 0.9rem;
-            }
-            .cta-footer .cta-desc {
-                font-size: 0.7rem;
-            }
-            .cta-footer .cta-btn {
-                font-size: 0.7rem;
-                padding: 0.4rem 1.2rem;
-                min-height: 38px;
-                width: 100%;
-                justify-content: center;
-            }
-            .routine-published-banner {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.6rem;
-            }
+            .content { padding: 10px 10px 90px; }
+            .top-app-bar__title { font-size: 1rem; }
+            .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
+            .notices-btn .material-symbols-rounded { font-size: 14px; }
+            .glance { padding: 1rem 0.7rem; }
+            .message-box { font-size: 0.85rem; min-height: 44px; }
+            .clock-display { font-size: 0.65rem; }
+            .next-class-bar { font-size: 0.6rem; padding: 0.3rem 0.5rem; min-height: 34px; }
+            .event-date-badge { width: 50px; height: 50px; }
+            .event-date-badge .day { font-size: 1.1rem; }
+            .event-date-badge .month { font-size: 0.5rem; }
+            .event-title { font-size: 0.7rem; }
+            .event-details .event-items { font-size: 0.65rem; }
+            .routine-table { font-size: 0.62rem; min-width: 320px; }
+            .routine-table th, .routine-table td { padding: 7px 8px; }
+            .codes-grid .code-card { padding: 0.4rem 0.55rem; gap: 0.4rem; min-height: 40px; }
+            .codes-grid .code-card .code-subject { font-size: 0.64rem; min-width: 50px; }
+            .codes-grid .code-card .code-value { font-size: 0.68rem; letter-spacing: 0.05em; }
+            .codes-grid .code-card .copy-btn { font-size: 0.55rem; min-height: 26px; min-width: 42px; padding: 0.2rem 0.6rem; }
+            .faculty-name { font-size: 0.75rem; }
+            .faculty-number { font-size: 0.65rem; }
+            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 48px; padding: 0.1rem 0.6rem; }
+            .drive-card .drive-icon { font-size: 2rem; }
+            .drive-card .drive-title { font-size: 0.85rem; }
+            .btn--large { font-size: 13px; height: 42px; }
+            .bottom-nav { height: 64px; }
+            .bottom-nav__label { font-size: 9px; }
+            .bottom-nav__icon .material-symbols-rounded { font-size: 20px; }
+            .bottom-nav__icon { width: 44px; height: 24px; }
+            .routine-section { padding: 0.8rem 0.7rem 0.7rem; }
+            .cta-footer { padding: 1rem 0.8rem; }
+            .cta-footer .cta-icon { font-size: 1.6rem; }
+            .cta-footer .cta-title { font-size: 0.9rem; }
+            .cta-footer .cta-desc { font-size: 0.7rem; }
+            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
+            .routine-published-banner { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
         }
-
         @media (max-width: 380px) {
-            .content {
-                padding: 6px 6px 80px;
-            }
-            .event-date-badge {
-                width: 42px;
-                height: 42px;
-            }
-            .event-date-badge .day {
-                font-size: 0.9rem;
-            }
-            .event-date-badge .month {
-                font-size: 0.4rem;
-            }
-            .event-title {
-                font-size: 0.6rem;
-            }
-            .event-toggle-btn {
-                font-size: 0.5rem;
-                padding: 0.15rem 0.6rem;
-                min-height: 24px;
-            }
-            .faculty-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.1rem;
-            }
-            .faculty-actions {
-                flex-direction: row;
-                justify-content: stretch;
-                width: 100%;
-            }
-            .faculty-actions .btn-fac {
-                flex: 1;
-            }
-            .codes-grid .code-card {
-                flex-wrap: wrap;
-            }
-            .codes-grid .code-card .copy-btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .top-app-bar__title {
-                font-size: 0.9rem;
-            }
-            .message-box {
-                font-size: 0.75rem;
-                min-height: 38px;
-            }
-            .glance {
-                padding: 0.8rem 0.5rem;
-            }
-            .notices-btn {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-                min-height: 24px;
-            }
-            .notices-btn .material-symbols-rounded {
-                font-size: 12px;
-            }
-            .routine-table {
-                min-width: 290px;
-                font-size: 0.56rem;
-            }
-            .routine-table th,
-            .routine-table td {
-                padding: 5px 5px;
-            }
+            .content { padding: 6px 6px 80px; }
+            .event-date-badge { width: 42px; height: 42px; }
+            .event-date-badge .day { font-size: 0.9rem; }
+            .event-date-badge .month { font-size: 0.4rem; }
+            .event-title { font-size: 0.6rem; }
+            .event-toggle-btn { font-size: 0.5rem; padding: 0.15rem 0.6rem; min-height: 24px; }
+            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
+            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
+            .faculty-actions .btn-fac { flex: 1; }
+            .codes-grid .code-card { flex-wrap: wrap; }
+            .codes-grid .code-card .copy-btn { width: 100%; justify-content: center; }
+            .top-app-bar__title { font-size: 0.9rem; }
+            .message-box { font-size: 0.75rem; min-height: 38px; }
+            .glance { padding: 0.8rem 0.5rem; }
+            .notices-btn { font-size: 0.55rem; padding: 3px 8px; min-height: 24px; }
+            .notices-btn .material-symbols-rounded { font-size: 12px; }
+            .routine-table { min-width: 290px; font-size: 0.56rem; }
+            .routine-table th, .routine-table td { padding: 5px 5px; }
         }
     </style>
 </head>
@@ -1319,13 +372,150 @@
                 </div>
             </div>
 
+            <!-- ── PINNED EVENTS (HARD-CODED) ── -->
             <div class="events-root" id="section-events">
                 <div class="events-card">
                     <div class="card-header">
                         <span class="card-title"><i class="fas fa-thumbtack"></i> Pinned Events</span>
                     </div>
                     <div class="events-list" id="eventsList">
-                        <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
+                        <!-- 17 Aug – ICT CT (Optional) -->
+                        <div class="event-block">
+                            <div class="event-date-badge"><span class="day">17</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">ICT CT (Optional) <span class="event-badge">Optional CT</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-items">
+                                        <span>• OSI Model</span>
+                                        <span>• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)</span>
+                                        <span>• Chapter 12</span>
+                                    </div>
+                                    <div class="event-note blue">Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 18 Aug – Bangla Presentation Group 2 -->
+                        <div class="event-block">
+                            <div class="event-date-badge"><span class="day">18</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">Bangla Presentation Group 2 (28-end) <span class="event-badge">Presentation</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">After Roll 28</div>
+                                    <div class="event-items"><span>• Present your Bangla assignment</span></div>
+                                    <div class="event-note blue">For students after roll 28</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 18 Aug – Bangla Results -->
+                        <div class="event-block">
+                            <div class="event-date-badge"><span class="day">18</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">Bangla Results <span class="event-badge">Results</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-items"><span>• Bangla Assignment Results</span><span>• Bangla CT Exam Results</span></div>
+                                    <div class="event-note blue">Check your results!</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 10-18 Aug – Semester Fee Payment -->
+                        <div class="event-block">
+                            <div class="event-date-badge"><span class="day">10-18</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">Semester Fee Payment <span class="event-badge">Important</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">Pay before deadline</div>
+                                    <div class="event-items"><span>• Pay your semester fees</span></div>
+                                    <div class="event-note blue">Deadline: 18 Aug</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 19 Aug – LAB FINAL -->
+                        <div class="event-block final-exam">
+                            <div class="event-date-badge"><span class="day">19</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">LAB FINAL (ICT) <span class="event-badge">Final Exam</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">Time: 1:15 – 4:15</div>
+                                    <div class="event-items">
+                                        <span>• Excel: COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP</span>
+                                    </div>
+                                    <div class="event-note blue">In class time.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 22 Aug – MKT Final -->
+                        <div class="event-block final-exam">
+                            <div class="event-date-badge"><span class="day">22</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">MKT 1101 Final (MAHS) <span class="event-badge">Final Exam</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">Time: 3:00 – 5:00 | Room: 4506</div>
+                                    <div class="event-items"><span>• Full syllabus (Ch.7, 8, 9, 11, 14)</span></div>
+                                    <div class="event-note blue">Check the Routine tab for details.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 24 Aug – HUM Final -->
+                        <div class="event-block final-exam">
+                            <div class="event-date-badge"><span class="day">24</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">HUM 1102 Final (SHAK) <span class="event-badge">Final Exam</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">Time: 3:00 – 5:00 | Room: 4901</div>
+                                    <div class="event-items"><span>• Full syllabus</span></div>
+                                    <div class="event-note blue">Check the Routine tab for details.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 27 Aug – ICT Final -->
+                        <div class="event-block final-exam">
+                            <div class="event-date-badge"><span class="day">27</span><span class="month">Aug</span></div>
+                            <div class="event-content">
+                                <div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">
+                                    <div class="event-title">ICT 1101 Final (HHS) <span class="event-badge">Final Exam</span></div>
+                                    <button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-meta">Time: 3:00 – 5:00 | Room: 4901</div>
+                                    <div class="event-items">
+                                        <span>• Chapter 2 (Connect internet, www, safe browsing)</span>
+                                        <span>• Chapter 10 (Intranet, extranet, peer to peer etc.)</span>
+                                        <span>• OSI MODEL</span>
+                                        <span>• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)</span>
+                                        <span>• Chapter 12</span>
+                                    </div>
+                                    <div class="event-note blue">Check the Routine tab for details.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1368,7 +558,51 @@
         <!-- ── PAGE 3 – ROUTINE & CODES ──────────── -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section" id="routineContainer">
-                <div id="routineContent"></div>
+
+                <!-- ── EXAM ROUTINE ── -->
+                <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
+                <div class="routine-table-wrap">
+                    <table class="routine-table">
+                        <thead><tr><th>Date</th><th>Day</th><th>Time</th><th>Course</th><th>Faculty</th><th>Room</th></tr></thead>
+                        <tbody>
+                            <tr><td>22/08/26</td><td>Sat</td><td>3:00 – 5:00</td><td>MKT 1101</td><td>MAHS</td><td>4506</td></tr>
+                            <tr><td>24/08/26</td><td>Mon</td><td>3:00 – 5:00</td><td>HUM 1102</td><td>SHAK</td><td>4901</td></tr>
+                            <tr><td>27/08/26</td><td>Thu</td><td>3:00 – 5:00</td><td>ICT 1101</td><td>HHS</td><td>4901</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ── CLASS ROUTINE ── -->
+                <div style="margin-top:1.5rem;">
+                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                    <div class="routine-table-wrap">
+                        <table class="routine-table">
+                            <colgroup><col class="col-day"><col class="col-time"><col class="col-room"><col class="col-course"></colgroup>
+                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr></thead>
+                            <tbody>
+                                <tr><td class="day-cell" rowspan="2">SUN</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
+                                <tr><td class="time-cell">1:15 – 2:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
+                                <tr><td class="day-cell" rowspan="2">MON</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
+                                <tr><td class="time-cell">1:15 – 2:45</td><td><span class="course-code mkt">MKT 1101</span></td></tr>
+                                <tr><td class="day-cell" rowspan="2">TUE</td><td class="time-cell">2:45 – 4:15</td><td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td><td><span class="course-code mkt">MKT 1101</span></td></tr>
+                                <tr><td class="time-cell">4:15 – 5:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
+                                <tr><td class="day-cell" rowspan="2">WED</td><td class="time-cell">1:15 – 2:45</td><td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td><td><span class="course-code ict">ICT 1102</span></td></tr>
+                                <tr><td class="time-cell">2:45 – 4:15</td><td><span class="course-code ict">ICT 1102</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ── CLASSROOM CODES ── -->
+                <div class="codes-section">
+                    <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
+                    <div class="codes-grid">
+                        <div class="code-card"><span class="code-icon-dot ict-dot"></span><span class="code-subject">ICT 1101</span><div class="code-value-box"><span class="code-value">TYFAJJUM</span></div><button class="copy-btn" data-code="TYFAJJUM">Copy</button></div>
+                        <div class="code-card"><span class="code-icon-dot hum-dot"></span><span class="code-subject">HUM 1102</span><div class="code-value-box"><span class="code-value">3NHHKKL7</span></div><button class="copy-btn" data-code="3NHHKKL7">Copy</button></div>
+                        <div class="code-card"><span class="code-icon-dot mkt-dot"></span><span class="code-subject">MKT 1101</span><div class="code-value-box"><span class="code-value">BQS76V5Z</span></div><button class="copy-btn" data-code="BQS76V5Z">Copy</button></div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -1449,6 +683,7 @@
     </nav>
 
     <script>
+        // ── BOTTOM NAVIGATION ──────────────────────
         (function() {
             const navItems = document.querySelectorAll('.bottom-nav__item');
             const pages = document.querySelectorAll('.page');
@@ -1465,17 +700,14 @@
                     const targetId = item.dataset.target;
                     navItems.forEach(i => i.classList.remove('is-active'));
                     item.classList.add('is-active');
-                    pages.forEach(page => {
-                        page.hidden = page.id !== targetId;
-                    });
-                    if (titleEl && titles[targetId]) {
-                        titleEl.innerHTML = titles[targetId];
-                    }
+                    pages.forEach(page => { page.hidden = page.id !== targetId; });
+                    if (titleEl && titles[targetId]) { titleEl.innerHTML = titles[targetId]; }
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
         })();
 
+        // ── CLOCK ──────────────────────────────────
         (function() {
             function updateClock() {
                 const now = new Date();
@@ -1509,26 +741,18 @@
                 { date: '24 Aug', title: 'HUM 1102 Final', time: '3:00 – 5:00', room: '4901' },
                 { date: '27 Aug', title: 'ICT 1101 Final', time: '3:00 – 5:00', room: '4901' }
             ];
-            const examDates = exams.map(e => new Date(e.date + ' 2026'));
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             function getDhaka() {
                 const n = new Date();
-                let h = n.getUTCHours() + 6,
-                    d = n.getUTCDate(),
-                    m = n.getUTCMonth(),
-                    y = n.getUTCFullYear();
-                if (h >= 24) { h -= 24;
-                    d++; }
+                let h = n.getUTCHours() + 6, d = n.getUTCDate(), m = n.getUTCMonth(), y = n.getUTCFullYear();
+                if (h >= 24) { h -= 24; d++; }
                 const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-                if (d > dim) { d = 1;
-                    m++; }
-                if (m > 11) { m = 0;
-                    y++; }
+                if (d > dim) { d = 1; m++; }
+                if (m > 11) { m = 0; y++; }
                 const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
-                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(),
-                    timestamp: ts };
+                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(), timestamp: ts };
             }
 
             function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
@@ -1536,11 +760,10 @@
             function getClassStatus() {
                 const dh = getDhaka();
                 const now = new Date();
-                const switchDate = new Date(2026, 7, 19); // 19 Aug 2026
+                const switchDate = new Date(2026, 7, 19);
 
                 if (now < switchDate) {
-                    const day = dh.dayOfWeek,
-                        min = dh.hours * 60 + dh.minutes;
+                    const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
                     let slides = [];
 
                     if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
@@ -1550,27 +773,22 @@
                         return slides;
                     }
 
-                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                        .endM);
+                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
                     if (run) {
-                        slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run
-                        .endM));
+                        slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM));
                         return slides;
                     }
 
                     for (let off = 0; off < 14; off++) {
                         const fut = new Date(dh.timestamp + off * 86400000);
                         const cd = fut.getUTCDay();
-                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                            .startH * 60 + b.startM));
+                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
                         for (let c of dayCls) {
                             const st = c.startH * 60 + c.startM;
                             if (off === 0 && st <= min) continue;
                             const dn = dayNames[cd];
                             const dur = off === 0 ? 'Today' : dn;
-                            slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c
-                                .startM),
-                                'Room ' + c.room);
+                            slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM), 'Room ' + c.room);
                             return slides;
                         }
                     }
@@ -1583,12 +801,8 @@
                     for (let e of exams) {
                         const d = new Date(e.date + ' 2026');
                         d.setHours(0, 0, 0, 0);
-                        if (d.getTime() >= nowMs) {
-                            nextExam = e;
-                            break;
-                        }
+                        if (d.getTime() >= nowMs) { nextExam = e; break; }
                     }
-
                     if (nextExam) {
                         slides.push('📅 Next Exam: <strong>' + nextExam.title + '</strong>');
                         slides.push('⏰ ' + nextExam.time + ' · Room ' + nextExam.room);
@@ -1635,24 +849,20 @@
                 if (!label || !detail || !dot) return;
 
                 if (now < switchDate) {
-                    const day = dh.dayOfWeek,
-                        min = dh.hours * 60 + dh.minutes;
-                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                        .endM);
+                    const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
                     if (run) {
                         label.textContent = 'RUNNING';
                         dot.className = 'status-dot running';
                         detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
-                            '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
-                                .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                            '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run.endM) +
+                            '</span> · <span class="nc-room">' + run.room + '</span>';
                         return;
                     }
-
                     for (let off = 0; off < 14; off++) {
                         const fut = new Date(dh.timestamp + off * 86400000);
                         const cd = fut.getUTCDay();
-                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                            .startH * 60 + b.startM));
+                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
                         for (let c of dayCls) {
                             const st = c.startH * 60 + c.startM;
                             if (off === 0 && st <= min) continue;
@@ -1660,10 +870,8 @@
                             const dur = off === 0 ? 'Today' : fd;
                             label.textContent = off === 0 ? 'TODAY' : 'NEXT';
                             dot.className = 'status-dot';
-                            detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
-                                .course +
-                                '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
-                                    .endM) +
+                            detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c.course +
+                                '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) +
                                 '</span> · <span class="nc-room">' + c.room + '</span>';
                             return;
                         }
@@ -1671,23 +879,18 @@
                     label.textContent = 'IDLE';
                     dot.className = 'status-dot';
                     detail.innerHTML = 'No class scheduled.';
-                    return;
                 } else {
                     const nowMs = now.getTime();
                     let nextExam = null;
                     for (let e of exams) {
                         const d = new Date(e.date + ' 2026');
                         d.setHours(0, 0, 0, 0);
-                        if (d.getTime() >= nowMs) {
-                            nextExam = e;
-                            break;
-                        }
+                        if (d.getTime() >= nowMs) { nextExam = e; break; }
                     }
                     if (nextExam) {
                         label.textContent = 'UPCOMING EXAM';
                         dot.className = 'status-dot running';
-                        detail.innerHTML = '<span class="nc-course">' + nextExam.title + '</span> · <span class="nc-time">' +
-                            nextExam.time + '</span> · <span class="nc-room">Room ' + nextExam.room + '</span>';
+                        detail.innerHTML = '<span class="nc-course">' + nextExam.title + '</span> · <span class="nc-time">' + nextExam.time + '</span> · <span class="nc-room">Room ' + nextExam.room + '</span>';
                     } else {
                         label.textContent = 'DONE';
                         dot.className = 'status-dot';
@@ -1698,41 +901,44 @@
 
             showSlides(getClassStatus());
             updateNextBar();
+            setInterval(() => { showSlides(getClassStatus()); updateNextBar(); }, 30000);
 
-            setInterval(() => {
-                showSlides(getClassStatus());
-                updateNextBar();
-            }, 30000);
-
+            // Hide banner after 19 Aug
             (function() {
                 const banner = document.getElementById('routineBanner');
                 if (!banner) return;
                 const now = new Date();
                 const expiry = new Date(2026, 7, 19);
-                if (now >= expiry) {
-                    banner.style.display = 'none';
-                }
+                if (now >= expiry) banner.style.display = 'none';
             })();
-
         })();
 
-        // ── COPY CLASSROOM CODES ──────────────────
-        document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
+        // ── TOGGLE EVENT EXPAND ───────────────────
+        window.toggleEvent = function(block) {
+            const details = block.querySelector('.event-details');
+            const btn = block.querySelector('.event-toggle-btn');
+            if (!details) return;
+            const isOpen = details.classList.toggle('open');
+            if (btn) {
+                btn.classList.toggle('open', isOpen);
+                btn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' : 'See More <i class="fas fa-chevron-down"></i>';
+            }
+        };
+
+        // ── COPY BUTTONS ──────────────────────────
+        document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const code = this.getAttribute('data-code');
                 if (!code) return;
                 const origText = this.textContent;
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(code).then(() => {
-                        flashCopied(this, origText);
-                    }).catch(() => fallbackCopyCode(code, this, origText));
-                } else {
-                    fallbackCopyCode(code, this, origText);
-                }
+                    navigator.clipboard.writeText(code).then(() => flashCopied(this, origText))
+                        .catch(() => fallbackCopy(code, this, origText));
+                } else { fallbackCopy(code, this, origText); }
             });
         });
 
-        function fallbackCopyCode(text, btn, origText) {
+        function fallbackCopy(text, btn, origText) {
             const ta = document.createElement('textarea');
             ta.value = text;
             ta.style.position = 'fixed';
@@ -1740,24 +946,17 @@
             ta.style.top = '-9999px';
             document.body.appendChild(ta);
             ta.select();
-            try {
-                document.execCommand('copy');
-                flashCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy code. Please copy manually.');
-            }
+            try { document.execCommand('copy'); flashCopied(btn, origText); } catch (e) { alert('Could not copy. Please copy manually.'); }
             document.body.removeChild(ta);
         }
 
         function flashCopied(btn, origText) {
             btn.textContent = '✓ Copied';
             btn.classList.add('copied-flash');
-            setTimeout(() => {
-                btn.textContent = origText;
-                btn.classList.remove('copied-flash');
-            }, 1500);
+            setTimeout(() => { btn.textContent = origText; btn.classList.remove('copied-flash'); }, 1500);
         }
 
+        // ── FACULTY COPY ──────────────────────────
         document.querySelectorAll('.btn-copy').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1765,12 +964,9 @@
                 if (!number) return;
                 const origText = this.textContent;
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(number).then(() => {
-                        showFacCopied(this, origText);
-                    }).catch(() => fallbackFacCopy(number, this, origText));
-                } else {
-                    fallbackFacCopy(number, this, origText);
-                }
+                    navigator.clipboard.writeText(number).then(() => showFacCopied(this, origText))
+                        .catch(() => fallbackFacCopy(number, this, origText));
+                } else { fallbackFacCopy(number, this, origText); }
             });
         });
 
@@ -1782,12 +978,7 @@
             ta.style.top = '-9999px';
             document.body.appendChild(ta);
             ta.select();
-            try {
-                document.execCommand('copy');
-                showFacCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy number. Please copy manually.');
-            }
+            try { document.execCommand('copy'); showFacCopied(btn, origText); } catch (e) { alert('Could not copy. Please copy manually.'); }
             document.body.removeChild(ta);
         }
 
@@ -1795,300 +986,25 @@
             btn.textContent = 'Copied!';
             btn.style.background = '#d1fae5';
             btn.style.color = '#065f46';
-            setTimeout(() => {
-                btn.textContent = origText;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 1800);
+            setTimeout(() => { btn.textContent = origText; btn.style.background = ''; btn.style.color = ''; }, 1800);
         }
 
-        // ── ROUTINE SECTION (DYNAMIC + EXPIRY) ──
+        // ── ROUTINE EXPIRY CHECK ──────────────────
         (function() {
-            function renderRoutine() {
-                const container = document.getElementById('routineContent');
-                if (!container) return;
-
-                const now = new Date();
-                const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
-
-                if (now >= expiryDate) {
-                    container.innerHTML = `
-                        <div class="routine-expired-msg">
-                            <i class="fas fa-clock" style="font-size:1.5rem;display:block;margin-bottom:0.5rem;color:var(--text-muted);"></i>
-                            Classroom codes and routines are expired. 
-                            When the new semester routine arrives, you will get it here or check 
-                            <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
-                        </div>
-                    `;
-                    return;
-                }
-
-                let html = `
-                    <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
-                    <div class="routine-table-wrap">
-                        <table class="routine-table">
-                            <thead><tr><th>Date</th><th>Day</th><th>Time</th><th>Course</th><th>Faculty</th><th>Room</th></tr></thead>
-                            <tbody>
-                                <tr><td>22/08/26</td><td>Sat</td><td>3:00 – 5:00</td><td>MKT 1101</td><td>MAHS</td><td>4506</td></tr>
-                                <tr><td>24/08/26</td><td>Mon</td><td>3:00 – 5:00</td><td>HUM 1102</td><td>SHAK</td><td>4901</td></tr>
-                                <tr><td>27/08/26</td><td>Thu</td><td>3:00 – 5:00</td><td>ICT 1101</td><td>HHS</td><td>4901</td></tr>
-                            </tbody>
-                        </table>
+            const container = document.getElementById('routineContainer');
+            if (!container) return;
+            const now = new Date();
+            const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
+            if (now >= expiryDate) {
+                container.innerHTML = `
+                    <div class="routine-expired-msg">
+                        <i class="fas fa-clock" style="font-size:1.5rem;display:block;margin-bottom:0.5rem;color:var(--text-muted);"></i>
+                        Classroom codes and routines are expired. 
+                        When the new semester routine arrives, you will get it here or check 
+                        <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
                     </div>
                 `;
-
-                html += `
-                    <div style="margin-top:1.5rem;">
-                        <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                        <div class="routine-table-wrap">
-                            <table class="routine-table">
-                                <colgroup>
-                                    <col class="col-day"><col class="col-time"><col class="col-room"><col class="col-course">
-                                </colgroup>
-                                <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr></thead>
-                                <tbody>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">SUN</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">MON</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code mkt">MKT 1101</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">TUE</td><td class="time-cell">2:45 – 4:15</td><td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td><td><span class="course-code mkt">MKT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">4:15 – 5:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">WED</td><td class="time-cell">1:15 – 2:45</td><td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td><td><span class="course-code ict">ICT 1102</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">2:45 – 4:15</td><td><span class="course-code ict">ICT 1102</span></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-
-                html += `
-                    <div class="codes-section">
-                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                        <div class="codes-grid">
-                            <div class="code-card"><span class="code-icon-dot ict-dot"></span><span class="code-subject">ICT 1101</span><div class="code-value-box"><span class="code-value">TYFAJJUM</span></div><button class="copy-btn" data-code="TYFAJJUM">Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot hum-dot"></span><span class="code-subject">HUM 1102</span><div class="code-value-box"><span class="code-value">3NHHKKL7</span></div><button class="copy-btn" data-code="3NHHKKL7">Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot mkt-dot"></span><span class="code-subject">MKT 1101</span><div class="code-value-box"><span class="code-value">BQS76V5Z</span></div><button class="copy-btn" data-code="BQS76V5Z">Copy</button></div>
-                        </div>
-                    </div>
-                `;
-
-                container.innerHTML = html;
-
-                document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const code = this.getAttribute('data-code');
-                        if (!code) return;
-                        const origText = this.textContent;
-                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                            navigator.clipboard.writeText(code).then(() => {
-                                flashCopied(this, origText);
-                            }).catch(() => fallbackCopyCode(code, this, origText));
-                        } else {
-                            fallbackCopyCode(code, this, origText);
-                        }
-                    });
-                });
             }
-
-            renderRoutine();
-            setInterval(renderRoutine, 30000);
-        })();
-
-        // ── PINNED EVENTS ─────────────────────────
-        (function() {
-            const eventsData = [
-                // MOVED from 16 Aug to 18 Aug
-                {
-                    date: '18 Aug',
-                    title: 'Bangla Presentation Group 2 (28-end)',
-                    badge: 'Presentation',
-                    meta: 'After Roll 28',
-                    items: ['• Present your Bangla assignment'],
-                    note: 'For students after roll 28',
-                    dateObj: new Date(2026, 7, 18)
-                },
-                {
-                    date: '17 Aug',
-                    title: 'ICT CT (Optional)',
-                    badge: 'Optional CT',
-                    meta: '',
-                    items: [
-                        '• OSI Model',
-                        '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)',
-                        '• Chapter 12 (as per syllabus)'
-                    ],
-                    note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
-                    dateObj: new Date(2026, 7, 17)
-                },
-                {
-                    date: '18 Aug',
-                    title: 'Bangla Results',
-                    badge: 'Results',
-                    meta: '',
-                    items: ['• Bangla Assignment Results', '• Bangla CT Exam Results'],
-                    note: 'Check your results!',
-                    dateObj: new Date(2026, 7, 18)
-                },
-                {
-                    date: '10-18 Aug',
-                    title: 'Semester Fee Payment',
-                    badge: 'Important',
-                    meta: 'Pay before deadline',
-                    items: ['• Pay your semester fees'],
-                    note: 'Deadline: 18 Aug',
-                    dateObj: new Date(2026, 7, 18),
-                    rangeEnd: new Date(2026, 7, 18)
-                },
-                {
-                    date: '19 Aug',
-                    title: 'LAB FINAL (ICT)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 1:15 – 4:15',
-                    items: [
-                        '• Excel: COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP'
-                    ],
-                    note: 'In class time.',
-                    dateObj: new Date(2026, 7, 19),
-                    isFinal: true
-                },
-                {
-                    date: '22 Aug',
-                    title: 'MKT 1101 Final (MAHS)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4506',
-                    items: ['• Full syllabus (Ch.7, 8, 9, 11, 14)'],
-                    note: 'Check the Routine tab for details.',
-                    dateObj: new Date(2026, 7, 22),
-                    isFinal: true
-                },
-                {
-                    date: '24 Aug',
-                    title: 'HUM 1102 Final (SHAK)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: ['• Full syllabus'],
-                    note: 'Check the Routine tab for details.',
-                    dateObj: new Date(2026, 7, 24),
-                    isFinal: true
-                },
-                {
-                    date: '27 Aug',
-                    title: 'ICT 1101 Final (HHS)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: [
-                        '• Chapter 2 (Connect internet, www, safe browsing)',
-                        '• Chapter 10 (Intranet, extranet, peer to peer etc.)',
-                        '• OSI MODEL',
-                        '• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)'
-'•Chapter 12'
-                    ],
-                    note: 'Check the Routine tab for details.',
-                    dateObj: new Date(2026, 7, 27),
-                    isFinal: true
-                }
-            ];
-
-            function getMonthAbbr(date) {
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                return months[date.getMonth()];
-            }
-
-            function getDayNum(date) { return date.getDate(); }
-
-            function shouldShowEvent(ev) {
-                const now = new Date();
-                const today = new Date(now);
-                today.setHours(0, 0, 0, 0);
-
-                if (ev.rangeEnd) {
-                    const end = new Date(ev.rangeEnd);
-                    end.setHours(0, 0, 0, 0);
-                    if (today > end) return false;
-                }
-
-                const evDate = new Date(ev.dateObj);
-                evDate.setHours(0, 0, 0, 0);
-
-                if (evDate < today) return false;
-                return true;
-            }
-
-            function renderEvents() {
-                const container = document.getElementById('eventsList');
-                if (!container) return;
-
-                const visible = eventsData.filter(ev => shouldShowEvent(ev));
-                visible.sort((a, b) => a.dateObj - b.dateObj);
-
-                if (visible.length === 0) {
-                    container.innerHTML =
-                        '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
-                    return;
-                }
-
-                let html = '';
-                visible.forEach((ev) => {
-                    const month = getMonthAbbr(ev.dateObj);
-                    const day = getDayNum(ev.dateObj);
-
-                    let itemsHtml = '';
-                    if (ev.items && ev.items.length > 0) {
-                        itemsHtml = '<div class="event-items">';
-                        ev.items.forEach(item => {
-                            itemsHtml += '<span>' + item + '</span>';
-                        });
-                        itemsHtml += '</div>';
-                    }
-
-                    let detailsHtml =
-                        '<div class="event-details">' +
-                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
-                        itemsHtml +
-                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
-                        '</div>';
-
-                    const finalClass = ev.isFinal ? ' final-exam' : '';
-
-                    html +=
-                        '<div class="event-block' + finalClass + '">' +
-                        '<div class="event-date-badge">' +
-                        '<span class="day">' + day + '</span>' +
-                        '<span class="month">' + month + '</span>' +
-                        '</div>' +
-                        '<div class="event-content">' +
-                        '<div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">' +
-                        '<div class="event-title">' +
-                        ev.title +
-                        (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') +
-                        '</div>' +
-                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">' +
-                        'See More <i class="fas fa-chevron-down"></i>' +
-                        '</button>' +
-                        '</div>' +
-                        detailsHtml +
-                        '</div>' +
-                        '</div>';
-                });
-
-                container.innerHTML = html;
-            }
-
-            window.toggleEvent = function(block) {
-                const details = block.querySelector('.event-details');
-                const btn = block.querySelector('.event-toggle-btn');
-                if (!details) return;
-                const isOpen = details.classList.toggle('open');
-                if (btn) {
-                    btn.classList.toggle('open', isOpen);
-                    btn.innerHTML = isOpen ?
-                        'See Less <i class="fas fa-chevron-up"></i>' :
-                        'See More <i class="fas fa-chevron-down"></i>';
-                }
-            };
-
-            renderEvents();
-            setInterval(renderEvents, 60000);
         })();
     </script>
 
