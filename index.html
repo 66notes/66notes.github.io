@@ -171,6 +171,50 @@
             margin-bottom: 0.9rem;
         }
 
+        /* ── ANNOUNCEMENTS (SECTION 0) ──────────── */
+        .announcement-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .announcement-icon .material-symbols-rounded {
+            color: #ea580c;
+            font-size: 1.5rem;
+        }
+        .announcement-text {
+            flex: 1;
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .announcement-line {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #7c2d12;
+            pointer-events: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .announcement-line.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+
         .glance {
             background: var(--surface);
             border-radius: var(--radius-xl);
@@ -180,23 +224,6 @@
             text-align: center;
             margin-bottom: 1rem;
             position: relative;
-        }
-        .routine-published-banner {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            border-radius: var(--radius-sm);
-            padding: 0.4rem 0.8rem;
-            margin-bottom: 0.7rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #92400e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        .routine-published-banner i {
-            color: #d97706;
         }
 
         .section-title {
@@ -384,7 +411,6 @@
             border-left: 4px solid #f5b042;
             border-color: #fde68a;
         }
-        /* Final exam highlight */
         .event-block.final-exam {
             background: #fef2f2;
             border-left: 4px solid #dc2626;
@@ -445,9 +471,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.3rem;
-            cursor: pointer;
-            user-select: none;
             padding: 0.1rem 0;
+            width: 100%;
         }
         .event-summary .event-title {
             font-weight: 700;
@@ -487,6 +512,7 @@
             align-items: center;
             gap: 0.3rem;
             white-space: nowrap;
+            border: none;
         }
         .event-toggle-btn:hover {
             background: #dbeafe;
@@ -548,6 +574,164 @@
             background: #eff6ff;
             color: #1e40af;
             border-color: #dbeafe;
+        }
+
+        /* ── MODAL (POPUP) ───────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            max-width: 640px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: modal-in 0.25s ease;
+        }
+        @keyframes modal-in {
+            from {
+                opacity: 0;
+                transform: scale(0.94) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1.5px solid var(--border);
+            flex-shrink: 0;
+        }
+        .modal-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-header h2 i {
+            color: var(--accent);
+        }
+        .modal-close-btn {
+            background: #f3f4f6;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+            transition: background var(--transition);
+        }
+        .modal-close-btn:hover {
+            background: #e5e7eb;
+        }
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+        .modal-body .section-title-text {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 0.1rem;
+        }
+        .modal-body .section-title-text:first-child {
+            margin-top: 0;
+        }
+        .modal-body .topic-item {
+            display: block;
+            padding: 0.1rem 0 0.1rem 0.5rem;
+        }
+        .modal-body .topic-item .skip {
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-style: italic;
+        }
+        .modal-body .topic-item .out {
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-style: italic;
+        }
+        .modal-body .topic-item .star {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+        .modal-body .topic-item .pin {
+            color: #2563eb;
+        }
+        .modal-footer {
+            padding: 0.75rem 1.5rem 1.25rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        .modal-footer .btn-modal {
+            padding: 0.4rem 1.4rem;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 38px;
+        }
+        .modal-footer .btn-modal:active {
+            transform: scale(0.96);
+        }
+        .modal-footer .btn-copy-modal {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+        .modal-footer .btn-copy-modal:hover {
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+        }
+        .modal-footer .btn-close-modal {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .modal-footer .btn-close-modal:hover {
+            background: #e5e7eb;
         }
 
         /* ── ROUTINE SECTION ────────────────────── */
@@ -1117,7 +1301,13 @@
             .cta-footer .cta-title { font-size: 0.9rem; }
             .cta-footer .cta-desc { font-size: 0.7rem; }
             .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
-            .routine-published-banner { font-size: 0.65rem; padding: 0.3rem 0.6rem; }
+            .announcement-bar { padding: 0.4rem 0.7rem; }
+            .announcement-icon .material-symbols-rounded { font-size: 1.2rem; }
+            .announcement-line { font-size: 0.7rem; white-space: normal; }
+            .modal-box { max-width: 95%; }
+            .modal-body { font-size: 0.75rem; padding: 1rem; }
+            .modal-header h2 { font-size: 0.95rem; }
+            .modal-footer .btn-modal { font-size: 0.7rem; padding: 0.3rem 1rem; min-height: 34px; }
         }
 
         @media (max-width: 380px) {
@@ -1158,11 +1348,15 @@
         <!-- ── PAGE 1 – HOME ────────────────────── -->
         <section class="page" id="page-home">
 
-            <div class="glance" id="section-ai">
-                <!-- Banner: Routine Published (visible until 18 Aug) -->
-                <div id="routineBanner" class="routine-published-banner">
-                    <i class="fas fa-calendar-check"></i> 📢 Exam Routine Published! Check the <strong>Routine</strong> tab or <strong>Pinned Events</strong>.
+            <div class="announcement-bar" id="section-announcements">
+                <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
+                <div class="announcement-text" id="announcementText">
+                    <span class="announcement-line active">Final Exam Routine is available</span>
+                    <span class="announcement-line">Pay fees before 18th Aug</span>
                 </div>
+            </div>
+
+            <div class="glance" id="section-ai">
                 <div class="section-title">
                     <span class="live-indicator"></span> AI Reminder
                 </div>
@@ -1228,7 +1422,6 @@
         <!-- ── PAGE 3 – ROUTINE & CODES ──────────── -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section" id="routineContainer">
-                <!-- DYNAMIC ROUTINE CONTENT (injected by JS) -->
                 <div id="routineContent"></div>
             </div>
         </section>
@@ -1290,6 +1483,164 @@
 
     </main>
 
+    <!-- ── MODALS ─────────────────────────────────── -->
+    <!-- ICT Lab Modal -->
+    <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-flask"></i> ICT Lab Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-ict-lab">
+📊 Excel Functions:
+  • COUNT
+  • COUNTA
+  • COUNTIF
+  • COUNTIFS
+  • CONCAT
+  • SUM
+  • SUMIF
+  • SUMIFS
+  • MAX
+  • MIN
+  • MID
+  • LARGE
+  • SMALL
+  • AVERAGE
+  • IF
+  • IF(AND)
+  • IF(OR)
+  • TODAY
+  • NOW
+  • VLOOKUP
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
+                    <i class="fas fa-copy"></i> Copy All
+                </button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict-lab')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ICT 1101 Modal -->
+    <div class="modal-overlay" id="modal-ict" onclick="if(event.target === this) closeModal('modal-ict')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-laptop-code"></i> ICT 1101 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-ict">
+📘 Chapter 2 (DC17)
+  • Connect internet
+  • www
+  • Safe browsing
+
+📘 Chapter 10 (DC17)
+  • Intranet
+  • Extranet
+  • Peer to peer
+
+📘 OSI Model
+  • Full OSI layers
+
+📘 Chapter 6
+  • Boolean Algebra (0,1 Math)
+  • Truth Table
+  • Circuits
+  • All Logic Gates
+
+📘 Chapter 12
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)">
+                    <i class="fas fa-copy"></i> Copy All
+                </button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MKT Modal -->
+    <div class="modal-overlay" id="modal-mkt" onclick="if(event.target === this) closeModal('modal-mkt')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-line"></i> MKT 1101 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-mkt">
+📘 Chapter 7
+  ▪ Obj 1: Segmentation, Targeting, Positioning definition + example ⭐
+  ▪ Obj 2: Major bases for segmentation, details ⭐⭐
+     (Psychographic — Skip)
+  ▪ Obj 3: Point names + examples 📌
+  ▪ Obj 4: Out of syllabus ❌
+  ▪ Obj 5: ⭐⭐
+  ▪ Obj 6: Skip
+  ▪ Obj 7: Details ⭐⭐⭐
+
+📘 Chapter 8
+  ▪ Obj 1: Consumer products + comparisons ⭐⭐
+     (Industrial products — Skip)
+  ▪ Obj 2: Three levels — names only ⭐
+  ▪ Obj 3: Skip
+  ▪ Obj 4: Characteristics ⭐⭐⭐
+  ▪ Obj 5: Skip
+  ▪ Obj 6: Brand development strategies ⭐⭐
+     (Line extension + subpoints — important ⭐⭐)
+
+📘 Chapter 9
+  ▪ Characteristics ⭐⭐⭐
+  ▪ Strategies ⭐⭐⭐ (50–50 chance: one will come)
+
+📘 Chapter 11
+  ▪ Obj 1: Pricing strategy — details ⭐⭐
+  ▪ Obj 2: Points + examples only ⭐
+     (Geographic — Skip)
+  ▪ Obj 3: Price — details ⭐
+
+📘 Chapter 14
+  ▪ Promotion Mix ⭐⭐
+  ▪ Push & Pull Strategy ⭐
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)">
+                    <i class="fas fa-copy"></i> Copy All
+                </button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-mkt')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bangla (HUM) Modal -->
+    <div class="modal-overlay" id="modal-hum" onclick="if(event.target === this) closeModal('modal-hum')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-language"></i> HUM 1102 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-hum">
+১. ক) ব্যাকরণিক শব্দ শ্রেণী
+   খ) বাক্য
+
+২. ক) উচ্চারণ
+   খ) সমাস
+
+৩. ক) প্রবাদ-প্রবচন ব্যাখ্যা
+   খ) পারিভাষিক শব্দ, ভাষা অপপ্রয়োগ ও শুদ্ধ প্রয়োগ
+
+৪. ক) বিরামচিহ্ন
+   খ) প্রতিবেদন
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)">
+                    <i class="fas fa-copy"></i> Copy All
+                </button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-hum')">Close</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
         <button class="bottom-nav__item is-active" data-target="page-home">
             <span class="bottom-nav__icon"><span class="material-symbols-rounded">home</span></span>
@@ -1310,6 +1661,61 @@
     </nav>
 
     <script>
+        // ── MODAL FUNCTIONS ──────────────────────────
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function copyModalContent(bodyId, btn) {
+            const body = document.getElementById(bodyId);
+            let text = body.innerText || body.textContent;
+            text = text.replace(/\s+/g, ' ').trim();
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    flashCopyBtn(btn);
+                }).catch(() => fallbackCopy(text, btn));
+            } else {
+                fallbackCopy(text, btn);
+            }
+        }
+
+        function fallbackCopy(text, btn) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                flashCopyBtn(btn);
+            } catch (e) {
+                alert('Could not copy. Please copy manually.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function flashCopyBtn(btn) {
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#d1fae5';
+            btn.style.color = '#065f46';
+            setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 2000);
+        }
+
+        // ── NAVIGATION ──────────────────────────────
         (function() {
             const navItems = document.querySelectorAll('.bottom-nav__item');
             const pages = document.querySelectorAll('.page');
@@ -1337,6 +1743,7 @@
             });
         })();
 
+        // ── CLOCK ────────────────────────────────────
         (function() {
             function updateClock() {
                 const now = new Date();
@@ -1349,6 +1756,19 @@
             }
             updateClock();
             setInterval(updateClock, 30000);
+        })();
+
+        // ── ANNOUNCEMENTS ROTATION ──────────────────
+        (function() {
+            const lines = document.querySelectorAll('.announcement-line');
+            if (lines.length > 1) {
+                let current = 0;
+                setInterval(() => {
+                    lines.forEach(l => l.classList.remove('active'));
+                    current = (current + 1) % lines.length;
+                    lines[current].classList.add('active');
+                }, 4500);
+            }
         })();
 
         // ── CLASS / EXAM STATUS FOR AI REMINDER ──
@@ -1370,7 +1790,6 @@
                 { date: '24 Aug', title: 'HUM 1102 Final', time: '3:00 – 5:00', room: '4901' },
                 { date: '27 Aug', title: 'ICT 1101 Final', time: '3:00 – 5:00', room: '4901' }
             ];
-            const examDates = exams.map(e => new Date(e.date + ' 2026'));
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -1397,9 +1816,8 @@
             function getClassStatus() {
                 const dh = getDhaka();
                 const now = new Date();
-                const switchDate = new Date(2026, 7, 19); // 19 Aug 2026
+                const switchDate = new Date(2026, 7, 19);
 
-                // ---- IF BEFORE 19 AUG: SHOW CLASS ROUTINE ----
                 if (now < switchDate) {
                     const day = dh.dayOfWeek,
                         min = dh.hours * 60 + dh.minutes;
@@ -1438,25 +1856,18 @@
                     }
                     slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
                     return slides;
-                }
-
-                // ---- AFTER 19 AUG: SHOW EXAM REMINDER ----
-                else {
+                } else {
                     let slides = [];
                     const nowMs = now.getTime();
-
-                    // Find the next upcoming exam
                     let nextExam = null;
                     for (let e of exams) {
                         const d = new Date(e.date + ' 2026');
-                        // Set to 3:00 PM for comparison, but we just need date.
                         d.setHours(0, 0, 0, 0);
                         if (d.getTime() >= nowMs) {
                             nextExam = e;
                             break;
                         }
                     }
-
                     if (nextExam) {
                         slides.push('📅 Next Exam: <strong>' + nextExam.title + '</strong>');
                         slides.push('⏰ ' + nextExam.time + ' · Room ' + nextExam.room);
@@ -1493,7 +1904,6 @@
                 }
             }
 
-            // ── NEXT CLASS / EXAM BAR ──────────────
             function updateNextBar() {
                 const dh = getDhaka();
                 const now = new Date();
@@ -1503,7 +1913,6 @@
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
 
-                // ---- BEFORE 19 AUG: CLASS BAR ----
                 if (now < switchDate) {
                     const day = dh.dayOfWeek,
                         min = dh.hours * 60 + dh.minutes;
@@ -1542,10 +1951,7 @@
                     dot.className = 'status-dot';
                     detail.innerHTML = 'No class scheduled.';
                     return;
-                }
-
-                // ---- AFTER 19 AUG: EXAM BAR ----
-                else {
+                } else {
                     const nowMs = now.getTime();
                     let nextExam = null;
                     for (let e of exams) {
@@ -1569,27 +1975,12 @@
                 }
             }
 
-            // INITIAL RENDER
             showSlides(getClassStatus());
             updateNextBar();
-
-            // UPDATE EVERY 30 SECONDS
             setInterval(() => {
                 showSlides(getClassStatus());
                 updateNextBar();
             }, 30000);
-
-            // Toggle banner visibility (hide after 18 Aug)
-            (function() {
-                const banner = document.getElementById('routineBanner');
-                if (!banner) return;
-                const now = new Date();
-                const expiry = new Date(2026, 7, 19); // 19 Aug 2026
-                if (now >= expiry) {
-                    banner.style.display = 'none';
-                }
-            })();
-
         })();
 
         // ── COPY CLASSROOM CODES ──────────────────
@@ -1679,14 +2070,14 @@
             }, 1800);
         }
 
-        // ── ROUTINE SECTION (DYNAMIC + EXPIRY) ──
+        // ── ROUTINE SECTION ──────────────────────
         (function() {
             function renderRoutine() {
                 const container = document.getElementById('routineContent');
                 if (!container) return;
 
                 const now = new Date();
-                const expiryDate = new Date(2026, 7, 27, 17, 0, 0); // 27 Aug 2026 5:00 PM
+                const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
 
                 if (now >= expiryDate) {
                     container.innerHTML = `
@@ -1700,7 +2091,6 @@
                     return;
                 }
 
-                // ── Exam Routine Table ──
                 let html = `
                     <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
                     <div class="routine-table-wrap">
@@ -1715,7 +2105,6 @@
                     </div>
                 `;
 
-                // ── Class Routine Table ──
                 html += `
                     <div style="margin-top:1.5rem;">
                         <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
@@ -1740,7 +2129,6 @@
                     </div>
                 `;
 
-                // ── Classroom Codes ──
                 html += `
                     <div class="codes-section">
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
@@ -1754,7 +2142,6 @@
 
                 container.innerHTML = html;
 
-                // Re-bind copy events for dynamically added buttons
                 document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const code = this.getAttribute('data-code');
@@ -1779,31 +2166,22 @@
         (function() {
             const eventsData = [
                 {
-                    date: '16 Aug',
+                    date: '18 Aug',
                     title: 'Bangla Presentation Group 2 (28-end)',
                     badge: 'Presentation',
                     meta: 'After Roll 28',
                     items: ['• Present your Bangla assignment'],
                     note: 'For students after roll 28',
-                    dateObj: new Date(2026, 7, 16)
+                    dateObj: new Date(2026, 7, 18)
                 },
                 {
                     date: '17 Aug',
                     title: 'ICT CT (Optional)',
                     badge: 'Optional CT',
                     meta: '',
-                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)'],
+                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)', '• Chapter 12'],
                     note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
                     dateObj: new Date(2026, 7, 17)
-                },
-                {
-                    date: '18 Aug',
-                    title: 'Bangla Results',
-                    badge: 'Results',
-                    meta: '',
-                    items: ['• Bangla Assignment Results', '• Bangla CT Exam Results'],
-                    note: 'Check your results!',
-                    dateObj: new Date(2026, 7, 18)
                 },
                 {
                     date: '10-18 Aug',
@@ -1815,53 +2193,49 @@
                     dateObj: new Date(2026, 7, 18),
                     rangeEnd: new Date(2026, 7, 18)
                 },
-                // ── FINAL EXAMS (HIGHLIGHTED) ──
                 {
                     date: '19 Aug',
                     title: 'LAB FINAL (ICT)',
                     badge: 'Final Exam',
                     meta: 'Time: 1:15 – 4:15',
-                    items: [
-                        '• Excel: COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP'
-                    ],
-                    note: 'In class time.',
+                    items: [],
+                    note: 'Click "View Syllabus" for details.',
                     dateObj: new Date(2026, 7, 19),
-                    isFinal: true
+                    isFinal: true,
+                    type: 'ict-lab'
                 },
                 {
                     date: '22 Aug',
                     title: 'MKT 1101 Final (MAHS)',
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4506',
-                    items: ['• Full syllabus (Ch.7, 8, 9, 11, 14)'],
-                    note: 'Check the Routine tab for details.',
+                    items: [],
+                    note: 'Click "View Syllabus" for details.',
                     dateObj: new Date(2026, 7, 22),
-                    isFinal: true
+                    isFinal: true,
+                    type: 'mkt'
                 },
                 {
                     date: '24 Aug',
                     title: 'HUM 1102 Final (SHAK)',
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: ['• Full syllabus'],
-                    note: 'Check the Routine tab for details.',
+                    items: [],
+                    note: 'Click "View Syllabus" for details.',
                     dateObj: new Date(2026, 7, 24),
-                    isFinal: true
+                    isFinal: true,
+                    type: 'hum'
                 },
                 {
                     date: '27 Aug',
                     title: 'ICT 1101 Final (HHS)',
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: [
-                        '• Ch.2 DC17 (Connect internet, www, safe browsing)',
-                        '• Ch.10 DC17 (Intranet, extranet, peer to peer etc.)',
-                        '• OSI MODEL',
-                        '• Ch.6 Boolean Algebra (0,1 Math, Truth Table, Circuits, All Logic Gates)'
-                    ],
-                    note: 'Check the Routine tab for details.',
+                    items: [],
+                    note: 'Click "View Syllabus" for details.',
                     dateObj: new Date(2026, 7, 27),
-                    isFinal: true
+                    isFinal: true,
+                    type: 'ict'
                 }
             ];
 
@@ -1917,15 +2291,30 @@
                         itemsHtml += '</div>';
                     }
 
-                    let detailsHtml =
-                        '<div class="event-details">' +
-                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
-                        itemsHtml +
-                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
-                        '</div>';
+                    let detailsHtml = '';
+                    if (!ev.type) {
+                        detailsHtml =
+                            '<div class="event-details">' +
+                            (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
+                            itemsHtml +
+                            (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
+                            '</div>';
+                    }
 
-                    // Add final-exam class if it's a final
                     const finalClass = ev.isFinal ? ' final-exam' : '';
+
+                    let buttonHtml = '';
+                    if (ev.type === 'ict-lab') {
+                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict-lab')">📖 View Syllabus</button>`;
+                    } else if (ev.type === 'ict') {
+                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict')">📖 View Syllabus</button>`;
+                    } else if (ev.type === 'mkt') {
+                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-mkt')">📖 View Syllabus</button>`;
+                    } else if (ev.type === 'hum') {
+                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-hum')">📖 View Syllabus</button>`;
+                    } else {
+                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>`;
+                    }
 
                     html +=
                         '<div class="event-block' + finalClass + '">' +
@@ -1934,14 +2323,12 @@
                         '<span class="month">' + month + '</span>' +
                         '</div>' +
                         '<div class="event-content">' +
-                        '<div class="event-summary" onclick="toggleEvent(this.parentElement.parentElement)">' +
+                        '<div class="event-summary">' +
                         '<div class="event-title">' +
                         ev.title +
                         (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') +
                         '</div>' +
-                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">' +
-                        'See More <i class="fas fa-chevron-down"></i>' +
-                        '</button>' +
+                        buttonHtml +
                         '</div>' +
                         detailsHtml +
                         '</div>' +
@@ -1956,7 +2343,7 @@
                 const btn = block.querySelector('.event-toggle-btn');
                 if (!details) return;
                 const isOpen = details.classList.toggle('open');
-                if (btn) {
+                if (btn && !btn.innerHTML.includes('View Syllabus')) {
                     btn.classList.toggle('open', isOpen);
                     btn.innerHTML = isOpen ?
                         'See Less <i class="fas fa-chevron-up"></i>' :
