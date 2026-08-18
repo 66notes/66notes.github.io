@@ -1491,26 +1491,39 @@
             </div>
             <div class="modal-body" id="modal-body-ict-lab">
 📊 Excel Functions:
-  • COUNT
-  • COUNTA
-  • COUNTIF
-  • COUNTIFS
-  • CONCAT
-  • SUM
-  • SUMIF
-  • SUMIFS
-  • MAX
-  • MIN
-  • MID
-  • LARGE
-  • SMALL
-  • AVERAGE
-  • IF
-  • IF(AND)
-  • IF(OR)
-  • TODAY
-  • NOW
-  • VLOOKUP
+LEFT
+RIGHT
+PROPER
+TRIM
+LEN
+TEXTJOIN
+AVERAGEIF
+AVERAGEIFS
+COUNT
+COUNTA
+COUNTIF
+COUNTIFS
+CONCAT
+SUM
+SUMIF
+SUMIFS
+MAX
+MIN
+MID
+LARGE
+SMALL
+AVERAGE
+IF
+IF(AND)
+IF(OR)
+TODAY
+NOW
+VLOOKUP
+
+extra:
+=IF(ISNUMBER(SEARCH("@",A2)),"Email","Not Email")
+OR
+=IF(COUNTIF(A2,"*@*"),"Email","Not Email")
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
