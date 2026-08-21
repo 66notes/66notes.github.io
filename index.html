@@ -1349,8 +1349,7 @@
             <div class="announcement-bar" id="section-announcements">
                 <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
                 <div class="announcement-text" id="announcementText">
-                    <span class="announcement-line active">Final Exam Routine is available</span>
-                    <span class="announcement-line">Pay fees before 18th Aug</span>
+                    <!-- Dynamically generated -->
                 </div>
             </div>
 
@@ -1360,7 +1359,7 @@
                 </div>
                 <div class="reminder-main">
                     <div class="message-box" id="messageBox">
-                        <div class="message-line active">📢 4th Aug: MKT Assignment & Presentation</div>
+                        <!-- Dynamically generated -->
                     </div>
                     <div class="clock-display" id="clockDisplay">Loading...</div>
                 </div>
@@ -1687,7 +1686,7 @@ OR
             const body = document.getElementById(bodyId);
             let text = body.innerText || body.textContent;
             text = text.replace(/\s+/g, ' ').trim();
-            
+
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                     flashCopyBtn(btn);
@@ -1769,15 +1768,36 @@ OR
             setInterval(updateClock, 30000);
         })();
 
-        // ── ANNOUNCEMENTS ROTATION ──────────────────
+        // ── ANNOUNCEMENTS ROTATION (DYNAMIC) ────────
         (function() {
-            const lines = document.querySelectorAll('.announcement-line');
+            const container = document.getElementById('announcementText');
+            const now = new Date();
+            const breakStartDate = new Date(2026, 7, 28); // August 28, 2026
+
+            let lines = [];
+            if (now >= breakStartDate) {
+                lines = ['🏖️ Semester break is running', '📅 Next semester classes start on 5th September'];
+            } else {
+                lines = ['Final Exam Routine is available', 'Admit is Available, in Annex > Present Courses',
+                    'Full Routine in Routine section'
+                ];
+            }
+
+            container.innerHTML = '';
+            lines.forEach((text, index) => {
+                const span = document.createElement('span');
+                span.className = 'announcement-line' + (index === 0 ? ' active' : '');
+                span.textContent = text;
+                container.appendChild(span);
+            });
+
             if (lines.length > 1) {
                 let current = 0;
+                const items = container.querySelectorAll('.announcement-line');
                 setInterval(() => {
-                    lines.forEach(l => l.classList.remove('active'));
-                    current = (current + 1) % lines.length;
-                    lines[current].classList.add('active');
+                    items.forEach(l => l.classList.remove('active'));
+                    current = (current + 1) % items.length;
+                    items[current].classList.add('active');
                 }, 4500);
             }
         })();
@@ -1803,6 +1823,7 @@ OR
             ];
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const breakStartDate = new Date(2026, 7, 28);
 
             function getDhaka() {
                 const n = new Date();
@@ -1825,8 +1846,12 @@ OR
             function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
 
             function getClassStatus() {
-                const dh = getDhaka();
                 const now = new Date();
+                if (now >= breakStartDate) {
+                    return ['🏖️ Semester break is running', '📅 Next semester classes start on <strong>5th September</strong>'];
+                }
+
+                const dh = getDhaka();
                 const switchDate = new Date(2026, 7, 19);
 
                 if (now < switchDate) {
@@ -1845,7 +1870,7 @@ OR
                         .endM);
                     if (run) {
                         slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run
-                        .endM));
+                            .endM));
                         return slides;
                     }
 
@@ -1916,13 +1941,21 @@ OR
             }
 
             function updateNextBar() {
-                const dh = getDhaka();
                 const now = new Date();
-                const switchDate = new Date(2026, 7, 19);
                 const label = document.getElementById('barLabel');
                 const detail = document.getElementById('barDetail');
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
+
+                if (now >= breakStartDate) {
+                    label.textContent = 'BREAK';
+                    dot.className = 'status-dot';
+                    detail.innerHTML = 'Semester break · Next class: 5th Sep';
+                    return;
+                }
+
+                const dh = getDhaka();
+                const switchDate = new Date(2026, 7, 19);
 
                 if (now < switchDate) {
                     const day = dh.dayOfWeek,
@@ -2190,7 +2223,9 @@ OR
                     title: 'ICT CT (Optional)',
                     badge: 'Optional CT',
                     meta: '',
-                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)', '• Chapter 12'],
+                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)',
+                        '• Chapter 12'
+                    ],
                     note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
                     dateObj: new Date(2026, 7, 17)
                 },
@@ -2210,7 +2245,7 @@ OR
                     badge: 'Final Exam',
                     meta: 'Time: 1:15 – 4:15',
                     items: [],
-                    note: 'Click "View Syllabus" for details.',
+                    note: 'Click "see syllabus" for Suggestions and Syllabus',
                     dateObj: new Date(2026, 7, 19),
                     isFinal: true,
                     type: 'ict-lab'
@@ -2221,7 +2256,7 @@ OR
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4506',
                     items: [],
-                    note: 'Click "View Syllabus" for details.',
+                    note: 'Click "see syllabus" for Suggestions and Syllabus',
                     dateObj: new Date(2026, 7, 22),
                     isFinal: true,
                     type: 'mkt'
@@ -2232,7 +2267,7 @@ OR
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4901',
                     items: [],
-                    note: 'Click "View Syllabus" for details.',
+                    note: 'Click "see syllabus" for Suggestions and Syllabus',
                     dateObj: new Date(2026, 7, 24),
                     isFinal: true,
                     type: 'hum'
@@ -2243,12 +2278,16 @@ OR
                     badge: 'Final Exam',
                     meta: 'Time: 3:00 – 5:00 | Room: 4901',
                     items: [],
-                    note: 'Click "View Syllabus" for details.',
+                    note: 'Click "see syllabus" for Suggestions and Syllabus',
                     dateObj: new Date(2026, 7, 27),
                     isFinal: true,
                     type: 'ict'
                 }
             ];
+
+            // ── DATE HELPERS ──────────────────────────
+            const cutoffDate = new Date(2026, 7, 21); // Aug 21, 2026
+            const breakStartDate = new Date(2026, 7, 28); // Aug 28, 2026
 
             function getMonthAbbr(date) {
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -2262,16 +2301,27 @@ OR
                 const today = new Date(now);
                 today.setHours(0, 0, 0, 0);
 
+                // If today is on or after Aug 21, hide events before Aug 21
+                if (today >= cutoffDate) {
+                    const evDate = new Date(ev.dateObj);
+                    evDate.setHours(0, 0, 0, 0);
+                    if (evDate < cutoffDate) {
+                        return false;
+                    }
+                }
+
+                // Range end check (e.g., Fee Payment)
                 if (ev.rangeEnd) {
                     const end = new Date(ev.rangeEnd);
                     end.setHours(0, 0, 0, 0);
                     if (today > end) return false;
                 }
 
+                // Future event check
                 const evDate = new Date(ev.dateObj);
                 evDate.setHours(0, 0, 0, 0);
-
                 if (evDate < today) return false;
+
                 return true;
             }
 
@@ -2283,8 +2333,14 @@ OR
                 visible.sort((a, b) => a.dateObj - b.dateObj);
 
                 if (visible.length === 0) {
-                    container.innerHTML =
-                        '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
+                    const now = new Date();
+                    if (now >= breakStartDate) {
+                        container.innerHTML =
+                            '<div style="text-align:center;padding:1rem;color:#6b7280;">🏖️ Semester break! No exams scheduled.</div>';
+                    } else {
+                        container.innerHTML =
+                            '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
+                    }
                     return;
                 }
 
@@ -2316,15 +2372,20 @@ OR
 
                     let buttonHtml = '';
                     if (ev.type === 'ict-lab') {
-                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict-lab')">📖 View Syllabus</button>`;
+                        buttonHtml =
+                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict-lab')">📖 See Syllabus</button>`;
                     } else if (ev.type === 'ict') {
-                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict')">📖 View Syllabus</button>`;
+                        buttonHtml =
+                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict')">📖 See Syllabus</button>`;
                     } else if (ev.type === 'mkt') {
-                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-mkt')">📖 View Syllabus</button>`;
+                        buttonHtml =
+                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-mkt')">📖 See Syllabus</button>`;
                     } else if (ev.type === 'hum') {
-                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-hum')">📖 View Syllabus</button>`;
+                        buttonHtml =
+                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-hum')">📖 See Syllabus</button>`;
                     } else {
-                        buttonHtml = `<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>`;
+                        buttonHtml =
+                            `<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>`;
                     }
 
                     html +=
@@ -2354,7 +2415,7 @@ OR
                 const btn = block.querySelector('.event-toggle-btn');
                 if (!details) return;
                 const isOpen = details.classList.toggle('open');
-                if (btn && !btn.innerHTML.includes('View Syllabus')) {
+                if (btn && !btn.innerHTML.includes('See Syllabus')) {
                     btn.classList.toggle('open', isOpen);
                     btn.innerHTML = isOpen ?
                         'See Less <i class="fas fa-chevron-up"></i>' :
