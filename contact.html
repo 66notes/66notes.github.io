@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>66Notes – Subscribe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg: #f4f7fc;
+            --surface: #ffffff;
+            --border: #eef2f6;
+            --text: #1e2a3e;
+            --text-secondary: #6b7280;
+            --navy: #0d2b4e;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --radius-xl: 20px;
+            --transition: 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* ── TOP BAR ──────────────────────────────── */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .top-bar .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+        }
+        .top-bar .logo span {
+            color: var(--accent);
+        }
+        .top-bar .back-link {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .top-bar .back-link i {
+            font-size: 0.7rem;
+        }
+
+        /* ── HEADER ────────────────────────────────── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+        }
+        .page-header h1 span {
+            color: var(--accent);
+        }
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.1rem;
+        }
+
+        /* ── PLANS STACK ──────────────────────────── */
+        .plans-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ── CARD ─────────────────────────────────── */
+        .plan-card {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 1.8rem 1.5rem 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .plan-card.recommended {
+            border-color: var(--accent);
+            border-width: 2px;
+            background: #fafcff;
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.08);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -0.6rem;
+            right: 1.2rem;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .plan-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.05rem;
+        }
+        .plan-name .sub {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 0.05rem;
+        }
+        .plan-name .cancel-note {
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: #16a34a;
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .plan-price {
+            margin: 0.5rem 0 0.2rem;
+        }
+        .plan-price .big {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.1;
+        }
+        .plan-price .big .cur {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 0.1rem;
+        }
+        .plan-price .mid {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 0.1rem;
+        }
+        .plan-price .mid strong {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .plan-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0.8rem 0 1rem;
+            width: 100%;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem;
+            flex: 1;
+        }
+        .plan-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.78rem;
+            color: var(--text);
+            padding: 0.25rem 0;
+            line-height: 1.4;
+        }
+        .plan-features li .dot {
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+        .plan-features li .tag {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: #f0f2f5;
+            padding: 0.05rem 0.5rem;
+            border-radius: 12px;
+            margin-left: 0.3rem;
+            white-space: nowrap;
+        }
+        .plan-features li .tag.lifetime {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .plan-features li .tag.limited {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .plan-btn {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            min-height: 48px;
+            margin-top: auto;
+            border: 1px solid transparent;
+            transition: background 0.2s ease;
+        }
+        .plan-btn.primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+        }
+        .plan-btn.primary:active {
+            background: #1d4ed8;
+        }
+        .plan-btn.secondary {
+            background: var(--surface);
+            color: var(--navy);
+            border-color: var(--border);
+        }
+        .plan-btn.secondary:active {
+            background: var(--accent-light);
+        }
+        .plan-btn i {
+            font-size: 0.7rem;
+        }
+
+        /* ── EXTRA NOTE ───────────────────────────── */
+        .extra-note {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            text-align: center;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .extra-note i {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        .extra-note p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin: 0;
+            font-weight: 500;
+        }
+        .extra-note p strong {
+            color: var(--navy);
+        }
+
+        /* ── RESPONSIVE ───────────────────────────── */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.6rem;
+            }
+            .plan-card {
+                padding: 1.5rem 1.2rem 1.2rem;
+                border-radius: 16px;
+            }
+            .plan-price .big {
+                font-size: 1.6rem;
+            }
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
+            .top-bar .logo {
+                font-size: 1.1rem;
+            }
+            .top-bar .back-link {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.7rem;
+            }
+            .extra-note {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            .extra-note i {
+                font-size: 1rem;
+            }
+            .extra-note p {
+                font-size: 0.7rem;
+            }
+            .recommended-badge {
+                top: -0.5rem;
+                right: 0.8rem;
+                font-size: 0.45rem;
+                padding: 0.15rem 0.7rem;
+            }
+            .plan-features li {
+                font-size: 0.7rem;
+            }
+            .plan-btn {
+                font-size: 0.75rem;
+                min-height: 42px;
+            }
+            .plan-features li .tag {
+                font-size: 0.5rem;
+                padding: 0.05rem 0.4rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .plan-card {
+                padding: 1.2rem 0.9rem 1rem;
+            }
+            .plan-price .big {
+                font-size: 1.3rem;
+            }
+            .plan-name {
+                font-size: 0.95rem;
+            }
+            .plan-features li {
+                font-size: 0.65rem;
+                padding: 0.15rem 0;
+            }
+            .plan-btn {
+                font-size: 0.7rem;
+                min-height: 38px;
+                padding: 0.4rem 0.8rem;
+            }
+            .page-header h1 {
+                font-size: 1.2rem;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+                padding-bottom: 1rem;
+            }
+            .extra-note p {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ── TOP BAR ─────────────────────────────── -->
+        <div class="top-bar">
+            <span class="logo">66<span>Notes</span></span>
+            <a href="https://66notes.github.io/" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- ── HEADER ────────────────────────────────── -->
+        <div class="page-header">
+            <h1>Choose Your <span>Plan</span></h1>
+            <p>Unlock all features and stay ahead</p>
+        </div>
+
+        <!-- ── PLANS STACK ─────────────────────────── -->
+        <div class="plans-stack">
+
+            <!-- ═══ PREMIUM (TOP) ═══ -->
+            <div class="plan-card recommended">
+                <span class="recommended-badge">⭐ Recommended</span>
+                <div class="plan-name">
+                    Premium
+                    <span class="sub">Until You Graduate</span>
+                    <span class="cancel-note"><i class="fas fa-check-circle" style="font-size:0.6rem;"></i> Can be cancelled anytime — no worries</span>
+                </div>
+                <div class="plan-price">
+                    <span class="big">
+                        <span class="cur">BDT</span> 130 <span style="font-size:0.9rem;font-weight:500;color:var(--text-secondary);">/ semester (4 months)</span>
+                    </span>
+                    <span class="mid"><strong>390 BDT</strong> first time, then <strong>130 BDT</strong> / 4 months</span>
+                </div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">AI Reminder</span> — class & exam alerts <span class="tag">always</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Pinned Events</span> — CR‑updated <span class="tag">always</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">PDFs</span> — auto‑sync via Drive <span class="tag">always</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Faculty Info</span> — names, subjects, numbers <span class="tag">always</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Less Pain</span> — fully automatic <span class="tag">always</span></span>
+                    </li>
+                    <li style="margin-top:0.2rem;color:var(--text-secondary);font-size:0.7rem;">
+                        <span style="color:#9ca3af;margin-right:0.3rem;">•</span>
+                        <span>Valid until you graduate. Cancel anytime.</span>
+                    </li>
+                </ul>
+                <a href="https://tally.so/r/vG567A" target="_blank" class="plan-btn primary">
+                    Contact Now <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- ═══ ONE SEMESTER (BOTTOM) ═══ -->
+            <div class="plan-card">
+                <div class="plan-name">
+                    One Semester
+                    <span class="sub">1 semester · all features</span>
+                </div>
+                <div class="plan-price">
+                    <span class="big">
+                        <span class="cur">BDT</span> 390
+                    </span>
+                    <span class="mid">One‑time payment — no recurring fee</span>
+                </div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features">
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">AI Reminder</span> — class & exam alerts <span class="tag limited">1 semester</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Pinned Events</span> — CR‑updated <span class="tag limited">1 semester</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">PDFs</span> — auto‑sync via Drive <span class="tag lifetime">lifetime</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Faculty Info</span> — names, subjects, numbers <span class="tag limited">1 semester</span></span>
+                    </li>
+                    <li>
+                        <span class="dot">•</span>
+                        <span><span class="label">Less Pain</span> — fully automatic <span class="tag limited">1 semester</span></span>
+                    </li>
+                </ul>
+                <a href="https://tally.so/r/vG567A" target="_blank" class="plan-btn secondary">
+                    Contact Now <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- ── EXTRA NOTE ───────────────────────────── -->
+        <div class="extra-note">
+            <i class="fas fa-comment-dots"></i>
+            <p><strong>Don't worry, we can talk.</strong> You can also customize it your way if you want to.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
