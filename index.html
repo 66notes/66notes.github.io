@@ -769,6 +769,35 @@
             margin-right: 0.35rem;
         }
 
+        .routine-warning {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #78350f;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            text-align: left;
+        }
+        .routine-warning i {
+            color: #d97706;
+            font-size: 1.1rem;
+            margin-top: 0.05rem;
+            flex-shrink: 0;
+        }
+        .routine-warning a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        .routine-warning a:hover {
+            color: #1d4ed8;
+        }
+
         .routine-table-wrap {
             width: 100%;
             overflow-x: auto;
@@ -1278,7 +1307,8 @@
             .event-title { font-size: 0.7rem; }
             .event-details .event-items { font-size: 0.65rem; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
-            .routine-table th, .routine-table td { padding: 7px 8px; }
+            .routine-table th,
+            .routine-table td { padding: 7px 8px; }
             .codes-grid .code-card { padding: 0.4rem 0.55rem; gap: 0.4rem; min-height: 40px; }
             .codes-grid .code-card .code-subject { font-size: 0.64rem; min-width: 50px; }
             .codes-grid .code-card .code-value { font-size: 0.68rem; letter-spacing: 0.05em; }
@@ -1298,7 +1328,8 @@
             .cta-footer .cta-icon { font-size: 1.6rem; }
             .cta-footer .cta-title { font-size: 0.9rem; }
             .cta-footer .cta-desc { font-size: 0.7rem; }
-            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
+            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%;
+                justify-content: center; }
             .announcement-bar { padding: 0.4rem 0.7rem; }
             .announcement-icon .material-symbols-rounded { font-size: 1.2rem; }
             .announcement-line { font-size: 0.7rem; white-space: normal; }
@@ -1306,6 +1337,8 @@
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
             .modal-footer .btn-modal { font-size: 0.7rem; padding: 0.3rem 1rem; min-height: 34px; }
+            .routine-warning { font-size: 0.65rem; padding: 0.4rem 0.6rem; flex-wrap: wrap; }
+            .routine-warning i { font-size: 0.9rem; }
         }
 
         @media (max-width: 380px) {
@@ -1326,7 +1359,9 @@
             .notices-btn { font-size: 0.55rem; padding: 3px 8px; min-height: 24px; }
             .notices-btn .material-symbols-rounded { font-size: 12px; }
             .routine-table { min-width: 290px; font-size: 0.56rem; }
-            .routine-table th, .routine-table td { padding: 5px 5px; }
+            .routine-table th,
+            .routine-table td { padding: 5px 5px; }
+            .routine-warning { font-size: 0.55rem; padding: 0.3rem 0.5rem; }
         }
     </style>
 </head>
@@ -1489,40 +1524,40 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict-lab">
-📊 Excel Functions:
-LEFT
-RIGHT
-PROPER
-TRIM
-LEN
-TEXTJOIN
-AVERAGEIF
-AVERAGEIFS
-COUNT
-COUNTA
-COUNTIF
-COUNTIFS
-CONCAT
-SUM
-SUMIF
-SUMIFS
-MAX
-MIN
-MID
-LARGE
-SMALL
-AVERAGE
-IF
-IF(AND)
-IF(OR)
-TODAY
-NOW
-VLOOKUP
+                📊 Excel Functions:
+                LEFT
+                RIGHT
+                PROPER
+                TRIM
+                LEN
+                TEXTJOIN
+                AVERAGEIF
+                AVERAGEIFS
+                COUNT
+                COUNTA
+                COUNTIF
+                COUNTIFS
+                CONCAT
+                SUM
+                SUMIF
+                SUMIFS
+                MAX
+                MIN
+                MID
+                LARGE
+                SMALL
+                AVERAGE
+                IF
+                IF(AND)
+                IF(OR)
+                TODAY
+                NOW
+                VLOOKUP
 
-extra:
-=IF(ISNUMBER(SEARCH("@",A2)),"Email","Not Email")
-OR
-=IF(COUNTIF(A2,"*@*"),"Email","Not Email")
+                extra:
+                =IF(ISNUMBER(SEARCH("@",A2)),"Email","Not Email")
+                OR
+                =IF(COUNTIF(A2,"*@*"),"Email","Not Email")
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
@@ -1541,26 +1576,26 @@ OR
                 <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict">
-📘 Chapter 2 (DC17)
-  • Connect internet
-  • www
-  • Safe browsing
+                📘 Chapter 2 (DC17)
+                • Connect internet
+                • www
+                • Safe browsing
 
-📘 Chapter 10 (DC17)
-  • Intranet
-  • Extranet
-  • Peer to peer
+                📘 Chapter 10 (DC17)
+                • Intranet
+                • Extranet
+                • Peer to peer
 
-📘 OSI Model
-  • Full OSI layers
+                📘 OSI Model
+                • Full OSI layers
 
-📘 Chapter 6
-  • Boolean Algebra (0,1 Math)
-  • Truth Table
-  • Circuits
-  • All Logic Gates
+                📘 Chapter 6
+                • Boolean Algebra (0,1 Math)
+                • Truth Table
+                • Circuits
+                • All Logic Gates
 
-📘 Chapter 12
+                📘 Chapter 12
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)">
@@ -1579,39 +1614,39 @@ OR
                 <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-mkt">
-📘 Chapter 7
-  ▪ Obj 1: Segmentation, Targeting, Positioning definition + example ⭐
-  ▪ Obj 2: Major bases for segmentation, details ⭐⭐
-     (Psychographic — Skip)
-  ▪ Obj 3: Point names + examples 📌
-  ▪ Obj 4: Out of syllabus ❌
-  ▪ Obj 5: ⭐⭐
-  ▪ Obj 6: Skip
-  ▪ Obj 7: Details ⭐⭐⭐
+                📘 Chapter 7
+                ▪ Obj 1: Segmentation, Targeting, Positioning definition + example ⭐
+                ▪ Obj 2: Major bases for segmentation, details ⭐⭐
+                (Psychographic — Skip)
+                ▪ Obj 3: Point names + examples 📌
+                ▪ Obj 4: Out of syllabus ❌
+                ▪ Obj 5: ⭐⭐
+                ▪ Obj 6: Skip
+                ▪ Obj 7: Details ⭐⭐⭐
 
-📘 Chapter 8
-  ▪ Obj 1: Consumer products + comparisons ⭐⭐
-     (Industrial products — Skip)
-  ▪ Obj 2: Three levels — names only ⭐
-  ▪ Obj 3: Skip
-  ▪ Obj 4: Characteristics ⭐⭐⭐
-  ▪ Obj 5: Skip
-  ▪ Obj 6: Brand development strategies ⭐⭐
-     (Line extension + subpoints — important ⭐⭐)
+                📘 Chapter 8
+                ▪ Obj 1: Consumer products + comparisons ⭐⭐
+                (Industrial products — Skip)
+                ▪ Obj 2: Three levels — names only ⭐
+                ▪ Obj 3: Skip
+                ▪ Obj 4: Characteristics ⭐⭐⭐
+                ▪ Obj 5: Skip
+                ▪ Obj 6: Brand development strategies ⭐⭐
+                (Line extension + subpoints — important ⭐⭐)
 
-📘 Chapter 9
-  ▪ Characteristics ⭐⭐⭐
-  ▪ Strategies ⭐⭐⭐ (50–50 chance: one will come)
+                📘 Chapter 9
+                ▪ Characteristics ⭐⭐⭐
+                ▪ Strategies ⭐⭐⭐ (50–50 chance: one will come)
 
-📘 Chapter 11
-  ▪ Obj 1: Pricing strategy — details ⭐⭐
-  ▪ Obj 2: Points + examples only ⭐
-     (Geographic — Skip)
-  ▪ Obj 3: Price — details ⭐
+                📘 Chapter 11
+                ▪ Obj 1: Pricing strategy — details ⭐⭐
+                ▪ Obj 2: Points + examples only ⭐
+                (Geographic — Skip)
+                ▪ Obj 3: Price — details ⭐
 
-📘 Chapter 14
-  ▪ Promotion Mix ⭐⭐
-  ▪ Push & Pull Strategy ⭐
+                📘 Chapter 14
+                ▪ Promotion Mix ⭐⭐
+                ▪ Push & Pull Strategy ⭐
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)">
@@ -1630,17 +1665,17 @@ OR
                 <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-hum">
-১. ক) ব্যাকরণিক শব্দ শ্রেণী
-   খ) বাক্য
+                ১. ক) ব্যাকরণিক শব্দ শ্রেণী
+                খ) বাক্য
 
-২. ক) উচ্চারণ
-   খ) সমাস
+                ২. ক) উচ্চারণ
+                খ) সমাস
 
-৩. ক) প্রবাদ-প্রবচন ,বাগধারা
-   খ) পারিভাষিক শব্দ, ভাষা অপপ্রয়োগ ও শুদ্ধ প্রয়োগ
+                ৩. ক) প্রবাদ-প্রবচন ,বাগধারা
+                খ) পারিভাষিক শব্দ, ভাষা অপপ্রয়োগ ও শুদ্ধ প্রয়োগ
 
-৪. ক) বিরামচিহ্ন
-   খ) প্রতিবেদন
+                ৪. ক) বিরামচিহ্ন
+                খ) প্রতিবেদন
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)">
@@ -2114,7 +2149,7 @@ OR
             }, 1800);
         }
 
-        // ── ROUTINE SECTION ──────────────────────
+        // ── ROUTINE SECTION (RECOVERED WITH WARNING) ──
         (function() {
             function renderRoutine() {
                 const container = document.getElementById('routineContent');
@@ -2123,19 +2158,29 @@ OR
                 const now = new Date();
                 const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
 
-                if (now >= expiryDate) {
-                    container.innerHTML = `
-                        <div class="routine-expired-msg">
-                            <i class="fas fa-clock" style="font-size:1.5rem;display:block;margin-bottom:0.5rem;color:var(--text-muted);"></i>
-                            Classroom codes and routines are expired. 
-                            When the new semester routine arrives, you will get it here or check 
-                            <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
+                // ── Show routine table with warning banner (recovered) ──
+                // Always show the routine table, but with a clear warning that it's from the old semester.
+                // The warning is shown regardless of date, but we can conditionally show it.
+                const showWarning = true; // always show the warning
+
+                let html = '';
+
+                // ── WARNING BANNER ──
+                if (showWarning) {
+                    html += `
+                        <div class="routine-warning">
+                            <i class="fas fa-triangle-exclamation"></i>
+                            <span>
+                                <strong>These routines are from the old semester routine and classroom codes.</strong>
+                                Future semester routines will be informed when arrived — keep an eye on:
+                                <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
+                            </span>
                         </div>
                     `;
-                    return;
                 }
 
-                let html = `
+                // ── EXAM ROUTINE ──
+                html += `
                     <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
                     <div class="routine-table-wrap">
                         <table class="routine-table">
@@ -2149,6 +2194,7 @@ OR
                     </div>
                 `;
 
+                // ── CLASS ROUTINE ──
                 html += `
                     <div style="margin-top:1.5rem;">
                         <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
@@ -2173,6 +2219,7 @@ OR
                     </div>
                 `;
 
+                // ── CLASSROOM CODES ──
                 html += `
                     <div class="codes-section">
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
@@ -2186,6 +2233,7 @@ OR
 
                 container.innerHTML = html;
 
+                // Re-bind copy buttons
                 document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const code = this.getAttribute('data-code');
@@ -2206,9 +2254,10 @@ OR
             setInterval(renderRoutine, 30000);
         })();
 
-        // ── PINNED EVENTS ─────────────────────────
+        // ── PINNED EVENTS (with new September events) ──
         (function() {
             const eventsData = [
+                // ── August events ──
                 {
                     date: '18 Aug',
                     title: 'Bangla Presentation Group 2 (28-end)',
@@ -2217,8 +2266,7 @@ OR
                     items: ['• Present your Bangla assignment'],
                     note: 'For students after roll 28',
                     dateObj: new Date(2026, 7, 18)
-                },
-                {
+                }, {
                     date: '17 Aug',
                     title: 'ICT CT (Optional)',
                     badge: 'Optional CT',
@@ -2228,8 +2276,7 @@ OR
                     ],
                     note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
                     dateObj: new Date(2026, 7, 17)
-                },
-                {
+                }, {
                     date: '10-18 Aug',
                     title: 'Semester Fee Payment',
                     badge: 'Important',
@@ -2238,8 +2285,7 @@ OR
                     note: 'Deadline: 18 Aug',
                     dateObj: new Date(2026, 7, 18),
                     rangeEnd: new Date(2026, 7, 18)
-                },
-                {
+                }, {
                     date: '19 Aug',
                     title: 'LAB FINAL (ICT)',
                     badge: 'Final Exam',
@@ -2249,8 +2295,7 @@ OR
                     dateObj: new Date(2026, 7, 19),
                     isFinal: true,
                     type: 'ict-lab'
-                },
-                {
+                }, {
                     date: '22 Aug',
                     title: 'MKT 1101 Final (MAHS)',
                     badge: 'Final Exam',
@@ -2260,8 +2305,7 @@ OR
                     dateObj: new Date(2026, 7, 22),
                     isFinal: true,
                     type: 'mkt'
-                },
-                {
+                }, {
                     date: '24 Aug',
                     title: 'HUM 1102 Final (SHAK)',
                     badge: 'Final Exam',
@@ -2271,8 +2315,7 @@ OR
                     dateObj: new Date(2026, 7, 24),
                     isFinal: true,
                     type: 'hum'
-                },
-                {
+                }, {
                     date: '27 Aug',
                     title: 'ICT 1101 Final (HHS)',
                     badge: 'Final Exam',
@@ -2282,10 +2325,37 @@ OR
                     dateObj: new Date(2026, 7, 27),
                     isFinal: true,
                     type: 'ict'
+                },
+
+                // ── NEW SEPTEMBER EVENTS (added as requested) ──
+                {
+                    date: '4 Sep',
+                    title: 'Supplementary Registration Last Date',
+                    badge: 'Deadline',
+                    meta: 'Register before the deadline',
+                    items: ['• Supplementary registration closes today'],
+                    note: 'Last date to register for supplementary exams',
+                    dateObj: new Date(2026, 8, 4)
+                }, {
+                    date: '5 Sep',
+                    title: 'Next Semester START',
+                    badge: 'New Semester',
+                    meta: 'Classes begin',
+                    items: ['• Welcome to the new semester!'],
+                    note: 'Regular classes start from today',
+                    dateObj: new Date(2026, 8, 5)
+                }, {
+                    date: '13 Sep',
+                    title: 'Supplementary Exam',
+                    badge: 'Exam',
+                    meta: 'Date: 13 September',
+                    items: ['• Supplementary exams scheduled'],
+                    note: 'Check your exam schedule for details',
+                    dateObj: new Date(2026, 8, 13)
                 }
             ];
 
-            // ── DATE HELPERS ──────────────────────────
+            // ── DATE HELPERS ──
             const cutoffDate = new Date(2026, 7, 21); // Aug 21, 2026
             const breakStartDate = new Date(2026, 7, 28); // Aug 28, 2026
 
@@ -2317,7 +2387,7 @@ OR
                     if (today > end) return false;
                 }
 
-                // Future event check
+                // Future event check: only show if event date is today or in the future
                 const evDate = new Date(ev.dateObj);
                 evDate.setHours(0, 0, 0, 0);
                 if (evDate < today) return false;
