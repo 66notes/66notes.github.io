@@ -170,7 +170,6 @@
             margin-bottom: 0.9rem;
         }
 
-        /* ── ANNOUNCEMENTS ──────────── */
         .announcement-bar {
             display: flex;
             align-items: center;
@@ -341,7 +340,6 @@
             font-size: 0.6rem;
         }
 
-        /* ── EVENTS ─────────────────────────────── */
         .events-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -575,7 +573,6 @@
             border-color: #dbeafe;
         }
 
-        /* ── MODAL (POPUP) ───────────────────────── */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -732,7 +729,6 @@
             background: #e5e7eb;
         }
 
-        /* ── ROUTINE SECTION ────────────────────── */
         .routine-section {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -770,32 +766,24 @@
         }
 
         .routine-warning {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
             border-radius: var(--radius-sm);
             padding: 0.6rem 0.9rem;
             margin-bottom: 0.9rem;
             font-size: 0.75rem;
             font-weight: 500;
-            color: #78350f;
+            color: #1e3a8a;
             display: flex;
             align-items: flex-start;
             gap: 0.5rem;
             text-align: left;
         }
         .routine-warning i {
-            color: #d97706;
+            color: #2563eb;
             font-size: 1.1rem;
             margin-top: 0.05rem;
             flex-shrink: 0;
-        }
-        .routine-warning a {
-            color: #2563eb;
-            font-weight: 600;
-            text-decoration: underline;
-        }
-        .routine-warning a:hover {
-            color: #1d4ed8;
         }
 
         .routine-table-wrap {
@@ -861,21 +849,6 @@
             transition: background 0.15s ease;
         }
 
-        .routine-expired-msg {
-            text-align: center;
-            padding: 1.5rem 1rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background: #f9fafb;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-        .routine-expired-msg a {
-            color: var(--accent);
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
         .codes-section {
             margin-top: 1.1rem;
             padding-top: 0.9rem;
@@ -922,17 +895,17 @@
             border-radius: 50%;
             flex-shrink: 0;
         }
-        .codes-grid .code-card .code-icon-dot.ict-dot {
-            background: var(--accent);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+        .codes-grid .code-card .code-icon-dot.eco-dot {
+            background: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.18);
         }
-        .codes-grid .code-card .code-icon-dot.hum-dot {
-            background: #22c55e;
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+        .codes-grid .code-card .code-icon-dot.mgt-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
         }
-        .codes-grid .code-card .code-icon-dot.mkt-dot {
-            background: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+        .codes-grid .code-card .code-icon-dot.qua-dot {
+            background: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
         }
         .codes-grid .code-card .code-subject {
             font-weight: 700;
@@ -996,7 +969,6 @@
             border: 1px solid #a7f3d0 !important;
         }
 
-        /* ── ALL PDFs ───────────────────────────── */
         .drive-grid {
             display: flex;
             flex-direction: column;
@@ -1070,7 +1042,6 @@
             justify-content: center;
         }
 
-        /* ── FACULTY ────────────────────────────── */
         .faculty-root {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -1108,11 +1079,11 @@
         .faculty-number {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #1e40af;
-            background: #eff6ff;
+            color: #6b7280;
+            background: #f3f4f6;
             padding: 0.1rem 0.6rem;
             border-radius: 8px;
-            border: 1px solid #dbeafe;
+            border: 1px solid #e5e7eb;
             white-space: nowrap;
             font-family: 'Poppins', monospace;
             margin: 0;
@@ -1185,7 +1156,6 @@
             font-weight: 400;
         }
 
-        /* ── CTA FOOTER ─────────────────────────── */
         .cta-footer {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -1235,7 +1205,6 @@
             font-size: 0.9rem;
         }
 
-        /* ── BOTTOM NAV ─────────────────────────── */
         .bottom-nav {
             position: fixed;
             left: 0;
@@ -1464,49 +1433,47 @@
             <p class="subtitle">Contact your instructors</p>
             <div class="faculty-root" id="section-faculty">
                 <div class="faculty-list">
+                    <!-- New Faculty -->
                     <div class="faculty-item">
                         <div class="faculty-row">
-                            <span class="faculty-name">Maliha Ahmed Siddique (MAHS)</span>
-                            <span class="faculty-number">01742068119</span>
+                            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR)</span>
+                            <span class="faculty-number">Not Provided</span>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01742068119">Copy</button>
-                            <a href="tel:01742068119" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
+                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">MKT</span></span>
-                            <span><span class="label">Room:</span> <span class="value">Building 04, Room 702</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">ECO 1101 (Microeconomics)</span></span>
+                            <span><span class="label">Room:</span> <span class="value">4905 / 4304</span></span>
                         </div>
                     </div>
                     <div class="faculty-item">
                         <div class="faculty-row">
-                            <span class="faculty-name">Shabuj Mia</span>
-                            <span class="faculty-number">01791471867</span>
+                            <span class="faculty-name">Md. Johirul Islam (JI)</span>
+                            <span class="faculty-number">Not Provided</span>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01791471867">Copy</button>
-                            <a href="tel:01791471867" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
+                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">Bangla</span></span>
-                            <span><span class="label">Designation:</span> <span class="value">Lecturer</span></span>
-                            <span><span class="label">Department:</span> <span class="value">English</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">MGT 1101 (Principles of Management)</span></span>
+                            <span><span class="label">Room:</span> <span class="value">4905</span></span>
                         </div>
                     </div>
                     <div class="faculty-item">
                         <div class="faculty-row">
-                            <span class="faculty-name">Hasibul Hossain Shajeeb</span>
-                            <span class="faculty-number">01966901950</span>
+                            <span class="faculty-name">Taskia Akhtar (TKA)</span>
+                            <span class="faculty-number">Not Provided</span>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01966901950">Copy</button>
-                            <a href="tel:01966901950" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
+                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">ICT</span></span>
-                            <span><span class="label">Course:</span> <span class="value">Introduction to Computer Science</span></span>
-                            <span><span class="label">Department:</span> <span class="value">CSE</span></span>
-                            <span><span class="label">Room:</span> <span class="value">B1/314</span></span>
+                            <span><span class="label">Subject:</span> <span class="value">QUA 1101 (Fundamentals of Mathematics)</span></span>
+                            <span><span class="label">Room:</span> <span class="value">4905 / 4304</span></span>
                         </div>
                     </div>
                 </div>
@@ -1516,7 +1483,6 @@
     </main>
 
     <!-- ── MODALS ─────────────────────────────────── -->
-    <!-- ICT Lab Modal -->
     <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
         <div class="modal-box">
             <div class="modal-header">
@@ -1525,39 +1491,7 @@
             </div>
             <div class="modal-body" id="modal-body-ict-lab">
                 📊 Excel Functions:
-                LEFT
-                RIGHT
-                PROPER
-                TRIM
-                LEN
-                TEXTJOIN
-                AVERAGEIF
-                AVERAGEIFS
-                COUNT
-                COUNTA
-                COUNTIF
-                COUNTIFS
-                CONCAT
-                SUM
-                SUMIF
-                SUMIFS
-                MAX
-                MIN
-                MID
-                LARGE
-                SMALL
-                AVERAGE
-                IF
-                IF(AND)
-                IF(OR)
-                TODAY
-                NOW
-                VLOOKUP
-
-                extra:
-                =IF(ISNUMBER(SEARCH("@",A2)),"Email","Not Email")
-                OR
-                =IF(COUNTIF(A2,"*@*"),"Email","Not Email")
+                LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
@@ -1568,7 +1502,6 @@
         </div>
     </div>
 
-    <!-- ICT 1101 Modal -->
     <div class="modal-overlay" id="modal-ict" onclick="if(event.target === this) closeModal('modal-ict')">
         <div class="modal-box">
             <div class="modal-header">
@@ -1576,26 +1509,7 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict">
-                📘 Chapter 2 (DC17)
-                • Connect internet
-                • www
-                • Safe browsing
-
-                📘 Chapter 10 (DC17)
-                • Intranet
-                • Extranet
-                • Peer to peer
-
-                📘 OSI Model
-                • Full OSI layers
-
-                📘 Chapter 6
-                • Boolean Algebra (0,1 Math)
-                • Truth Table
-                • Circuits
-                • All Logic Gates
-
-                📘 Chapter 12
+                📘 Chapter 2, 10, OSI Model, Chapter 6, Chapter 12
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)">
@@ -1606,7 +1520,6 @@
         </div>
     </div>
 
-    <!-- MKT Modal -->
     <div class="modal-overlay" id="modal-mkt" onclick="if(event.target === this) closeModal('modal-mkt')">
         <div class="modal-box">
             <div class="modal-header">
@@ -1614,39 +1527,7 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-mkt">
-                📘 Chapter 7
-                ▪ Obj 1: Segmentation, Targeting, Positioning definition + example ⭐
-                ▪ Obj 2: Major bases for segmentation, details ⭐⭐
-                (Psychographic — Skip)
-                ▪ Obj 3: Point names + examples 📌
-                ▪ Obj 4: Out of syllabus ❌
-                ▪ Obj 5: ⭐⭐
-                ▪ Obj 6: Skip
-                ▪ Obj 7: Details ⭐⭐⭐
-
-                📘 Chapter 8
-                ▪ Obj 1: Consumer products + comparisons ⭐⭐
-                (Industrial products — Skip)
-                ▪ Obj 2: Three levels — names only ⭐
-                ▪ Obj 3: Skip
-                ▪ Obj 4: Characteristics ⭐⭐⭐
-                ▪ Obj 5: Skip
-                ▪ Obj 6: Brand development strategies ⭐⭐
-                (Line extension + subpoints — important ⭐⭐)
-
-                📘 Chapter 9
-                ▪ Characteristics ⭐⭐⭐
-                ▪ Strategies ⭐⭐⭐ (50–50 chance: one will come)
-
-                📘 Chapter 11
-                ▪ Obj 1: Pricing strategy — details ⭐⭐
-                ▪ Obj 2: Points + examples only ⭐
-                (Geographic — Skip)
-                ▪ Obj 3: Price — details ⭐
-
-                📘 Chapter 14
-                ▪ Promotion Mix ⭐⭐
-                ▪ Push & Pull Strategy ⭐
+                📘 Chapter 7, 8, 9, 11, 14
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)">
@@ -1657,7 +1538,6 @@
         </div>
     </div>
 
-    <!-- Bangla (HUM) Modal -->
     <div class="modal-overlay" id="modal-hum" onclick="if(event.target === this) closeModal('modal-hum')">
         <div class="modal-box">
             <div class="modal-header">
@@ -1665,17 +1545,7 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-hum">
-                ১. ক) ব্যাকরণিক শব্দ শ্রেণী
-                খ) বাক্য
-
-                ২. ক) উচ্চারণ
-                খ) সমাস
-
-                ৩. ক) প্রবাদ-প্রবচন ,বাগধারা
-                খ) পারিভাষিক শব্দ, ভাষা অপপ্রয়োগ ও শুদ্ধ প্রয়োগ
-
-                ৪. ক) বিরামচিহ্ন
-                খ) প্রতিবেদন
+                ১. ব্যাকরণ, ২. উচ্চারণ ও সমাস, ৩. প্রবাদ-প্রবচন, ৪. বিরামচিহ্ন ও প্রতিবেদন
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)">
@@ -1803,21 +1673,10 @@
             setInterval(updateClock, 30000);
         })();
 
-        // ── ANNOUNCEMENTS ROTATION (DYNAMIC) ────────
+        // ── ANNOUNCEMENTS ────────────────────────────
         (function() {
             const container = document.getElementById('announcementText');
-            const now = new Date();
-            const breakStartDate = new Date(2026, 7, 28); // August 28, 2026
-
-            let lines = [];
-            if (now >= breakStartDate) {
-                lines = ['🏖️ Semester break is running', '📅 Next semester classes start on 5th September'];
-            } else {
-                lines = ['Final Exam Routine is available', 'Admit is Available, in Annex > Present Courses',
-                    'Full Routine in Routine section'
-                ];
-            }
-
+            const lines = ['📢 New semester starts on 6th September!', 'Check the new routine below.'];
             container.innerHTML = '';
             lines.forEach((text, index) => {
                 const span = document.createElement('span');
@@ -1825,7 +1684,6 @@
                 span.textContent = text;
                 container.appendChild(span);
             });
-
             if (lines.length > 1) {
                 let current = 0;
                 const items = container.querySelectorAll('.announcement-line');
@@ -1837,28 +1695,23 @@
             }
         })();
 
-        // ── CLASS / EXAM STATUS FOR AI REMINDER ──
+        // ── CLASS / EXAM STATUS FOR AI REMINDER (UPDATED) ──
         (function() {
+            // New schedule for Fall 2026
             const classes = [
-                { day: 0, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4801' },
-                { day: 0, startH: 13, startM: 15, endH: 14, endM: 45, course: 'HUM 1102', room: '4801' },
-                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ICT 1101', room: '4201' },
-                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'MKT 1101', room: '4201' },
-                { day: 2, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MKT 1101', room: '4705' },
-                { day: 2, startH: 16, startM: 15, endH: 17, endM: 45, course: 'HUM 1102', room: '4705' },
-                { day: 3, startH: 13, startM: 15, endH: 14, endM: 45, course: 'ICT 1102', room: '5501' },
-                { day: 3, startH: 14, startM: 45, endH: 16, endM: 15, course: 'ICT 1102', room: '5501' }
-            ];
-
-            const exams = [
-                { date: '19 Aug', title: 'LAB FINAL (ICT)', time: '1:15 – 4:15', room: 'Class' },
-                { date: '22 Aug', title: 'MKT 1101 Final', time: '3:00 – 5:00', room: '4506' },
-                { date: '24 Aug', title: 'HUM 1102 Final', time: '3:00 – 5:00', room: '4901' },
-                { date: '27 Aug', title: 'ICT 1101 Final', time: '3:00 – 5:00', room: '4901' }
+                // Sunday
+                { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
+                { day: 0, startH: 16, startM: 15, endH: 17, endM: 45, course: 'QUA 1101', room: '4905' },
+                // Monday
+                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4304' },
+                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4304' },
+                // Wednesday
+                { day: 3, startH: 8, startM: 15, endH: 9, endM: 45, course: 'ECO 1101', room: '4905' },
+                { day: 3, startH: 9, startM: 45, endH: 11, endM: 15, course: 'MGT 1101', room: '4905' }
             ];
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const breakStartDate = new Date(2026, 7, 28);
+            const semesterStart = new Date(2026, 8, 6); // Sept 6, 2026
 
             function getDhaka() {
                 const n = new Date();
@@ -1882,71 +1735,38 @@
 
             function getClassStatus() {
                 const now = new Date();
-                if (now >= breakStartDate) {
-                    return ['🏖️ Semester break is running', '📅 Next semester classes start on <strong>5th September</strong>'];
+                if (now < semesterStart) {
+                    return ['📅 Classes start on <strong>6 September</strong>', 'Get ready for the new semester!'];
                 }
 
                 const dh = getDhaka();
-                const switchDate = new Date(2026, 7, 19);
+                const day = dh.dayOfWeek,
+                    min = dh.hours * 60 + dh.minutes;
 
-                if (now < switchDate) {
-                    const day = dh.dayOfWeek,
-                        min = dh.hours * 60 + dh.minutes;
-                    let slides = [];
-
-                    if ((day === 0 || day === 1) && min >= 12 * 60 + 45 && min < 13 * 60 + 15) {
-                        const l = (13 * 60 + 15) - min;
-                        const timer = String(Math.floor(l / 60)).padStart(2, '0') + ':' + String(l % 60).padStart(2, '0');
-                        slides.push('⏳ Break Time', 'Resumes in <span class="break-timer">' + timer + '</span>');
-                        return slides;
-                    }
-
-                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                        .endM);
-                    if (run) {
-                        slides.push('▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run
-                            .endM));
-                        return slides;
-                    }
-
-                    for (let off = 0; off < 14; off++) {
-                        const fut = new Date(dh.timestamp + off * 86400000);
-                        const cd = fut.getUTCDay();
-                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                            .startH * 60 + b.startM));
-                        for (let c of dayCls) {
-                            const st = c.startH * 60 + c.startM;
-                            if (off === 0 && st <= min) continue;
-                            const dn = dayNames[cd];
-                            const dur = off === 0 ? 'Today' : dn;
-                            slides.push('📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c
-                                .startM),
-                                'Room ' + c.room);
-                            return slides;
-                        }
-                    }
-                    slides.push('📚 No classes scheduled today', 'Enjoy your free time!');
-                    return slides;
-                } else {
-                    let slides = [];
-                    const nowMs = now.getTime();
-                    let nextExam = null;
-                    for (let e of exams) {
-                        const d = new Date(e.date + ' 2026');
-                        d.setHours(0, 0, 0, 0);
-                        if (d.getTime() >= nowMs) {
-                            nextExam = e;
-                            break;
-                        }
-                    }
-                    if (nextExam) {
-                        slides.push('📅 Next Exam: <strong>' + nextExam.title + '</strong>');
-                        slides.push('⏰ ' + nextExam.time + ' · Room ' + nextExam.room);
-                    } else {
-                        slides.push('🎉 All exams are over!', 'Good luck with your results!');
-                    }
-                    return slides;
+                // Check if a class is currently running
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
+                .endM);
+                if (run) {
+                    return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
                 }
+
+                // Find the next class
+                for (let off = 0; off < 14; off++) {
+                    const fut = new Date(dh.timestamp + off * 86400000);
+                    const cd = fut.getUTCDay();
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH *
+                        60 + b.startM));
+                    for (let c of dayCls) {
+                        const st = c.startH * 60 + c.startM;
+                        if (off === 0 && st <= min) continue;
+                        const dn = dayNames[cd];
+                        const dur = off === 0 ? 'Today' : dn;
+                        return ['📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM),
+                            'Room ' + c.room
+                        ];
+                    }
+                }
+                return ['📚 No classes scheduled', 'Enjoy your free time!'];
             }
 
             let slideTimer;
@@ -1982,76 +1802,51 @@
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
 
-                if (now >= breakStartDate) {
-                    label.textContent = 'BREAK';
+                if (now < semesterStart) {
+                    label.textContent = 'UPCOMING';
                     dot.className = 'status-dot';
-                    detail.innerHTML = 'Semester break · Next class: 5th Sep';
+                    detail.innerHTML = 'Classes start on 6th Sep';
                     return;
                 }
 
                 const dh = getDhaka();
-                const switchDate = new Date(2026, 7, 19);
+                const day = dh.dayOfWeek,
+                    min = dh.hours * 60 + dh.minutes;
 
-                if (now < switchDate) {
-                    const day = dh.dayOfWeek,
-                        min = dh.hours * 60 + dh.minutes;
-                    const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                        .endM);
-                    if (run) {
-                        label.textContent = 'RUNNING';
-                        dot.className = 'status-dot running';
-                        detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
-                            '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
-                                .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
+                .endM);
+                if (run) {
+                    label.textContent = 'RUNNING';
+                    dot.className = 'status-dot running';
+                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
+                        '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
+                            .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                    return;
+                }
+
+                for (let off = 0; off < 14; off++) {
+                    const fut = new Date(dh.timestamp + off * 86400000);
+                    const cd = fut.getUTCDay();
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH *
+                        60 + b.startM));
+                    for (let c of dayCls) {
+                        const st = c.startH * 60 + c.startM;
+                        if (off === 0 && st <= min) continue;
+                        const fd = dayNames[cd];
+                        const dur = off === 0 ? 'Today' : fd;
+                        label.textContent = off === 0 ? 'TODAY' : 'NEXT';
+                        dot.className = 'status-dot';
+                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
+                            .course +
+                            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
+                                .endM) +
+                            '</span> · <span class="nc-room">' + c.room + '</span>';
                         return;
                     }
-
-                    for (let off = 0; off < 14; off++) {
-                        const fut = new Date(dh.timestamp + off * 86400000);
-                        const cd = fut.getUTCDay();
-                        const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b
-                            .startH * 60 + b.startM));
-                        for (let c of dayCls) {
-                            const st = c.startH * 60 + c.startM;
-                            if (off === 0 && st <= min) continue;
-                            const fd = dayNames[cd];
-                            const dur = off === 0 ? 'Today' : fd;
-                            label.textContent = off === 0 ? 'TODAY' : 'NEXT';
-                            dot.className = 'status-dot';
-                            detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
-                                .course +
-                                '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
-                                    .endM) +
-                                '</span> · <span class="nc-room">' + c.room + '</span>';
-                            return;
-                        }
-                    }
-                    label.textContent = 'IDLE';
-                    dot.className = 'status-dot';
-                    detail.innerHTML = 'No class scheduled.';
-                    return;
-                } else {
-                    const nowMs = now.getTime();
-                    let nextExam = null;
-                    for (let e of exams) {
-                        const d = new Date(e.date + ' 2026');
-                        d.setHours(0, 0, 0, 0);
-                        if (d.getTime() >= nowMs) {
-                            nextExam = e;
-                            break;
-                        }
-                    }
-                    if (nextExam) {
-                        label.textContent = 'UPCOMING EXAM';
-                        dot.className = 'status-dot running';
-                        detail.innerHTML = '<span class="nc-course">' + nextExam.title + '</span> · <span class="nc-time">' +
-                            nextExam.time + '</span> · <span class="nc-room">Room ' + nextExam.room + '</span>';
-                    } else {
-                        label.textContent = 'DONE';
-                        dot.className = 'status-dot';
-                        detail.innerHTML = 'All exams finished.';
-                    }
                 }
+                label.textContent = 'IDLE';
+                dot.className = 'status-dot';
+                detail.innerHTML = 'No class scheduled.';
             }
 
             showSlides(getClassStatus());
@@ -2149,91 +1944,46 @@
             }, 1800);
         }
 
-        // ── ROUTINE SECTION (RECOVERED WITH WARNING) ──
+        // ── ROUTINE SECTION (UPDATED) ──────────────
         (function() {
             function renderRoutine() {
                 const container = document.getElementById('routineContent');
                 if (!container) return;
 
-                const now = new Date();
-                const expiryDate = new Date(2026, 7, 27, 17, 0, 0);
-
-                // ── Show routine table with warning banner (recovered) ──
-                // Always show the routine table, but with a clear warning that it's from the old semester.
-                // The warning is shown regardless of date, but we can conditionally show it.
-                const showWarning = true; // always show the warning
-
-                let html = '';
-
-                // ── WARNING BANNER ──
-                if (showWarning) {
-                    html += `
-                        <div class="routine-warning">
-                            <i class="fas fa-triangle-exclamation"></i>
-                            <span>
-                                <strong>These routines are from the old semester routine and classroom codes.</strong>
-                                Future semester routines will be informed when arrived — keep an eye on:
-                                <a href="https://www.bubt.edu.bd/routines" target="_blank" rel="noopener">https://www.bubt.edu.bd/routines</a>
-                            </span>
-                        </div>
-                    `;
-                }
-
-                // ── EXAM ROUTINE ──
-                html += `
-                    <div class="section-label"><i class="fas fa-calendar-check"></i> Exam Routine</div>
+                let html = `
+                    <div class="routine-warning">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span><strong>Fall 2026 - Intake 66-4</strong> · New semester routine is now available!</span>
+                    </div>
+                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
                     <div class="routine-table-wrap">
                         <table class="routine-table">
-                            <thead><tr><th>Date</th><th>Day</th><th>Time</th><th>Course</th><th>Faculty</th><th>Room</th></tr></thead>
+                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
                             <tbody>
-                                <tr><td>22/08/26</td><td>Sat</td><td>3:00 – 5:00</td><td>MKT 1101</td><td>MAHS</td><td>4506</td></tr>
-                                <tr><td>24/08/26</td><td>Mon</td><td>3:00 – 5:00</td><td>HUM 1102</td><td>SHAK</td><td>4901</td></tr>
-                                <tr><td>27/08/26</td><td>Thu</td><td>3:00 – 5:00</td><td>ICT 1101</td><td>HHS</td><td>4901</td></tr>
+                                <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
+                                <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                             </tbody>
                         </table>
                     </div>
                 `;
 
-                // ── CLASS ROUTINE ──
-                html += `
-                    <div style="margin-top:1.5rem;">
-                        <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                        <div class="routine-table-wrap">
-                            <table class="routine-table">
-                                <colgroup>
-                                    <col class="col-day"><col class="col-time"><col class="col-room"><col class="col-course">
-                                </colgroup>
-                                <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th></tr></thead>
-                                <tbody>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">SUN</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4801</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">MON</td><td class="time-cell">11:15 – 12:45</td><td class="room-cell" rowspan="2"><span class="room-badge">4201</span></td><td><span class="course-code ict">ICT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">1:15 – 2:45</td><td><span class="course-code mkt">MKT 1101</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">TUE</td><td class="time-cell">2:45 – 4:15</td><td class="room-cell" rowspan="2"><span class="room-badge">4705</span></td><td><span class="course-code mkt">MKT 1101</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">4:15 – 5:45</td><td><span class="course-code hum">HUM 1102</span></td></tr>
-                                    <tr class="day-group-start"><td class="day-cell" rowspan="2">WED</td><td class="time-cell">1:15 – 2:45</td><td class="room-cell" rowspan="2"><span class="room-badge">5501</span></td><td><span class="course-code ict">ICT 1102</span></td></tr>
-                                    <tr class="day-group-end"><td class="time-cell">2:45 – 4:15</td><td><span class="course-code ict">ICT 1102</span></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                `;
-
-                // ── CLASSROOM CODES ──
                 html += `
                     <div class="codes-section">
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
                         <div class="codes-grid">
-                            <div class="code-card"><span class="code-icon-dot ict-dot"></span><span class="code-subject">ICT 1101</span><div class="code-value-box"><span class="code-value">TYFAJJUM</span></div><button class="copy-btn" data-code="TYFAJJUM">Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot hum-dot"></span><span class="code-subject">HUM 1102</span><div class="code-value-box"><span class="code-value">3NHHKKL7</span></div><button class="copy-btn" data-code="3NHHKKL7">Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot mkt-dot"></span><span class="code-subject">MKT 1101</span><div class="code-value-box"><span class="code-value">BQS76V5Z</span></div><button class="copy-btn" data-code="BQS76V5Z">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot eco-dot"></span><span class="code-subject">ECO 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot mgt-dot"></span><span class="code-subject">MGT 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot qua-dot"></span><span class="code-subject">QUA 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
                         </div>
                     </div>
                 `;
 
                 container.innerHTML = html;
 
-                // Re-bind copy buttons
                 document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const code = this.getAttribute('data-code');
@@ -2254,80 +2004,10 @@
             setInterval(renderRoutine, 30000);
         })();
 
-        // ── PINNED EVENTS (with new September events) ──
+        // ── PINNED EVENTS (UPDATED) ──────────────
         (function() {
             const eventsData = [
-                // ── August events ──
-                {
-                    date: '18 Aug',
-                    title: 'Bangla Presentation Group 2 (28-end)',
-                    badge: 'Presentation',
-                    meta: 'After Roll 28',
-                    items: ['• Present your Bangla assignment'],
-                    note: 'For students after roll 28',
-                    dateObj: new Date(2026, 7, 18)
-                }, {
-                    date: '17 Aug',
-                    title: 'ICT CT (Optional)',
-                    badge: 'Optional CT',
-                    meta: '',
-                    items: ['• OSI Model', '• Logic Gate Chapter (Boolean Algebra, Truth Tables, Circuits)',
-                        '• Chapter 12'
-                    ],
-                    note: 'Must if missed CT before. If you gave past CT, your best score will be counted, so you can skip if your marks are enough.',
-                    dateObj: new Date(2026, 7, 17)
-                }, {
-                    date: '10-18 Aug',
-                    title: 'Semester Fee Payment',
-                    badge: 'Important',
-                    meta: 'Pay before deadline',
-                    items: ['• Pay your semester fees'],
-                    note: 'Deadline: 18 Aug',
-                    dateObj: new Date(2026, 7, 18),
-                    rangeEnd: new Date(2026, 7, 18)
-                }, {
-                    date: '19 Aug',
-                    title: 'LAB FINAL (ICT)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 1:15 – 4:15',
-                    items: [],
-                    note: 'Click "see syllabus" for Suggestions and Syllabus',
-                    dateObj: new Date(2026, 7, 19),
-                    isFinal: true,
-                    type: 'ict-lab'
-                }, {
-                    date: '22 Aug',
-                    title: 'MKT 1101 Final (MAHS)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4506',
-                    items: [],
-                    note: 'Click "see syllabus" for Suggestions and Syllabus',
-                    dateObj: new Date(2026, 7, 22),
-                    isFinal: true,
-                    type: 'mkt'
-                }, {
-                    date: '24 Aug',
-                    title: 'HUM 1102 Final (SHAK)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: [],
-                    note: 'Click "see syllabus" for Suggestions and Syllabus',
-                    dateObj: new Date(2026, 7, 24),
-                    isFinal: true,
-                    type: 'hum'
-                }, {
-                    date: '27 Aug',
-                    title: 'ICT 1101 Final (HHS)',
-                    badge: 'Final Exam',
-                    meta: 'Time: 3:00 – 5:00 | Room: 4901',
-                    items: [],
-                    note: 'Click "see syllabus" for Suggestions and Syllabus',
-                    dateObj: new Date(2026, 7, 27),
-                    isFinal: true,
-                    type: 'ict'
-                },
-
-                // ── NEW SEPTEMBER EVENTS (added as requested) ──
+                // September events
                 {
                     date: '4 Sep',
                     title: 'Supplementary Registration Last Date',
@@ -2337,13 +2017,13 @@
                     note: 'Last date to register for supplementary exams',
                     dateObj: new Date(2026, 8, 4)
                 }, {
-                    date: '5 Sep',
-                    title: 'Next Semester START',
+                    date: '6 Sep',
+                    title: 'First Class – New Semester',
                     badge: 'New Semester',
                     meta: 'Classes begin',
                     items: ['• Welcome to the new semester!'],
                     note: 'Regular classes start from today',
-                    dateObj: new Date(2026, 8, 5)
+                    dateObj: new Date(2026, 8, 6)
                 }, {
                     date: '13 Sep',
                     title: 'Supplementary Exam',
@@ -2354,10 +2034,6 @@
                     dateObj: new Date(2026, 8, 13)
                 }
             ];
-
-            // ── DATE HELPERS ──
-            const cutoffDate = new Date(2026, 7, 21); // Aug 21, 2026
-            const breakStartDate = new Date(2026, 7, 28); // Aug 28, 2026
 
             function getMonthAbbr(date) {
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -2370,29 +2046,9 @@
                 const now = new Date();
                 const today = new Date(now);
                 today.setHours(0, 0, 0, 0);
-
-                // If today is on or after Aug 21, hide events before Aug 21
-                if (today >= cutoffDate) {
-                    const evDate = new Date(ev.dateObj);
-                    evDate.setHours(0, 0, 0, 0);
-                    if (evDate < cutoffDate) {
-                        return false;
-                    }
-                }
-
-                // Range end check (e.g., Fee Payment)
-                if (ev.rangeEnd) {
-                    const end = new Date(ev.rangeEnd);
-                    end.setHours(0, 0, 0, 0);
-                    if (today > end) return false;
-                }
-
-                // Future event check: only show if event date is today or in the future
                 const evDate = new Date(ev.dateObj);
                 evDate.setHours(0, 0, 0, 0);
-                if (evDate < today) return false;
-
-                return true;
+                return evDate >= today;
             }
 
             function renderEvents() {
@@ -2403,14 +2059,8 @@
                 visible.sort((a, b) => a.dateObj - b.dateObj);
 
                 if (visible.length === 0) {
-                    const now = new Date();
-                    if (now >= breakStartDate) {
-                        container.innerHTML =
-                            '<div style="text-align:center;padding:1rem;color:#6b7280;">🏖️ Semester break! No exams scheduled.</div>';
-                    } else {
-                        container.innerHTML =
-                            '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
-                    }
+                    container.innerHTML =
+                        '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
                     return;
                 }
 
@@ -2428,38 +2078,15 @@
                         itemsHtml += '</div>';
                     }
 
-                    let detailsHtml = '';
-                    if (!ev.type) {
-                        detailsHtml =
-                            '<div class="event-details">' +
-                            (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
-                            itemsHtml +
-                            (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
-                            '</div>';
-                    }
-
-                    const finalClass = ev.isFinal ? ' final-exam' : '';
-
-                    let buttonHtml = '';
-                    if (ev.type === 'ict-lab') {
-                        buttonHtml =
-                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict-lab')">📖 See Syllabus</button>`;
-                    } else if (ev.type === 'ict') {
-                        buttonHtml =
-                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-ict')">📖 See Syllabus</button>`;
-                    } else if (ev.type === 'mkt') {
-                        buttonHtml =
-                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-mkt')">📖 See Syllabus</button>`;
-                    } else if (ev.type === 'hum') {
-                        buttonHtml =
-                            `<button class="event-toggle-btn" onclick="event.stopPropagation();openModal('modal-hum')">📖 See Syllabus</button>`;
-                    } else {
-                        buttonHtml =
-                            `<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest('.event-block'))">See More <i class="fas fa-chevron-down"></i></button>`;
-                    }
+                    let detailsHtml =
+                        '<div class="event-details">' +
+                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
+                        itemsHtml +
+                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
+                        '</div>';
 
                     html +=
-                        '<div class="event-block' + finalClass + '">' +
+                        '<div class="event-block">' +
                         '<div class="event-date-badge">' +
                         '<span class="day">' + day + '</span>' +
                         '<span class="month">' + month + '</span>' +
@@ -2470,7 +2097,7 @@
                         ev.title +
                         (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') +
                         '</div>' +
-                        buttonHtml +
+                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">See More <i class="fas fa-chevron-down"></i></button>' +
                         '</div>' +
                         detailsHtml +
                         '</div>' +
@@ -2485,12 +2112,10 @@
                 const btn = block.querySelector('.event-toggle-btn');
                 if (!details) return;
                 const isOpen = details.classList.toggle('open');
-                if (btn && !btn.innerHTML.includes('See Syllabus')) {
-                    btn.classList.toggle('open', isOpen);
-                    btn.innerHTML = isOpen ?
-                        'See Less <i class="fas fa-chevron-up"></i>' :
-                        'See More <i class="fas fa-chevron-down"></i>';
-                }
+                btn.classList.toggle('open', isOpen);
+                btn.innerHTML = isOpen ?
+                    'See Less <i class="fas fa-chevron-up"></i>' :
+                    'See More <i class="fas fa-chevron-down"></i>';
             };
 
             renderEvents();
