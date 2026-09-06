@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
+        /* ── all styles unchanged ── */
         :root {
             --bg: #f4f7fc;
             --surface: #ffffff;
@@ -1079,11 +1080,11 @@
         .faculty-number {
             font-size: 0.75rem;
             font-weight: 600;
-            color: #6b7280;
-            background: #f3f4f6;
+            color: #1e40af;
+            background: #eff6ff;
             padding: 0.1rem 0.6rem;
             border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #dbeafe;
             white-space: nowrap;
             font-family: 'Poppins', monospace;
             margin: 0;
@@ -1433,47 +1434,53 @@
             <p class="subtitle">Contact your instructors</p>
             <div class="faculty-root" id="section-faculty">
                 <div class="faculty-list">
-                    <!-- New Faculty -->
-                    <div class="faculty-item">
-                        <div class="faculty-row">
-                            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR)</span>
-                            <span class="faculty-number">Not Provided</span>
-                        </div>
-                        <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
-                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
-                        </div>
-                        <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">ECO 1101 (Microeconomics)</span></span>
-                            <span><span class="label">Room:</span> <span class="value">4905 / 4304</span></span>
-                        </div>
-                    </div>
+                    <!-- MGT 1101 -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Md. Johirul Islam (JI)</span>
-                            <span class="faculty-number">Not Provided</span>
+                            <span class="faculty-number">01914898292</span>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
-                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <button class="btn-fac btn-copy" data-number="01914898292">Copy</button>
+                            <a href="tel:01914898292" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">MGT 1101 (Principles of Management)</span></span>
-                            <span><span class="label">Room:</span> <span class="value">4905</span></span>
+                            <span><span class="label">Room:</span> <span class="value">B4/902</span></span>
+                            <span><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></span>
+                            <span><span class="label">Class Code:</span> <span class="value">im2z2sar</span></span>
+                            <span><span class="label">Consultation:</span> <span class="value">Not Provided</span></span>
                         </div>
                     </div>
+                    <!-- QUA 1101 -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Taskia Akhtar (TKA)</span>
-                            <span class="faculty-number">Not Provided</span>
+                            <span class="faculty-number">01913045537</span>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="Not Provided">Copy</button>
-                            <a href="tel:" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <button class="btn-fac btn-copy" data-number="01913045537">Copy</button>
+                            <a href="tel:01913045537" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Subject:</span> <span class="value">QUA 1101 (Fundamentals of Mathematics)</span></span>
-                            <span><span class="label">Room:</span> <span class="value">4905 / 4304</span></span>
+                            <span><span class="label">Room:</span> <span class="value">B3/207</span></span>
+                            <span><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></span>
+                            <span><span class="label">Class Code:</span> <span class="value">Not Provided</span></span>
+                            <span><span class="label">Consultation:</span> <span class="value">Not Provided</span></span>
+                        </div>
+                    </div>
+                    <!-- ECO 1101 -->
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR)</span>
+                            <span class="faculty-number">01735692906</span>
+                        </div>
+                        <div class="faculty-actions">
+                            <button class="btn-fac btn-copy" data-number="01735692906">Copy</button>
+                            <a href="tel:01735692906" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                        </div>
+                        <div class="faculty-details">
+                            <span><span class="label">Class Code:</span> <span class="value">Not Provided</span></span>
+                            <span><span class="label">Consultation:</span> <span class="value">Not Provided</span></span>
                         </div>
                     </div>
                 </div>
@@ -1482,7 +1489,7 @@
 
     </main>
 
-    <!-- ── MODALS ─────────────────────────────────── -->
+    <!-- ── MODALS (kept as is) ───────────────────── -->
     <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
         <div class="modal-box">
             <div class="modal-header">
@@ -1490,8 +1497,7 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict-lab">
-                📊 Excel Functions:
-                LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
+                📊 Excel Functions: LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
             </div>
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
@@ -1676,7 +1682,7 @@
         // ── ANNOUNCEMENTS ────────────────────────────
         (function() {
             const container = document.getElementById('announcementText');
-            const lines = ['📢 New semester starts on 6th September!', 'Check the new routine below.'];
+            const lines = ['📢 New semester started on 6th September!', 'Check the routine and faculty info below.'];
             container.innerHTML = '';
             lines.forEach((text, index) => {
                 const span = document.createElement('span');
@@ -1695,9 +1701,11 @@
             }
         })();
 
-        // ── CLASS / EXAM STATUS FOR AI REMINDER (UPDATED) ──
+        // ── AI REMINDER (LIVE CLASS STATUS) ──────────
         (function() {
-            // New schedule for Fall 2026
+            const semesterStart = new Date(2026, 8, 6); // Sept 6, 2026
+
+            // Updated class schedule
             const classes = [
                 // Sunday
                 { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
@@ -1711,7 +1719,6 @@
             ];
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const semesterStart = new Date(2026, 8, 6); // Sept 6, 2026
 
             function getDhaka() {
                 const n = new Date();
@@ -1743,14 +1750,12 @@
                 const day = dh.dayOfWeek,
                     min = dh.hours * 60 + dh.minutes;
 
-                // Check if a class is currently running
                 const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
                 .endM);
                 if (run) {
                     return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
                 }
 
-                // Find the next class
                 for (let off = 0; off < 14; off++) {
                     const fut = new Date(dh.timestamp + off * 86400000);
                     const cd = fut.getUTCDay();
@@ -1962,12 +1967,15 @@
                             <tbody>
                                 <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                                 <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
-                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
-                                <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304 <sup>*</sup></td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>01:15 – 02:45</td><td>4304 <sup>*</sup></td><td>QUA 1101</td><td>TKA</td></tr>
                                 <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
                                 <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                             </tbody>
                         </table>
+                        <div style="font-size:0.6rem; padding:0.25rem 0.5rem; color:var(--text-muted); text-align:right; border-top:1px dashed var(--border);">
+                            <sup>*</sup> Can be changed
+                        </div>
                     </div>
                 `;
 
@@ -1976,7 +1984,7 @@
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
                         <div class="codes-grid">
                             <div class="code-card"><span class="code-icon-dot eco-dot"></span><span class="code-subject">ECO 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot mgt-dot"></span><span class="code-subject">MGT 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
+                            <div class="code-card"><span class="code-icon-dot mgt-dot"></span><span class="code-subject">MGT 1101</span><div class="code-value-box"><span class="code-value">im2z2sar</span></div><button class="copy-btn" data-code="im2z2sar">Copy</button></div>
                             <div class="code-card"><span class="code-icon-dot qua-dot"></span><span class="code-subject">QUA 1101</span><div class="code-value-box"><span class="code-value">Not Provided</span></div><button class="copy-btn" data-code="Not Provided">Copy</button></div>
                         </div>
                     </div>
@@ -1984,6 +1992,7 @@
 
                 container.innerHTML = html;
 
+                // Re-bind copy buttons
                 document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const code = this.getAttribute('data-code');
@@ -2004,10 +2013,10 @@
             setInterval(renderRoutine, 30000);
         })();
 
-        // ── PINNED EVENTS (UPDATED) ──────────────
+        // ── PINNED EVENTS (UPDATED WITH MIDTERM) ──
         (function() {
             const eventsData = [
-                // September events
+                // Supplementary
                 {
                     date: '4 Sep',
                     title: 'Supplementary Registration Last Date',
@@ -2032,6 +2041,24 @@
                     items: ['• Supplementary exams scheduled'],
                     note: 'Check your exam schedule for details',
                     dateObj: new Date(2026, 8, 13)
+                },
+                // Midterm event (24-31 Oct)
+                {
+                    date: '24-31 Oct',
+                    title: 'Mid Exam (MGT, ECO, QUA)',
+                    badge: 'Midterm',
+                    meta: 'Estimated date range',
+                    items: [
+                        '📘 <strong>QUA 1101</strong> Syllabus:',
+                        '• Set',
+                        '• Equation',
+                        '• Index & algorithms',
+                        '📘 <strong>MGT 1101</strong> – Not yet',
+                        '📘 <strong>ECO 1101</strong> – Not yet'
+                    ],
+                    note: 'Syllabus details will be updated when available',
+                    dateObj: new Date(2026, 9, 24), // start date for sorting
+                    rangeEnd: new Date(2026, 9, 31)
                 }
             ];
 
@@ -2046,6 +2073,14 @@
                 const now = new Date();
                 const today = new Date(now);
                 today.setHours(0, 0, 0, 0);
+                // For range events, check if today is within or before rangeEnd
+                if (ev.rangeEnd) {
+                    const end = new Date(ev.rangeEnd);
+                    end.setHours(0, 0, 0, 0);
+                    if (today > end) return false;
+                    // if today is before start, still show
+                    return true;
+                }
                 const evDate = new Date(ev.dateObj);
                 evDate.setHours(0, 0, 0, 0);
                 return evDate >= today;
@@ -2056,7 +2091,7 @@
                 if (!container) return;
 
                 const visible = eventsData.filter(ev => shouldShowEvent(ev));
-                visible.sort((a, b) => a.dateObj - b.dateObj);
+                visible.sort((a, b) => (a.dateObj || a.rangeEnd) - (b.dateObj || b.rangeEnd));
 
                 if (visible.length === 0) {
                     container.innerHTML =
@@ -2066,8 +2101,17 @@
 
                 let html = '';
                 visible.forEach((ev) => {
-                    const month = getMonthAbbr(ev.dateObj);
-                    const day = getDayNum(ev.dateObj);
+                    // For range events, show "24-31" as day, "Oct" as month
+                    let displayDay, displayMonth;
+                    if (ev.date.includes('-')) {
+                        const parts = ev.date.split(' ');
+                        displayDay = parts[0];
+                        displayMonth = parts[1];
+                    } else {
+                        const d = new Date(ev.dateObj);
+                        displayDay = getDayNum(d);
+                        displayMonth = getMonthAbbr(d);
+                    }
 
                     let itemsHtml = '';
                     if (ev.items && ev.items.length > 0) {
@@ -2088,8 +2132,8 @@
                     html +=
                         '<div class="event-block">' +
                         '<div class="event-date-badge">' +
-                        '<span class="day">' + day + '</span>' +
-                        '<span class="month">' + month + '</span>' +
+                        '<span class="day">' + displayDay + '</span>' +
+                        '<span class="month">' + displayMonth + '</span>' +
                         '</div>' +
                         '<div class="event-content">' +
                         '<div class="event-summary">' +
