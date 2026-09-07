@@ -1,68 +1,61 @@
-# 🎓 66Notes BUBT – Student Dashboard
+# 🎓 66Notes BUBT
 
-**66Notes** is a lightweight, mobile‑first dashboard for **BUBT Intake 66 (Section 4)**, built to keep everything in one place: live class status, exam reminders, faculty contacts, classroom codes, and the semester routine.
+A little dashboard I built for my section — **BUBT Intake 66, Section 4** — so we'd all stop asking "wait, which room is the next class in?" in the group chat every five minutes.
 
-🔗 **Live:** [https://66notes.github.io/](https://66notes.github.io/)
+It keeps the stuff we actually need in one place: what class is running right now, upcoming exams, faculty numbers, Classroom codes, and the full routine.
 
----
-
-## ✨ Features
-
-- **Live AI Reminder** – shows current/running class with real‑time clock and visual status.
-- **Pinned Events** – upcoming exams, registration deadlines, and midterm syllabus previews (expandable).
-- **Class Routine** – semester schedule with room info and notes for tentative changes.
-- **Classroom Codes** – one‑click copy for Google Classroom join codes, including a dedicated *66notes* class code.
-- **Faculty Directory** – contact numbers, rooms, departments, and email addresses.
-- **Quick Resources** – direct links to Google Drive and Google Classroom.
-- **Mobile‑first** – fully responsive on all devices.
+🔗 **Live site:** [66notes.github.io](https://66notes.github.io/)
 
 ---
 
-## 🛠️ Tech Stack
+## What it actually does
 
-- HTML5, CSS3, vanilla JavaScript – no frameworks  
-- Font Awesome & Google Material Symbols for icons  
-- Google Fonts (Poppins) for typography
-
----
-
-## 🚀 Deployment (GitHub Pages)
-
-1. Fork this repo.
-2. Go to **Settings > Pages**, select `main` branch and `/` root.
-3. Your site will be live at `https://<your-username>.github.io/`.
-
-To run locally, just open `index.html` in your browser.
+- **Live class status** — tells you what's on right now (and counting down), so you're not guessing based on a screenshot from three weeks ago.
+- **Pinned stuff that matters** — exams, registration deadlines, midterm syllabus previews. Expandable so it doesn't clutter the page.
+- **Full class routine** — rooms, notes for the "this might change" classes, the usual chaos.
+- **Classroom codes, one tap to copy** — including the code for 66Notes itself.
+- **Faculty directory** — numbers, rooms, departments, emails. No more digging through old Messenger threads.
+- **Quick links** — Drive and Classroom, one click away.
+- **Works fine on a phone** — because that's how 90% of us are checking it between classes anyway.
 
 ---
 
-## 👤 Creator
+## Built with
 
-Built by **Ridwan Nafi** – student from Intake 66.  
-*(This project is fully "vibe coded" – built with heart, for the batch.)*
-
----
-
-## 📣 For Class Representatives / CRs
-
-Want a similar dashboard for **your own section or intake**?  
-You can customize this template – change the routine, faculty, events, and branding – **just by dropping me a message**.  
-I'll help you set it up for free, so your classmates can enjoy the same convenience.
-
-📩 **Contact:** [GitHub Issues](https://github.com/66notes/66notes.github.io/issues) or reach out directly via the live site.
+Nothing fancy — plain HTML, CSS, and JavaScript. No framework, no build step. Font Awesome and Google Material Symbols for icons, Poppins for the font.
 
 ---
 
-## 🤝 Contributing
+## Want to run it yourself / fork it
 
-This is an open project for **BUBT Intake 66‑4**. If you spot errors or have suggestions, feel free to open an Issue or PR. Please keep updates relevant to the current semester.
+1. Fork the repo.
+2. In **Settings → Pages**, set the branch to `main` and folder to `/`.
+3. It'll go live at `https://<your-username>.github.io/`.
 
----
-
-## 📄 License
-
-Educational & non‑commercial use only. Data is specific to BUBT Intake 66‑4.
+Or just open `index.html` locally if you want to poke around first.
 
 ---
 
-*Made with ❤️ for the BUBT community.*
+## CRs — want this for your own section?
+
+The code is open source, so you're always free to fork it and set it up yourself — routine, faculty, events, branding, all yours to edit.
+
+If you'd rather not deal with the setup and upkeep yourself, I offer that as a **paid service** (reasonably priced, student-budget friendly) — I'll build it out for your section and keep it maintained through the semester, so you don't have to touch a line of code. Being open source and being a paid service aren't in conflict: the fork is free forever, the "I handle it for you" option is what's paid.
+
+📩 Message me through [GitHub Issues](https://github.com/66notes/66notes.github.io/issues) or the contact link on the live site to talk pricing.
+
+---
+
+## Contributing
+
+This is built for and by BUBT Intake 66-4, so if something's wrong or missing, open an issue or a PR. Keep changes relevant to the current semester and we're good.
+
+---
+
+## License
+
+Educational, non-commercial use only. The data in here is specific to Intake 66-4 — copy the structure, not the content, if you're adapting it.
+
+---
+
+Built by **Ridwan Nafi**, Intake 66. Vibe-coded, mostly at 2am, for the batch. ❤️
