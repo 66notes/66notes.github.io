@@ -42,7 +42,7 @@ The code is open source, so you're always free to fork it and set it up yourself
 
 If you'd rather not deal with the setup and upkeep yourself, I offer that as a **paid service** (reasonably priced, student-budget friendly) — I'll build it out for your section and keep it maintained through the semester, so you don't have to touch a line of code. Being open source and being a paid service aren't in conflict: the fork is free forever, the "I handle it for you" option is what's paid.
 
-📩 Message me through [ CONTACT NOW ] ([https://github.com/66notes/66notes.github.io/issues](https://66notes.github.io/contact.html)) or the contact link on the live site to talk pricing.
+📩 Message me through https://66notes.github.io/contact.html or the contact link on the live site to talk pricing.
 
 ---
 
