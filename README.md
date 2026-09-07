@@ -1,6 +1,6 @@
 # 🎓 66Notes BUBT
 
-A little dashboard I built for my section — **BUBT Intake 66, Section 4** — so we'd all stop asking "wait, which room is the next class in?" in the group chat every five minutes.
+A little dashboard I built for my section — **BUBT Intake 66 ** — so we'd all stop asking "wait, which room is the next class in?" in the group chat every five minutes.
 
 It keeps the stuff we actually need in one place: what class is running right now, upcoming exams, faculty numbers, Classroom codes, and the full routine.
 
