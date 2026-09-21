@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <title>66Notes WiFi Collection</title>
+    <meta name="description" content="66Notes WiFi Collection – shared WiFi credentials for BUBT Intake 66 students." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg: #f4f7fc;
+            --surface: #ffffff;
+            --border: #eef2f6;
+            --text: #1e2a3e;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --navy: #0d2b4e;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --green: #22c55e;
+            --green-light: #dcfce7;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+            --purple: #8b5cf6;
+            --purple-light: #f3e8ff;
+            --radius-sm: 10px;
+            --radius: 14px;
+            --radius-lg: 18px;
+            --radius-xl: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 90px;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        /* ── TOP BAR ─────────────────────────── */
+        .top-app-bar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            padding: 0 14px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .top-app-bar__title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+        }
+        .top-app-bar__title span { color: var(--accent); }
+        .top-app-bar__title small {
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-left: 0.2rem;
+            letter-spacing: 0;
+        }
+        .top-app-bar__back {
+            background: var(--accent-light);
+            border: 1px solid #dbeafe;
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            min-height: 32px;
+        }
+        .top-app-bar__back.visible { display: inline-flex; }
+        .top-app-bar__back .material-symbols-rounded { font-size: 16px; }
+
+        /* ── CONTENT ─────────────────────────── */
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 16px 14px 40px;
+        }
+
+        .page-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.15rem;
+        }
+        .page-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* ── BUILDING GRID ───────────────────── */
+        .building-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.7rem;
+            margin-bottom: 1.2rem;
+        }
+        @media (min-width: 560px) {
+            .building-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .building-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            min-height: 120px;
+        }
+        .building-card:hover {
+            border-color: #d0d7e2;
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+        .building-card:active { transform: scale(0.97); }
+
+        .building-card .building-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .building-card.outside .building-icon {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+        .building-card.no-wifi .building-icon {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        .building-card .building-name {
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        .building-card .building-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.15rem 0.55rem;
+            border-radius: 8px;
+            letter-spacing: 0.02em;
+        }
+        .building-status.available {
+            background: var(--green-light);
+            color: #166534;
+        }
+        .building-status.unavailable {
+            background: var(--red-light);
+            color: #991b1b;
+        }
+
+        /* ── CONTENT VIEW ───────────────────── */
+        .content-view { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .wifis-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .wifi-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.9rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+        }
+        .wifi-card:hover {
+            border-color: #d0d7e2;
+            box-shadow: var(--shadow);
+        }
+        .wifi-card:active { transform: scale(0.985); }
+
+        .wifi-card .wifi-icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.05rem;
+        }
+        .wifi-card.outside-card .wifi-icon-box {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        }
+
+        .wifi-card .wifi-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .wifi-card .wifi-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--navy);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .wifi-card .wifi-note {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.1rem;
+        }
+
+        .wifi-card .wifi-arrow {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .wifi-card .report-mini {
+            position: absolute;
+            bottom: 0.35rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.58rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.15rem 0.35rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            transition: all var(--transition);
+        }
+        .wifi-card .report-mini:hover {
+            color: var(--red);
+            background: var(--red-light);
+        }
+
+        /* ── EMPTY STATE ─────────────────────── */
+        .empty-state {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .empty-state .empty-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--red-light);
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+            font-size: 1.5rem;
+        }
+        .empty-state .empty-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--red);
+            margin-bottom: 0.3rem;
+        }
+        .empty-state .empty-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .empty-state .empty-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--navy);
+            color: #fff;
+            padding: 0.55rem 1.3rem;
+            border-radius: 40px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25);
+            transition: all var(--transition);
+        }
+        .empty-state .empty-btn:active { transform: scale(0.96); }
+
+        /* ── CONTRIBUTE BANNER ──────────────── */
+        .contribute-banner {
+            background: linear-gradient(135deg, #eff6ff 0%, #f3e8ff 100%);
+            border: 1px solid #dbeafe;
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            text-decoration: none;
+            transition: all var(--transition);
+            margin-top: 1.2rem;
+        }
+        .contribute-banner:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+        }
+        .contribute-banner:active { transform: scale(0.99); }
+
+        .contribute-banner .cb-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+            font-size: 1.05rem;
+        }
+        .contribute-banner .cb-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .contribute-banner .cb-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--navy);
+        }
+        .contribute-banner .cb-desc {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            margin-top: 0.05rem;
+        }
+        .contribute-banner .cb-arrow {
+            color: var(--accent);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* ── BOTTOM NAV ─────────────────────── */
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            display: flex;
+            height: 72px;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .bottom-nav__item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 6px 0 10px;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            transition: color var(--transition);
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bottom-nav__item.is-active { color: var(--navy); }
+        .bottom-nav__icon {
+            width: 48px;
+            height: 28px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color var(--transition);
+        }
+        .bottom-nav__item.is-active .bottom-nav__icon {
+            background: #eef2f6;
+        }
+        .bottom-nav__icon .material-symbols-rounded { font-size: 22px; }
+        .bottom-nav__label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* ── MODAL ───────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: modal-in 0.25s ease;
+            position: relative;
+        }
+        @keyframes modal-in {
+            from { opacity: 0; transform: scale(0.94) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.7rem;
+            right: 0.7rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.06);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4b5563;
+            font-size: 1rem;
+            transition: background var(--transition);
+            z-index: 2;
+        }
+        .modal-close:hover { background: rgba(0, 0, 0, 0.12); }
+
+        .modal-body {
+            padding: 1.5rem 1.3rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .modal-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.7rem;
+        }
+
+        .qr-container {
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .qr-container img, .qr-container canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .wifi-detail {
+            width: 100%;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.7rem 0.9rem;
+            margin-bottom: 0.55rem;
+            text-align: left;
+        }
+        .wifi-detail .d-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+        .wifi-detail .d-value {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--navy);
+            font-family: 'Poppins', monospace;
+            word-break: break-all;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .modal-actions .btn-action {
+            flex: 1;
+            padding: 0.65rem 0.8rem;
+            border-radius: 40px;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.78rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: all var(--transition);
+            text-decoration: none;
+            min-height: 42px;
+        }
+        .btn-copy {
+            background: var(--navy);
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(13, 43, 78, 0.2);
+        }
+        .btn-copy:active { transform: scale(0.97); }
+        .btn-copy.copied {
+            background: var(--green);
+            box-shadow: 0 3px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .modal-report {
+            margin-top: 0.7rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            transition: all var(--transition);
+        }
+        .modal-report:hover {
+            color: var(--red);
+            background: var(--red-light);
+        }
+
+        @media (max-width: 480px) {
+            .content { padding: 12px 10px 30px; }
+            .building-grid { gap: 0.55rem; }
+            .building-card { min-height: 106px; padding: 0.8rem 0.6rem; }
+            .building-card .building-icon { width: 38px; height: 38px; font-size: 1rem; }
+            .building-card .building-name { font-size: 0.75rem; }
+            .building-card .building-status { font-size: 0.55rem; }
+            .bottom-nav { height: 64px; }
+            .bottom-nav__icon .material-symbols-rounded { font-size: 20px; }
+            .bottom-nav__icon { width: 44px; height: 24px; }
+            .bottom-nav__label { font-size: 9px; }
+            .qr-container { width: 180px; height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── TOP BAR ─────────────────────────── -->
+    <header class="top-app-bar">
+        <div class="top-app-bar__title">
+            66<span>Notes</span> <small>WiFi Collection</small>
+        </div>
+        <button class="top-app-bar__back" id="backBtn" onclick="goHome()">
+            <span class="material-symbols-rounded">arrow_back</span> Back
+        </button>
+    </header>
+
+    <main class="content">
+
+        <!-- ── BUILDING SELECTION VIEW ─────────── -->
+        <section id="view-home">
+            <div class="page-title">Select a location</div>
+            <div class="page-subtitle">Tap on a location to view its available WiFi networks</div>
+
+            <div class="building-grid" id="buildingGrid"></div>
+
+            <!-- Contribute / Report Banner -->
+            <a href="https://tally.so/r/YOUR_FORM_ID" target="_blank" class="contribute-banner" rel="noopener">
+                <div class="cb-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="cb-text">
+                    <div class="cb-title">Contribute / Report</div>
+                    <div class="cb-desc">Add a new WiFi or report an incorrect password</div>
+                </div>
+                <div class="cb-arrow"><i class="fas fa-arrow-right"></i></div>
+            </a>
+        </section>
+
+        <!-- ── BUILDING CONTENT VIEW ───────────── -->
+        <section id="view-content" hidden class="content-view">
+            <div id="contentBody"></div>
+
+            <!-- Contribute / Report Banner (in content view) -->
+            <a href="https://tally.so/r/YOUR_FORM_ID" target="_blank" class="contribute-banner" rel="noopener">
+                <div class="cb-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="cb-text">
+                    <div class="cb-title">Contribute / Report</div>
+                    <div class="cb-desc">Add a new WiFi or report an incorrect password</div>
+                </div>
+                <div class="cb-arrow"><i class="fas fa-arrow-right"></i></div>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- ── BOTTOM NAV ──────────────────────── -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav__item">
+            <span class="bottom-nav__icon"><span class="material-symbols-rounded">home</span></span>
+            <span class="bottom-nav__label">Home</span>
+        </a>
+        <button class="bottom-nav__item is-active">
+            <span class="bottom-nav__icon"><span class="material-symbols-rounded">wifi</span></span>
+            <span class="bottom-nav__label">WiFi</span>
+        </button>
+        <a href="https://tally.so/r/YOUR_FORM_ID" target="_blank" class="bottom-nav__item" rel="noopener">
+            <span class="bottom-nav__icon"><span class="material-symbols-rounded">add_circle</span></span>
+            <span class="bottom-nav__label">Contribute</span>
+        </a>
+    </nav>
+
+    <!-- ── WIFI MODAL ──────────────────────── -->
+    <div class="modal-overlay" id="wifiModal" onclick="if(event.target === this) closeWifiModal()">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeWifiModal()">✕</button>
+            <div class="modal-body">
+                <div class="modal-label">Scan to Connect</div>
+
+                <div class="qr-container" id="qrContainer"></div>
+
+                <div class="wifi-detail">
+                    <div class="d-label">WiFi Name</div>
+                    <div class="d-value" id="modalSsid">—</div>
+                </div>
+
+                <div class="wifi-detail">
+                    <div class="d-label">Password</div>
+                    <div class="d-value" id="modalPass">—</div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-action btn-copy" id="copyBtn" onclick="copyCredentials()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+
+                <a href="https://tally.so/r/YOUR_FORM_ID" target="_blank" class="modal-report" rel="noopener">
+                    <i class="fas fa-flag"></i> Report wrong password
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // ══════════════════════════════════════════════
+        //  📝 EDIT WiFi DATA HERE
+        // ══════════════════════════════════════════════
+        const WIFI_DATA = {
+            b1: {
+                name: 'Building 1',
+                hasWifi: false
+            },
+            b2: {
+                name: 'Building 2',
+                hasWifi: false
+            },
+            b3: {
+                name: 'Building 3',
+                hasWifi: false
+            },
+            b4: {
+                name: 'Building 4',
+                hasWifi: true,
+                wifis: [
+                    { ssid: 'Cafeteria', pass: 'bubt1234', note: 'B4 2nd Floor • BBA Cafeteria' },
+                    { ssid: 'Room-702', pass: 'Room@702', note: 'Faculty Room 702' },
+                    { ssid: 'Room-903', pass: 'Room@903', note: 'Room 903' },
+                    { ssid: 'Room-803', pass: 'Room@803', note: 'Room 803' }
+                ]
+            },
+            b5: {
+                name: 'Building 5',
+                hasWifi: false
+            },
+            outside: {
+                name: 'Outside Bubt',
+                hasWifi: true,
+                isOutside: true,
+                wifis: [
+                    { ssid: 'lp', pass: '26262626@', note: "Learner's Point" }
+                ]
+            }
+        };
+
+        const TALLY_FORM = 'https://tally.so/r/YOUR_FORM_ID'; // 🔗 Replace with your Tally form URL
+
+        // ── RENDER BUILDING GRID ─────────────────────
+        function renderBuildings() {
+            const grid = document.getElementById('buildingGrid');
+            let html = '';
+            Object.entries(WIFI_DATA).forEach(([key, b]) => {
+                const isOutside = b.isOutside ? ' outside' : '';
+                const noWifi = !b.hasWifi ? ' no-wifi' : '';
+                const statusClass = b.hasWifi ? 'available' : 'unavailable';
+                const statusText = b.hasWifi ? 'Available' : 'No passwords';
+                const icon = b.isOutside ? 'fa-mug-hot' : 'fa-building';
+                html += `
+                    <button class="building-card${isOutside}${noWifi}" onclick="openBuilding('${key}')">
+                        <div class="building-icon"><i class="fas ${icon}"></i></div>
+                        <div class="building-name">${b.name}</div>
+                        <div class="building-status ${statusClass}">${statusText}</div>
+                    </button>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // ── OPEN BUILDING ────────────────────────────
+        function openBuilding(key) {
+            const b = WIFI_DATA[key];
+            const body = document.getElementById('contentBody');
+            let html = '';
+
+            html += `<div class="page-title">${b.name}</div>`;
+            html += `<div class="page-subtitle">${b.hasWifi ? 'Tap a WiFi to view QR code and credentials' : 'No WiFi info yet'}</div>`;
+
+            if (!b.hasWifi) {
+                html += `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="empty-title">No passwords available for now</div>
+                        <div class="empty-desc">You can contribute or wait for future updates.</div>
+                        <a href="${TALLY_FORM}" target="_blank" class="empty-btn" rel="noopener">
+                            <i class="fas fa-plus"></i> Contribute
+                        </a>
+                    </div>
+                `;
+            } else {
+                html += `<div class="wifis-list">`;
+                b.wifis.forEach((w, idx) => {
+                    const cardClass = b.isOutside ? 'wifi-card outside-card' : 'wifi-card';
+                    html += `
+                        <div class="${cardClass}" onclick="openWifiModal('${key}', ${idx})">
+                            <div class="wifi-icon-box"><i class="fas fa-wifi"></i></div>
+                            <div class="wifi-info">
+                                <div class="wifi-name">${escapeHtml(w.ssid)}</div>
+                                <div class="wifi-note">${escapeHtml(w.note)}</div>
+                            </div>
+                            <div class="wifi-arrow"><i class="fas fa-chevron-right"></i></div>
+                            <a href="${TALLY_FORM}" target="_blank" class="report-mini" onclick="event.stopPropagation()" rel="noopener">
+                                <i class="fas fa-flag"></i> Report
+                            </a>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            body.innerHTML = html;
+
+            // Show content view, hide home view
+            document.getElementById('view-home').hidden = true;
+            document.getElementById('view-content').hidden = false;
+            document.getElementById('backBtn').classList.add('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── GO HOME ─────────────────────────────────
+        function goHome() {
+            document.getElementById('view-home').hidden = false;
+            document.getElementById('view-content').hidden = true;
+            document.getElementById('backBtn').classList.remove('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── OPEN WIFI MODAL ──────────────────────────
+        let currentWifi = null;
+
+        function openWifiModal(buildingKey, wifiIndex) {
+            const wifi = WIFI_DATA[buildingKey].wifis[wifiIndex];
+            currentWifi = wifi;
+
+            document.getElementById('modalSsid').textContent = wifi.ssid;
+            document.getElementById('modalPass').textContent = wifi.pass;
+
+            // Generate WiFi QR code
+            const qrString = `WIFI:T:WPA;S:${escapeWifi(wifi.ssid)};P:${escapeWifi(wifi.pass)};;`;
+            const container = document.getElementById('qrContainer');
+            container.innerHTML = '';
+            new QRCode(container, {
+                text: qrString,
+                width: 180,
+                height: 180,
+                colorDark: '#0d2b4e',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+
+            // Reset copy button
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            copyBtn.classList.remove('copied');
+
+            document.getElementById('wifiModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWifiModal() {
+            document.getElementById('wifiModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentWifi = null;
+        }
+
+        // ── COPY CREDENTIALS ─────────────────────────
+        function copyCredentials() {
+            if (!currentWifi) return;
+            const text = `WiFi: ${currentWifi.ssid}\nPassword: ${currentWifi.pass}`;
+
+            const onSuccess = () => {
+                const btn = document.getElementById('copyBtn');
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(onSuccess).catch(() => fallbackCopy(text, onSuccess));
+            } else {
+                fallbackCopy(text, onSuccess);
+            }
+        }
+
+        function fallbackCopy(text, cb) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                cb();
+            } catch (e) {
+                alert('Could not copy. Please copy manually.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        // ── HELPERS ──────────────────────────────────
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[m]);
+        }
+
+        function escapeWifi(s) {
+            return String(s).replace(/([\\;,:"])/g, '\\$1');
+        }
+
+        // ── INIT ─────────────────────────────────────
+        renderBuildings();
+    </script>
+</body>
+</html>
