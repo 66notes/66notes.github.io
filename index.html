@@ -5,18 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
     <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
     <title>66notes bubt - Student Dashboard</title>
-    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66. Live class status, ICT CT exam reminders, MKT presentations, faculty contacts, and classroom codes." />
+    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
     <link rel="canonical" href="https://66notes.github.io/" />
-    <meta property="og:title" content="66Notes BUBT - Student Dashboard" />
-    <meta property="og:description" content="Stay organized with 66Notes BUBT. Live class reminders, assignments, faculty contacts, and classroom codes for BUBT students." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://66notes.github.io/" />
-    <meta property="og:image" content="https://66notes.github.io/og-image.png" />
-    <meta property="og:site_name" content="66Notes BUBT" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="66Notes BUBT - Student Dashboard" />
-    <meta name="twitter:description" content="Live class status, assignment deadlines, and faculty info for BUBT students." />
-    <meta name="twitter:image" content="https://66notes.github.io/og-image.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
@@ -24,25 +14,11 @@
 
     <style>
         :root {
-            --bg: #f4f7fc;
-            --surface: #ffffff;
-            --border: #eef2f6;
-            --border-strong: #e0e5ec;
-            --text: #1e2a3e;
-            --text-secondary: #6b7280;
-            --text-muted: #9ca3af;
-            --navy: #0d2b4e;
-            --accent: #2563eb;
-            --accent-light: #eff6ff;
-            --accent-glow: rgba(37, 99, 235, 0.15);
-            --green: #22c55e;
-            --amber: #f59e0b;
-            --orange: #f97316;
-            --red-soft: #fef2f2;
-            --radius-sm: 10px;
-            --radius: 14px;
-            --radius-lg: 18px;
-            --radius-xl: 20px;
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+            --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
+            --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
+            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
             --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
             --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
@@ -52,27 +28,28 @@
         html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; padding-bottom: 80px; min-height: 100vh; line-height: 1.5; }
         .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
+
         .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .top-app-bar__title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
         .top-app-bar__title span { color: var(--accent); }
-        .top-app-bar__right { display: flex; align-items: center; gap: 6px; }
         .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
         .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
         .notices-btn .material-symbols-rounded { font-size: 16px; }
+
         .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; min-height: calc(100vh - 56px); }
         .page { animation: fade-in 0.3s ease; }
         @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
         .page h2 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
         .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
+
         .announcement-bar { display: flex; align-items: center; gap: 0.75rem; background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 0.5rem 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
         .announcement-icon .material-symbols-rounded { color: #ea580c; font-size: 1.5rem; }
         .announcement-text { flex: 1; min-height: 2rem; display: flex; align-items: center; position: relative; }
         .announcement-line { position: absolute; width: 100%; opacity: 0; transform: translateX(10px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight: 600; font-size: 0.85rem; color: #7c2d12; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .announcement-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
-        .glance { background: var(--surface); border-radius: var(--radius-xl); padding: 1.2rem 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem; position: relative; }
+
+        .glance { background: var(--surface); border-radius: var(--radius-xl); padding: 1.2rem 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem; }
         .section-title { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
-        .section-title i { color: var(--accent); }
         .live-indicator { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); animation: pulse 1.8s infinite; flex-shrink: 0; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         .reminder-main { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
@@ -80,13 +57,13 @@
         .message-line { position: absolute; width: 100%; text-align: center; opacity: 0; transform: translateX(12px); transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); pointer-events: none; padding: 0 0.2rem; }
         .message-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
         .message-line strong { font-weight: 700; color: var(--navy); }
-        .break-timer { font-weight: 700; color: #b45309; font-size: 1rem; }
         .clock-display { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; font-variant-numeric: tabular-nums; margin-top: 0.1rem; }
         .next-class-bar { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; background: #f8fafc; border-radius: 12px; padding: 0.4rem 0.7rem; border: 1px solid var(--border); font-weight: 500; justify-content: center; flex-wrap: wrap; min-height: 38px; margin-top: 0.4rem; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
         .status-dot.running { background: var(--green); }
         .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
-        .events-root { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; line-height: 1.3; color: var(--text); }
+
+        .events-root { font-family: 'Poppins', sans-serif; }
         .events-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1rem 1rem 0.6rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
         .card-header { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .card-header::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--accent); border-radius: 2px; }
@@ -94,21 +71,14 @@
         .card-title i { color: var(--accent); margin-right: 0.3rem; }
         .events-list { display: flex; flex-direction: column; gap: 6px; }
         .event-block { display: flex; gap: 0.5rem; align-items: stretch; background: #f9fafb; border-radius: 12px; padding: 0; border: 1px solid var(--border); overflow: hidden; transition: all var(--transition); }
-        .event-block.upcoming { background: #fef9e3; border-left: 4px solid #f5b042; border-color: #fde68a; }
-        .event-block.final-exam { background: #fef2f2; border-left: 4px solid #dc2626; border-color: #fecaca; }
-        .event-block.final-exam .event-title { color: #991b1b; }
-        .event-block.final-exam .event-badge { background: #fecaca; color: #991b1b; border-color: #fca5a5; }
-        .event-date-badge { flex-shrink: 0; align-self: center; width: 60px; height: 60px; background: var(--navy); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.1rem; text-align: center; margin-left: 0.1rem; flex-grow: 0; }
-        .event-block.final-exam .event-date-badge { background: #991b1b; }
+        .event-date-badge { flex-shrink: 0; align-self: center; width: 60px; height: 60px; background: var(--navy); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.1rem; text-align: center; margin-left: 0.1rem; }
         .event-date-badge .day { font-size: 1.3rem; font-weight: 700; color: #ffffff; line-height: 1.1; }
         .event-date-badge .month { font-size: 0.55rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
         .event-content { flex: 1; padding: 0.4rem 0.5rem 0.4rem 0; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
         .event-summary { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; padding: 0.1rem 0; width: 100%; }
         .event-summary .event-title { font-weight: 700; font-size: 0.78rem; color: var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; flex: 1; }
         .event-badge { font-weight: 600; font-size: 0.5rem; background: #fef3c7; color: #b45309; padding: 0 6px; border-radius: 8px; border: 1px solid #fde68a; white-space: nowrap; flex-shrink: 0; }
-        .event-toggle-btn { flex-shrink: 0; background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 30px; color: var(--accent); font-weight: 600; font-size: 0.6rem; padding: 0.25rem 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s ease; min-height: 30px; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; border: none; }
-        .event-toggle-btn:hover { background: #dbeafe; border-color: #b9d0fc; transform: scale(1.02); }
-        .event-toggle-btn:active { transform: scale(0.96); }
+        .event-toggle-btn { flex-shrink: 0; background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 30px; color: var(--accent); font-weight: 600; font-size: 0.6rem; padding: 0.25rem 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s ease; min-height: 30px; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
         .event-toggle-btn i { font-size: 0.5rem; transition: transform 0.3s ease; }
         .event-toggle-btn.open i { transform: rotate(180deg); }
         .event-details { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease; padding: 0 0.2rem 0 0; opacity: 0; }
@@ -118,6 +88,16 @@
         .event-details .event-items span { display: block; padding: 0.05rem 0; }
         .event-details .event-note { font-size: 0.65rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 0.1rem 0.6rem; border-radius: 6px; display: inline-block; margin-top: 0.2rem; border: 1px solid #fde68a; }
         .event-details .event-note.blue { background: #eff6ff; color: #1e40af; border-color: #dbeafe; }
+
+        .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
+        .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .wifi-home-card::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 140px; height: 140px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+        .wifi-home-card:active { transform: scale(0.98); }
+        .wifi-home-card .wifi-home-icon { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
+
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
@@ -126,181 +106,124 @@
         .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; }
         .modal-header h2 i { color: var(--accent); }
         .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: background var(--transition); }
-        .modal-close-btn:hover { background: #e5e7eb; }
         .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
-        .modal-body .section-title-text { font-weight: 700; font-size: 1rem; color: var(--navy); margin-top: 0.5rem; margin-bottom: 0.2rem; border-bottom: 1px solid #e9edf2; padding-bottom: 0.1rem; }
-        .modal-body .section-title-text:first-child { margin-top: 0; }
-        .modal-body .topic-item { display: block; padding: 0.1rem 0 0.1rem 0.5rem; }
-        .modal-body .topic-item .skip { color: #9ca3af; text-decoration: line-through; font-style: italic; }
-        .modal-body .topic-item .out { color: #9ca3af; text-decoration: line-through; font-style: italic; }
-        .modal-body .topic-item .star { color: #f59e0b; font-weight: 600; }
-        .modal-body .topic-item .pin { color: #2563eb; }
         .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; flex-wrap: wrap; }
         .modal-footer .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; min-height: 38px; }
-        .modal-footer .btn-modal:active { transform: scale(0.96); }
-        .modal-footer .btn-copy-modal { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25); }
-        .modal-footer .btn-copy-modal:hover { box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35); }
+        .modal-footer .btn-copy-modal { background: var(--accent); color: #fff; }
         .modal-footer .btn-close-modal { background: #f3f4f6; color: #374151; }
-        .modal-footer .btn-close-modal:hover { background: #e5e7eb; }
+
         .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
         .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
-        .routine-warning { background: #dbeafe; border: 1px solid #93c5fd; border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin-bottom: 0.9rem; font-size: 0.75rem; font-weight: 500; color: #1e3a8a; display: flex; align-items: flex-start; gap: 0.5rem; text-align: left; }
+        .routine-warning { background: #dbeafe; border: 1px solid #93c5fd; border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin-bottom: 0.9rem; font-size: 0.75rem; font-weight: 500; color: #1e3a8a; display: flex; align-items: flex-start; gap: 0.5rem; }
         .routine-warning i { color: #2563eb; font-size: 1.1rem; margin-top: 0.05rem; flex-shrink: 0; }
-        .routine-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #cdd4de transparent; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
-        .routine-table-wrap:last-child { margin-bottom: 0; }
-        .routine-table-wrap::-webkit-scrollbar { height: 5px; }
-        .routine-table-wrap::-webkit-scrollbar-thumb { background: #cdd4de; border-radius: 10px; }
-        .routine-table-wrap::-webkit-scrollbar-track { background: transparent; }
+        .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
         .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-family: 'Poppins', sans-serif; min-width: 380px; }
-        .routine-table thead tr { background: #f5f6f9; }
-        .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; letter-spacing: 0.04em; text-transform: uppercase; }
+        .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; text-transform: uppercase; }
         .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #ffffff; color: #1f2a3e; white-space: nowrap; }
         .routine-table tbody tr:last-child td { border-bottom: none; }
-        .routine-table tbody tr:hover td { background: #fafcff; transition: background 0.15s ease; }
+
         .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
-        .codes-section .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; letter-spacing: 0.02em; }
+        .codes-section .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
         .codes-section .codes-label i { color: var(--accent); margin-right: 0.35rem; }
         .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
-        .code-card { display: flex; align-items: center; gap: 0.6rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.7rem; border: 1px solid var(--border); min-height: 42px; transition: border-color var(--transition), box-shadow var(--transition); }
-        .code-card:hover { border-color: #d0d7e2; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); }
+        .code-card { display: flex; align-items: center; gap: 0.5rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.6rem; border: 1px solid var(--border); min-height: 42px; flex-wrap: wrap; }
         .code-card .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
         .code-card .code-icon-dot.eco-dot { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
         .code-card .code-icon-dot.mgt-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
         .code-card .code-icon-dot.qua-dot { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
-        .code-card .code-icon-dot.notes-dot { background: #ec4899; box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2); }
-        .code-card .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; letter-spacing: 0.02em; }
-        .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; font-family: 'Poppins', monospace; }
+        .code-card .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
+        .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
         .code-card .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
-        .code-card .copy-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; font-family: 'Poppins', sans-serif; cursor: pointer; border: none; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; transition: all var(--transition); white-space: nowrap; letter-spacing: 0.02em; border: 1px solid transparent; }
-        .code-card .copy-btn i { font-size: 0.65rem; }
-        .code-card .copy-btn:hover { background: #dde2ea; border-color: #cbd5e1; }
-        .code-card .copy-btn:active { transform: scale(0.94); background: #d1d7e0; }
-        .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; border-color: #a7f3d0 !important; }
-        .codes-divider { margin: 0.6rem 0 0.4rem; border: 0; border-top: 2px dashed #e5e7eb; }
-        .code-card-notes { background: #faf5ff; border-color: #d8b4fe; border-width: 1.5px; }
-        .code-card-notes .code-subject { color: #7e22ce; }
-        .code-card-notes .code-value-box { background: #f3e8ff; border-color: #d8b4fe; }
-        .code-card-notes .code-value { color: #6b21a8; }
-        .code-card-notes .copy-btn { background: #e9d5ff; color: #6b21a8; }
-        .code-card-notes .copy-btn:hover { background: #d8b4fe; }
-        .notes-description { font-size: 0.65rem; color: var(--text-secondary); text-align: center; margin-top: 0.2rem; font-weight: 500; padding: 0 0.2rem; }
-        .notes-description i { color: #7e22ce; font-size: 0.6rem; margin-right: 0.2rem; }
+        .code-card .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; transition: all var(--transition); }
+        .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; }
+        .code-card .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; transition: all var(--transition); text-decoration: none; }
+
         .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
-        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: box-shadow var(--transition); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
-        .drive-card:hover { box-shadow: var(--shadow-lg); }
+        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
         .drive-card .drive-icon { font-size: 2.5rem; color: var(--accent); }
         .drive-card .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
         .drive-card .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
-        .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: box-shadow 0.15s ease, background-color 0.15s ease; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
         .btn--filled { background: var(--navy); color: #ffffff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
-        .btn--filled:hover { box-shadow: 0 4px 16px rgba(13, 43, 78, 0.2); }
-        .btn--tonal { background: #d9e3ff; color: #101b32; }
-        .btn--tonal:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
         .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
-        .faculty-root { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; line-height: 1.4; color: var(--text); }
-        .faculty-list { display: flex; flex-direction: column; gap: 0.6rem; }
-        .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.6rem 0.7rem; display: block; }
-        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.15rem; }
-        .faculty-name { font-weight: 700; font-size: 0.85rem; color: var(--navy); margin: 0; line-height: 1.3; }
+
+        .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
+        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-decoration: none; transition: all var(--transition); box-shadow: var(--shadow-sm); }
+        .community-card .c-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .community-card .c-icon.classroom { background: #15803d; }
+        .community-card .c-icon.whatsapp { background: #25D366; }
+        .community-card .c-icon.messenger { background: #0084FF; }
+        .community-card .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
+
+        .faculty-root { font-family: 'Poppins', sans-serif; }
+        .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
+        .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
+        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
+        .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
         .faculty-name .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
-        .faculty-number { font-size: 0.75rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.1rem 0.6rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; margin: 0; }
-        .faculty-actions { margin-top: 0.15rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.15rem 0.9rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.65rem; border: none; cursor: pointer; transition: background var(--transition), transform 0.15s; min-height: 34px; text-decoration: none; min-width: 56px; }
+        .faculty-number { font-size: 0.75rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.1rem 0.6rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; }
+        .faculty-actions { margin-top: 0.3rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.2rem 0.9rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.65rem; border: none; cursor: pointer; transition: all var(--transition); min-height: 32px; text-decoration: none; min-width: 60px; }
         .faculty-actions .btn-fac:active { transform: scale(0.95); }
         .faculty-actions .btn-copy { background: #e5e7eb; color: #374151; }
-        .faculty-actions .btn-copy:active { background: #d1d5db; }
         .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
-        .faculty-actions .btn-call:active { background: #14365e; }
-        .faculty-actions .btn-call i { font-size: 0.8rem; }
-        .faculty-details { font-size: 0.6rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.2rem; margin-top: 0.2rem; display: flex; flex-wrap: wrap; gap: 0.1rem 0.6rem; }
-        .faculty-details span { display: inline-flex; align-items: center; gap: 0.1rem; }
-        .faculty-details .label { font-weight: 500; color: var(--text-secondary); }
+        .faculty-actions .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
+        .faculty-actions .btn-fac i { font-size: 0.75rem; }
+        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.3rem; margin-top: 0.3rem; display: flex; flex-direction: column; gap: 0.2rem; }
+        .faculty-details .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
+        .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
         .faculty-details .value { color: var(--text); font-weight: 400; }
-        .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 0.5rem; }
+
+        .counsel-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 0.5rem 0.7rem; margin-top: 0.4rem; font-size: 0.62rem; color: #1e3a8a; }
+        .counsel-box .counsel-title { font-weight: 700; font-size: 0.65rem; color: #1e40af; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.3rem; }
+        .counsel-box .counsel-title i { font-size: 0.7rem; }
+        .counsel-box .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
+        .counsel-box .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
+        .counsel-box .counsel-note { margin-top: 0.35rem; padding-top: 0.3rem; border-top: 1px dashed #bfdbfe; font-weight: 600; color: #b45309; font-size: 0.6rem; display: flex; align-items: center; gap: 0.25rem; }
+        .counsel-box .counsel-note i { color: #d97706; }
+
+        .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 1rem; }
         .cta-footer .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
         .cta-footer .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
         .cta-footer .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
-        .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #ffffff; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; text-decoration: none; transition: background var(--transition), transform 0.15s; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
-        .cta-footer .cta-btn:active { transform: scale(0.96); }
-        .cta-footer .cta-btn i { font-size: 0.9rem; }
+        .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #ffffff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
+
         .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04); }
-        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); -webkit-tap-highlight-color: transparent; position: relative; }
-        .bottom-nav__item::after { display: none; }
+        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); -webkit-tap-highlight-color: transparent; }
         .bottom-nav__item.is-active { color: var(--navy); }
         .bottom-nav__icon { width: 48px; height: 28px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); }
         .bottom-nav__item.is-active .bottom-nav__icon { background: #eef2f6; }
         .bottom-nav__icon .material-symbols-rounded { font-size: 22px; }
         .bottom-nav__label { font-size: 10px; font-weight: 500; }
+
         @media (max-width: 480px) {
             .content { padding: 10px 10px 90px; }
             .top-app-bar__title { font-size: 1rem; }
             .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
-            .notices-btn .material-symbols-rounded { font-size: 14px; }
             .glance { padding: 1rem 0.7rem; }
             .message-box { font-size: 0.85rem; min-height: 44px; }
-            .clock-display { font-size: 0.65rem; }
-            .next-class-bar { font-size: 0.6rem; padding: 0.3rem 0.5rem; min-height: 34px; }
             .event-date-badge { width: 50px; height: 50px; }
             .event-date-badge .day { font-size: 1.1rem; }
             .event-date-badge .month { font-size: 0.5rem; }
             .event-title { font-size: 0.7rem; }
-            .event-details .event-items { font-size: 0.65rem; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
             .routine-table th, .routine-table td { padding: 7px 8px; }
-            .codes-grid { gap: 0.4rem; }
-            .code-card { padding: 0.3rem 0.5rem; gap: 0.4rem; min-height: 36px; flex-wrap: wrap; }
             .code-card .code-subject { font-size: 0.6rem; min-width: 48px; }
             .code-card .code-value { font-size: 0.6rem; }
-            .code-card .copy-btn { font-size: 0.5rem; min-height: 22px; padding: 0.1rem 0.5rem; }
-            .faculty-name { font-size: 0.75rem; }
-            .faculty-number { font-size: 0.65rem; }
-            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 48px; padding: 0.1rem 0.6rem; }
-            .drive-card .drive-icon { font-size: 2rem; }
-            .drive-card .drive-title { font-size: 0.85rem; }
+            .code-card .copy-btn, .code-card .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
+            .faculty-name { font-size: 0.8rem; }
+            .faculty-number { font-size: 0.68rem; }
+            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 52px; padding: 0.15rem 0.7rem; }
             .btn--large { font-size: 13px; height: 42px; }
             .bottom-nav { height: 64px; }
             .bottom-nav__label { font-size: 9px; }
             .bottom-nav__icon .material-symbols-rounded { font-size: 20px; }
             .bottom-nav__icon { width: 44px; height: 24px; }
-            .routine-section { padding: 0.8rem 0.7rem 0.7rem; }
-            .cta-footer { padding: 1rem 0.8rem; }
-            .cta-footer .cta-icon { font-size: 1.6rem; }
-            .cta-footer .cta-title { font-size: 0.9rem; }
-            .cta-footer .cta-desc { font-size: 0.7rem; }
-            .cta-footer .cta-btn { font-size: 0.7rem; padding: 0.4rem 1.2rem; min-height: 38px; width: 100%; justify-content: center; }
-            .announcement-bar { padding: 0.4rem 0.7rem; }
-            .announcement-icon .material-symbols-rounded { font-size: 1.2rem; }
             .announcement-line { font-size: 0.7rem; white-space: normal; }
-            .modal-box { max-width: 95%; }
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
-            .modal-footer .btn-modal { font-size: 0.7rem; padding: 0.3rem 1rem; min-height: 34px; }
-            .routine-warning { font-size: 0.65rem; padding: 0.4rem 0.6rem; flex-wrap: wrap; }
-            .routine-warning i { font-size: 0.9rem; }
-            .notes-description { font-size: 0.55rem; }
-        }
-        @media (max-width: 380px) {
-            .content { padding: 6px 6px 80px; }
-            .event-date-badge { width: 42px; height: 42px; }
-            .event-date-badge .day { font-size: 0.9rem; }
-            .event-date-badge .month { font-size: 0.4rem; }
-            .event-title { font-size: 0.6rem; }
-            .event-toggle-btn { font-size: 0.5rem; padding: 0.15rem 0.6rem; min-height: 24px; }
-            .faculty-row { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
-            .faculty-actions { flex-direction: row; justify-content: stretch; width: 100%; }
-            .faculty-actions .btn-fac { flex: 1; }
-            .code-card { flex-wrap: wrap; }
-            .code-card .copy-btn { width: 100%; justify-content: center; }
-            .top-app-bar__title { font-size: 0.9rem; }
-            .message-box { font-size: 0.75rem; min-height: 38px; }
-            .glance { padding: 0.8rem 0.5rem; }
-            .notices-btn { font-size: 0.55rem; padding: 3px 8px; min-height: 24px; }
-            .notices-btn .material-symbols-rounded { font-size: 12px; }
-            .routine-table { min-width: 290px; font-size: 0.56rem; }
-            .routine-table th, .routine-table td { padding: 5px 5px; }
-            .routine-warning { font-size: 0.55rem; padding: 0.3rem 0.5rem; }
         }
     </style>
 </head>
@@ -317,8 +240,8 @@
 
     <main class="content">
 
+        <!-- ── HOME ──────────────────────────────── -->
         <section class="page" id="page-home">
-
             <div class="announcement-bar" id="section-announcements">
                 <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
                 <div class="announcement-text" id="announcementText"></div>
@@ -350,6 +273,13 @@
                 </div>
             </div>
 
+            <a href="wifi.html" class="wifi-home-card">
+                <span class="wifi-home-icon"><i class="fas fa-wifi"></i></span>
+                <div class="wifi-home-title">WiFi Pass Collection</div>
+                <div class="wifi-home-desc">(collecting WiFi passwords of the whole university)</div>
+                <span class="wifi-home-cta"><i class="fas fa-arrow-right"></i> Open WiFi Hub</span>
+            </a>
+
             <div class="cta-footer">
                 <span class="cta-icon material-symbols-rounded">code</span>
                 <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
@@ -360,9 +290,10 @@
             </div>
         </section>
 
+        <!-- ── PDFs ──────────────────────────────── -->
         <section class="page" id="page-pdfs" hidden>
-            <h2>All PDFs</h2>
-            <p class="subtitle">Quick access to all your study materials</p>
+            <h2>All Resources</h2>
+            <p class="subtitle">Study materials and class communities</p>
             <div class="drive-grid">
                 <div class="drive-card">
                     <span class="drive-icon material-symbols-rounded">folder</span>
@@ -372,28 +303,39 @@
                         <span class="material-symbols-rounded">open_in_new</span> Open Drive
                     </a>
                 </div>
-                <div class="drive-card">
-                    <span class="drive-icon material-symbols-rounded">classroom</span>
-                    <div class="drive-title">Google Classroom</div>
-                    <div class="drive-desc">Join our class: fqv76kik</div>
-                    <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="btn btn--tonal btn--large" rel="noopener">
-                        <span class="material-symbols-rounded">open_in_new</span> Open Classroom
-                    </a>
-                </div>
+            </div>
+
+            <div class="community-grid">
+                <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon classroom"><i class="fas fa-chalkboard-user"></i></span>
+                    <span class="c-title">Classroom</span>
+                </a>
+                <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon whatsapp"><i class="fab fa-whatsapp"></i></span>
+                    <span class="c-title">WhatsApp</span>
+                </a>
+                <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon messenger"><i class="fab fa-facebook-messenger"></i></span>
+                    <span class="c-title">Messenger</span>
+                </a>
             </div>
         </section>
 
+        <!-- ── ROUTINE ───────────────────────────── -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section" id="routineContainer">
                 <div id="routineContent"></div>
             </div>
         </section>
 
+        <!-- ── FACULTY ───────────────────────────── -->
         <section class="page" id="page-faculty" hidden>
             <h2>Faculty</h2>
             <p class="subtitle">Contact your instructors</p>
             <div class="faculty-root" id="section-faculty">
                 <div class="faculty-list">
+
+                    <!-- MGT 1101 -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
@@ -401,14 +343,16 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01914898292">Copy</button>
-                            <a href="tel:01914898292" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Room:</span> <span class="value">B4/902</span></span>
-                            <span><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></span>
-                            <span><span class="label">Class Code:</span> <span class="value">im2z2sar</span></span>
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
                         </div>
                     </div>
+
+                    <!-- QUA 1101 -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
@@ -416,14 +360,23 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01913045537">Copy</button>
-                            <a href="tel:01913045537" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Room:</span> <span class="value">B3/207</span></span>
-                            <span><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></span>
-                            <span><span class="label">Class Code:</span> <span class="value">oz3bz3af</span></span>
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
+                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
+
+                            <div class="counsel-box">
+                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                                <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
+                                <div class="counsel-line"><strong>Room:</strong> <span>B:3 / R:207</span></div>
+                                <div class="counsel-note"><i class="fas fa-exclamation-circle"></i> Call before you come</div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- ECO 1101 -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
@@ -431,21 +384,30 @@
                         </div>
                         <div class="faculty-actions">
                             <button class="btn-fac btn-copy" data-number="01735692906">Copy</button>
-                            <a href="tel:01735692906" class="btn-fac btn-call"><span class="material-symbols-rounded" style="font-size:18px;">call</span> Call</a>
+                            <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                         </div>
                         <div class="faculty-details">
-                            <span><span class="label">Room:</span> <span class="value">B-1 / 701</span></span>
-                            <span><span class="label">Department:</span> <span class="value">Economics</span></span>
-                            <span><span class="label">Class Code:</span> <span class="value">snycxehv</span></span>
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
+                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
+
+                            <div class="counsel-box">
+                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                                <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM — R-1701</span></div>
+                                <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
+                                <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM — R-1701</span></div>
+                                <div class="counsel-note"><i class="fas fa-exclamation-circle"></i> Call before you come</div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- ── MODALS ────────────────────────────────────── -->
+    <!-- ── MODALS ───────────────────────────── -->
     <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
         <div class="modal-box">
             <div class="modal-header">
@@ -453,16 +415,15 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict-lab">
-                📊 Excel Functions: LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
+📊 Excel Functions: LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
             </div>
             <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)">
-                    <i class="fas fa-copy"></i> Copy All
-                </button>
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)"><i class="fas fa-copy"></i> Copy All</button>
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict-lab')">Close</button>
             </div>
         </div>
     </div>
+
     <div class="modal-overlay" id="modal-ict" onclick="if(event.target === this) closeModal('modal-ict')">
         <div class="modal-box">
             <div class="modal-header">
@@ -470,16 +431,15 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-ict">
-                📘 Chapter 2, 10, OSI Model, Chapter 6, Chapter 12
+📘 Chapter 2, 10, OSI Model, Chapter 6, Chapter 12
             </div>
             <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)">
-                    <i class="fas fa-copy"></i> Copy All
-                </button>
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)"><i class="fas fa-copy"></i> Copy All</button>
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict')">Close</button>
             </div>
         </div>
     </div>
+
     <div class="modal-overlay" id="modal-mkt" onclick="if(event.target === this) closeModal('modal-mkt')">
         <div class="modal-box">
             <div class="modal-header">
@@ -487,16 +447,15 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-mkt">
-                📘 Chapter 7, 8, 9, 11, 14
+📘 Chapter 7, 8, 9, 11, 14
             </div>
             <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)">
-                    <i class="fas fa-copy"></i> Copy All
-                </button>
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)"><i class="fas fa-copy"></i> Copy All</button>
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-mkt')">Close</button>
             </div>
         </div>
     </div>
+
     <div class="modal-overlay" id="modal-hum" onclick="if(event.target === this) closeModal('modal-hum')">
         <div class="modal-box">
             <div class="modal-header">
@@ -504,12 +463,10 @@
                 <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
             </div>
             <div class="modal-body" id="modal-body-hum">
-                ১. ব্যাকরণ, ২. উচ্চারণ ও সমাস, ৩. প্রবাদ-প্রবচন, ৪. বিরামচিহ্ন ও প্রতিবেদন
+১. ব্যাকরণ, ২. উচ্চারণ ও সমাস, ৩. প্রবাদ-প্রবচন, ৪. বিরামচিহ্ন ও প্রতিবেদন
             </div>
             <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)">
-                    <i class="fas fa-copy"></i> Copy All
-                </button>
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)"><i class="fas fa-copy"></i> Copy All</button>
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-hum')">Close</button>
             </div>
         </div>
@@ -535,89 +492,47 @@
     </nav>
 
     <script>
-        // ── MODAL FUNCTIONS ──────────────────────────
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
         function copyModalContent(bodyId, btn) {
             const body = document.getElementById(bodyId);
             let text = body.innerText || body.textContent;
             text = text.replace(/\s+/g, ' ').trim();
-
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    flashCopyBtn(btn);
-                }).catch(() => fallbackCopy(text, btn));
-            } else {
-                fallbackCopy(text, btn);
-            }
+                navigator.clipboard.writeText(text).then(() => flashCopyBtn(btn)).catch(() => fallbackCopy(text, btn));
+            } else { fallbackCopy(text, btn); }
         }
-
         function fallbackCopy(text, btn) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                flashCopyBtn(btn);
-            } catch (e) {
-                alert('Could not copy. Please copy manually.');
-            }
+            const ta = document.createElement('textarea'); ta.value = text;
+            ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); flashCopyBtn(btn); } catch (e) { alert('Could not copy.'); }
             document.body.removeChild(ta);
         }
-
         function flashCopyBtn(btn) {
-            const origHtml = btn.innerHTML;
+            const orig = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            btn.style.background = '#d1fae5';
-            btn.style.color = '#065f46';
-            setTimeout(() => {
-                btn.innerHTML = origHtml;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 2000);
+            btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
+            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
         }
 
-        // ── NAVIGATION ──────────────────────────────
         (function() {
             const navItems = document.querySelectorAll('.bottom-nav__item');
             const pages = document.querySelectorAll('.page');
             const titleEl = document.querySelector('.top-app-bar__title');
-            const titles = {
-                'page-home': '66Notes',
-                'page-pdfs': 'All PDFs',
-                'page-routine': 'Routine & Codes',
-                'page-faculty': 'Faculty'
-            };
-
+            const titles = { 'page-home': '66Notes', 'page-pdfs': 'All Resources', 'page-routine': 'Routine & Codes', 'page-faculty': 'Faculty' };
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const targetId = item.dataset.target;
                     navItems.forEach(i => i.classList.remove('is-active'));
                     item.classList.add('is-active');
-                    pages.forEach(page => {
-                        page.hidden = page.id !== targetId;
-                    });
-                    if (titleEl && titles[targetId]) {
-                        titleEl.innerHTML = titles[targetId];
-                    }
+                    pages.forEach(page => { page.hidden = page.id !== targetId; });
+                    if (titleEl && titles[targetId]) titleEl.innerHTML = titles[targetId];
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
         })();
 
-        // ── CLOCK ────────────────────────────────────
         (function() {
             function updateClock() {
                 const now = new Date();
@@ -632,12 +547,12 @@
             setInterval(updateClock, 30000);
         })();
 
-        // ── ANNOUNCEMENTS (UPDATED) ──────────────────
+        // ── ANNOUNCEMENTS (UPDATED) ──────────────
         (function() {
             const container = document.getElementById('announcementText');
             const lines = [
-                '⚠️ 4304 is the wrong room number – keep an eye on messenger for updates.',
-                '📢 17 Sep is the last date for the 6k fee payment.'
+                '📢 4304 is now 4201 but it can change anytime.',
+                '📝 CT dates are given – keep an eye on messenger.'
             ];
             container.innerHTML = '';
             lines.forEach((text, index) => {
@@ -657,14 +572,13 @@
             }
         })();
 
-        // ── AI REMINDER ──────────────────────────────
         (function() {
             const semesterStart = new Date(2026, 8, 6);
             const classes = [
                 { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
                 { day: 0, startH: 16, startM: 15, endH: 17, endM: 45, course: 'QUA 1101', room: '4905' },
-                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4304' },
-                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4304' },
+                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4201' },
+                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4201' },
                 { day: 3, startH: 8, startM: 15, endH: 9, endM: 45, course: 'ECO 1101', room: '4905' },
                 { day: 3, startH: 9, startM: 45, endH: 11, endM: 15, course: 'MGT 1101', room: '4905' }
             ];
@@ -672,57 +586,39 @@
 
             function getDhaka() {
                 const n = new Date();
-                let h = n.getUTCHours() + 6,
-                    d = n.getUTCDate(),
-                    m = n.getUTCMonth(),
-                    y = n.getUTCFullYear();
-                if (h >= 24) { h -= 24;
-                    d++; }
+                let h = n.getUTCHours() + 6, d = n.getUTCDate(), m = n.getUTCMonth(), y = n.getUTCFullYear();
+                if (h >= 24) { h -= 24; d++; }
                 const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-                if (d > dim) { d = 1;
-                    m++; }
-                if (m > 11) { m = 0;
-                    y++; }
+                if (d > dim) { d = 1; m++; }
+                if (m > 11) { m = 0; y++; }
                 const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
-                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(),
-                    timestamp: ts };
+                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(), timestamp: ts };
             }
-
             function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
 
             function getClassStatus() {
                 const now = new Date();
-                if (now < semesterStart) {
-                    return ['📅 Classes started on <strong>6 September</strong>', 'Check the routine below!'];
-                }
+                if (now < semesterStart) return ['📅 Classes started on <strong>6 September</strong>', 'Check the routine below!'];
                 const dh = getDhaka();
-                const day = dh.dayOfWeek,
-                    min = dh.hours * 60 + dh.minutes;
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                    .endM);
-                if (run) {
-                    return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
-                }
+                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
+                if (run) return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
                 for (let off = 0; off < 14; off++) {
                     const fut = new Date(dh.timestamp + off * 86400000);
                     const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH *
-                        60 + b.startM));
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
                     for (let c of dayCls) {
                         const st = c.startH * 60 + c.startM;
                         if (off === 0 && st <= min) continue;
                         const dn = dayNames[cd];
                         const dur = off === 0 ? 'Today' : dn;
-                        return ['📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM),
-                            'Room ' + c.room
-                        ];
+                        return ['📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM), 'Room ' + c.room];
                     }
                 }
                 return ['📚 No classes scheduled', 'Enjoy your free time!'];
             }
 
             let slideTimer;
-
             function showSlides(slides) {
                 const box = document.getElementById('messageBox');
                 if (!box) return;
@@ -753,7 +649,6 @@
                 const detail = document.getElementById('barDetail');
                 const dot = document.getElementById('barDot');
                 if (!label || !detail || !dot) return;
-
                 if (now < semesterStart) {
                     label.textContent = 'UPCOMING';
                     dot.className = 'status-dot';
@@ -761,23 +656,18 @@
                     return;
                 }
                 const dh = getDhaka();
-                const day = dh.dayOfWeek,
-                    min = dh.hours * 60 + dh.minutes;
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c
-                    .endM);
+                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
                 if (run) {
                     label.textContent = 'RUNNING';
                     dot.className = 'status-dot running';
-                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course +
-                        '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run
-                            .endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course + '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run.endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
                     return;
                 }
                 for (let off = 0; off < 14; off++) {
                     const fut = new Date(dh.timestamp + off * 86400000);
                     const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH *
-                        60 + b.startM));
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
                     for (let c of dayCls) {
                         const st = c.startH * 60 + c.startM;
                         if (off === 0 && st <= min) continue;
@@ -785,11 +675,7 @@
                         const dur = off === 0 ? 'Today' : fd;
                         label.textContent = off === 0 ? 'TODAY' : 'NEXT';
                         dot.className = 'status-dot';
-                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c
-                            .course +
-                            '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c
-                                .endM) +
-                            '</span> · <span class="nc-room">' + c.room + '</span>';
+                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
                         return;
                     }
                 }
@@ -800,13 +686,9 @@
 
             showSlides(getClassStatus());
             updateNextBar();
-            setInterval(() => {
-                showSlides(getClassStatus());
-                updateNextBar();
-            }, 30000);
+            setInterval(() => { showSlides(getClassStatus()); updateNextBar(); }, 30000);
         })();
 
-        // ── COPY HELPERS ──────────────────────────────
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -814,42 +696,23 @@
                 if (!code) return;
                 const origText = this.innerHTML;
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(code).then(() => {
-                        flashCopied(this, origText);
-                    }).catch(() => fallbackCopyCode(code, this, origText));
-                } else {
-                    fallbackCopyCode(code, this, origText);
-                }
+                    navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
+                } else { fallbackCopyCode(code, this, origText); }
             });
         });
-
         function fallbackCopyCode(text, btn, origText) {
             const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                flashCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy. Please copy manually.');
-            }
+            ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); flashCopied(btn, origText); } catch (e) { alert('Could not copy.'); }
             document.body.removeChild(ta);
         }
-
         function flashCopied(btn, origText) {
             btn.innerHTML = '<i class="fas fa-check"></i> Copied';
             btn.classList.add('copied-flash');
-            setTimeout(() => {
-                btn.innerHTML = origText;
-                btn.classList.remove('copied-flash');
-            }, 1500);
+            setTimeout(() => { btn.innerHTML = origText; btn.classList.remove('copied-flash'); }, 1500);
         }
 
-        // ── FACULTY COPY ──────────────────────────────
         document.querySelectorAll('.btn-copy').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -857,44 +720,23 @@
                 if (!number) return;
                 const origText = this.textContent;
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(number).then(() => {
-                        showFacCopied(this, origText);
-                    }).catch(() => fallbackFacCopy(number, this, origText));
-                } else {
-                    fallbackFacCopy(number, this, origText);
-                }
+                    navigator.clipboard.writeText(number).then(() => showFacCopied(this, origText)).catch(() => fallbackFacCopy(number, this, origText));
+                } else { fallbackFacCopy(number, this, origText); }
             });
         });
-
         function fallbackFacCopy(text, btn, origText) {
             const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            ta.style.top = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                showFacCopied(btn, origText);
-            } catch (e) {
-                alert('Could not copy number. Please copy manually.');
-            }
+            ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); showFacCopied(btn, origText); } catch (e) { alert('Could not copy.'); }
             document.body.removeChild(ta);
         }
-
         function showFacCopied(btn, origText) {
             btn.textContent = 'Copied!';
-            btn.style.background = '#d1fae5';
-            btn.style.color = '#065f46';
-            setTimeout(() => {
-                btn.textContent = origText;
-                btn.style.background = '';
-                btn.style.color = '';
-            }, 1800);
+            btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
+            setTimeout(() => { btn.textContent = origText; btn.style.background = ''; btn.style.color = ''; }, 1800);
         }
 
-        // ── ROUTINE ────────────────────────────────────
         (function() {
             function renderRoutine() {
                 const container = document.getElementById('routineContent');
@@ -912,8 +754,8 @@
                             <tbody>
                                 <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                                 <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
-                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304 <sup>*</sup></td><td>ECO 1101</td><td>KMR</td></tr>
-                                <tr><td>01:15 – 02:45</td><td>4304 <sup>*</sup></td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304/4201 <sup>*</sup></td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>01:15 – 02:45</td><td>4304/4201 <sup>*</sup></td><td>QUA 1101</td><td>TKA</td></tr>
                                 <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
                                 <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                             </tbody>
@@ -928,22 +770,25 @@
                     <div class="codes-section">
                         <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
                         <div class="codes-grid">
-                            <div class="code-card"><span class="code-icon-dot eco-dot"></span><span class="code-subject">ECO 1101</span><div class="code-value-box"><span class="code-value">snycxehv</span></div><button class="copy-btn" data-code="snycxehv"><i class="fas fa-copy"></i> Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot mgt-dot"></span><span class="code-subject">MGT 1101</span><div class="code-value-box"><span class="code-value">im2z2sar</span></div><button class="copy-btn" data-code="im2z2sar"><i class="fas fa-copy"></i> Copy</button></div>
-                            <div class="code-card"><span class="code-icon-dot qua-dot"></span><span class="code-subject">QUA 1101</span><div class="code-value-box"><span class="code-value">oz3bz3af</span></div><button class="copy-btn" data-code="oz3bz3af"><i class="fas fa-copy"></i> Copy</button></div>
-                        </div>
-
-                        <hr class="codes-divider" />
-
-                        <div class="codes-grid">
-                            <div class="code-card code-card-notes">
-                                <span class="code-icon-dot notes-dot"></span>
-                                <span class="code-subject">66notes</span>
-                                <div class="code-value-box"><span class="code-value">fqv76kik</span></div>
-                                <button class="copy-btn" data-code="fqv76kik"><i class="fas fa-copy"></i> Copy</button>
+                            <div class="code-card">
+                                <span class="code-icon-dot eco-dot"></span>
+                                <span class="code-subject">ECO 1101</span>
+                                <div class="code-value-box"><span class="code-value">snycxehv</span></div>
+                                <button class="copy-btn" data-code="snycxehv"><i class="fas fa-copy"></i> Copy</button>
+                                <a href="https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
                             </div>
-                            <div class="notes-description">
-                                <i class="fas fa-info-circle"></i> This is not any teacher's classroom, this is ours to maintain the class.
+                            <div class="code-card">
+                                <span class="code-icon-dot mgt-dot"></span>
+                                <span class="code-subject">MGT 1101</span>
+                                <div class="code-value-box"><span class="code-value">im2z2sar</span></div>
+                                <button class="copy-btn" data-code="im2z2sar"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="code-card">
+                                <span class="code-icon-dot qua-dot"></span>
+                                <span class="code-subject">QUA 1101</span>
+                                <div class="code-value-box"><span class="code-value">oz3bz3af</span></div>
+                                <button class="copy-btn" data-code="oz3bz3af"><i class="fas fa-copy"></i> Copy</button>
+                                <a href="https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
                             </div>
                         </div>
                     </div>
@@ -958,89 +803,27 @@
                         if (!code) return;
                         const origText = this.innerHTML;
                         if (navigator.clipboard && navigator.clipboard.writeText) {
-                            navigator.clipboard.writeText(code).then(() => {
-                                flashCopied(this, origText);
-                            }).catch(() => fallbackCopyCode(code, this, origText));
-                        } else {
-                            fallbackCopyCode(code, this, origText);
-                        }
+                            navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
+                        } else { fallbackCopyCode(code, this, origText); }
                     });
                 });
             }
-
             renderRoutine();
             setInterval(renderRoutine, 30000);
         })();
 
-        // ── PINNED EVENTS (UPDATED) ──────────────────
         (function() {
-            const eventsData = [{
-                date: '4 Sep',
-                title: 'Supplementary Registration Last Date',
-                badge: 'Deadline',
-                meta: 'Register before the deadline',
-                items: ['• Supplementary registration closes today'],
-                note: 'Last date to register for supplementary exams',
-                dateObj: new Date(2026, 8, 4)
-            }, {
-                date: '6 Sep',
-                title: 'First Class – New Semester',
-                badge: 'New Semester',
-                meta: 'Classes begin',
-                items: ['• Welcome to the new semester!'],
-                note: 'Regular classes start from today',
-                dateObj: new Date(2026, 8, 6)
-            }, {
-                date: '13 Sep',
-                title: 'Supplementary Exam',
-                badge: 'Exam',
-                meta: 'Date: 13 September',
-                items: ['• Supplementary exams scheduled'],
-                note: 'Check your exam schedule for details',
-                dateObj: new Date(2026, 8, 13)
-            }, {
-                date: '7-17 Sep',
-                title: '6k Fee Payment',
-                badge: 'Important',
-                meta: 'Deadline: 17 September',
-                items: ['• Pay your 6,000 BDT semester fees'],
-                note: 'Last date to pay is 17 September. Don\'t miss it!',
-                dateObj: new Date(2026, 8, 7),
-                rangeEnd: new Date(2026, 8, 17)
-            }, {
-                date: 'Till Mid',
-                title: 'Assignment (ECO)',
-                badge: 'Assignment',
-                meta: 'Due before Mid & Final',
-                items: [
-                    'Class e ja Poriyeche Tai abro A4 page Note korte hobe jet Mid & Final er Age Assignment Hishabe Joma dite hobe.'
-                ],
-                note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.',
-                dateObj: new Date(2026, 9, 1),
-                rangeEnd: new Date(2026, 9, 20)
-            }, {
-                date: '24-31 Oct',
-                title: 'Mid Exam (MGT, ECO, QUA)',
-                badge: 'Midterm',
-                meta: 'Estimated date range',
-                items: [
-                    '📘 <strong>QUA 1101</strong> Syllabus:',
-                    '• Set',
-                    '• Equation',
-                    '• Index & algorithms',
-                    '📘 <strong>MGT 1101</strong> – Not yet',
-                    '📘 <strong>ECO 1101</strong> – Not yet'
-                ],
-                note: 'Syllabus details will be updated when available',
-                dateObj: new Date(2026, 9, 24),
-                rangeEnd: new Date(2026, 9, 31)
-            }];
+            const eventsData = [
+                { date: '28 Sep', title: 'ECO CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation', dateObj: new Date(2026, 8, 28) },
+                { date: '4 Oct', title: 'Math CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly', dateObj: new Date(2026, 9, 4) },
+                { date: '20 Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'], note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.', dateObj: new Date(2026, 9, 20) },
+                { date: '24-31 Oct', title: 'Mid Exam (MGT, ECO, QUA)', badge: 'Midterm (est)', meta: 'Estimated date range', items: ['📘 <strong>QUA 1101</strong> Syllabus:', '• Set', '• Equation', '• Index & algorithms', '📘 <strong>MGT 1101</strong> – Not yet', '📘 <strong>ECO 1101</strong> – Not yet'], note: 'Syllabus details will be updated when available', dateObj: new Date(2026, 9, 24), rangeEnd: new Date(2026, 9, 31) }
+            ];
 
             function getMonthAbbr(date) {
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                 return months[date.getMonth()];
             }
-
             function getDayNum(date) { return date.getDate(); }
 
             function shouldShowEvent(ev) {
@@ -1066,8 +849,7 @@
                 visible.sort((a, b) => (a.dateObj || a.rangeEnd) - (b.dateObj || b.rangeEnd));
 
                 if (visible.length === 0) {
-                    container.innerHTML =
-                        '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
+                    container.innerHTML = '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
                     return;
                 }
 
@@ -1078,9 +860,6 @@
                         const parts = ev.date.split(' ');
                         displayDay = parts[0];
                         displayMonth = parts[1];
-                    } else if (ev.date.includes('Till')) {
-                        displayDay = 'Till';
-                        displayMonth = 'Mid';
                     } else {
                         const d = new Date(ev.dateObj);
                         displayDay = getDayNum(d);
@@ -1090,9 +869,7 @@
                     let itemsHtml = '';
                     if (ev.items && ev.items.length > 0) {
                         itemsHtml = '<div class="event-items">';
-                        ev.items.forEach(item => {
-                            itemsHtml += '<span>' + item + '</span>';
-                        });
+                        ev.items.forEach(item => { itemsHtml += '<span>' + item + '</span>'; });
                         itemsHtml += '</div>';
                     }
 
@@ -1105,21 +882,12 @@
 
                     html +=
                         '<div class="event-block">' +
-                        '<div class="event-date-badge">' +
-                        '<span class="day">' + displayDay + '</span>' +
-                        '<span class="month">' + displayMonth + '</span>' +
-                        '</div>' +
+                        '<div class="event-date-badge"><span class="day">' + displayDay + '</span><span class="month">' + displayMonth + '</span></div>' +
                         '<div class="event-content">' +
                         '<div class="event-summary">' +
-                        '<div class="event-title">' +
-                        ev.title +
-                        (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') +
-                        '</div>' +
+                        '<div class="event-title">' + ev.title + (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') + '</div>' +
                         '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">See More <i class="fas fa-chevron-down"></i></button>' +
-                        '</div>' +
-                        detailsHtml +
-                        '</div>' +
-                        '</div>';
+                        '</div>' + detailsHtml + '</div></div>';
                 });
 
                 container.innerHTML = html;
@@ -1131,9 +899,7 @@
                 if (!details) return;
                 const isOpen = details.classList.toggle('open');
                 btn.classList.toggle('open', isOpen);
-                btn.innerHTML = isOpen ?
-                    'See Less <i class="fas fa-chevron-up"></i>' :
-                    'See More <i class="fas fa-chevron-down"></i>';
+                btn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' : 'See More <i class="fas fa-chevron-down"></i>';
             };
 
             renderEvents();
