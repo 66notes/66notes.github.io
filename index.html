@@ -116,8 +116,6 @@
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
         .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
-        .routine-warning { background: #dbeafe; border: 1px solid #93c5fd; border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin-bottom: 0.9rem; font-size: 0.75rem; font-weight: 500; color: #1e3a8a; display: flex; align-items: flex-start; gap: 0.5rem; }
-        .routine-warning i { color: #2563eb; font-size: 1.1rem; margin-top: 0.05rem; flex-shrink: 0; }
         .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
         .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-family: 'Poppins', sans-serif; min-width: 380px; }
         .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; text-transform: uppercase; }
@@ -157,21 +155,48 @@
         .community-card .c-icon.messenger { background: #0084FF; }
         .community-card .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
 
+        /* ── FACULTY ───────────────────────────── */
         .faculty-root { font-family: 'Poppins', sans-serif; }
         .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
         .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
         .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
         .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
         .faculty-name .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
-        .faculty-number { font-size: 0.75rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.1rem 0.6rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; }
-        .faculty-actions { margin-top: 0.3rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.2rem 0.9rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.65rem; border: none; cursor: pointer; transition: all var(--transition); min-height: 32px; text-decoration: none; min-width: 60px; }
+
+        /* Number as plain clickable tel: link (long-press to copy) */
+        .faculty-number-link {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #1e40af;
+            background: #eff6ff;
+            padding: 0.15rem 0.65rem;
+            border-radius: 8px;
+            border: 1px solid #dbeafe;
+            white-space: nowrap;
+            font-family: 'Poppins', monospace;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        .faculty-number-link:active { background: #dbeafe; }
+
+        .faculty-actions { margin-top: 0.35rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .faculty-actions .btn-fac {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;
+            padding: 0.22rem 0.95rem; border-radius: 40px;
+            font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.68rem;
+            border: none; cursor: pointer; transition: all var(--transition);
+            min-height: 32px; text-decoration: none; min-width: 64px;
+        }
         .faculty-actions .btn-fac:active { transform: scale(0.95); }
-        .faculty-actions .btn-copy { background: #e5e7eb; color: #374151; }
         .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
         .faculty-actions .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
-        .faculty-actions .btn-fac i { font-size: 0.75rem; }
-        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.3rem; margin-top: 0.3rem; display: flex; flex-direction: column; gap: 0.2rem; }
+        .faculty-actions .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
+        .faculty-actions .btn-fac i { font-size: 0.78rem; }
+
+        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.2rem; }
         .faculty-details .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
         .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
         .faculty-details .value { color: var(--text); font-weight: 400; }
@@ -181,8 +206,28 @@
         .counsel-box .counsel-title i { font-size: 0.7rem; }
         .counsel-box .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
         .counsel-box .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
-        .counsel-box .counsel-note { margin-top: 0.35rem; padding-top: 0.3rem; border-top: 1px dashed #bfdbfe; font-weight: 600; color: #b45309; font-size: 0.6rem; display: flex; align-items: center; gap: 0.25rem; }
-        .counsel-box .counsel-note i { color: #d97706; }
+
+        /* General counseling note (bottom of faculty) */
+        .faculty-general-note {
+            margin-top: 0.9rem;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.68rem;
+            color: #78350f;
+            line-height: 1.55;
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+        .faculty-general-note i {
+            color: #d97706;
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+        .faculty-general-note strong { color: #b45309; }
 
         .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 1rem; }
         .cta-footer .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
@@ -214,8 +259,8 @@
             .code-card .code-value { font-size: 0.6rem; }
             .code-card .copy-btn, .code-card .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
             .faculty-name { font-size: 0.8rem; }
-            .faculty-number { font-size: 0.68rem; }
-            .faculty-actions .btn-fac { font-size: 0.6rem; min-height: 30px; min-width: 52px; padding: 0.15rem 0.7rem; }
+            .faculty-number-link { font-size: 0.7rem; }
+            .faculty-actions .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
             .btn--large { font-size: 13px; height: 42px; }
             .bottom-nav { height: 64px; }
             .bottom-nav__label { font-size: 9px; }
@@ -335,16 +380,16 @@
             <div class="faculty-root" id="section-faculty">
                 <div class="faculty-list">
 
-                    <!-- MGT 1101 -->
+                    <!-- MGT 1101 – Johirul Islam -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
-                            <span class="faculty-number">01914898292</span>
+                            <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01914898292">Copy</button>
                             <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                             <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
                         </div>
                         <div class="faculty-details">
                             <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
@@ -352,55 +397,62 @@
                         </div>
                     </div>
 
-                    <!-- QUA 1101 -->
+                    <!-- QUA 1101 – Taskia Akhtar -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
-                            <span class="faculty-number">01913045537</span>
+                            <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01913045537">Copy</button>
                             <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                             <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
                         </div>
                         <div class="faculty-details">
                             <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
                             <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
 
                             <div class="counsel-box">
                                 <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
                                 <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
-                                <div class="counsel-line"><strong>Room:</strong> <span>B:3 / R:207</span></div>
-                                <div class="counsel-note"><i class="fas fa-exclamation-circle"></i> Call before you come</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ECO 1101 -->
+                    <!-- ECO 1101 – Rahat -->
                     <div class="faculty-item">
                         <div class="faculty-row">
                             <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
-                            <span class="faculty-number">01735692906</span>
+                            <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
                         </div>
                         <div class="faculty-actions">
-                            <button class="btn-fac btn-copy" data-number="01735692906">Copy</button>
                             <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                             <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
                         </div>
                         <div class="faculty-details">
                             <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
                             <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
 
                             <div class="counsel-box">
                                 <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                                <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM — R-1701</span></div>
+                                <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
                                 <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
-                                <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM — R-1701</span></div>
-                                <div class="counsel-note"><i class="fas fa-exclamation-circle"></i> Call before you come</div>
+                                <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
                             </div>
                         </div>
                     </div>
 
+                </div>
+
+                <!-- General counseling note (bottom of faculty list) -->
+                <div class="faculty-general-note">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong>
+                    </div>
                 </div>
             </div>
         </section>
@@ -547,7 +599,6 @@
             setInterval(updateClock, 30000);
         })();
 
-        // ── ANNOUNCEMENTS (UPDATED) ──────────────
         (function() {
             const container = document.getElementById('announcementText');
             const lines = [
@@ -577,8 +628,8 @@
             const classes = [
                 { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
                 { day: 0, startH: 16, startM: 15, endH: 17, endM: 45, course: 'QUA 1101', room: '4905' },
-                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4201' },
-                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4201' },
+                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4304' },
+                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4304' },
                 { day: 3, startH: 8, startM: 15, endH: 9, endM: 45, course: 'ECO 1101', room: '4905' },
                 { day: 3, startH: 9, startM: 45, endH: 11, endM: 15, course: 'MGT 1101', room: '4905' }
             ];
@@ -713,40 +764,12 @@
             setTimeout(() => { btn.innerHTML = origText; btn.classList.remove('copied-flash'); }, 1500);
         }
 
-        document.querySelectorAll('.btn-copy').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const number = this.getAttribute('data-number');
-                if (!number) return;
-                const origText = this.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(number).then(() => showFacCopied(this, origText)).catch(() => fallbackFacCopy(number, this, origText));
-                } else { fallbackFacCopy(number, this, origText); }
-            });
-        });
-        function fallbackFacCopy(text, btn, origText) {
-            const ta = document.createElement('textarea');
-            ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
-            document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); showFacCopied(btn, origText); } catch (e) { alert('Could not copy.'); }
-            document.body.removeChild(ta);
-        }
-        function showFacCopied(btn, origText) {
-            btn.textContent = 'Copied!';
-            btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
-            setTimeout(() => { btn.textContent = origText; btn.style.background = ''; btn.style.color = ''; }, 1800);
-        }
-
         (function() {
             function renderRoutine() {
                 const container = document.getElementById('routineContent');
                 if (!container) return;
 
                 let html = `
-                    <div class="routine-warning">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span><strong>Fall 2026 - Intake 66-4</strong> · New semester routine is now available!</span>
-                    </div>
                     <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
                     <div class="routine-table-wrap">
                         <table class="routine-table">
@@ -754,15 +777,12 @@
                             <tbody>
                                 <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                                 <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
-                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304/4201 <sup>*</sup></td><td>ECO 1101</td><td>KMR</td></tr>
-                                <tr><td>01:15 – 02:45</td><td>4304/4201 <sup>*</sup></td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
                                 <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
                                 <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
                             </tbody>
                         </table>
-                        <div style="font-size:0.6rem; padding:0.25rem 0.5rem; color:var(--text-muted); text-align:right; border-top:1px dashed var(--border);">
-                            <sup>*</sup> Wrong and will change
-                        </div>
                     </div>
                 `;
 
