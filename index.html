@@ -9,7 +9,6 @@
     <link rel="canonical" href="https://66notes.github.io/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Async font loading — does NOT block first paint -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
@@ -41,9 +40,7 @@
         .top-app-bar__title span { color: var(--accent); }
         .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
         .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
-        .notices-btn .material-symbols-rounded { font-size: 16px; }
-        /* Reserve space for the icon so layout doesn't jump while font loads */
-        .notices-btn .material-symbols-rounded { width: 16px; height: 16px; display: inline-block; }
+        .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
 
         .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; min-height: calc(100vh - 56px); }
         .page { animation: fade-in 0.3s ease; }
@@ -73,7 +70,7 @@
         .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
         /* ═══════════════════════════════════════════════
-           PINNED EVENTS — NEW OPTIMIZED STYLES
+           PINNED EVENTS
            ═══════════════════════════════════════════════ */
         .events-root { font-family: 'Poppins', sans-serif; }
 
@@ -95,216 +92,73 @@
             margin-bottom: 12px;
             border-bottom: 1px solid #eef2f6;
         }
+        .card-header i { color: #2563eb; font-size: 0.82rem; }
+        .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
 
-        .card-header i {
-            color: #2563eb;
-            font-size: 0.82rem;
+        .events-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .events-empty {
+            text-align: center;
+            padding: 1.2rem 0.5rem;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 500;
         }
 
-        .card-header span {
-            font-size: 0.74rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #6b7280;
-        }
+        .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; }
 
-        .events-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .event-block {
-            background: #fafbfc;
-            border: 1px solid #eef2f6;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .event-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            padding: 12px;
-            cursor: default;
-        }
+        .event-row { display: flex; gap: 12px; align-items: center; padding: 12px; }
 
         .event-date {
-            flex-shrink: 0;
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
+            flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px;
             background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
+        .event-date .day { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1; }
+        .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
 
-        .event-date .day {
-            font-size: 1rem;
-            font-weight: 800;
-            color: #fff;
-            line-height: 1;
-        }
-
-        .event-date .month {
-            font-size: 0.44rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 2px;
-        }
-
-        .event-body {
-            flex: 1;
-            min-width: 0;
-        }
+        .event-body { flex: 1; min-width: 0; }
 
         .event-title {
-            font-size: 0.76rem;
-            font-weight: 700;
-            color: #1e2a3e;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            line-height: 1.3;
+            font-size: 0.76rem; font-weight: 700; color: #1e2a3e;
+            display: flex; align-items: center; gap: 6px; flex-wrap: wrap; line-height: 1.3;
         }
 
         .event-badge {
-            font-size: 0.48rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-            background: #fef3c7;
-            color: #b45309;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
+            font-size: 0.48rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+            background: #fef3c7; color: #b45309; text-transform: uppercase;
+            letter-spacing: 0.05em; white-space: nowrap;
         }
 
-        /* See Detail button */
         .event-detail-btn {
-            flex-shrink: 0;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
-            color: #2563eb;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
+            flex-shrink: 0; padding: 4px 12px; border-radius: 20px;
+            background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb;
+            font-size: 0.65rem; font-weight: 600; cursor: pointer;
             transition: background 0.2s ease, transform 0.1s ease;
-            font-family: 'Poppins', sans-serif;
-            white-space: nowrap;
+            font-family: 'Poppins', sans-serif; white-space: nowrap;
         }
-        .event-detail-btn:active {
-            background: #dbeafe;
-            transform: scale(0.96);
-        }
+        .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
 
         /* Range Event */
-        .event-block.range-event {
-            padding: 12px;
-        }
-
-        .range-content {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .range-dates {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-            gap: 6px;
-        }
-
+        .event-block.range-event { padding: 12px; }
+        .range-content { display: flex; gap: 12px; align-items: center; }
+        .range-dates { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 6px; }
         .date-pill {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
+            width: 48px; height: 48px; border-radius: 10px;
             background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
+        .date-pill.end { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); }
+        .date-pill .day { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1; }
+        .date-pill .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+        .range-connector { width: 2px; height: 12px; background: #2563eb; border-radius: 1px; }
+        .range-info { flex: 1; min-width: 0; }
+        .range-label { font-size: 0.58rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
 
-        .date-pill.end {
-            background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
-        }
-
-        .date-pill .day {
-            font-size: 1rem;
-            font-weight: 800;
-            color: #fff;
-            line-height: 1;
-        }
-
-        .date-pill .month {
-            font-size: 0.44rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 2px;
-        }
-
-        .range-connector {
-            width: 2px;
-            height: 12px;
-            background: #2563eb;
-            border-radius: 1px;
-        }
-
-        .range-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .range-label {
-            font-size: 0.58rem;
-            color: #9ca3af;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 4px;
-        }
-
-        /* Styles for modal content (reusing event-meta, event-items, event-note) */
-        .event-meta {
-            font-size: 0.62rem;
-            font-weight: 600;
-            color: #6b7280;
-            margin-bottom: 6px;
-        }
-
-        .event-items {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            font-size: 0.68rem;
-            color: #374151;
-            padding-left: 2px;
-            line-height: 1.4;
-        }
-
-        .event-note {
-            font-size: 0.62rem;
-            font-weight: 500;
-            color: #7c2d12;
-            background: #fef3c7;
-            padding: 6px 10px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 6px;
-        }
+        /* Event detail modal contents */
+        .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
+        .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
+        .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
 
         .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
         .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
@@ -320,7 +174,7 @@
         .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
         @keyframes modal-in { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
-        .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+        .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .modal-header h2 i { color: var(--accent); }
         .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: background var(--transition); }
         .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
@@ -407,56 +261,31 @@
         .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #ffffff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
 
         /* ═══════════════════════════════════════════════
-           BOTTOM NAV — MATERIAL YOU STYLE + SVG ICONS
+           BOTTOM NAV
            ═══════════════════════════════════════════════ */
         .bottom-nav {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 30;
-            display: flex;
-            height: 72px;
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+            display: flex; height: 72px;
             padding-bottom: env(safe-area-inset-bottom, 0);
             background: var(--surface);
             border-top: 1px solid var(--border);
             box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
         }
         .bottom-nav__item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            padding: 6px 0 10px;
-            color: var(--text-secondary);
-            font-family: 'Poppins', sans-serif;
-            transition: color var(--transition);
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2px; border: none; background: transparent; cursor: pointer;
+            padding: 6px 0 10px; color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif; transition: color var(--transition);
             -webkit-tap-highlight-color: transparent;
         }
         .bottom-nav__item.is-active { color: var(--accent); }
         .bottom-nav__icon {
-            width: 52px;
-            height: 30px;
-            border-radius: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 52px; height: 30px; border-radius: 28px;
+            display: flex; align-items: center; justify-content: center;
             transition: background-color var(--transition);
         }
-        .bottom-nav__item.is-active .bottom-nav__icon {
-            background: var(--accent-light);
-        }
-        .bottom-nav__icon svg {
-            width: 22px;
-            height: 22px;
-            display: block;
-            fill: currentColor;
-        }
+        .bottom-nav__item.is-active .bottom-nav__icon { background: var(--accent-light); }
+        .bottom-nav__icon svg { width: 22px; height: 22px; display: block; fill: currentColor; }
         .bottom-nav__item .icon-filled { display: none; }
         .bottom-nav__item.is-active .icon-outline { display: none; }
         .bottom-nav__item.is-active .icon-filled { display: block; }
@@ -485,7 +314,6 @@
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
 
-            /* New events responsive */
             .events-card { padding: 14px 12px 10px; }
             .event-row { padding: 10px; }
             .event-date, .date-pill { width: 44px; height: 44px; }
@@ -496,11 +324,6 @@
 </head>
 <body>
 
-    <!-- ═══════════════════════════════════════════════
-         BOTTOM NAV — placed at top of body + SVG icons
-         so it paints on the very first frame.
-         Uses Material You active-pill style.
-         ═══════════════════════════════════════════════ -->
     <nav class="bottom-nav" aria-label="Main navigation">
         <button class="bottom-nav__item is-active" data-target="page-home" aria-label="Home">
             <span class="bottom-nav__icon">
@@ -565,9 +388,7 @@
                 </div>
             </div>
 
-            <!-- ═══════════════════════════════════════════════
-                 PINNED EVENTS — WITH POPUP DETAILS
-                 ═══════════════════════════════════════════════ -->
+            <!-- PINNED EVENTS -->
             <div class="events-root" id="section-events">
                 <div class="events-card">
                     <div class="card-header">
@@ -781,9 +602,7 @@
                 <h2 id="event-modal-title"><i class="fas fa-calendar-check"></i> Event Details</h2>
                 <button class="modal-close-btn" onclick="closeModal('modal-event-details')">✕</button>
             </div>
-            <div class="modal-body" id="event-modal-body">
-                <!-- Content injected by JS -->
-            </div>
+            <div class="modal-body" id="event-modal-body"></div>
             <div class="modal-footer">
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-event-details')">Close</button>
             </div>
@@ -1080,9 +899,11 @@
         })();
 
         /* ═══════════════════════════════════════════════
-           PINNED EVENTS — POPUP DETAILS
-           Renders once, no polling, uses DocumentFragment.
-           Click "See Detail" opens a modal with full info.
+           PINNED EVENTS — WITH EXPIRY (Dhaka GMT+6)
+           expiresAt: ISO string with +06:00 offset
+           Event hides when current Dhaka time passes expiresAt.
+           Range events expire at end of end date (23:59:59 Dhaka).
+           No deadline → event expires end of its own date (23:59:59 Dhaka).
            ═══════════════════════════════════════════════ */
         (function() {
             const events = [
@@ -1091,6 +912,7 @@
                     month: 'Sep',
                     title: 'ECO CT Exam',
                     badge: 'CT',
+                    expiresAt: '2026-09-28T23:59:59+06:00',   // expired → hidden
                     meta: 'Syllabus provided',
                     items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'],
                     note: 'Check with faculty for confirmation'
@@ -1100,6 +922,7 @@
                     month: 'Oct',
                     title: 'Math CT Exam',
                     badge: 'CT',
+                    expiresAt: '2026-10-04T23:59:59+06:00',
                     meta: 'Syllabus provided',
                     items: ['• Set', '• Index'],
                     note: 'Prepare accordingly'
@@ -1109,6 +932,7 @@
                     month: 'Oct',
                     title: 'Assignment (ECO) Last Date',
                     badge: 'Assignment',
+                    expiresAt: '2026-10-20T23:59:59+06:00',   // deadline is the submission date
                     meta: 'Deadline: 20 October',
                     items: ['• Use review chapter questions', '• PDF will be provided'],
                     note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.'
@@ -1125,6 +949,7 @@
                         { text: 'Estimated', type: 'blue' }
                     ],
                     rangeLabel: 'Estimated Window',
+                    expiresAt: '2026-10-31T23:59:59+06:00',   // expires end of last day
                     meta: 'Estimated date range',
                     items: [
                         '📘 QUA 1101: Set, Equation, Index & algorithms',
@@ -1138,13 +963,17 @@
             const list = document.getElementById('eventsList');
             if (!list) return;
 
-            // Helper to open event details modal
+            // Returns true if the event's expiry moment has passed (Dhaka time)
+            function isExpired(ev) {
+                if (!ev.expiresAt) return false;
+                return Date.now() > new Date(ev.expiresAt).getTime();
+            }
+
             function openEventDetails(ev) {
                 const modalTitle = document.getElementById('event-modal-title');
                 const modalBody = document.getElementById('event-modal-body');
                 if (!modalTitle || !modalBody) return;
 
-                // Set title with badges
                 let titleHtml = ev.title;
                 if (ev.badges) {
                     titleHtml += ' ' + ev.badges.map(b => `<span class="event-badge">${b.text}</span>`).join(' ');
@@ -1153,45 +982,31 @@
                 }
                 modalTitle.innerHTML = `<i class="fas fa-calendar-check"></i> ${titleHtml}`;
 
-                // Build body content
                 let bodyHtml = '';
-
-                // Date info
                 if (ev.isRange) {
                     bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}</div>`;
                 } else {
                     bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.day} ${ev.month}</div>`;
                 }
-
-                if (ev.meta) {
-                    bodyHtml += `<div class="event-meta">${ev.meta}</div>`;
-                }
-
+                if (ev.meta) bodyHtml += `<div class="event-meta">${ev.meta}</div>`;
                 if (ev.items && ev.items.length) {
-                    bodyHtml += `<div class="event-items">${ev.items.map(item => `<div>${item}</div>`).join('')}</div>`;
+                    bodyHtml += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
                 }
-
-                if (ev.note) {
-                    bodyHtml += `<div class="event-note">${ev.note}</div>`;
-                }
+                if (ev.note) bodyHtml += `<div class="event-note">${ev.note}</div>`;
 
                 modalBody.innerHTML = bodyHtml;
-
-                // Open modal
                 openModal('modal-event-details');
             }
 
-            const fragment = document.createDocumentFragment();
-
-            events.forEach((ev) => {
-                let block = document.createElement('div');
+            // Build a single event block element
+            function buildBlock(ev) {
+                const block = document.createElement('div');
                 block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
 
                 if (ev.isRange) {
                     const badgesHtml = (ev.badges || [])
-                        .map((b) => `<span class="event-badge">${b.text}</span>`)
+                        .map(b => `<span class="event-badge">${b.text}</span>`)
                         .join('');
-
                     block.innerHTML = `
                         <div class="range-content">
                             <div class="range-dates">
@@ -1206,12 +1021,6 @@
                             <button class="event-detail-btn" type="button">See Detail</button>
                         </div>
                     `;
-
-                    const btn = block.querySelector('.event-detail-btn');
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openEventDetails(ev);
-                    });
                 } else {
                     block.innerHTML = `
                         <div class="event-row">
@@ -1220,18 +1029,38 @@
                             <button class="event-detail-btn" type="button">See Detail</button>
                         </div>
                     `;
-
-                    const btn = block.querySelector('.event-detail-btn');
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        openEventDetails(ev);
-                    });
                 }
 
-                fragment.appendChild(block);
-            });
+                const btn = block.querySelector('.event-detail-btn');
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEventDetails(ev);
+                });
+                return block;
+            }
 
-            list.appendChild(fragment);
+            // Render only active (non-expired) events
+            function render() {
+                const visible = events.filter(ev => !isExpired(ev));
+                list.innerHTML = '';
+
+                if (visible.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'events-empty';
+                    empty.textContent = 'No upcoming events.';
+                    list.appendChild(empty);
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+                visible.forEach(ev => fragment.appendChild(buildBlock(ev)));
+                list.appendChild(fragment);
+            }
+
+            render();
+
+            // Re-check every 60 seconds so events auto-hide at their expiry moment
+            setInterval(render, 60000);
         })();
     </script>
 </body>
