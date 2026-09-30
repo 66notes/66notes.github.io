@@ -1,834 +1,950 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
-  <title>66notes bubt — Student Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
+    <title>66notes bubt - Student Dashboard</title>
+    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
+    <link rel="canonical" href="https://66notes.github.io/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Async font loading — does NOT block first paint -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </noscript>
 
-  <style>
-    :root {
-      --bg: #f4f6fb;
-      --surface: #ffffff;
-      --surface-soft: #fafbfc;
-      --border: #eef2f6;
-      --border-strong: #e0e5ec;
-      --text: #1e2a3e;
-      --text-secondary: #6b7280;
-      --text-muted: #9ca3af;
-      --navy: #0d2b4e;
-      --accent: #2563eb;
-      --accent-light: #eff6ff;
-      --green: #22c55e;
-      --amber: #f59e0b;
-      --red: #dc2626;
-      --purple: #8b5cf6;
-      --radius-xl: 22px;
-      --radius-md: 14px;
-      --radius-sm: 10px;
-      --radius-pill: 100px;
-      --nav-h: 62px;
-    }
+    <style>
+        :root {
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+            --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
+            --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
+            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; padding-bottom: 80px; min-height: 100vh; line-height: 1.5; }
+        .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+        .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .top-app-bar__title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
+        .top-app-bar__title span { color: var(--accent); }
+        .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
+        .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
+        .notices-btn .material-symbols-rounded { font-size: 16px; }
+        /* Reserve space for the icon so layout doesn't jump while font loads */
+        .notices-btn .material-symbols-rounded { width: 16px; height: 16px; display: inline-block; }
 
-    html {
-      font-size: 16px;
-      -webkit-text-size-adjust: 100%;
-    }
+        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; min-height: calc(100vh - 56px); }
+        .page { animation: fade-in 0.3s ease; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .page h2 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
+        .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: calc(var(--nav-h) + 40px + env(safe-area-inset-bottom, 0px));
-    }
+        .announcement-bar { display: flex; align-items: center; gap: 0.75rem; background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 0.5rem 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
+        .announcement-icon .material-symbols-rounded { color: #ea580c; font-size: 1.5rem; width: 24px; height: 24px; display: inline-block; }
+        .announcement-text { flex: 1; min-height: 2rem; display: flex; align-items: center; position: relative; }
+        .announcement-line { position: absolute; width: 100%; opacity: 0; transform: translateX(10px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight: 600; font-size: 0.85rem; color: #7c2d12; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .announcement-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
 
-    /* ═══════════════════════════════════════════════
-       BOTTOM NAV — original styling recovered
-       (grey pill on active, navy text)
-       ═══════════════════════════════════════════════ */
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 999;
-      display: flex;
-      align-items: stretch;
-      background: #ffffff;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-      padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
+        .glance { background: var(--surface); border-radius: var(--radius-xl); padding: 1.2rem 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem; }
+        .section-title { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
+        .live-indicator { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); animation: pulse 1.8s infinite; flex-shrink: 0; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+        .reminder-main { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+        .message-box { min-height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.95rem; color: #2d3748; position: relative; width: 100%; }
+        .message-line { position: absolute; width: 100%; text-align: center; opacity: 0; transform: translateX(12px); transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); pointer-events: none; padding: 0 0.2rem; }
+        .message-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
+        .message-line strong { font-weight: 700; color: var(--navy); }
+        .clock-display { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; font-variant-numeric: tabular-nums; margin-top: 0.1rem; }
+        .next-class-bar { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; background: #f8fafc; border-radius: 12px; padding: 0.4rem 0.7rem; border: 1px solid var(--border); font-weight: 500; justify-content: center; flex-wrap: wrap; min-height: 38px; margin-top: 0.4rem; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
+        .status-dot.running { background: var(--green); }
+        .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
-    .nav-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      font-family: inherit;
-      font-size: 10px;
-      font-weight: 500;
-      cursor: pointer;
-      text-decoration: none;
-      padding: 6px 0 10px;
-      min-height: 60px;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-    .nav-item.active { color: var(--navy); font-weight: 600; }
+        .events-root { font-family: 'Poppins', sans-serif; }
+        .events-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1rem 1rem 0.6rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
+        .card-header { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
+        .card-header::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--accent); border-radius: 2px; }
+        .card-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); }
+        .card-title i { color: var(--accent); margin-right: 0.3rem; }
+        .events-list { display: flex; flex-direction: column; gap: 6px; }
+        .event-block { display: flex; gap: 0.5rem; align-items: stretch; background: #f9fafb; border-radius: 12px; padding: 0; border: 1px solid var(--border); overflow: hidden; transition: all var(--transition); }
+        .event-date-badge { flex-shrink: 0; align-self: center; width: 60px; height: 60px; background: var(--navy); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.1rem; text-align: center; margin-left: 0.1rem; }
+        .event-date-badge .day { font-size: 1.3rem; font-weight: 700; color: #ffffff; line-height: 1.1; }
+        .event-date-badge .month { font-size: 0.55rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
+        .event-content { flex: 1; padding: 0.4rem 0.5rem 0.4rem 0; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+        .event-summary { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; padding: 0.1rem 0; width: 100%; }
+        .event-summary .event-title { font-weight: 700; font-size: 0.78rem; color: var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; flex: 1; }
+        .event-badge { font-weight: 600; font-size: 0.5rem; background: #fef3c7; color: #b45309; padding: 0 6px; border-radius: 8px; border: 1px solid #fde68a; white-space: nowrap; flex-shrink: 0; }
+        .event-toggle-btn { flex-shrink: 0; background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 30px; color: var(--accent); font-weight: 600; font-size: 0.6rem; padding: 0.25rem 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s ease; min-height: 30px; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
+        .event-toggle-btn i { font-size: 0.5rem; transition: transform 0.3s ease; }
+        .event-toggle-btn.open i { transform: rotate(180deg); }
+        .event-details { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease; padding: 0 0.2rem 0 0; opacity: 0; }
+        .event-details.open { max-height: 800px; padding: 0.3rem 0.2rem 0.1rem 0; opacity: 1; }
+        .event-details .event-meta { font-size: 0.6rem; font-weight: 500; color: #4b5563; margin-bottom: 0.1rem; }
+        .event-details .event-items { display: flex; flex-direction: column; gap: 0.1rem; font-size: 0.7rem; color: #1f2937; padding-left: 0.2rem; }
+        .event-details .event-items span { display: block; padding: 0.05rem 0; }
+        .event-details .event-note { font-size: 0.65rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 0.1rem 0.6rem; border-radius: 6px; display: inline-block; margin-top: 0.2rem; border: 1px solid #fde68a; }
+        .event-details .event-note.blue { background: #eff6ff; color: #1e40af; border-color: #dbeafe; }
 
-    .nav-icon {
-      width: 48px;
-      height: 28px;
-      border-radius: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      transition: background 0.15s ease;
-    }
-    .nav-item.active .nav-icon {
-      background: #eef2f6;
-    }
-    .nav-icon svg {
-      width: 18px;
-      height: 18px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+        .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
+        .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .wifi-home-card::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 140px; height: 140px; background: rgba(255,255,255,0.06); border-radius: 50%; }
+        .wifi-home-card:active { transform: scale(0.98); }
+        .wifi-home-card .wifi-home-icon { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
+        .wifi-home-card .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
 
-    /* ═══ TOP BAR ═══ */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-      padding: 0 16px;
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-    }
-    .brand { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px; color: var(--navy); }
-    .brand span { color: var(--accent); }
-    .top-btn {
-      display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px;
-      border-radius: var(--radius-pill); background: var(--accent-light);
-      border: 1px solid #dbeafe;
-      color: var(--accent); font-family: inherit; font-size: 0.7rem; font-weight: 600;
-      text-decoration: none; cursor: pointer;
-    }
-    .top-btn i { font-size: 0.82rem; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
+        @keyframes modal-in { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
+        .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+        .modal-header h2 i { color: var(--accent); }
+        .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: background var(--transition); }
+        .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; flex-wrap: wrap; }
+        .modal-footer .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; min-height: 38px; }
+        .modal-footer .btn-copy-modal { background: var(--accent); color: #fff; }
+        .modal-footer .btn-close-modal { background: #f3f4f6; color: #374151; }
 
-    /* ═══ CONTENT ═══ */
-    .content { max-width: 780px; margin: 0 auto; padding: 14px; }
-    .page h2 { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .page .subtitle { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 14px; }
+        .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
+        .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
+        .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
+        .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
+        .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
+        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-family: 'Poppins', sans-serif; min-width: 380px; }
+        .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; text-transform: uppercase; }
+        .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #ffffff; color: #1f2a3e; white-space: nowrap; }
+        .routine-table tbody tr:last-child td { border-bottom: none; }
 
-    /* ═══ ANNOUNCEMENT ═══ */
-    .announcement {
-      display: flex; align-items: center; gap: 10px; padding: 11px 14px; margin-bottom: 12px;
-      border-radius: var(--radius-md); background: #fff7ed;
-      border: 1px solid #fed7aa;
-    }
-    .announcement i { color: #ea580c; font-size: 1.05rem; flex-shrink: 0; }
-    .announcement-text { flex: 1; font-size: 0.75rem; font-weight: 600; color: #7c2d12; min-height: 1.1rem; position: relative; }
-    .announcement-line {
-      position: absolute; width: 100%; opacity: 0;
-      transition: opacity 0.3s ease;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;
-    }
-    .announcement-line.active { opacity: 1; position: relative; pointer-events: auto; }
+        .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
+        .codes-section .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
+        .codes-section .codes-label i { color: var(--accent); margin-right: 0.35rem; }
+        .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
+        .code-card { display: flex; align-items: center; gap: 0.5rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.6rem; border: 1px solid var(--border); min-height: 42px; flex-wrap: wrap; }
+        .code-card .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .code-card .code-icon-dot.eco-dot { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+        .code-card .code-icon-dot.mgt-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+        .code-card .code-icon-dot.qua-dot { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
+        .code-card .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
+        .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
+        .code-card .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
+        .code-card .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; transition: all var(--transition); }
+        .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; }
+        .code-card .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; transition: all var(--transition); text-decoration: none; }
 
-    /* ═══ AI GLANCE ═══ */
-    .glance {
-      padding: 20px 16px; margin-bottom: 12px; text-align: center;
-      border-radius: var(--radius-xl); background: var(--surface);
-      border: 1px solid var(--border);
-    }
-    .glance-title {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      font-size: 0.74rem; font-weight: 700; color: var(--text-secondary);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
-    }
-    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-    .message-box { min-height: 50px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 0.98rem; font-weight: 600; color: var(--navy); }
-    .message-line {
-      position: absolute; width: 100%; text-align: center; opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .message-line.active { opacity: 1; position: relative; pointer-events: auto; }
-    .clock { font-size: 0.68rem; font-weight: 500; color: var(--text-muted); font-variant-numeric: tabular-nums; margin-top: 6px; }
-    .next-bar {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      flex-wrap: wrap; margin-top: 12px; padding: 7px 14px;
-      border-radius: var(--radius-pill); background: var(--surface-soft);
-      border: 1px solid var(--border); font-size: 0.65rem;
-      font-weight: 500; color: var(--text-secondary); min-height: 34px;
-    }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
+        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
+        .drive-card .drive-icon { font-size: 2.5rem; color: var(--accent); }
+        .drive-card .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
+        .drive-card .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
+        .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .btn--filled { background: var(--navy); color: #ffffff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
+        .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
 
-    /* ═══ EVENTS ═══ */
-    .events-card {
-      border-radius: var(--radius-xl); background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 18px 16px 12px; margin-bottom: 12px;
-    }
-    .card-header {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding-bottom: 11px; margin-bottom: 12px;
-      border-bottom: 1.5px solid var(--border); position: relative;
-    }
-    .card-header::after {
-      content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%);
-      width: 38px; height: 3px; background: var(--accent); border-radius: 2px;
-    }
-    .card-header i { color: var(--accent); font-size: 0.82rem; }
-    .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); }
+        .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
+        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-decoration: none; transition: all var(--transition); box-shadow: var(--shadow-sm); }
+        .community-card .c-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .community-card .c-icon.classroom { background: #15803d; }
+        .community-card .c-icon.whatsapp { background: #25D366; }
+        .community-card .c-icon.messenger { background: #0084FF; }
+        .community-card .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
 
-    .events-list { display: flex; flex-direction: column; gap: 8px; }
-    .event-block {
-      display: flex; flex-direction: column;
-      background: var(--surface-soft);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md); overflow: hidden;
-    }
-    .event-row { display: flex; gap: 12px; align-items: center; padding: 11px; cursor: pointer; }
-    .event-date {
-      flex-shrink: 0; width: 50px; height: 50px; border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, var(--navy) 0%, #14365e 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .event-date .day { font-size: 1.1rem; font-weight: 800; color: #fff; line-height: 1; }
-    .event-date .month { font-size: 0.46rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
-    .event-body { flex: 1; min-width: 0; }
-    .event-title { font-size: 0.78rem; font-weight: 700; color: var(--text); display: flex; flex-wrap: wrap; align-items: center; gap: 5px; line-height: 1.3; }
-    .event-badge { font-size: 0.5rem; font-weight: 700; padding: 2px 7px; border-radius: var(--radius-pill); background: #fef3c7; color: #b45309; border: 1px solid #fde68a; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
-    .event-badge.blue { background: var(--accent-light); color: var(--accent); border-color: #dbeafe; }
-    .event-toggle {
-      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-      background: var(--accent-light); border: 1px solid #dbeafe;
-      color: var(--accent); display: flex; align-items: center; justify-content: center;
-      font-size: 0.55rem;
-    }
-    .event-toggle i { transition: transform 0.22s ease; }
-    .event-toggle.open i { transform: rotate(180deg); }
+        .faculty-root { font-family: 'Poppins', sans-serif; }
+        .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
+        .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
+        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
+        .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
+        .faculty-name .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
+        .faculty-number-link { font-size: 0.78rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.15rem 0.65rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; text-decoration: none; display: inline-block; cursor: pointer; -webkit-user-select: text; user-select: text; }
+        .faculty-number-link:active { background: #dbeafe; }
+        .faculty-actions { margin-top: 0.35rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; transition: all var(--transition); min-height: 32px; text-decoration: none; min-width: 64px; }
+        .faculty-actions .btn-fac:active { transform: scale(0.95); }
+        .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
+        .faculty-actions .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
+        .faculty-actions .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
+        .faculty-actions .btn-fac i { font-size: 0.78rem; }
+        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.2rem; }
+        .faculty-details .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
+        .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
+        .faculty-details .value { color: var(--text); font-weight: 400; }
+        .counsel-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 0.5rem 0.7rem; margin-top: 0.4rem; font-size: 0.62rem; color: #1e3a8a; }
+        .counsel-box .counsel-title { font-weight: 700; font-size: 0.65rem; color: #1e40af; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.3rem; }
+        .counsel-box .counsel-title i { font-size: 0.7rem; }
+        .counsel-box .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
+        .counsel-box .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
+        .faculty-general-note { margin-top: 0.9rem; background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; padding: 0.75rem 0.9rem; font-size: 0.68rem; color: #78350f; line-height: 1.55; display: flex; gap: 0.5rem; align-items: flex-start; }
+        .faculty-general-note i { color: #d97706; font-size: 0.9rem; margin-top: 0.1rem; flex-shrink: 0; }
+        .faculty-general-note strong { color: #b45309; }
 
-    .event-block.range-event { padding: 11px; }
-    .range-content { display: flex; gap: 12px; cursor: pointer; }
-    .range-dates { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
-    .date-pill {
-      width: 50px; height: 50px; border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, var(--navy) 0%, #14365e 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .date-pill.end { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); }
-    .date-pill .day { font-size: 1.1rem; font-weight: 800; color: #fff; line-height: 1; }
-    .date-pill .month { font-size: 0.46rem; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
-    .range-connector {
-      width: 2px; height: 14px; margin: 2px 0;
-      background: repeating-linear-gradient(180deg, var(--accent) 0px, var(--accent) 3px, transparent 3px, transparent 6px);
-      opacity: 0.5; border-radius: 2px;
-    }
-    .range-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
-    .range-info .event-title { margin-bottom: 6px; }
-    .range-label {
-      font-size: 0.58rem; color: var(--text-muted); font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      display: flex; align-items: center; gap: 4px;
-    }
-    .range-label i { font-size: 0.53rem; color: var(--amber); }
-    .range-toggle {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--accent-light); border: 1px solid #dbeafe;
-      color: var(--accent); display: flex; align-items: center; justify-content: center;
-      font-size: 0.55rem; flex-shrink: 0; align-self: center;
-    }
-    .range-toggle i { transition: transform 0.22s ease; }
-    .range-toggle.open i { transform: rotate(180deg); }
+        .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 1rem; }
+        .cta-footer .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
+        .cta-footer .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
+        .cta-footer .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
+        .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #ffffff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
 
-    .event-details {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.25s ease, opacity 0.25s ease;
-      padding: 0 11px; opacity: 0;
-      border-top: 1px dashed transparent;
-    }
-    .event-details.open { max-height: 500px; padding: 10px 11px 11px; opacity: 1; border-top-color: var(--border); }
-    .event-details .event-meta { font-size: 0.62rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-    .event-details .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: var(--text); padding-left: 2px; }
-    .event-details .event-items span { display: block; padding: 1px 0; }
-    .event-details .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 5px 9px; border-radius: 6px; display: inline-block; margin-top: 6px; border: 1px solid #fde68a; }
+        /* ═══════════════════════════════════════════════
+           BOTTOM NAV — MATERIAL YOU STYLE + SVG ICONS
+           (Only this section changed from original)
+           ═══════════════════════════════════════════════ */
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            display: flex;
+            height: 72px;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .bottom-nav__item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 6px 0 10px;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            transition: color var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bottom-nav__item.is-active { color: var(--accent); }
+        .bottom-nav__icon {
+            width: 52px;
+            height: 30px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color var(--transition);
+        }
+        .bottom-nav__item.is-active .bottom-nav__icon {
+            background: var(--accent-light);
+        }
+        .bottom-nav__icon svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+            fill: currentColor;
+        }
+        /* Filled vs outline swap (Material You signature) */
+        .bottom-nav__item .icon-filled { display: none; }
+        .bottom-nav__item.is-active .icon-outline { display: none; }
+        .bottom-nav__item.is-active .icon-filled { display: block; }
+        .bottom-nav__label { font-size: 10px; font-weight: 500; }
 
-    /* ═══ WIFI CARD ═══ */
-    .wifi-card {
-      display: block; border-radius: var(--radius-xl); padding: 22px 18px; text-align: center;
-      text-decoration: none; color: var(--navy);
-      background: linear-gradient(135deg, #eff6ff 0%, #f3e8ff 100%);
-      border: 1px solid #dbeafe; margin-top: 12px;
-    }
-    .wifi-card i.wifi-icon { font-size: 1.85rem; color: var(--accent); display: block; margin-bottom: 8px; }
-    .wifi-card .wifi-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
-    .wifi-card .wifi-desc { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 12px; }
-    .wifi-card .wifi-cta {
-      display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px;
-      border-radius: var(--radius-pill); background: var(--navy);
-      font-size: 0.72rem; font-weight: 600; color: #fff;
-    }
-
-    /* ═══ CTA FOOTER ═══ */
-    .cta-footer {
-      margin-top: 12px; padding: 22px 18px; border-radius: var(--radius-xl);
-      background: var(--surface); border: 1px solid var(--border); text-align: center;
-    }
-    .cta-footer .cta-icon { font-size: 1.5rem; color: var(--accent); display: block; margin-bottom: 8px; }
-    .cta-footer .cta-title { font-size: 0.86rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .cta-footer .cta-desc { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 12px; }
-    .cta-btn {
-      display: inline-flex; align-items: center; gap: 6px; padding: 9px 22px;
-      border-radius: var(--radius-pill); background: var(--navy);
-      color: #fff; font-size: 0.74rem; font-weight: 600; text-decoration: none;
-    }
-
-    /* ═══ PDFs ═══ */
-    .drive-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
-    .drive-card {
-      background: var(--surface); border-radius: var(--radius-xl); padding: 22px 16px;
-      border: 1px solid var(--border); text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
-    .drive-card .drive-icon-img { width: 68px; height: 68px; object-fit: contain; }
-    .drive-card .drive-title { font-weight: 700; font-size: 1rem; color: var(--text); }
-    .drive-card .drive-desc { font-size: 0.76rem; color: var(--text-secondary); }
-    .btn { height: 44px; padding: 0 28px; border-radius: var(--radius-pill); border: none; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
-    .btn--filled { background: var(--navy); color: #fff; }
-    .btn--large { height: 48px; padding: 0 32px; font-size: 15px; width: 100%; justify-content: center; }
-
-    .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
-    .community-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 14px 8px; text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      text-decoration: none;
-    }
-    .community-card .c-icon {
-      width: 42px; height: 42px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; background: #fff;
-    }
-    .community-card .c-icon img { width: 100%; height: 100%; object-fit: contain; }
-    .community-card .c-icon.whatsapp { background: #25D366; }
-    .community-card .c-icon.whatsapp i { color: #fff; font-size: 1.15rem; }
-    .community-card .c-icon.messenger { background: #0084FF; }
-    .community-card .c-icon.messenger i { color: #fff; font-size: 1.15rem; }
-    .community-card .c-title { font-weight: 600; font-size: 0.64rem; color: var(--text); }
-
-    /* ═══ ROUTINE ═══ */
-    .routine-section { background: var(--surface); border-radius: var(--radius-xl); padding: 20px 16px 16px; border: 1px solid var(--border); }
-    .routine-section .section-label { font-weight: 700; font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 14px; padding-bottom: 11px; border-bottom: 1.5px solid var(--border); position: relative; }
-    .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 42px; height: 3px; background: var(--accent); border-radius: 2px; }
-    .routine-section .section-label i { color: var(--accent); margin-right: 6px; }
-    .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-soft); margin-bottom: 14px; -webkit-overflow-scrolling: touch; }
-    .routine-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; font-family: inherit; min-width: 360px; }
-    .routine-table th { text-align: left; padding: 9px 11px; font-weight: 700; font-size: 0.58rem; color: var(--navy); border-bottom: 2px solid var(--border-strong); background: #f5f6f9; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.06em; }
-    .routine-table td { padding: 9px 11px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #ffffff; color: var(--text); white-space: nowrap; }
-    .routine-table tbody tr:last-child td { border-bottom: none; }
-    .codes-section { margin-top: 14px; padding-top: 12px; border-top: 1.5px solid var(--border); }
-    .codes-section .codes-label { font-weight: 700; font-size: 0.74rem; color: var(--navy); text-align: center; margin-bottom: 10px; }
-    .codes-section .codes-label i { color: var(--accent); margin-right: 6px; }
-    .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
-    .code-card { display: flex; align-items: center; gap: 8px; background: var(--surface-soft); border-radius: var(--radius-sm); padding: 8px 10px; border: 1px solid var(--border); min-height: 44px; flex-wrap: wrap; }
-    .code-card .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .code-card .code-icon-dot.eco-dot { background: var(--purple); }
-    .code-card .code-icon-dot.mgt-dot { background: var(--amber); }
-    .code-card .code-icon-dot.qua-dot { background: #06b6d4; }
-    .code-card .code-subject { font-weight: 700; font-size: 0.66rem; white-space: nowrap; min-width: 56px; color: var(--navy); flex-shrink: 0; }
-    .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 2px 10px; border: 1px solid var(--border-strong); text-align: center; min-width: 0; overflow: hidden; }
-    .code-card .code-value { font-weight: 700; font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
-    .code-card .copy-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 30px; font-weight: 600; font-size: 0.54rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 4px; font-family: inherit; }
-    .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; }
-    .code-card .join-btn { flex-shrink: 0; padding: 4px 14px; border-radius: 30px; font-weight: 600; font-size: 0.54rem; cursor: pointer; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 4px; text-decoration: none; }
-
-    /* ═══ FACULTY ═══ */
-    .faculty-list { display: flex; flex-direction: column; gap: 12px; }
-    .faculty-item { background: var(--surface-soft); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 14px 16px; }
-    .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 4px; }
-    .faculty-name { font-weight: 700; font-size: 0.84rem; color: var(--navy); line-height: 1.3; }
-    .faculty-name .course-code { font-weight: 600; font-size: 0.64rem; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 6px; border: 1px solid #dbeafe; margin-left: 6px; display: inline-block; }
-    .faculty-number-link { font-size: 0.74rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 3px 10px; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Inter', monospace; text-decoration: none; display: inline-block; cursor: pointer; }
-    .faculty-actions { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
-    .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 6px 14px; border-radius: 40px; font-family: inherit; font-weight: 600; font-size: 0.62rem; border: none; cursor: pointer; min-height: 32px; text-decoration: none; min-width: 62px; }
-    .faculty-actions .btn-fac:active { transform: scale(0.95); }
-
-    /* ═══ FILLED COLOR BUTTONS (restored) ═══ */
-    .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
-    .faculty-actions .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
-    .faculty-actions .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
-    .faculty-actions .btn-fac i { font-size: 0.74rem; }
-
-    .faculty-details { font-size: 0.62rem; color: #4b5563; border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
-    .faculty-details .detail-line { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
-    .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
-    .faculty-details .value { color: var(--text); font-weight: 400; }
-    .counsel-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 10px; padding: 10px 14px; margin-top: 8px; font-size: 0.6rem; color: #1e3a8a; }
-    .counsel-box .counsel-title { font-weight: 700; font-size: 0.62rem; color: #1e40af; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
-    .counsel-box .counsel-line { display: flex; gap: 6px; padding: 2px 0; line-height: 1.4; }
-    .counsel-box .counsel-line strong { color: #1e3a8a; min-width: 66px; font-weight: 600; }
-    .faculty-general-note { margin-top: 14px; background: #fef3c7; border: 1px solid #fde68a; border-radius: var(--radius-md); padding: 12px 14px; font-size: 0.64rem; color: #78350f; line-height: 1.55; display: flex; gap: 8px; align-items: flex-start; }
-    .faculty-general-note i { color: #d97706; font-size: 0.86rem; margin-top: 1px; flex-shrink: 0; }
-    .faculty-general-note strong { color: #b45309; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 480px) {
-      .content { padding: 12px 10px; }
-      .brand { font-size: 1rem; }
-      .top-btn { font-size: 0.62rem; padding: 6px 12px; }
-      .message-box { font-size: 0.9rem; }
-      .event-date, .date-pill { width: 46px; height: 46px; }
-      .event-date .day, .date-pill .day { font-size: 1rem; }
-      .event-date .month, .date-pill .month { font-size: 0.42rem; }
-      .community-card .c-icon { width: 38px; height: 38px; }
-      .community-card .c-title { font-size: 0.58rem; }
-      .drive-card .drive-icon-img { width: 58px; height: 58px; }
-    }
-  </style>
+        @media (max-width: 480px) {
+            .content { padding: 10px 10px 90px; }
+            .top-app-bar__title { font-size: 1rem; }
+            .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
+            .glance { padding: 1rem 0.7rem; }
+            .message-box { font-size: 0.85rem; min-height: 44px; }
+            .event-date-badge { width: 50px; height: 50px; }
+            .event-date-badge .day { font-size: 1.1rem; }
+            .event-date-badge .month { font-size: 0.5rem; }
+            .event-title { font-size: 0.7rem; }
+            .routine-table { font-size: 0.62rem; min-width: 320px; }
+            .routine-table th, .routine-table td { padding: 7px 8px; }
+            .code-card .code-subject { font-size: 0.6rem; min-width: 48px; }
+            .code-card .code-value { font-size: 0.6rem; }
+            .code-card .copy-btn, .code-card .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
+            .faculty-name { font-size: 0.8rem; }
+            .faculty-number-link { font-size: 0.7rem; }
+            .faculty-actions .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
+            .btn--large { font-size: 13px; height: 42px; }
+            .bottom-nav { height: 64px; }
+            .bottom-nav__label { font-size: 9px; }
+            .bottom-nav__icon { width: 46px; height: 26px; }
+            .bottom-nav__icon svg { width: 20px; height: 20px; }
+            .announcement-line { font-size: 0.7rem; white-space: normal; }
+            .modal-body { font-size: 0.75rem; padding: 1rem; }
+            .modal-header h2 { font-size: 0.95rem; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ═══ BOTTOM NAV (original styling) ═══ -->
-  <nav class="bottom-nav" aria-label="Main navigation">
-    <button class="nav-item active" data-target="page-home" aria-label="Home">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/></svg>
-      </span>
-      <span>Home</span>
-    </button>
-    <button class="nav-item" data-target="page-pdfs" aria-label="PDFs">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z"/></svg>
-      </span>
-      <span>PDFs</span>
-    </button>
-    <button class="nav-item" data-target="page-routine" aria-label="Routine">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-      </span>
-      <span>Routine</span>
-    </button>
-    <button class="nav-item" data-target="page-faculty" aria-label="Faculty">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-      </span>
-      <span>Faculty</span>
-    </button>
-  </nav>
+    <!-- ═══════════════════════════════════════════════
+         BOTTOM NAV — placed at top of body + SVG icons
+         so it paints on the very first frame.
+         Uses Material You active-pill style.
+         ═══════════════════════════════════════════════ -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="bottom-nav__item is-active" data-target="page-home" aria-label="Home">
+            <span class="bottom-nav__icon">
+                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
+                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </span>
+            <span class="bottom-nav__label">Home</span>
+        </button>
+        <button class="bottom-nav__item" data-target="page-pdfs" aria-label="PDFs">
+            <span class="bottom-nav__icon">
+                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+            </span>
+            <span class="bottom-nav__label">PDFs</span>
+        </button>
+        <button class="bottom-nav__item" data-target="page-routine" aria-label="Routine">
+            <span class="bottom-nav__icon">
+                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            </span>
+            <span class="bottom-nav__label">Routine</span>
+        </button>
+        <button class="bottom-nav__item" data-target="page-faculty" aria-label="Faculty">
+            <span class="bottom-nav__icon">
+                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM12 6.75c-1.24 0-2.25 1.01-2.25 2.25s1.01 2.25 2.25 2.25 2.25-1.01 2.25-2.25S13.24 6.75 12 6.75zM17 17v-1.5c0-1.67-3.33-2.5-5-2.5s-5 .83-5 2.5V17h10z"/></svg>
+                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg>
+            </span>
+            <span class="bottom-nav__label">Faculty</span>
+        </button>
+    </nav>
 
-  <header class="top-bar">
-    <div class="brand">66<span>Notes</span></div>
-    <a href="http://bubt.edu.bd/notice" target="_blank" class="top-btn" rel="noopener">
-      <i class="fas fa-file-alt"></i> Notices
-    </a>
-  </header>
-
-  <main class="content">
-
-    <section class="page" id="page-home">
-      <div class="announcement">
-        <i class="fas fa-bullhorn"></i>
-        <div class="announcement-text" id="announcementText"></div>
-      </div>
-
-      <div class="glance">
-        <div class="glance-title"><span class="live-dot"></span> AI Reminder</div>
-        <div class="message-box" id="messageBox"></div>
-        <div class="clock" id="clockDisplay">Loading...</div>
-        <div class="next-bar">
-          <span class="status-dot"></span>
-          <span>NEXT</span>
-          <span>Today · MGT 1101 · 2:45–4:15 · 4905</span>
+    <header class="top-app-bar">
+        <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
+        <div class="top-app-bar__right">
+            <a href="http://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
+                <span class="material-symbols-rounded">description</span> Notices
+            </a>
         </div>
-      </div>
+    </header>
 
-      <div class="events-card">
-        <div class="card-header">
-          <i class="fas fa-thumbtack"></i>
-          <span>Pinned Events</span>
-        </div>
-        <div class="events-list" id="eventsList"></div>
-      </div>
+    <main class="content">
 
-      <a href="wifi.html" class="wifi-card">
-        <i class="fas fa-wifi wifi-icon"></i>
-        <div class="wifi-title">WiFi Pass Collection</div>
-        <div class="wifi-desc">collecting WiFi passwords of the whole university</div>
-        <span class="wifi-cta"><i class="fas fa-arrow-right"></i> Open WiFi Hub</span>
-      </a>
-
-      <div class="cta-footer">
-        <i class="fas fa-code cta-icon"></i>
-        <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
-        <div class="cta-desc">You can customize it yourself.</div>
-        <a href="contact.html" class="cta-btn"><i class="fas fa-arrow-right"></i> Contact Now</a>
-      </div>
-    </section>
-
-    <section class="page" id="page-pdfs" hidden>
-      <h2>All Resources</h2>
-      <p class="subtitle">Study materials and class communities</p>
-      <div class="drive-grid">
-        <div class="drive-card">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Drive_icon_(2026).svg/1280px-Google_Drive_icon_(2026).svg.png" alt="Google Drive" class="drive-icon-img">
-          <div class="drive-title">Google Drive</div>
-          <div class="drive-desc">All PDFs, notes, and study materials</div>
-          <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" class="btn btn--filled btn--large" rel="noopener">
-            <i class="fas fa-external-link-alt"></i> Open Drive
-          </a>
-        </div>
-      </div>
-      <div class="community-grid">
-        <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-          <span class="c-icon"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/960px-Google_Classroom_Logo.svg.png" alt="Classroom"></span>
-          <span class="c-title">Classroom</span>
-        </a>
-        <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
-          <span class="c-icon whatsapp"><i class="fab fa-whatsapp"></i></span>
-          <span class="c-title">WhatsApp</span>
-        </a>
-        <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
-          <span class="c-icon messenger"><i class="fab fa-facebook-messenger"></i></span>
-          <span class="c-title">Messenger</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="page" id="page-routine" hidden>
-      <div class="routine-section" id="routineContainer">
-        <div id="routineContent"></div>
-      </div>
-    </section>
-
-    <section class="page" id="page-faculty" hidden>
-      <h2>Faculty</h2>
-      <p class="subtitle">Contact your instructors</p>
-      <div class="faculty-list">
-
-        <div class="faculty-item">
-          <div class="faculty-row">
-            <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
-            <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
-          </div>
-          <div class="faculty-actions">
-            <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-            <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-          </div>
-          <div class="faculty-details">
-            <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
-            <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
-          </div>
-        </div>
-
-        <div class="faculty-item">
-          <div class="faculty-row">
-            <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
-            <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
-          </div>
-          <div class="faculty-actions">
-            <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-            <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-          </div>
-          <div class="faculty-details">
-            <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
-            <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
-            <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
-            <div class="counsel-box">
-              <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-              <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
+        <!-- ── HOME ──────────────────────────────── -->
+        <section class="page" id="page-home">
+            <div class="announcement-bar" id="section-announcements">
+                <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
+                <div class="announcement-text" id="announcementText"></div>
             </div>
-          </div>
-        </div>
 
-        <div class="faculty-item">
-          <div class="faculty-row">
-            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
-            <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
-          </div>
-          <div class="faculty-actions">
-            <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-            <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-          </div>
-          <div class="faculty-details">
-            <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
-            <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
-            <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
-            <div class="counsel-box">
-              <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-              <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
-              <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
-              <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
+            <div class="glance" id="section-ai">
+                <div class="section-title">
+                    <span class="live-indicator"></span> AI Reminder
+                </div>
+                <div class="reminder-main">
+                    <div class="message-box" id="messageBox"></div>
+                    <div class="clock-display" id="clockDisplay">Loading...</div>
+                </div>
+                <div class="next-class-bar" id="nextClassBar">
+                    <span class="status-dot" id="barDot"></span>
+                    <span class="next-label" id="barLabel">...</span>
+                    <span id="barDetail">...</span>
+                </div>
             </div>
-          </div>
+
+            <div class="events-root" id="section-events">
+                <div class="events-card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-thumbtack"></i> Pinned Events</span>
+                    </div>
+                    <div class="events-list" id="eventsList">
+                        <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="wifi.html" class="wifi-home-card">
+                <span class="wifi-home-icon"><i class="fas fa-wifi"></i></span>
+                <div class="wifi-home-title">WiFi Pass Collection</div>
+                <div class="wifi-home-desc">(collecting WiFi passwords of the whole university)</div>
+                <span class="wifi-home-cta"><i class="fas fa-arrow-right"></i> Open WiFi Hub</span>
+            </a>
+
+            <div class="cta-footer">
+                <span class="cta-icon material-symbols-rounded">code</span>
+                <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
+                <div class="cta-desc">You can customize it yourself.</div>
+                <a href="contact.html" class="cta-btn">
+                    <i class="fas fa-arrow-right"></i> Contact Now
+                </a>
+            </div>
+        </section>
+
+        <!-- ── PDFs ──────────────────────────────── -->
+        <section class="page" id="page-pdfs" hidden>
+            <h2>All Resources</h2>
+            <p class="subtitle">Study materials and class communities</p>
+            <div class="drive-grid">
+                <div class="drive-card">
+                    <span class="drive-icon material-symbols-rounded">folder</span>
+                    <div class="drive-title">Google Drive</div>
+                    <div class="drive-desc">All PDFs, notes, and study materials</div>
+                    <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" class="btn btn--filled btn--large" rel="noopener">
+                        <span class="material-symbols-rounded">open_in_new</span> Open Drive
+                    </a>
+                </div>
+            </div>
+
+            <div class="community-grid">
+                <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon classroom"><i class="fas fa-chalkboard-user"></i></span>
+                    <span class="c-title">Classroom</span>
+                </a>
+                <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon whatsapp"><i class="fab fa-whatsapp"></i></span>
+                    <span class="c-title">WhatsApp</span>
+                </a>
+                <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
+                    <span class="c-icon messenger"><i class="fab fa-facebook-messenger"></i></span>
+                    <span class="c-title">Messenger</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── ROUTINE ───────────────────────────── -->
+        <section class="page" id="page-routine" hidden>
+            <div class="routine-section" id="routineContainer">
+                <div id="routineContent"></div>
+            </div>
+        </section>
+
+        <!-- ── FACULTY ───────────────────────────── -->
+        <section class="page" id="page-faculty" hidden>
+            <h2>Faculty</h2>
+            <p class="subtitle">Contact your instructors</p>
+            <div class="faculty-root" id="section-faculty">
+                <div class="faculty-list">
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
+                            <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
+                        </div>
+                        <div class="faculty-actions">
+                            <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
+                        </div>
+                        <div class="faculty-details">
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
+                        </div>
+                    </div>
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
+                            <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
+                        </div>
+                        <div class="faculty-actions">
+                            <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
+                        </div>
+                        <div class="faculty-details">
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
+                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
+                            <div class="counsel-box">
+                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                                <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faculty-item">
+                        <div class="faculty-row">
+                            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
+                            <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
+                        </div>
+                        <div class="faculty-actions">
+                            <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                            <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
+                        </div>
+                        <div class="faculty-details">
+                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
+                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
+                            <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
+                            <div class="counsel-box">
+                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                                <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
+                                <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
+                                <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faculty-general-note">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── MODALS ───────────────────────────── -->
+    <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-flask"></i> ICT Lab Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-ict-lab">
+📊 Excel Functions: LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)"><i class="fas fa-copy"></i> Copy All</button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict-lab')">Close</button>
+            </div>
         </div>
+    </div>
 
-      </div>
-
-      <div class="faculty-general-note">
-        <i class="fas fa-info-circle"></i>
-        <div>
-          You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong>
+    <div class="modal-overlay" id="modal-ict" onclick="if(event.target === this) closeModal('modal-ict')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-laptop-code"></i> ICT 1101 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-ict">
+📘 Chapter 2, 10, OSI Model, Chapter 6, Chapter 12
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)"><i class="fas fa-copy"></i> Copy All</button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict')">Close</button>
+            </div>
         </div>
-      </div>
-    </section>
+    </div>
 
-  </main>
+    <div class="modal-overlay" id="modal-mkt" onclick="if(event.target === this) closeModal('modal-mkt')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-line"></i> MKT 1101 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-mkt">
+📘 Chapter 7, 8, 9, 11, 14
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)"><i class="fas fa-copy"></i> Copy All</button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-mkt')">Close</button>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    (function() {
-      const navItems = document.querySelectorAll('.nav-item');
-      const pages = document.querySelectorAll('.page');
-      navItems.forEach(item => {
-        item.addEventListener('click', () => {
-          const targetId = item.dataset.target;
-          navItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          pages.forEach(page => { page.hidden = page.id !== targetId; });
-          window.scrollTo(0, 0);
-        });
-      });
-    })();
+    <div class="modal-overlay" id="modal-hum" onclick="if(event.target === this) closeModal('modal-hum')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-language"></i> HUM 1102 Final Syllabus</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-hum">
+১. ব্যাকরণ, ২. উচ্চারণ ও সমাস, ৩. প্রবাদ-প্রবচন, ৪. বিরামচিহ্ন ও প্রতিবেদন
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)"><i class="fas fa-copy"></i> Copy All</button>
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-hum')">Close</button>
+            </div>
+        </div>
+    </div>
 
-    (function() {
-      function tick() {
-        const n = new Date();
-        let h = n.getHours();
-        const m = n.getMinutes().toString().padStart(2,'0');
-        const ap = h >= 12 ? 'PM' : 'AM';
-        h = h % 12 || 12;
-        const el = document.getElementById('clockDisplay');
-        if (el) el.textContent = h + ':' + m + ' ' + ap;
-      }
-      tick(); setInterval(tick, 60000);
-    })();
-
-    (function() {
-      const lines = [
-        '📍 4304 is the permanent room for Monday from now on.',
-        '📝 CT dates are given – keep an eye on messenger.'
-      ];
-      const box = document.getElementById('announcementText');
-      box.innerHTML = '';
-      lines.forEach((t,i) => {
-        const s = document.createElement('span');
-        s.className = 'announcement-line' + (i===0?' active':'');
-        s.textContent = t;
-        box.appendChild(s);
-      });
-      let cur = 0;
-      setInterval(() => {
-        const items = box.querySelectorAll('.announcement-line');
-        items.forEach(x => x.classList.remove('active'));
-        cur = (cur+1) % items.length;
-        items[cur].classList.add('active');
-      }, 5000);
-    })();
-
-    (function() {
-      const box = document.getElementById('messageBox');
-      const slides = ['📅 Next: Today', 'MGT 1101 at 2:45', 'Room 4905'];
-      box.innerHTML = '';
-      slides.forEach((t,i) => {
-        const d = document.createElement('div');
-        d.className = 'message-line' + (i===0?' active':'');
-        d.innerHTML = t;
-        box.appendChild(d);
-      });
-      let c = 0;
-      setInterval(() => {
-        const items = box.querySelectorAll('.message-line');
-        items.forEach(x => x.classList.remove('active'));
-        c = (c+1) % items.length;
-        items[c].classList.add('active');
-      }, 4500);
-    })();
-
-    (function() {
-      const events = [
-        { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
-        { day: '4', month: 'Oct', title: 'Math CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly' },
-        { day: '20', month: 'Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'], note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.' },
-        {
-          isRange: true,
-          startDay: '24', startMonth: 'Oct',
-          endDay: '31', endMonth: 'Oct',
-          title: 'Mid Exam (MGT, ECO, QUA)',
-          badges: [{ text: 'Midterm', type: 'default' }, { text: 'Estimated', type: 'blue' }],
-          rangeLabel: 'Estimated Window',
-          meta: 'Estimated date range',
-          items: ['📘 QUA 1101 Syllabus:', '• Set', '• Equation', '• Index & algorithms', '📘 MGT 1101 – Not yet', '📘 ECO 1101 – Not yet'],
-          note: 'Syllabus details will be updated when available'
+    <script>
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+        function copyModalContent(bodyId, btn) {
+            const body = document.getElementById(bodyId);
+            let text = body.innerText || body.textContent;
+            text = text.replace(/\s+/g, ' ').trim();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => flashCopyBtn(btn)).catch(() => fallbackCopy(text, btn));
+            } else { fallbackCopy(text, btn); }
         }
-      ];
-
-      const list = document.getElementById('eventsList');
-      list.innerHTML = '';
-
-      events.forEach(ev => {
-        let itemsHtml = '';
-        if (ev.items && ev.items.length) {
-          itemsHtml = '<div class="event-items">';
-          ev.items.forEach(i => { itemsHtml += '<span>' + i + '</span>'; });
-          itemsHtml += '</div>';
+        function fallbackCopy(text, btn) {
+            const ta = document.createElement('textarea'); ta.value = text;
+            ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); flashCopyBtn(btn); } catch (e) { alert('Could not copy.'); }
+            document.body.removeChild(ta);
         }
-        const detailsInner = `
-          ${ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : ''}
-          ${itemsHtml}
-          ${ev.note ? '<div class="event-note">' + ev.note + '</div>' : ''}
-        `;
-
-        let block;
-        if (ev.isRange) {
-          const badgesHtml = (ev.badges || []).map(b =>
-            `<span class="event-badge ${b.type === 'blue' ? 'blue' : ''}">${b.text}</span>`
-          ).join('');
-          block = document.createElement('div');
-          block.className = 'event-block range-event';
-          block.innerHTML = `
-            <div class="range-content">
-              <div class="range-dates">
-                <div class="date-pill"><span class="day">${ev.startDay}</span><span class="month">${ev.startMonth}</span></div>
-                <div class="range-connector"></div>
-                <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
-              </div>
-              <div class="range-info">
-                <div class="event-title">${ev.title} ${badgesHtml}</div>
-                <div class="range-label"><i class="fas fa-arrow-right"></i> ${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
-              </div>
-              <div class="range-toggle"><i class="fas fa-chevron-down"></i></div>
-            </div>
-            <div class="event-details">${detailsInner}</div>
-          `;
-        } else {
-          block = document.createElement('div');
-          block.className = 'event-block';
-          block.innerHTML = `
-            <div class="event-row">
-              <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
-              <div class="event-body"><div class="event-title">${ev.title} <span class="event-badge">${ev.badge}</span></div></div>
-              <div class="event-toggle"><i class="fas fa-chevron-down"></i></div>
-            </div>
-            <div class="event-details">${detailsInner}</div>
-          `;
+        function flashCopyBtn(btn) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
+            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
         }
-        list.appendChild(block);
-      });
 
-      list.querySelectorAll('.event-block').forEach(block => {
-        const target = block.querySelector('.event-row') || block.querySelector('.range-content');
-        const details = block.querySelector('.event-details');
-        const toggle = block.querySelector('.event-toggle') || block.querySelector('.range-toggle');
-        target.addEventListener('click', () => {
-          const open = details.classList.toggle('open');
-          if (toggle) toggle.classList.toggle('open', open);
-        });
-      });
-    })();
-
-    (function() {
-      const container = document.getElementById('routineContent');
-      if (!container) return;
-
-      container.innerHTML = `
-        <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-        <div class="routine-table-wrap">
-          <table class="routine-table">
-            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
-            <tbody>
-              <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
-              <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
-              <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
-              <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
-              <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
-              <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="codes-section">
-          <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-          <div class="codes-grid">
-            <div class="code-card">
-              <span class="code-icon-dot eco-dot"></span>
-              <span class="code-subject">ECO 1101</span>
-              <div class="code-value-box"><span class="code-value">snycxehv</span></div>
-              <button class="copy-btn" data-code="snycxehv"><i class="fas fa-copy"></i> Copy</button>
-              <a href="https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
-            </div>
-            <div class="code-card">
-              <span class="code-icon-dot mgt-dot"></span>
-              <span class="code-subject">MGT 1101</span>
-              <div class="code-value-box"><span class="code-value">im2z2sar</span></div>
-              <button class="copy-btn" data-code="im2z2sar"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="code-card">
-              <span class="code-icon-dot qua-dot"></span>
-              <span class="code-subject">QUA 1101</span>
-              <div class="code-value-box"><span class="code-value">oz3bz3af</span></div>
-              <button class="copy-btn" data-code="oz3bz3af"><i class="fas fa-copy"></i> Copy</button>
-              <a href="https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
-            </div>
-          </div>
-        </div>
-      `;
-
-      container.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const code = this.getAttribute('data-code');
-          if (!code) return;
-          const orig = this.innerHTML;
-          const done = () => {
-            this.innerHTML = '<i class="fas fa-check"></i> Copied';
-            this.classList.add('copied-flash');
-            setTimeout(() => { this.innerHTML = orig; this.classList.remove('copied-flash'); }, 1500);
-          };
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(code).then(done).catch(() => {
-              const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select();
-              try { document.execCommand('copy'); done(); } catch (err) {} document.body.removeChild(ta);
+        (function() {
+            const navItems = document.querySelectorAll('.bottom-nav__item');
+            const pages = document.querySelectorAll('.page');
+            const titleEl = document.querySelector('.top-app-bar__title');
+            const titles = { 'page-home': '66Notes', 'page-pdfs': 'All Resources', 'page-routine': 'Routine & Codes', 'page-faculty': 'Faculty' };
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetId = item.dataset.target;
+                    navItems.forEach(i => i.classList.remove('is-active'));
+                    item.classList.add('is-active');
+                    pages.forEach(page => { page.hidden = page.id !== targetId; });
+                    if (titleEl && titles[targetId]) titleEl.innerHTML = titles[targetId];
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
             });
-          } else {
-            const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); done(); } catch (err) {} document.body.removeChild(ta);
-          }
+        })();
+
+        (function() {
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                const el = document.getElementById('clockDisplay');
+                if (el) el.textContent = hours + ':' + minutes + ' ' + ampm;
+            }
+            updateClock();
+            setInterval(updateClock, 30000);
+        })();
+
+        (function() {
+            const container = document.getElementById('announcementText');
+            const lines = [
+                '📢 4304 is now 4201 but it can change anytime.',
+                '📝 CT dates are given – keep an eye on messenger.'
+            ];
+            container.innerHTML = '';
+            lines.forEach((text, index) => {
+                const span = document.createElement('span');
+                span.className = 'announcement-line' + (index === 0 ? ' active' : '');
+                span.textContent = text;
+                container.appendChild(span);
+            });
+            if (lines.length > 1) {
+                let current = 0;
+                const items = container.querySelectorAll('.announcement-line');
+                setInterval(() => {
+                    items.forEach(l => l.classList.remove('active'));
+                    current = (current + 1) % items.length;
+                    items[current].classList.add('active');
+                }, 4500);
+            }
+        })();
+
+        (function() {
+            const semesterStart = new Date(2026, 8, 6);
+            const classes = [
+                { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
+                { day: 0, startH: 16, startM: 15, endH: 17, endM: 45, course: 'QUA 1101', room: '4905' },
+                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4304' },
+                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4304' },
+                { day: 3, startH: 8, startM: 15, endH: 9, endM: 45, course: 'ECO 1101', room: '4905' },
+                { day: 3, startH: 9, startM: 45, endH: 11, endM: 15, course: 'MGT 1101', room: '4905' }
+            ];
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            function getDhaka() {
+                const n = new Date();
+                let h = n.getUTCHours() + 6, d = n.getUTCDate(), m = n.getUTCMonth(), y = n.getUTCFullYear();
+                if (h >= 24) { h -= 24; d++; }
+                const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+                if (d > dim) { d = 1; m++; }
+                if (m > 11) { m = 0; y++; }
+                const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
+                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(), timestamp: ts };
+            }
+            function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
+
+            function getClassStatus() {
+                const now = new Date();
+                if (now < semesterStart) return ['📅 Classes started on <strong>6 September</strong>', 'Check the routine below!'];
+                const dh = getDhaka();
+                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
+                if (run) return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
+                for (let off = 0; off < 14; off++) {
+                    const fut = new Date(dh.timestamp + off * 86400000);
+                    const cd = fut.getUTCDay();
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
+                    for (let c of dayCls) {
+                        const st = c.startH * 60 + c.startM;
+                        if (off === 0 && st <= min) continue;
+                        const dn = dayNames[cd];
+                        const dur = off === 0 ? 'Today' : dn;
+                        return ['📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM), 'Room ' + c.room];
+                    }
+                }
+                return ['📚 No classes scheduled', 'Enjoy your free time!'];
+            }
+
+            let slideTimer;
+            function showSlides(slides) {
+                const box = document.getElementById('messageBox');
+                if (!box) return;
+                box.innerHTML = '';
+                slides.forEach(h => {
+                    const d = document.createElement('div');
+                    d.className = 'message-line';
+                    d.innerHTML = h;
+                    box.appendChild(d);
+                });
+                if (slideTimer) clearInterval(slideTimer);
+                let cur = -1;
+                const items = document.querySelectorAll('.message-line');
+                if (items.length) {
+                    const nxt = () => {
+                        items.forEach(i => i.classList.remove('active'));
+                        cur = (cur + 1) % items.length;
+                        items[cur].classList.add('active');
+                    };
+                    nxt();
+                    slideTimer = setInterval(nxt, 4000);
+                }
+            }
+
+            function updateNextBar() {
+                const now = new Date();
+                const label = document.getElementById('barLabel');
+                const detail = document.getElementById('barDetail');
+                const dot = document.getElementById('barDot');
+                if (!label || !detail || !dot) return;
+                if (now < semesterStart) {
+                    label.textContent = 'UPCOMING';
+                    dot.className = 'status-dot';
+                    detail.innerHTML = 'Classes started on 6th Sep';
+                    return;
+                }
+                const dh = getDhaka();
+                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
+                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
+                if (run) {
+                    label.textContent = 'RUNNING';
+                    dot.className = 'status-dot running';
+                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course + '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run.endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
+                    return;
+                }
+                for (let off = 0; off < 14; off++) {
+                    const fut = new Date(dh.timestamp + off * 86400000);
+                    const cd = fut.getUTCDay();
+                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
+                    for (let c of dayCls) {
+                        const st = c.startH * 60 + c.startM;
+                        if (off === 0 && st <= min) continue;
+                        const fd = dayNames[cd];
+                        const dur = off === 0 ? 'Today' : fd;
+                        label.textContent = off === 0 ? 'TODAY' : 'NEXT';
+                        dot.className = 'status-dot';
+                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
+                        return;
+                    }
+                }
+                label.textContent = 'IDLE';
+                dot.className = 'status-dot';
+                detail.innerHTML = 'No class scheduled.';
+            }
+
+            showSlides(getClassStatus());
+            updateNextBar();
+            setInterval(() => { showSlides(getClassStatus()); updateNextBar(); }, 30000);
+        })();
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const code = this.getAttribute('data-code');
+                if (!code) return;
+                const origText = this.innerHTML;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
+                } else { fallbackCopyCode(code, this, origText); }
+            });
         });
-      });
-    })();
-  </script>
+        function fallbackCopyCode(text, btn, origText) {
+            const ta = document.createElement('textarea');
+            ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); flashCopied(btn, origText); } catch (e) { alert('Could not copy.'); }
+            document.body.removeChild(ta);
+        }
+        function flashCopied(btn, origText) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+            btn.classList.add('copied-flash');
+            setTimeout(() => { btn.innerHTML = origText; btn.classList.remove('copied-flash'); }, 1500);
+        }
+
+        (function() {
+            function renderRoutine() {
+                const container = document.getElementById('routineContent');
+                if (!container) return;
+
+                let html = `
+                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                    <div class="routine-table-wrap">
+                        <table class="routine-table">
+                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
+                            <tbody>
+                                <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
+                                <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
+                                <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
+                                <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                html += `
+                    <div class="codes-section">
+                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
+                        <div class="codes-grid">
+                            <div class="code-card">
+                                <span class="code-icon-dot eco-dot"></span>
+                                <span class="code-subject">ECO 1101</span>
+                                <div class="code-value-box"><span class="code-value">snycxehv</span></div>
+                                <button class="copy-btn" data-code="snycxehv"><i class="fas fa-copy"></i> Copy</button>
+                                <a href="https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
+                            </div>
+                            <div class="code-card">
+                                <span class="code-icon-dot mgt-dot"></span>
+                                <span class="code-subject">MGT 1101</span>
+                                <div class="code-value-box"><span class="code-value">im2z2sar</span></div>
+                                <button class="copy-btn" data-code="im2z2sar"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="code-card">
+                                <span class="code-icon-dot qua-dot"></span>
+                                <span class="code-subject">QUA 1101</span>
+                                <div class="code-value-box"><span class="code-value">oz3bz3af</span></div>
+                                <button class="copy-btn" data-code="oz3bz3af"><i class="fas fa-copy"></i> Copy</button>
+                                <a href="https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML = html;
+
+                document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const code = this.getAttribute('data-code');
+                        if (!code) return;
+                        const origText = this.innerHTML;
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
+                        } else { fallbackCopyCode(code, this, origText); }
+                    });
+                });
+            }
+            renderRoutine();
+            setInterval(renderRoutine, 30000);
+        })();
+
+        (function() {
+            const eventsData = [
+                { date: '28 Sep', title: 'ECO CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation', dateObj: new Date(2026, 8, 28) },
+                { date: '4 Oct', title: 'Math CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly', dateObj: new Date(2026, 9, 4) },
+                { date: '20 Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'], note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.', dateObj: new Date(2026, 9, 20) },
+                { date: '24-31 Oct', title: 'Mid Exam (MGT, ECO, QUA)', badge: 'Midterm (est)', meta: 'Estimated date range', items: ['📘 <strong>QUA 1101</strong> Syllabus:', '• Set', '• Equation', '• Index & algorithms', '📘 <strong>MGT 1101</strong> – Not yet', '📘 <strong>ECO 1101</strong> – Not yet'], note: 'Syllabus details will be updated when available', dateObj: new Date(2026, 9, 24), rangeEnd: new Date(2026, 9, 31) }
+            ];
+
+            function getMonthAbbr(date) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return months[date.getMonth()];
+            }
+            function getDayNum(date) { return date.getDate(); }
+
+            function shouldShowEvent(ev) {
+                const now = new Date();
+                const today = new Date(now);
+                today.setHours(0, 0, 0, 0);
+                if (ev.rangeEnd) {
+                    const end = new Date(ev.rangeEnd);
+                    end.setHours(0, 0, 0, 0);
+                    if (today > end) return false;
+                    return true;
+                }
+                const evDate = new Date(ev.dateObj);
+                evDate.setHours(0, 0, 0, 0);
+                return evDate >= today;
+            }
+
+            function renderEvents() {
+                const container = document.getElementById('eventsList');
+                if (!container) return;
+
+                const visible = eventsData.filter(ev => shouldShowEvent(ev));
+                visible.sort((a, b) => (a.dateObj || a.rangeEnd) - (b.dateObj || b.rangeEnd));
+
+                if (visible.length === 0) {
+                    container.innerHTML = '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
+                    return;
+                }
+
+                let html = '';
+                visible.forEach((ev) => {
+                    let displayDay, displayMonth;
+                    if (ev.date.includes('-')) {
+                        const parts = ev.date.split(' ');
+                        displayDay = parts[0];
+                        displayMonth = parts[1];
+                    } else {
+                        const d = new Date(ev.dateObj);
+                        displayDay = getDayNum(d);
+                        displayMonth = getMonthAbbr(d);
+                    }
+
+                    let itemsHtml = '';
+                    if (ev.items && ev.items.length > 0) {
+                        itemsHtml = '<div class="event-items">';
+                        ev.items.forEach(item => { itemsHtml += '<span>' + item + '</span>'; });
+                        itemsHtml += '</div>';
+                    }
+
+                    let detailsHtml =
+                        '<div class="event-details">' +
+                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
+                        itemsHtml +
+                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
+                        '</div>';
+
+                    html +=
+                        '<div class="event-block">' +
+                        '<div class="event-date-badge"><span class="day">' + displayDay + '</span><span class="month">' + displayMonth + '</span></div>' +
+                        '<div class="event-content">' +
+                        '<div class="event-summary">' +
+                        '<div class="event-title">' + ev.title + (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') + '</div>' +
+                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">See More <i class="fas fa-chevron-down"></i></button>' +
+                        '</div>' + detailsHtml + '</div></div>';
+                });
+
+                container.innerHTML = html;
+            }
+
+            window.toggleEvent = function(block) {
+                const details = block.querySelector('.event-details');
+                const btn = block.querySelector('.event-toggle-btn');
+                if (!details) return;
+                const isOpen = details.classList.toggle('open');
+                btn.classList.toggle('open', isOpen);
+                btn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' : 'See More <i class="fas fa-chevron-down"></i>';
+            };
+
+            renderEvents();
+            setInterval(renderEvents, 60000);
+        })();
+    </script>
 </body>
 </html>
