@@ -474,9 +474,11 @@
             { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
         ];
 
-        // Zoho Sheet published CSV — column B holds the announcement text.
-        // No hardcoded fallback anymore: if the sheet is unreachable, the bar stays hidden.
-        const ANNOUNCEMENTS_CSV = 'https://sheet.zohopublic.com/sheet/published/whpzf0f2fc87654b642e9b1010eaaba1362c8?download=csv&sheetname=Sheet1';
+        // Grist document — announcement text lives in column B.
+        // No hardcoded fallback: if Grist is unreachable, the bar stays hidden.
+        const GRIST_DOC_ID = '5Wv1tdZd6muX';
+        const GRIST_TABLE  = 'Table1';
+        const GRIST_API    = `https://docs.getgrist.com/api/docs/${GRIST_DOC_ID}/tables/${GRIST_TABLE}/records`;
 
         const EVENTS = [
             { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', expiresAt: '2026-09-28T23:59:59+06:00',
@@ -555,27 +557,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
 
-        /* ═══════════════ ANNOUNCEMENTS — Zoho Sheet only ═══════════════ */
-
-        function parseCSV(text) {
-            const rows = [];
-            let row = [], field = '', inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const ch = text[i];
-                if (inQuotes) {
-                    if (ch === '"') {
-                        if (text[i + 1] === '"') { field += '"'; i++; }
-                        else inQuotes = false;
-                    } else field += ch;
-                } else if (ch === '"') inQuotes = true;
-                else if (ch === ',') { row.push(field); field = ''; }
-                else if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-                else if (ch === '\r') { /* skip */ }
-                else field += ch;
-            }
-            if (field.length || row.length) { row.push(field); rows.push(row); }
-            return rows;
-        }
+        /* ═══════════════ ANNOUNCEMENTS — Grist only ═══════════════ */
 
         let annTimer = null;
         function buildAnnouncements(lines) {
@@ -600,13 +582,12 @@
             annTimer = rotate(box.children, 4500);
         }
 
-        // Fetch from Zoho only. Bar is hidden until data arrives; stays hidden on failure.
-        fetch(ANNOUNCEMENTS_CSV, { cache: 'no-store' })
-            .then(r => r.ok ? r.text() : Promise.reject(r.status))
-            .then(csv => {
-                const rows = parseCSV(csv);
-                const lines = rows
-                    .map(r => (r[1] || '').trim())   // column B = announcement text
+        // Fetch from Grist. Bar stays hidden until data arrives; stays hidden on failure.
+        fetch(GRIST_API, { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : Promise.reject(r.status))
+            .then(data => {
+                const lines = (data.records || [])
+                    .map(rec => (rec.fields && rec.fields.B ? String(rec.fields.B).trim() : ''))
                     .filter(Boolean);
                 buildAnnouncements(lines);
             })
