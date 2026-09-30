@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <!-- Only the 5 icons actually used (campaign, code, description, folder, open_in_new) -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
     <noscript>
@@ -51,6 +50,7 @@
         .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
 
         .announcement-bar { display: flex; align-items: center; gap: 0.75rem; background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 0.5rem 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
+        .announcement-bar.hidden { display: none; }
         .announcement-icon .material-symbols-rounded { color: #ea580c; font-size: 1.5rem; width: 24px; height: 24px; display: inline-block; }
         .announcement-text { flex: 1; min-height: 2rem; display: flex; align-items: center; position: relative; }
         .announcement-line { position: absolute; width: 100%; opacity: 0; transform: translateX(10px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight: 600; font-size: 0.85rem; color: #7c2d12; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -71,7 +71,6 @@
         .status-dot.running { background: var(--green); }
         .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
-        /* Pinned events */
         .events-card { border-radius: 16px; background: #fff; border: 1px solid #eef2f6; padding: 16px 14px 12px; margin-bottom: 12px; box-shadow: var(--shadow); }
         .card-header { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 11px; margin-bottom: 12px; border-bottom: 1px solid #eef2f6; }
         .card-header i { color: #2563eb; font-size: 0.82rem; }
@@ -111,7 +110,6 @@
         .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
         .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
 
-        /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; max-height: 85dvh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
@@ -124,7 +122,6 @@
         .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; }
         .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; min-height: 38px; background: #f3f4f6; color: #374151; }
 
-        /* Routine */
         .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
@@ -151,7 +148,6 @@
         .copy-btn.copied-flash { background: #d1fae5; color: #065f46; }
         .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
 
-        /* Resources */
         .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
         .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
         .drive-icon { font-size: 2.5rem; color: var(--accent); }
@@ -169,7 +165,6 @@
         .c-icon.messenger { background: #0084FF; }
         .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
 
-        /* Faculty */
         .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
         .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
         .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
@@ -203,7 +198,6 @@
         .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
         .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
 
-        /* Bottom nav */
         .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04); }
         .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); }
         .bottom-nav__item.is-active { color: var(--accent); }
@@ -293,7 +287,7 @@
 
         <!-- HOME -->
         <section class="page" id="page-home">
-            <div class="announcement-bar">
+            <div class="announcement-bar hidden" id="announcementBar">
                 <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
                 <div class="announcement-text" id="announcementText"></div>
             </div>
@@ -364,7 +358,7 @@
             </div>
         </section>
 
-        <!-- ROUTINE (rendered once by JS from the CLASSES + CODES data below) -->
+        <!-- ROUTINE -->
         <section class="page" id="page-routine" hidden>
             <div class="routine-section" id="routineContent"></div>
         </section>
@@ -460,10 +454,8 @@
         'use strict';
         const $ = id => document.getElementById(id);
 
-        /* ═══════════════ DATA — edit only here ═══════════════ */
+        /* ═══════════════ DATA ═══════════════ */
 
-        // [day (0=Sun), start, end (24h), course, room, faculty]
-        // NOTE: announcement says 4304 is now 4201 — change the room here if needed (one place only).
         const CLASSES = [
             [0, '14:45', '16:15', 'MGT 1101', '4905', 'JI'],
             [0, '16:15', '17:45', 'QUA 1101', '4905', 'TKA'],
@@ -482,12 +474,10 @@
             { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
         ];
 
-        const ANNOUNCEMENTS = [
-            '📢 4304 is now 4201 but it can change anytime.',
-            '📝 CT dates are given – keep an eye on messenger.'
-        ];
+        // Zoho Sheet published CSV — column B holds the announcement text.
+        // No hardcoded fallback anymore: if the sheet is unreachable, the bar stays hidden.
+        const ANNOUNCEMENTS_CSV = 'https://sheet.zohopublic.com/sheet/published/whpzf0f2fc87654b642e9b1010eaaba1362c8?download=csv&sheetname=Sheet1';
 
-        // expiresAt uses Dhaka time (+06:00). Event hides itself after that moment.
         const EVENTS = [
             { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', expiresAt: '2026-09-28T23:59:59+06:00',
               meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
@@ -509,7 +499,6 @@
 
         /* ═══════════════ HELPERS ═══════════════ */
 
-        // Dhaka is UTC+6 with no DST, so shifting the timestamp and reading UTC fields is exact.
         function dhakaNow() {
             const d = new Date(Date.now() + 6 * 3600000);
             const h = d.getUTCHours(), m = d.getUTCMinutes();
@@ -520,6 +509,7 @@
         const to12p = (h, m) => pad(h % 12 || 12) + ':' + pad(m);
 
         function rotate(els, ms) {
+            if (!els || !els.length) return null;
             let i = 0;
             els[0].classList.add('active');
             if (els.length < 2) return null;
@@ -565,18 +555,62 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
 
-        /* ═══════════════ ANNOUNCEMENTS ═══════════════ */
+        /* ═══════════════ ANNOUNCEMENTS — Zoho Sheet only ═══════════════ */
 
-        (function () {
+        function parseCSV(text) {
+            const rows = [];
+            let row = [], field = '', inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (text[i + 1] === '"') { field += '"'; i++; }
+                        else inQuotes = false;
+                    } else field += ch;
+                } else if (ch === '"') inQuotes = true;
+                else if (ch === ',') { row.push(field); field = ''; }
+                else if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+                else if (ch === '\r') { /* skip */ }
+                else field += ch;
+            }
+            if (field.length || row.length) { row.push(field); rows.push(row); }
+            return rows;
+        }
+
+        let annTimer = null;
+        function buildAnnouncements(lines) {
+            const bar = $('announcementBar');
             const box = $('announcementText');
-            ANNOUNCEMENTS.forEach(text => {
+            if (!bar || !box) return;
+            if (!lines.length) {
+                bar.classList.add('hidden');
+                box.innerHTML = '';
+                clearInterval(annTimer);
+                return;
+            }
+            box.innerHTML = '';
+            lines.forEach(text => {
                 const s = document.createElement('span');
                 s.className = 'announcement-line';
                 s.textContent = text;
                 box.appendChild(s);
             });
-            if (box.children.length) rotate(box.children, 4500);
-        })();
+            bar.classList.remove('hidden');
+            clearInterval(annTimer);
+            annTimer = rotate(box.children, 4500);
+        }
+
+        // Fetch from Zoho only. Bar is hidden until data arrives; stays hidden on failure.
+        fetch(ANNOUNCEMENTS_CSV, { cache: 'no-store' })
+            .then(r => r.ok ? r.text() : Promise.reject(r.status))
+            .then(csv => {
+                const rows = parseCSV(csv);
+                const lines = rows
+                    .map(r => (r[1] || '').trim())   // column B = announcement text
+                    .filter(Boolean);
+                buildAnnouncements(lines);
+            })
+            .catch(() => { /* stay hidden, no fallback */ });
 
         /* ═══════════════ CLASS STATUS ═══════════════ */
 
@@ -612,7 +646,6 @@
             };
         }
 
-        // Only rebuilds the slider when the text actually changes, so it doesn't restart every tick.
         let slideKey = '', slideTimer = null;
         function showSlides(slides) {
             const key = slides.join('|');
@@ -624,7 +657,7 @@
             slideTimer = rotate(box.children, 4000);
         }
 
-        /* ═══════════════ ROUTINE + CODES (rendered once) ═══════════════ */
+        /* ═══════════════ ROUTINE + CODES ═══════════════ */
 
         (function () {
             const byDay = {};
@@ -658,7 +691,6 @@
                     <div class="codes-grid">${codes}</div>
                 </div>`;
 
-            // One delegated listener for every copy button
             root.addEventListener('click', e => {
                 const btn = e.target.closest('.copy-btn');
                 if (!btn || btn.classList.contains('copied-flash')) return;
@@ -717,7 +749,6 @@
             return block;
         }
 
-        // Re-renders only when an event has actually expired (not every minute).
         let shownKey = null;
         function renderEvents() {
             const now = Date.now();
@@ -749,7 +780,6 @@
             renderEvents();
         }
 
-        // Ticks exactly on the minute, and does nothing while the tab is hidden.
         function loop() {
             if (!document.hidden) refresh();
             setTimeout(loop, 60000 - (Date.now() % 60000) + 50);
