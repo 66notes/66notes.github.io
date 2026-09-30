@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
     <title>66notes bubt - Student Dashboard</title>
     <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
     <link rel="canonical" href="https://66notes.github.io/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <!-- Only the 5 icons actually used (campaign, code, description, folder, open_in_new) -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     </noscript>
 
@@ -32,20 +34,20 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; padding-bottom: 80px; min-height: 100vh; line-height: 1.5; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh; line-height: 1.5; }
         .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
 
         .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-        .top-app-bar__title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
+        .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
         .top-app-bar__title span { color: var(--accent); }
-        .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
+        .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
         .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
 
-        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; min-height: calc(100vh - 56px); }
+        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; }
         .page { animation: fade-in 0.3s ease; }
         @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .page h2 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
+        .page h2 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
         .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
 
         .announcement-bar { display: flex; align-items: center; gap: 0.75rem; background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 0.5rem 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
@@ -69,221 +71,143 @@
         .status-dot.running { background: var(--green); }
         .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
-        /* ═══════════════════════════════════════════════
-           PINNED EVENTS
-           ═══════════════════════════════════════════════ */
-        .events-root { font-family: 'Poppins', sans-serif; }
-
-        .events-card {
-            border-radius: 16px;
-            background: #ffffff;
-            border: 1px solid #eef2f6;
-            padding: 16px 14px 12px;
-            margin-bottom: 12px;
-            box-shadow: var(--shadow);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding-bottom: 11px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #eef2f6;
-        }
+        /* Pinned events */
+        .events-card { border-radius: 16px; background: #fff; border: 1px solid #eef2f6; padding: 16px 14px 12px; margin-bottom: 12px; box-shadow: var(--shadow); }
+        .card-header { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 11px; margin-bottom: 12px; border-bottom: 1px solid #eef2f6; }
         .card-header i { color: #2563eb; font-size: 0.82rem; }
         .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
-
         .events-list { display: flex; flex-direction: column; gap: 8px; }
-
-        .events-empty {
-            text-align: center;
-            padding: 1.2rem 0.5rem;
-            font-size: 0.75rem;
-            color: #9ca3af;
-            font-weight: 500;
-        }
-
+        .events-empty { text-align: center; padding: 1.2rem 0.5rem; font-size: 0.75rem; color: #9ca3af; font-weight: 500; }
         .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; }
-
         .event-row { display: flex; gap: 12px; align-items: center; padding: 12px; }
-
-        .event-date {
-            flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px;
-            background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .event-date .day { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1; }
+        .event-date { flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .event-date .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-
         .event-body { flex: 1; min-width: 0; }
-
-        .event-title {
-            font-size: 0.76rem; font-weight: 700; color: #1e2a3e;
-            display: flex; align-items: center; gap: 6px; flex-wrap: wrap; line-height: 1.3;
-        }
-
-        .event-badge {
-            font-size: 0.48rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-            background: #fef3c7; color: #b45309; text-transform: uppercase;
-            letter-spacing: 0.05em; white-space: nowrap;
-        }
-
-        .event-detail-btn {
-            flex-shrink: 0; padding: 4px 12px; border-radius: 20px;
-            background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb;
-            font-size: 0.65rem; font-weight: 600; cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-            font-family: 'Poppins', sans-serif; white-space: nowrap;
-        }
+        .event-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; line-height: 1.3; }
+        .event-badge { font-size: 0.48rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: #fef3c7; color: #b45309; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
         .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
-
-        /* Range Event */
         .event-block.range-event { padding: 12px; }
         .range-content { display: flex; gap: 12px; align-items: center; }
         .range-dates { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 6px; }
-        .date-pill {
-            width: 48px; height: 48px; border-radius: 10px;
-            background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
+        .date-pill { width: 48px; height: 48px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .date-pill.end { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); }
-        .date-pill .day { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1; }
+        .date-pill .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .date-pill .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
         .range-connector { width: 2px; height: 12px; background: #2563eb; border-radius: 1px; }
         .range-info { flex: 1; min-width: 0; }
         .range-label { font-size: 0.58rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
-
-        /* Event detail modal contents */
         .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
         .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
         .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
 
-        .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
+        .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s; position: relative; overflow: hidden; }
         .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
         .wifi-home-card::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 140px; height: 140px; background: rgba(255,255,255,0.06); border-radius: 50%; }
         .wifi-home-card:active { transform: scale(0.98); }
-        .wifi-home-card .wifi-home-icon { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; position: relative; z-index: 1; }
-        .wifi-home-card .wifi-home-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; position: relative; z-index: 1; }
-        .wifi-home-card .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
-        .wifi-home-card .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
+        .wifi-home-icon { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; position: relative; z-index: 1; }
+        .wifi-home-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; position: relative; z-index: 1; }
+        .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
+        .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
 
+        /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
+        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; max-height: 85dvh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
         @keyframes modal-in { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
         .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .modal-header h2 i { color: var(--accent); }
-        .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: background var(--transition); }
-        .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
-        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; flex-wrap: wrap; }
-        .modal-footer .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; min-height: 38px; }
-        .modal-footer .btn-copy-modal { background: var(--accent); color: #fff; }
-        .modal-footer .btn-close-modal { background: #f3f4f6; color: #374151; }
+        .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; flex-shrink: 0; }
+        .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); }
+        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; }
+        .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; min-height: 38px; background: #f3f4f6; color: #374151; }
 
+        /* Routine */
         .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
         .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
         .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
-        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-family: 'Poppins', sans-serif; min-width: 380px; }
+        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; min-width: 380px; }
         .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; text-transform: uppercase; }
-        .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #ffffff; color: #1f2a3e; white-space: nowrap; }
+        .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #fff; color: #1f2a3e; white-space: nowrap; }
         .routine-table tbody tr:last-child td { border-bottom: none; }
 
         .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
-        .codes-section .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
-        .codes-section .codes-label i { color: var(--accent); margin-right: 0.35rem; }
+        .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
+        .codes-label i { color: var(--accent); margin-right: 0.35rem; }
         .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
         .code-card { display: flex; align-items: center; gap: 0.5rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.6rem; border: 1px solid var(--border); min-height: 42px; flex-wrap: wrap; }
-        .code-card .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .code-card .code-icon-dot.eco-dot { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
-        .code-card .code-icon-dot.mgt-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
-        .code-card .code-icon-dot.qua-dot { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
-        .code-card .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
-        .code-card .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
-        .code-card .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
-        .code-card .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; transition: all var(--transition); }
-        .code-card .copy-btn.copied-flash { background: #d1fae5 !important; color: #065f46 !important; }
-        .code-card .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; transition: all var(--transition); text-decoration: none; }
+        .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .eco-dot { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+        .mgt-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+        .qua-dot { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
+        .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
+        .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
+        .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
+        .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; font-family: 'Poppins', sans-serif; }
+        .copy-btn.copied-flash { background: #d1fae5; color: #065f46; }
+        .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
 
+        /* Resources */
         .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
-        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); }
-        .drive-card .drive-icon { font-size: 2.5rem; color: var(--accent); }
-        .drive-card .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
-        .drive-card .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
+        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .drive-icon { font-size: 2.5rem; color: var(--accent); }
+        .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
+        .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
         .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-        .btn--filled { background: var(--navy); color: #ffffff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
+        .btn--filled { background: var(--navy); color: #fff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
         .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
 
         .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
-        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-decoration: none; transition: all var(--transition); box-shadow: var(--shadow-sm); }
-        .community-card .c-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
-        .community-card .c-icon.classroom { background: #15803d; }
-        .community-card .c-icon.whatsapp { background: #25D366; }
-        .community-card .c-icon.messenger { background: #0084FF; }
-        .community-card .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
+        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-decoration: none; box-shadow: var(--shadow-sm); }
+        .c-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .c-icon.classroom { background: #15803d; }
+        .c-icon.whatsapp { background: #25D366; }
+        .c-icon.messenger { background: #0084FF; }
+        .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
 
-        .faculty-root { font-family: 'Poppins', sans-serif; }
+        /* Faculty */
         .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
         .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
         .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
         .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
-        .faculty-name .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
-        .faculty-number-link { font-size: 0.78rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.15rem 0.65rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; font-family: 'Poppins', monospace; text-decoration: none; display: inline-block; cursor: pointer; -webkit-user-select: text; user-select: text; }
+        .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
+        .faculty-number-link { font-size: 0.78rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.15rem 0.65rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; text-decoration: none; display: inline-block; }
         .faculty-number-link:active { background: #dbeafe; }
         .faculty-actions { margin-top: 0.35rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .faculty-actions .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; transition: all var(--transition); min-height: 32px; text-decoration: none; min-width: 64px; }
-        .faculty-actions .btn-fac:active { transform: scale(0.95); }
-        .faculty-actions .btn-call { background: var(--navy); color: #ffffff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
-        .faculty-actions .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
-        .faculty-actions .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
-        .faculty-actions .btn-fac i { font-size: 0.78rem; }
+        .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; min-height: 32px; text-decoration: none; min-width: 64px; }
+        .btn-fac:active { transform: scale(0.95); }
+        .btn-call { background: var(--navy); color: #fff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
+        .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
+        .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
+        .btn-fac i { font-size: 0.78rem; }
         .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.2rem; }
-        .faculty-details .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
+        .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
         .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
         .faculty-details .value { color: var(--text); font-weight: 400; }
         .counsel-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 0.5rem 0.7rem; margin-top: 0.4rem; font-size: 0.62rem; color: #1e3a8a; }
-        .counsel-box .counsel-title { font-weight: 700; font-size: 0.65rem; color: #1e40af; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.3rem; }
-        .counsel-box .counsel-title i { font-size: 0.7rem; }
-        .counsel-box .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
-        .counsel-box .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
+        .counsel-title { font-weight: 700; font-size: 0.65rem; color: #1e40af; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.3rem; }
+        .counsel-title i { font-size: 0.7rem; }
+        .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
+        .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
         .faculty-general-note { margin-top: 0.9rem; background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; padding: 0.75rem 0.9rem; font-size: 0.68rem; color: #78350f; line-height: 1.55; display: flex; gap: 0.5rem; align-items: flex-start; }
         .faculty-general-note i { color: #d97706; font-size: 0.9rem; margin-top: 0.1rem; flex-shrink: 0; }
         .faculty-general-note strong { color: #b45309; }
 
         .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 1rem; }
-        .cta-footer .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
-        .cta-footer .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
-        .cta-footer .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
-        .cta-footer .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #ffffff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
+        .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
+        .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
+        .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
 
-        /* ═══════════════════════════════════════════════
-           BOTTOM NAV
-           ═══════════════════════════════════════════════ */
-        .bottom-nav {
-            position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-            display: flex; height: 72px;
-            padding-bottom: env(safe-area-inset-bottom, 0);
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-        }
-        .bottom-nav__item {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2px; border: none; background: transparent; cursor: pointer;
-            padding: 6px 0 10px; color: var(--text-secondary);
-            font-family: 'Poppins', sans-serif; transition: color var(--transition);
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* Bottom nav */
+        .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04); }
+        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); }
         .bottom-nav__item.is-active { color: var(--accent); }
-        .bottom-nav__icon {
-            width: 52px; height: 30px; border-radius: 28px;
-            display: flex; align-items: center; justify-content: center;
-            transition: background-color var(--transition);
-        }
+        .bottom-nav__icon { width: 52px; height: 30px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); }
         .bottom-nav__item.is-active .bottom-nav__icon { background: var(--accent-light); }
         .bottom-nav__icon svg { width: 22px; height: 22px; display: block; fill: currentColor; }
         .bottom-nav__item .icon-filled { display: none; }
@@ -299,12 +223,12 @@
             .message-box { font-size: 0.85rem; min-height: 44px; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
             .routine-table th, .routine-table td { padding: 7px 8px; }
-            .code-card .code-subject { font-size: 0.6rem; min-width: 48px; }
-            .code-card .code-value { font-size: 0.6rem; }
-            .code-card .copy-btn, .code-card .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
+            .code-subject { font-size: 0.6rem; min-width: 48px; }
+            .code-value { font-size: 0.6rem; }
+            .copy-btn, .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
             .faculty-name { font-size: 0.8rem; }
             .faculty-number-link { font-size: 0.7rem; }
-            .faculty-actions .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
+            .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
             .btn--large { font-size: 13px; height: 42px; }
             .bottom-nav { height: 64px; }
             .bottom-nav__label { font-size: 9px; }
@@ -313,19 +237,22 @@
             .announcement-line { font-size: 0.7rem; white-space: normal; }
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
-
             .events-card { padding: 14px 12px 10px; }
             .event-row { padding: 10px; }
             .event-date, .date-pill { width: 44px; height: 44px; }
             .event-date .day, .date-pill .day { font-size: 0.9rem; }
             .event-title { font-size: 0.74rem; }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="bottom-nav" aria-label="Main navigation">
-        <button class="bottom-nav__item is-active" data-target="page-home" aria-label="Home">
+        <button class="bottom-nav__item is-active" data-target="page-home" aria-label="Home" aria-current="page">
             <span class="bottom-nav__icon">
                 <svg class="icon-outline" viewBox="0 0 24 24"><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
                 <svg class="icon-filled" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -357,46 +284,39 @@
 
     <header class="top-app-bar">
         <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
-        <div class="top-app-bar__right">
-            <a href="http://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
-                <span class="material-symbols-rounded">description</span> Notices
-            </a>
-        </div>
+        <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
+            <span class="material-symbols-rounded">description</span> Notices
+        </a>
     </header>
 
     <main class="content">
 
-        <!-- ── HOME ──────────────────────────────── -->
+        <!-- HOME -->
         <section class="page" id="page-home">
-            <div class="announcement-bar" id="section-announcements">
+            <div class="announcement-bar">
                 <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
                 <div class="announcement-text" id="announcementText"></div>
             </div>
 
-            <div class="glance" id="section-ai">
-                <div class="section-title">
-                    <span class="live-indicator"></span> AI Reminder
-                </div>
+            <div class="glance">
+                <div class="section-title"><span class="live-indicator"></span> AI Reminder</div>
                 <div class="reminder-main">
                     <div class="message-box" id="messageBox"></div>
                     <div class="clock-display" id="clockDisplay">Loading...</div>
                 </div>
-                <div class="next-class-bar" id="nextClassBar">
+                <div class="next-class-bar">
                     <span class="status-dot" id="barDot"></span>
                     <span class="next-label" id="barLabel">...</span>
                     <span id="barDetail">...</span>
                 </div>
             </div>
 
-            <!-- PINNED EVENTS -->
-            <div class="events-root" id="section-events">
-                <div class="events-card">
-                    <div class="card-header">
-                        <i class="fas fa-thumbtack"></i>
-                        <span>Pinned Events</span>
-                    </div>
-                    <div class="events-list" id="eventsList"></div>
+            <div class="events-card">
+                <div class="card-header">
+                    <i class="fas fa-thumbtack"></i>
+                    <span>Pinned Events</span>
                 </div>
+                <div class="events-list" id="eventsList"></div>
             </div>
 
             <a href="wifi.html" class="wifi-home-card">
@@ -410,13 +330,11 @@
                 <span class="cta-icon material-symbols-rounded">code</span>
                 <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
                 <div class="cta-desc">You can customize it yourself.</div>
-                <a href="contact.html" class="cta-btn">
-                    <i class="fas fa-arrow-right"></i> Contact Now
-                </a>
+                <a href="contact.html" class="cta-btn"><i class="fas fa-arrow-right"></i> Contact Now</a>
             </div>
         </section>
 
-        <!-- ── PDFs ──────────────────────────────── -->
+        <!-- PDFs -->
         <section class="page" id="page-pdfs" hidden>
             <h2>All Resources</h2>
             <p class="subtitle">Study materials and class communities</p>
@@ -430,7 +348,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="community-grid">
                 <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
                     <span class="c-icon classroom"><i class="fas fa-chalkboard-user"></i></span>
@@ -447,621 +364,400 @@
             </div>
         </section>
 
-        <!-- ── ROUTINE ───────────────────────────── -->
+        <!-- ROUTINE (rendered once by JS from the CLASSES + CODES data below) -->
         <section class="page" id="page-routine" hidden>
-            <div class="routine-section" id="routineContainer">
-                <div id="routineContent"></div>
-            </div>
+            <div class="routine-section" id="routineContent"></div>
         </section>
 
-        <!-- ── FACULTY ───────────────────────────── -->
+        <!-- FACULTY -->
         <section class="page" id="page-faculty" hidden>
             <h2>Faculty</h2>
             <p class="subtitle">Contact your instructors</p>
-            <div class="faculty-root" id="section-faculty">
-                <div class="faculty-list">
-                    <div class="faculty-item">
-                        <div class="faculty-row">
-                            <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
-                            <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
-                        </div>
-                        <div class="faculty-actions">
-                            <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                            <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                            <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                        </div>
-                        <div class="faculty-details">
-                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
-                            <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
-                        </div>
+            <div class="faculty-list">
+                <div class="faculty-item">
+                    <div class="faculty-row">
+                        <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
+                        <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
                     </div>
-                    <div class="faculty-item">
-                        <div class="faculty-row">
-                            <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
-                            <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
-                        </div>
-                        <div class="faculty-actions">
-                            <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                            <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                            <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                        </div>
-                        <div class="faculty-details">
-                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
-                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
-                            <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
-                            <div class="counsel-box">
-                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                                <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
-                            </div>
-                        </div>
+                    <div class="faculty-actions">
+                        <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
                     </div>
-                    <div class="faculty-item">
-                        <div class="faculty-row">
-                            <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
-                            <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
-                        </div>
-                        <div class="faculty-actions">
-                            <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                            <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                            <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                        </div>
-                        <div class="faculty-details">
-                            <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
-                            <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
-                            <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
-                            <div class="counsel-box">
-                                <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                                <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
-                                <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
-                                <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
-                            </div>
+                    <div class="faculty-details">
+                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
+                        <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
+                    </div>
+                </div>
+                <div class="faculty-item">
+                    <div class="faculty-row">
+                        <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
+                        <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
+                    </div>
+                    <div class="faculty-actions">
+                        <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
+                    </div>
+                    <div class="faculty-details">
+                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
+                        <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
+                        <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
+                        <div class="counsel-box">
+                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                            <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
                         </div>
                     </div>
                 </div>
+                <div class="faculty-item">
+                    <div class="faculty-row">
+                        <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
+                        <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
+                    </div>
+                    <div class="faculty-actions">
+                        <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
+                        <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
+                    </div>
+                    <div class="faculty-details">
+                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
+                        <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
+                        <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
+                        <div class="counsel-box">
+                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                            <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
+                            <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
+                            <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <div class="faculty-general-note">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong>
-                    </div>
-                </div>
+            <div class="faculty-general-note">
+                <i class="fas fa-info-circle"></i>
+                <div>You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong></div>
             </div>
         </section>
 
     </main>
 
-    <!-- ── MODALS ───────────────────────────── -->
-    <div class="modal-overlay" id="modal-ict-lab" onclick="if(event.target === this) closeModal('modal-ict-lab')">
+    <!-- Event details modal -->
+    <div class="modal-overlay" id="modal-event-details" role="dialog" aria-modal="true" aria-labelledby="event-modal-title">
         <div class="modal-box">
             <div class="modal-header">
-                <h2><i class="fas fa-flask"></i> ICT Lab Final Syllabus</h2>
-                <button class="modal-close-btn" onclick="closeModal('modal-ict-lab')">✕</button>
-            </div>
-            <div class="modal-body" id="modal-body-ict-lab">
-📊 Excel Functions: LEFT, RIGHT, PROPER, TRIM, LEN, TEXTJOIN, AVERAGEIF, AVERAGEIFS, COUNT, COUNTA, COUNTIF, COUNTIFS, CONCAT, SUM, SUMIF, SUMIFS, MAX, MIN, MID, LARGE, SMALL, AVERAGE, IF, IF(AND), IF(OR), TODAY, NOW, VLOOKUP
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict-lab', this)"><i class="fas fa-copy"></i> Copy All</button>
-                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict-lab')">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal-ict" onclick="if(event.target === this) closeModal('modal-ict')">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2><i class="fas fa-laptop-code"></i> ICT 1101 Final Syllabus</h2>
-                <button class="modal-close-btn" onclick="closeModal('modal-ict')">✕</button>
-            </div>
-            <div class="modal-body" id="modal-body-ict">
-📘 Chapter 2, 10, OSI Model, Chapter 6, Chapter 12
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-ict', this)"><i class="fas fa-copy"></i> Copy All</button>
-                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-ict')">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal-mkt" onclick="if(event.target === this) closeModal('modal-mkt')">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2><i class="fas fa-chart-line"></i> MKT 1101 Final Syllabus</h2>
-                <button class="modal-close-btn" onclick="closeModal('modal-mkt')">✕</button>
-            </div>
-            <div class="modal-body" id="modal-body-mkt">
-📘 Chapter 7, 8, 9, 11, 14
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-mkt', this)"><i class="fas fa-copy"></i> Copy All</button>
-                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-mkt')">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal-hum" onclick="if(event.target === this) closeModal('modal-hum')">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2><i class="fas fa-language"></i> HUM 1102 Final Syllabus</h2>
-                <button class="modal-close-btn" onclick="closeModal('modal-hum')">✕</button>
-            </div>
-            <div class="modal-body" id="modal-body-hum">
-১. ব্যাকরণ, ২. উচ্চারণ ও সমাস, ৩. প্রবাদ-প্রবচন, ৪. বিরামচিহ্ন ও প্রতিবেদন
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)"><i class="fas fa-copy"></i> Copy All</button>
-                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-hum')">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── EVENT DETAILS MODAL ──────────────── -->
-    <div class="modal-overlay" id="modal-event-details" onclick="if(event.target === this) closeModal('modal-event-details')">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="event-modal-title"><i class="fas fa-calendar-check"></i> Event Details</h2>
-                <button class="modal-close-btn" onclick="closeModal('modal-event-details')">✕</button>
+                <h2 id="event-modal-title"></h2>
+                <button class="modal-close-btn" type="button" aria-label="Close" data-close>✕</button>
             </div>
             <div class="modal-body" id="event-modal-body"></div>
             <div class="modal-footer">
-                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-event-details')">Close</button>
+                <button class="btn-modal" type="button" data-close>Close</button>
             </div>
         </div>
     </div>
 
     <script>
-        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
-        function copyModalContent(bodyId, btn) {
-            const body = document.getElementById(bodyId);
-            let text = body.innerText || body.textContent;
-            text = text.replace(/\s+/g, ' ').trim();
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => flashCopyBtn(btn)).catch(() => fallbackCopy(text, btn));
-            } else { fallbackCopy(text, btn); }
+    (function () {
+        'use strict';
+        const $ = id => document.getElementById(id);
+
+        /* ═══════════════ DATA — edit only here ═══════════════ */
+
+        // [day (0=Sun), start, end (24h), course, room, faculty]
+        // NOTE: announcement says 4304 is now 4201 — change the room here if needed (one place only).
+        const CLASSES = [
+            [0, '14:45', '16:15', 'MGT 1101', '4905', 'JI'],
+            [0, '16:15', '17:45', 'QUA 1101', '4905', 'TKA'],
+            [1, '11:15', '12:45', 'ECO 1101', '4304', 'KMR'],
+            [1, '13:15', '14:45', 'QUA 1101', '4304', 'TKA'],
+            [3, '08:15', '09:45', 'ECO 1101', '4905', 'KMR'],
+            [3, '09:45', '11:15', 'MGT 1101', '4905', 'JI']
+        ].map(([day, s, e, course, room, fac]) => {
+            const [sh, sm] = s.split(':').map(Number), [eh, em] = e.split(':').map(Number);
+            return { day, sh, sm, eh, em, s: sh * 60 + sm, e: eh * 60 + em, course, room, fac };
+        }).sort((a, b) => a.day - b.day || a.s - b.s);
+
+        const CODES = [
+            { subject: 'ECO 1101', dot: 'eco', code: 'snycxehv', url: 'https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv' },
+            { subject: 'MGT 1101', dot: 'mgt', code: 'im2z2sar' },
+            { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
+        ];
+
+        const ANNOUNCEMENTS = [
+            '📢 4304 is now 4201 but it can change anytime.',
+            '📝 CT dates are given – keep an eye on messenger.'
+        ];
+
+        // expiresAt uses Dhaka time (+06:00). Event hides itself after that moment.
+        const EVENTS = [
+            { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', expiresAt: '2026-09-28T23:59:59+06:00',
+              meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
+            { day: '4', month: 'Oct', title: 'Math CT Exam', badge: 'CT', expiresAt: '2026-10-04T23:59:59+06:00',
+              meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly' },
+            { day: '20', month: 'Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', expiresAt: '2026-10-20T23:59:59+06:00',
+              meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'],
+              note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.' },
+            { isRange: true, startDay: '24', startMonth: 'Oct', endDay: '31', endMonth: 'Oct',
+              title: 'Mid Exam (MGT, ECO, QUA)', badges: ['Midterm', 'Estimated'], rangeLabel: 'Estimated Window',
+              expiresAt: '2026-10-31T23:59:59+06:00', meta: 'Estimated date range',
+              items: ['📘 QUA 1101: Set, Equation, Index & algorithms', '📘 MGT 1101: Syllabus TBA', '📘 ECO 1101: Syllabus TBA'],
+              note: 'Syllabus details will be updated when available' }
+        ];
+
+        const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
+        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
+
+        /* ═══════════════ HELPERS ═══════════════ */
+
+        // Dhaka is UTC+6 with no DST, so shifting the timestamp and reading UTC fields is exact.
+        function dhakaNow() {
+            const d = new Date(Date.now() + 6 * 3600000);
+            const h = d.getUTCHours(), m = d.getUTCMinutes();
+            return { day: d.getUTCDay(), h, m, min: h * 60 + m };
         }
-        function fallbackCopy(text, btn) {
-            const ta = document.createElement('textarea'); ta.value = text;
-            ta.style.position = 'fixed'; ta.style.left = '-9999px';
-            document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); flashCopyBtn(btn); } catch (e) { alert('Could not copy.'); }
-            document.body.removeChild(ta);
-        }
-        function flashCopyBtn(btn) {
-            const orig = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            btn.style.background = '#d1fae5'; btn.style.color = '#065f46';
-            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
+        const pad = n => String(n).padStart(2, '0');
+        const to12 = (h, m) => (h % 12 || 12) + ':' + pad(m);
+        const to12p = (h, m) => pad(h % 12 || 12) + ':' + pad(m);
+
+        function rotate(els, ms) {
+            let i = 0;
+            els[0].classList.add('active');
+            if (els.length < 2) return null;
+            return setInterval(() => {
+                els[i].classList.remove('active');
+                i = (i + 1) % els.length;
+                els[i].classList.add('active');
+            }, ms);
         }
 
-        (function() {
-            const navItems = document.querySelectorAll('.bottom-nav__item');
-            const pages = document.querySelectorAll('.page');
-            const titleEl = document.querySelector('.top-app-bar__title');
-            const titles = { 'page-home': '66Notes', 'page-pdfs': 'All Resources', 'page-routine': 'Routine & Codes', 'page-faculty': 'Faculty' };
-            navItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const targetId = item.dataset.target;
-                    navItems.forEach(i => i.classList.remove('is-active'));
-                    item.classList.add('is-active');
-                    pages.forEach(page => { page.hidden = page.id !== targetId; });
-                    if (titleEl && titles[targetId]) titleEl.innerHTML = titles[targetId];
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+            return new Promise((ok, fail) => {
+                const ta = document.createElement('textarea');
+                ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px';
+                document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy') ? ok() : fail(); } catch (e) { fail(e); }
+                ta.remove();
+            });
+        }
+
+        /* ═══════════════ MODAL ═══════════════ */
+
+        const modal = $('modal-event-details');
+        const openModal = () => { modal.classList.add('active'); document.body.style.overflow = 'hidden'; };
+        const closeModal = () => { modal.classList.remove('active'); document.body.style.overflow = ''; };
+        modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        /* ═══════════════ NAV ═══════════════ */
+
+        const navItems = document.querySelectorAll('.bottom-nav__item');
+        const pages = document.querySelectorAll('.page');
+        navItems.forEach(item => item.addEventListener('click', () => {
+            const target = item.dataset.target;
+            navItems.forEach(i => {
+                const on = i === item;
+                i.classList.toggle('is-active', on);
+                if (on) i.setAttribute('aria-current', 'page'); else i.removeAttribute('aria-current');
+            });
+            pages.forEach(p => { p.hidden = p.id !== target; });
+            $('appBarTitle').innerHTML = TITLES[target];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }));
+
+        /* ═══════════════ ANNOUNCEMENTS ═══════════════ */
+
+        (function () {
+            const box = $('announcementText');
+            ANNOUNCEMENTS.forEach(text => {
+                const s = document.createElement('span');
+                s.className = 'announcement-line';
+                s.textContent = text;
+                box.appendChild(s);
+            });
+            if (box.children.length) rotate(box.children, 4500);
+        })();
+
+        /* ═══════════════ CLASS STATUS ═══════════════ */
+
+        function findStatus(t) {
+            const run = CLASSES.find(c => c.day === t.day && t.min >= c.s && t.min < c.e);
+            if (run) return { kind: 'run', c: run };
+            for (let off = 0; off <= 7; off++) {
+                const day = (t.day + off) % 7;
+                const c = CLASSES.find(c => c.day === day && (off > 0 || c.s > t.min));
+                if (c) return { kind: off === 0 ? 'today' : 'next', c };
+            }
+            return null;
+        }
+
+        function getStatus(t) {
+            if (Date.now() < SEMESTER_START) {
+                return { slides: ['📅 Classes start on <strong>6 September</strong>', 'Check the routine below!'], label: 'UPCOMING', running: false, detail: 'Classes start on 6th Sep' };
+            }
+            const st = findStatus(t);
+            if (!st) return { slides: ['📚 No classes scheduled', 'Enjoy your free time!'], label: 'IDLE', running: false, detail: 'No class scheduled.' };
+
+            const c = st.c;
+            const when = st.kind === 'next' ? DAYS[c.day] : 'Today';
+            const time = to12(c.sh, c.sm) + '–' + to12(c.eh, c.em);
+            const detail = `<span class="nc-day">${when}</span> · <span class="nc-course">${c.course}</span> · <span class="nc-time">${time}</span> · <span class="nc-room">${c.room}</span>`;
+
+            if (st.kind === 'run') {
+                return { slides: [`▶️ <strong>${c.course}</strong> is running`, 'Ends at ' + to12(c.eh, c.em)], label: 'RUNNING', running: true, detail };
+            }
+            return {
+                slides: ['📅 Next: ' + when, `<strong>${c.course}</strong> at ${to12(c.sh, c.sm)}`, 'Room ' + c.room],
+                label: st.kind === 'today' ? 'TODAY' : 'NEXT', running: false, detail
+            };
+        }
+
+        // Only rebuilds the slider when the text actually changes, so it doesn't restart every tick.
+        let slideKey = '', slideTimer = null;
+        function showSlides(slides) {
+            const key = slides.join('|');
+            if (key === slideKey) return;
+            slideKey = key;
+            const box = $('messageBox');
+            box.innerHTML = slides.map(h => `<div class="message-line">${h}</div>`).join('');
+            clearInterval(slideTimer);
+            slideTimer = rotate(box.children, 4000);
+        }
+
+        /* ═══════════════ ROUTINE + CODES (rendered once) ═══════════════ */
+
+        (function () {
+            const byDay = {};
+            CLASSES.forEach(c => (byDay[c.day] = byDay[c.day] || []).push(c));
+            const rows = Object.keys(byDay).map(d => byDay[d].map((c, i) =>
+                '<tr>' +
+                (i === 0 ? `<td rowspan="${byDay[d].length}"><strong>${DAYS[d].slice(0, 3).toUpperCase()}</strong></td>` : '') +
+                `<td>${to12p(c.sh, c.sm)} – ${to12p(c.eh, c.em)}</td><td>${c.room}</td><td>${c.course}</td><td>${c.fac}</td></tr>`
+            ).join('')).join('');
+
+            const codes = CODES.map(c => `
+                <div class="code-card">
+                    <span class="code-icon-dot ${c.dot}-dot"></span>
+                    <span class="code-subject">${c.subject}</span>
+                    <div class="code-value-box"><span class="code-value">${c.code}</span></div>
+                    <button class="copy-btn" type="button" data-code="${c.code}"><i class="fas fa-copy"></i> Copy</button>
+                    ${c.url ? `<a href="${c.url}" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>` : ''}
+                </div>`).join('');
+
+            const root = $('routineContent');
+            root.innerHTML = `
+                <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                <div class="routine-table-wrap">
+                    <table class="routine-table">
+                        <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+                <div class="codes-section">
+                    <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
+                    <div class="codes-grid">${codes}</div>
+                </div>`;
+
+            // One delegated listener for every copy button
+            root.addEventListener('click', e => {
+                const btn = e.target.closest('.copy-btn');
+                if (!btn || btn.classList.contains('copied-flash')) return;
+                const orig = btn.innerHTML;
+                copyText(btn.dataset.code).then(() => {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+                    btn.classList.add('copied-flash');
+                    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied-flash'); }, 1500);
+                }).catch(() => alert('Could not copy.'));
             });
         })();
 
-        (function() {
-            function updateClock() {
-                const now = new Date();
-                let hours = now.getHours();
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12;
-                const el = document.getElementById('clockDisplay');
-                if (el) el.textContent = hours + ':' + minutes + ' ' + ampm;
-            }
-            updateClock();
-            setInterval(updateClock, 30000);
-        })();
+        /* ═══════════════ PINNED EVENTS ═══════════════ */
 
-        (function() {
-            const container = document.getElementById('announcementText');
-            const lines = [
-                '📢 4304 is now 4201 but it can change anytime.',
-                '📝 CT dates are given – keep an eye on messenger.'
-            ];
-            container.innerHTML = '';
-            lines.forEach((text, index) => {
-                const span = document.createElement('span');
-                span.className = 'announcement-line' + (index === 0 ? ' active' : '');
-                span.textContent = text;
-                container.appendChild(span);
-            });
-            if (lines.length > 1) {
-                let current = 0;
-                const items = container.querySelectorAll('.announcement-line');
-                setInterval(() => {
-                    items.forEach(l => l.classList.remove('active'));
-                    current = (current + 1) % items.length;
-                    items[current].classList.add('active');
-                }, 4500);
-            }
-        })();
+        function openEventDetails(ev) {
+            const badges = ev.badges || (ev.badge ? [ev.badge] : []);
+            $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title + ' ' +
+                badges.map(b => `<span class="event-badge">${b}</span>`).join(' ');
 
-        (function() {
-            const semesterStart = new Date(2026, 8, 6);
-            const classes = [
-                { day: 0, startH: 14, startM: 45, endH: 16, endM: 15, course: 'MGT 1101', room: '4905' },
-                { day: 0, startH: 16, startM: 15, endH: 17, endM: 45, course: 'QUA 1101', room: '4905' },
-                { day: 1, startH: 11, startM: 15, endH: 12, endM: 45, course: 'ECO 1101', room: '4304' },
-                { day: 1, startH: 13, startM: 15, endH: 14, endM: 45, course: 'QUA 1101', room: '4304' },
-                { day: 3, startH: 8, startM: 15, endH: 9, endM: 45, course: 'ECO 1101', room: '4905' },
-                { day: 3, startH: 9, startM: 45, endH: 11, endM: 15, course: 'MGT 1101', room: '4905' }
-            ];
-            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-            function getDhaka() {
-                const n = new Date();
-                let h = n.getUTCHours() + 6, d = n.getUTCDate(), m = n.getUTCMonth(), y = n.getUTCFullYear();
-                if (h >= 24) { h -= 24; d++; }
-                const dim = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
-                if (d > dim) { d = 1; m++; }
-                if (m > 11) { m = 0; y++; }
-                const ts = Date.UTC(y, m, d, h, n.getUTCMinutes(), n.getUTCSeconds(), n.getUTCMilliseconds());
-                return { year: y, month: m, day: d, hours: h, minutes: n.getUTCMinutes(), dayOfWeek: new Date(ts).getUTCDay(), timestamp: ts };
-            }
-            function to12(h, m) { return (h % 12 || 12) + ':' + String(m).padStart(2, '0'); }
-
-            function getClassStatus() {
-                const now = new Date();
-                if (now < semesterStart) return ['📅 Classes started on <strong>6 September</strong>', 'Check the routine below!'];
-                const dh = getDhaka();
-                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
-                if (run) return ['▶️ <strong>' + run.course + '</strong> is running', 'Ends at ' + to12(run.endH, run.endM)];
-                for (let off = 0; off < 14; off++) {
-                    const fut = new Date(dh.timestamp + off * 86400000);
-                    const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
-                    for (let c of dayCls) {
-                        const st = c.startH * 60 + c.startM;
-                        if (off === 0 && st <= min) continue;
-                        const dn = dayNames[cd];
-                        const dur = off === 0 ? 'Today' : dn;
-                        return ['📅 Next: ' + dur, '<strong>' + c.course + '</strong> at ' + to12(c.startH, c.startM), 'Room ' + c.room];
-                    }
-                }
-                return ['📚 No classes scheduled', 'Enjoy your free time!'];
-            }
-
-            let slideTimer;
-            function showSlides(slides) {
-                const box = document.getElementById('messageBox');
-                if (!box) return;
-                box.innerHTML = '';
-                slides.forEach(h => {
-                    const d = document.createElement('div');
-                    d.className = 'message-line';
-                    d.innerHTML = h;
-                    box.appendChild(d);
-                });
-                if (slideTimer) clearInterval(slideTimer);
-                let cur = -1;
-                const items = document.querySelectorAll('.message-line');
-                if (items.length) {
-                    const nxt = () => {
-                        items.forEach(i => i.classList.remove('active'));
-                        cur = (cur + 1) % items.length;
-                        items[cur].classList.add('active');
-                    };
-                    nxt();
-                    slideTimer = setInterval(nxt, 4000);
-                }
-            }
-
-            function updateNextBar() {
-                const now = new Date();
-                const label = document.getElementById('barLabel');
-                const detail = document.getElementById('barDetail');
-                const dot = document.getElementById('barDot');
-                if (!label || !detail || !dot) return;
-                if (now < semesterStart) {
-                    label.textContent = 'UPCOMING';
-                    dot.className = 'status-dot';
-                    detail.innerHTML = 'Classes started on 6th Sep';
-                    return;
-                }
-                const dh = getDhaka();
-                const day = dh.dayOfWeek, min = dh.hours * 60 + dh.minutes;
-                const run = classes.find(c => c.day === day && min >= c.startH * 60 + c.startM && min < c.endH * 60 + c.endM);
-                if (run) {
-                    label.textContent = 'RUNNING';
-                    dot.className = 'status-dot running';
-                    detail.innerHTML = '<span class="nc-day">Today</span> · <span class="nc-course">' + run.course + '</span> · <span class="nc-time">' + to12(run.startH, run.startM) + '–' + to12(run.endH, run.endM) + '</span> · <span class="nc-room">' + run.room + '</span>';
-                    return;
-                }
-                for (let off = 0; off < 14; off++) {
-                    const fut = new Date(dh.timestamp + off * 86400000);
-                    const cd = fut.getUTCDay();
-                    const dayCls = classes.filter(c => c.day === cd).sort((a, b) => (a.startH * 60 + a.startM) - (b.startH * 60 + b.startM));
-                    for (let c of dayCls) {
-                        const st = c.startH * 60 + c.startM;
-                        if (off === 0 && st <= min) continue;
-                        const fd = dayNames[cd];
-                        const dur = off === 0 ? 'Today' : fd;
-                        label.textContent = off === 0 ? 'TODAY' : 'NEXT';
-                        dot.className = 'status-dot';
-                        detail.innerHTML = '<span class="nc-day">' + dur + '</span> · <span class="nc-course">' + c.course + '</span> · <span class="nc-time">' + to12(c.startH, c.startM) + '–' + to12(c.endH, c.endM) + '</span> · <span class="nc-room">' + c.room + '</span>';
-                        return;
-                    }
-                }
-                label.textContent = 'IDLE';
-                dot.className = 'status-dot';
-                detail.innerHTML = 'No class scheduled.';
-            }
-
-            showSlides(getClassStatus());
-            updateNextBar();
-            setInterval(() => { showSlides(getClassStatus()); updateNextBar(); }, 30000);
-        })();
-
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const code = this.getAttribute('data-code');
-                if (!code) return;
-                const origText = this.innerHTML;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
-                } else { fallbackCopyCode(code, this, origText); }
-            });
-        });
-        function fallbackCopyCode(text, btn, origText) {
-            const ta = document.createElement('textarea');
-            ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
-            document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); flashCopied(btn, origText); } catch (e) { alert('Could not copy.'); }
-            document.body.removeChild(ta);
-        }
-        function flashCopied(btn, origText) {
-            btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-            btn.classList.add('copied-flash');
-            setTimeout(() => { btn.innerHTML = origText; btn.classList.remove('copied-flash'); }, 1500);
+            const date = ev.isRange ? `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}` : `${ev.day} ${ev.month}`;
+            let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${date}</div>`;
+            if (ev.meta) html += `<div class="event-meta">${ev.meta}</div>`;
+            if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
+            if (ev.note) html += `<div class="event-note">${ev.note}</div>`;
+            $('event-modal-body').innerHTML = html;
+            openModal();
         }
 
-        (function() {
-            function renderRoutine() {
-                const container = document.getElementById('routineContent');
-                if (!container) return;
-
-                let html = `
-                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                    <div class="routine-table-wrap">
-                        <table class="routine-table">
-                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
-                            <tbody>
-                                <tr><td rowspan="2"><strong>SUN</strong></td><td>02:45 – 04:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
-                                <tr><td>04:15 – 05:45</td><td>4905</td><td>QUA 1101</td><td>TKA</td></tr>
-                                <tr><td rowspan="2"><strong>MON</strong></td><td>11:15 – 12:45</td><td>4304</td><td>ECO 1101</td><td>KMR</td></tr>
-                                <tr><td>01:15 – 02:45</td><td>4304</td><td>QUA 1101</td><td>TKA</td></tr>
-                                <tr><td rowspan="2"><strong>WED</strong></td><td>08:15 – 09:45</td><td>4905</td><td>ECO 1101</td><td>KMR</td></tr>
-                                <tr><td>09:45 – 11:15</td><td>4905</td><td>MGT 1101</td><td>JI</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-
-                html += `
-                    <div class="codes-section">
-                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                        <div class="codes-grid">
-                            <div class="code-card">
-                                <span class="code-icon-dot eco-dot"></span>
-                                <span class="code-subject">ECO 1101</span>
-                                <div class="code-value-box"><span class="code-value">snycxehv</span></div>
-                                <button class="copy-btn" data-code="snycxehv"><i class="fas fa-copy"></i> Copy</button>
-                                <a href="https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
-                            </div>
-                            <div class="code-card">
-                                <span class="code-icon-dot mgt-dot"></span>
-                                <span class="code-subject">MGT 1101</span>
-                                <div class="code-value-box"><span class="code-value">im2z2sar</span></div>
-                                <button class="copy-btn" data-code="im2z2sar"><i class="fas fa-copy"></i> Copy</button>
-                            </div>
-                            <div class="code-card">
-                                <span class="code-icon-dot qua-dot"></span>
-                                <span class="code-subject">QUA 1101</span>
-                                <div class="code-value-box"><span class="code-value">oz3bz3af</span></div>
-                                <button class="copy-btn" data-code="oz3bz3af"><i class="fas fa-copy"></i> Copy</button>
-                                <a href="https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>
-                            </div>
+        function buildBlock(ev) {
+            const block = document.createElement('div');
+            block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
+            if (ev.isRange) {
+                const badges = ev.badges.map(b => `<span class="event-badge">${b}</span>`).join('');
+                block.innerHTML = `
+                    <div class="range-content">
+                        <div class="range-dates">
+                            <div class="date-pill"><span class="day">${ev.startDay}</span><span class="month">${ev.startMonth}</span></div>
+                            <div class="range-connector"></div>
+                            <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
                         </div>
-                    </div>
-                `;
-
-                container.innerHTML = html;
-
-                document.querySelectorAll('.codes-grid .copy-btn').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const code = this.getAttribute('data-code');
-                        if (!code) return;
-                        const origText = this.innerHTML;
-                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                            navigator.clipboard.writeText(code).then(() => flashCopied(this, origText)).catch(() => fallbackCopyCode(code, this, origText));
-                        } else { fallbackCopyCode(code, this, origText); }
-                    });
-                });
-            }
-            renderRoutine();
-            setInterval(renderRoutine, 30000);
-        })();
-
-        /* ═══════════════════════════════════════════════
-           PINNED EVENTS — WITH EXPIRY (Dhaka GMT+6)
-           expiresAt: ISO string with +06:00 offset
-           Event hides when current Dhaka time passes expiresAt.
-           Range events expire at end of end date (23:59:59 Dhaka).
-           No deadline → event expires end of its own date (23:59:59 Dhaka).
-           ═══════════════════════════════════════════════ */
-        (function() {
-            const events = [
-                {
-                    day: '28',
-                    month: 'Sep',
-                    title: 'ECO CT Exam',
-                    badge: 'CT',
-                    expiresAt: '2026-09-28T23:59:59+06:00',   // expired → hidden
-                    meta: 'Syllabus provided',
-                    items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'],
-                    note: 'Check with faculty for confirmation'
-                },
-                {
-                    day: '4',
-                    month: 'Oct',
-                    title: 'Math CT Exam',
-                    badge: 'CT',
-                    expiresAt: '2026-10-04T23:59:59+06:00',
-                    meta: 'Syllabus provided',
-                    items: ['• Set', '• Index'],
-                    note: 'Prepare accordingly'
-                },
-                {
-                    day: '20',
-                    month: 'Oct',
-                    title: 'Assignment (ECO) Last Date',
-                    badge: 'Assignment',
-                    expiresAt: '2026-10-20T23:59:59+06:00',   // deadline is the submission date
-                    meta: 'Deadline: 20 October',
-                    items: ['• Use review chapter questions', '• PDF will be provided'],
-                    note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.'
-                },
-                {
-                    isRange: true,
-                    startDay: '24',
-                    startMonth: 'Oct',
-                    endDay: '31',
-                    endMonth: 'Oct',
-                    title: 'Mid Exam (MGT, ECO, QUA)',
-                    badges: [
-                        { text: 'Midterm', type: 'default' },
-                        { text: 'Estimated', type: 'blue' }
-                    ],
-                    rangeLabel: 'Estimated Window',
-                    expiresAt: '2026-10-31T23:59:59+06:00',   // expires end of last day
-                    meta: 'Estimated date range',
-                    items: [
-                        '📘 QUA 1101: Set, Equation, Index & algorithms',
-                        '📘 MGT 1101: Syllabus TBA',
-                        '📘 ECO 1101: Syllabus TBA'
-                    ],
-                    note: 'Syllabus details will be updated when available'
-                }
-            ];
-
-            const list = document.getElementById('eventsList');
-            if (!list) return;
-
-            // Returns true if the event's expiry moment has passed (Dhaka time)
-            function isExpired(ev) {
-                if (!ev.expiresAt) return false;
-                return Date.now() > new Date(ev.expiresAt).getTime();
-            }
-
-            function openEventDetails(ev) {
-                const modalTitle = document.getElementById('event-modal-title');
-                const modalBody = document.getElementById('event-modal-body');
-                if (!modalTitle || !modalBody) return;
-
-                let titleHtml = ev.title;
-                if (ev.badges) {
-                    titleHtml += ' ' + ev.badges.map(b => `<span class="event-badge">${b.text}</span>`).join(' ');
-                } else if (ev.badge) {
-                    titleHtml += ` <span class="event-badge">${ev.badge}</span>`;
-                }
-                modalTitle.innerHTML = `<i class="fas fa-calendar-check"></i> ${titleHtml}`;
-
-                let bodyHtml = '';
-                if (ev.isRange) {
-                    bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}</div>`;
-                } else {
-                    bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.day} ${ev.month}</div>`;
-                }
-                if (ev.meta) bodyHtml += `<div class="event-meta">${ev.meta}</div>`;
-                if (ev.items && ev.items.length) {
-                    bodyHtml += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
-                }
-                if (ev.note) bodyHtml += `<div class="event-note">${ev.note}</div>`;
-
-                modalBody.innerHTML = bodyHtml;
-                openModal('modal-event-details');
-            }
-
-            // Build a single event block element
-            function buildBlock(ev) {
-                const block = document.createElement('div');
-                block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
-
-                if (ev.isRange) {
-                    const badgesHtml = (ev.badges || [])
-                        .map(b => `<span class="event-badge">${b.text}</span>`)
-                        .join('');
-                    block.innerHTML = `
-                        <div class="range-content">
-                            <div class="range-dates">
-                                <div class="date-pill"><span class="day">${ev.startDay}</span><span class="month">${ev.startMonth}</span></div>
-                                <div class="range-connector"></div>
-                                <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
-                            </div>
-                            <div class="range-info">
-                                <div class="event-title">${ev.title} ${badgesHtml}</div>
-                                <div class="range-label">${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
-                            </div>
-                            <button class="event-detail-btn" type="button">See Detail</button>
+                        <div class="range-info">
+                            <div class="event-title">${ev.title} ${badges}</div>
+                            <div class="range-label">${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
                         </div>
-                    `;
-                } else {
-                    block.innerHTML = `
-                        <div class="event-row">
-                            <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
-                            <div class="event-body"><div class="event-title">${ev.title} <span class="event-badge">${ev.badge}</span></div></div>
-                            <button class="event-detail-btn" type="button">See Detail</button>
-                        </div>
-                    `;
-                }
-
-                const btn = block.querySelector('.event-detail-btn');
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEventDetails(ev);
-                });
-                return block;
+                        <button class="event-detail-btn" type="button">See Detail</button>
+                    </div>`;
+            } else {
+                block.innerHTML = `
+                    <div class="event-row">
+                        <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
+                        <div class="event-body"><div class="event-title">${ev.title} <span class="event-badge">${ev.badge}</span></div></div>
+                        <button class="event-detail-btn" type="button">See Detail</button>
+                    </div>`;
             }
+            block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
+            return block;
+        }
 
-            // Render only active (non-expired) events
-            function render() {
-                const visible = events.filter(ev => !isExpired(ev));
-                list.innerHTML = '';
-
-                if (visible.length === 0) {
-                    const empty = document.createElement('div');
-                    empty.className = 'events-empty';
-                    empty.textContent = 'No upcoming events.';
-                    list.appendChild(empty);
-                    return;
-                }
-
-                const fragment = document.createDocumentFragment();
-                visible.forEach(ev => fragment.appendChild(buildBlock(ev)));
-                list.appendChild(fragment);
+        // Re-renders only when an event has actually expired (not every minute).
+        let shownKey = null;
+        function renderEvents() {
+            const now = Date.now();
+            const visible = EVENTS.filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt));
+            const key = visible.map(ev => ev.title).join('|');
+            if (key === shownKey) return;
+            shownKey = key;
+            const list = $('eventsList');
+            list.innerHTML = '';
+            if (!visible.length) {
+                list.innerHTML = '<div class="events-empty">No upcoming events.</div>';
+                return;
             }
+            const frag = document.createDocumentFragment();
+            visible.forEach(ev => frag.appendChild(buildBlock(ev)));
+            list.appendChild(frag);
+        }
 
-            render();
+        /* ═══════════════ ONE TIMER FOR EVERYTHING ═══════════════ */
 
-            // Re-check every 60 seconds so events auto-hide at their expiry moment
-            setInterval(render, 60000);
-        })();
+        function refresh() {
+            const t = dhakaNow();
+            $('clockDisplay').textContent = to12(t.h, t.m) + (t.h >= 12 ? ' PM' : ' AM');
+            const s = getStatus(t);
+            showSlides(s.slides);
+            $('barLabel').textContent = s.label;
+            $('barDot').className = 'status-dot' + (s.running ? ' running' : '');
+            $('barDetail').innerHTML = s.detail;
+            renderEvents();
+        }
+
+        // Ticks exactly on the minute, and does nothing while the tab is hidden.
+        function loop() {
+            if (!document.hidden) refresh();
+            setTimeout(loop, 60000 - (Date.now() % 60000) + 50);
+        }
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+        refresh();
+        setTimeout(loop, 60000 - (Date.now() % 60000) + 50);
+    })();
     </script>
 </body>
 </html>
