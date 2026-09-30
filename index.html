@@ -72,31 +72,239 @@
         .status-dot.running { background: var(--green); }
         .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
 
+        /* ═══════════════════════════════════════════════
+           PINNED EVENTS — NEW OPTIMIZED STYLES
+           ═══════════════════════════════════════════════ */
         .events-root { font-family: 'Poppins', sans-serif; }
-        .events-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1rem 1rem 0.6rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
-        .card-header { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
-        .card-header::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: var(--accent); border-radius: 2px; }
-        .card-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); }
-        .card-title i { color: var(--accent); margin-right: 0.3rem; }
-        .events-list { display: flex; flex-direction: column; gap: 6px; }
-        .event-block { display: flex; gap: 0.5rem; align-items: stretch; background: #f9fafb; border-radius: 12px; padding: 0; border: 1px solid var(--border); overflow: hidden; transition: all var(--transition); }
-        .event-date-badge { flex-shrink: 0; align-self: center; width: 60px; height: 60px; background: var(--navy); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.1rem; text-align: center; margin-left: 0.1rem; }
-        .event-date-badge .day { font-size: 1.3rem; font-weight: 700; color: #ffffff; line-height: 1.1; }
-        .event-date-badge .month { font-size: 0.55rem; font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
-        .event-content { flex: 1; padding: 0.4rem 0.5rem 0.4rem 0; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-        .event-summary { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; padding: 0.1rem 0; width: 100%; }
-        .event-summary .event-title { font-weight: 700; font-size: 0.78rem; color: var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; flex: 1; }
-        .event-badge { font-weight: 600; font-size: 0.5rem; background: #fef3c7; color: #b45309; padding: 0 6px; border-radius: 8px; border: 1px solid #fde68a; white-space: nowrap; flex-shrink: 0; }
-        .event-toggle-btn { flex-shrink: 0; background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 30px; color: var(--accent); font-weight: 600; font-size: 0.6rem; padding: 0.25rem 0.9rem; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s ease; min-height: 30px; display: flex; align-items: center; gap: 0.3rem; white-space: nowrap; }
-        .event-toggle-btn i { font-size: 0.5rem; transition: transform 0.3s ease; }
-        .event-toggle-btn.open i { transform: rotate(180deg); }
-        .event-details { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease, opacity 0.3s ease; padding: 0 0.2rem 0 0; opacity: 0; }
-        .event-details.open { max-height: 800px; padding: 0.3rem 0.2rem 0.1rem 0; opacity: 1; }
-        .event-details .event-meta { font-size: 0.6rem; font-weight: 500; color: #4b5563; margin-bottom: 0.1rem; }
-        .event-details .event-items { display: flex; flex-direction: column; gap: 0.1rem; font-size: 0.7rem; color: #1f2937; padding-left: 0.2rem; }
-        .event-details .event-items span { display: block; padding: 0.05rem 0; }
-        .event-details .event-note { font-size: 0.65rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 0.1rem 0.6rem; border-radius: 6px; display: inline-block; margin-top: 0.2rem; border: 1px solid #fde68a; }
-        .event-details .event-note.blue { background: #eff6ff; color: #1e40af; border-color: #dbeafe; }
+
+        .events-card {
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            padding: 16px 14px 12px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding-bottom: 11px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .card-header i {
+            color: #2563eb;
+            font-size: 0.82rem;
+        }
+
+        .card-header span {
+            font-size: 0.74rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .event-block {
+            background: #fafbfc;
+            border: 1px solid #eef2f6;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .event-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 12px;
+            cursor: default;
+        }
+
+        .event-date {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-date .day {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .event-date .month {
+            font-size: 0.44rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 2px;
+        }
+
+        .event-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .event-title {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #1e2a3e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            line-height: 1.3;
+        }
+
+        .event-badge {
+            font-size: 0.48rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: #fef3c7;
+            color: #b45309;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        /* See Detail button */
+        .event-detail-btn {
+            flex-shrink: 0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+        }
+        .event-detail-btn:active {
+            background: #dbeafe;
+            transform: scale(0.96);
+        }
+
+        /* Range Event */
+        .event-block.range-event {
+            padding: 12px;
+        }
+
+        .range-content {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .range-dates {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 6px;
+        }
+
+        .date-pill {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-pill.end {
+            background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+        }
+
+        .date-pill .day {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .date-pill .month {
+            font-size: 0.44rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 2px;
+        }
+
+        .range-connector {
+            width: 2px;
+            height: 12px;
+            background: #2563eb;
+            border-radius: 1px;
+        }
+
+        .range-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .range-label {
+            font-size: 0.58rem;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* Styles for modal content (reusing event-meta, event-items, event-note) */
+        .event-meta {
+            font-size: 0.62rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .event-items {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 0.68rem;
+            color: #374151;
+            padding-left: 2px;
+            line-height: 1.4;
+        }
+
+        .event-note {
+            font-size: 0.62rem;
+            font-weight: 500;
+            color: #7c2d12;
+            background: #fef3c7;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 6px;
+        }
 
         .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
         .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
@@ -200,7 +408,6 @@
 
         /* ═══════════════════════════════════════════════
            BOTTOM NAV — MATERIAL YOU STYLE + SVG ICONS
-           (Only this section changed from original)
            ═══════════════════════════════════════════════ */
         .bottom-nav {
             position: fixed;
@@ -250,7 +457,6 @@
             display: block;
             fill: currentColor;
         }
-        /* Filled vs outline swap (Material You signature) */
         .bottom-nav__item .icon-filled { display: none; }
         .bottom-nav__item.is-active .icon-outline { display: none; }
         .bottom-nav__item.is-active .icon-filled { display: block; }
@@ -262,10 +468,6 @@
             .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
             .glance { padding: 1rem 0.7rem; }
             .message-box { font-size: 0.85rem; min-height: 44px; }
-            .event-date-badge { width: 50px; height: 50px; }
-            .event-date-badge .day { font-size: 1.1rem; }
-            .event-date-badge .month { font-size: 0.5rem; }
-            .event-title { font-size: 0.7rem; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
             .routine-table th, .routine-table td { padding: 7px 8px; }
             .code-card .code-subject { font-size: 0.6rem; min-width: 48px; }
@@ -282,6 +484,13 @@
             .announcement-line { font-size: 0.7rem; white-space: normal; }
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
+
+            /* New events responsive */
+            .events-card { padding: 14px 12px 10px; }
+            .event-row { padding: 10px; }
+            .event-date, .date-pill { width: 44px; height: 44px; }
+            .event-date .day, .date-pill .day { font-size: 0.9rem; }
+            .event-title { font-size: 0.74rem; }
         }
     </style>
 </head>
@@ -356,14 +565,16 @@
                 </div>
             </div>
 
+            <!-- ═══════════════════════════════════════════════
+                 PINNED EVENTS — WITH POPUP DETAILS
+                 ═══════════════════════════════════════════════ -->
             <div class="events-root" id="section-events">
                 <div class="events-card">
                     <div class="card-header">
-                        <span class="card-title"><i class="fas fa-thumbtack"></i> Pinned Events</span>
+                        <i class="fas fa-thumbtack"></i>
+                        <span>Pinned Events</span>
                     </div>
-                    <div class="events-list" id="eventsList">
-                        <div style="text-align:center;padding:1rem;color:#6b7280;">Loading events...</div>
-                    </div>
+                    <div class="events-list" id="eventsList"></div>
                 </div>
             </div>
 
@@ -559,6 +770,22 @@
             <div class="modal-footer">
                 <button class="btn-modal btn-copy-modal" onclick="copyModalContent('modal-body-hum', this)"><i class="fas fa-copy"></i> Copy All</button>
                 <button class="btn-modal btn-close-modal" onclick="closeModal('modal-hum')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── EVENT DETAILS MODAL ──────────────── -->
+    <div class="modal-overlay" id="modal-event-details" onclick="if(event.target === this) closeModal('modal-event-details')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="event-modal-title"><i class="fas fa-calendar-check"></i> Event Details</h2>
+                <button class="modal-close-btn" onclick="closeModal('modal-event-details')">✕</button>
+            </div>
+            <div class="modal-body" id="event-modal-body">
+                <!-- Content injected by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal btn-close-modal" onclick="closeModal('modal-event-details')">Close</button>
             </div>
         </div>
     </div>
@@ -852,98 +1079,159 @@
             setInterval(renderRoutine, 30000);
         })();
 
+        /* ═══════════════════════════════════════════════
+           PINNED EVENTS — POPUP DETAILS
+           Renders once, no polling, uses DocumentFragment.
+           Click "See Detail" opens a modal with full info.
+           ═══════════════════════════════════════════════ */
         (function() {
-            const eventsData = [
-                { date: '28 Sep', title: 'ECO CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation', dateObj: new Date(2026, 8, 28) },
-                { date: '4 Oct', title: 'Math CT Exam', badge: 'CT', meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly', dateObj: new Date(2026, 9, 4) },
-                { date: '20 Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'], note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.', dateObj: new Date(2026, 9, 20) },
-                { date: '24-31 Oct', title: 'Mid Exam (MGT, ECO, QUA)', badge: 'Midterm (est)', meta: 'Estimated date range', items: ['📘 <strong>QUA 1101</strong> Syllabus:', '• Set', '• Equation', '• Index & algorithms', '📘 <strong>MGT 1101</strong> – Not yet', '📘 <strong>ECO 1101</strong> – Not yet'], note: 'Syllabus details will be updated when available', dateObj: new Date(2026, 9, 24), rangeEnd: new Date(2026, 9, 31) }
+            const events = [
+                {
+                    day: '28',
+                    month: 'Sep',
+                    title: 'ECO CT Exam',
+                    badge: 'CT',
+                    meta: 'Syllabus provided',
+                    items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'],
+                    note: 'Check with faculty for confirmation'
+                },
+                {
+                    day: '4',
+                    month: 'Oct',
+                    title: 'Math CT Exam',
+                    badge: 'CT',
+                    meta: 'Syllabus provided',
+                    items: ['• Set', '• Index'],
+                    note: 'Prepare accordingly'
+                },
+                {
+                    day: '20',
+                    month: 'Oct',
+                    title: 'Assignment (ECO) Last Date',
+                    badge: 'Assignment',
+                    meta: 'Deadline: 20 October',
+                    items: ['• Use review chapter questions', '• PDF will be provided'],
+                    note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.'
+                },
+                {
+                    isRange: true,
+                    startDay: '24',
+                    startMonth: 'Oct',
+                    endDay: '31',
+                    endMonth: 'Oct',
+                    title: 'Mid Exam (MGT, ECO, QUA)',
+                    badges: [
+                        { text: 'Midterm', type: 'default' },
+                        { text: 'Estimated', type: 'blue' }
+                    ],
+                    rangeLabel: 'Estimated Window',
+                    meta: 'Estimated date range',
+                    items: [
+                        '📘 QUA 1101: Set, Equation, Index & algorithms',
+                        '📘 MGT 1101: Syllabus TBA',
+                        '📘 ECO 1101: Syllabus TBA'
+                    ],
+                    note: 'Syllabus details will be updated when available'
+                }
             ];
 
-            function getMonthAbbr(date) {
-                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                return months[date.getMonth()];
-            }
-            function getDayNum(date) { return date.getDate(); }
+            const list = document.getElementById('eventsList');
+            if (!list) return;
 
-            function shouldShowEvent(ev) {
-                const now = new Date();
-                const today = new Date(now);
-                today.setHours(0, 0, 0, 0);
-                if (ev.rangeEnd) {
-                    const end = new Date(ev.rangeEnd);
-                    end.setHours(0, 0, 0, 0);
-                    if (today > end) return false;
-                    return true;
+            // Helper to open event details modal
+            function openEventDetails(ev) {
+                const modalTitle = document.getElementById('event-modal-title');
+                const modalBody = document.getElementById('event-modal-body');
+                if (!modalTitle || !modalBody) return;
+
+                // Set title with badges
+                let titleHtml = ev.title;
+                if (ev.badges) {
+                    titleHtml += ' ' + ev.badges.map(b => `<span class="event-badge">${b.text}</span>`).join(' ');
+                } else if (ev.badge) {
+                    titleHtml += ` <span class="event-badge">${ev.badge}</span>`;
                 }
-                const evDate = new Date(ev.dateObj);
-                evDate.setHours(0, 0, 0, 0);
-                return evDate >= today;
-            }
+                modalTitle.innerHTML = `<i class="fas fa-calendar-check"></i> ${titleHtml}`;
 
-            function renderEvents() {
-                const container = document.getElementById('eventsList');
-                if (!container) return;
+                // Build body content
+                let bodyHtml = '';
 
-                const visible = eventsData.filter(ev => shouldShowEvent(ev));
-                visible.sort((a, b) => (a.dateObj || a.rangeEnd) - (b.dateObj || b.rangeEnd));
-
-                if (visible.length === 0) {
-                    container.innerHTML = '<div style="text-align:center;padding:1rem;color:#6b7280;">No upcoming events.</div>';
-                    return;
+                // Date info
+                if (ev.isRange) {
+                    bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}</div>`;
+                } else {
+                    bodyHtml += `<div class="event-meta" style="font-size:0.8rem; margin-bottom:8px;"><strong>Date:</strong> ${ev.day} ${ev.month}</div>`;
                 }
 
-                let html = '';
-                visible.forEach((ev) => {
-                    let displayDay, displayMonth;
-                    if (ev.date.includes('-')) {
-                        const parts = ev.date.split(' ');
-                        displayDay = parts[0];
-                        displayMonth = parts[1];
-                    } else {
-                        const d = new Date(ev.dateObj);
-                        displayDay = getDayNum(d);
-                        displayMonth = getMonthAbbr(d);
-                    }
+                if (ev.meta) {
+                    bodyHtml += `<div class="event-meta">${ev.meta}</div>`;
+                }
 
-                    let itemsHtml = '';
-                    if (ev.items && ev.items.length > 0) {
-                        itemsHtml = '<div class="event-items">';
-                        ev.items.forEach(item => { itemsHtml += '<span>' + item + '</span>'; });
-                        itemsHtml += '</div>';
-                    }
+                if (ev.items && ev.items.length) {
+                    bodyHtml += `<div class="event-items">${ev.items.map(item => `<div>${item}</div>`).join('')}</div>`;
+                }
 
-                    let detailsHtml =
-                        '<div class="event-details">' +
-                        (ev.meta ? '<div class="event-meta">' + ev.meta + '</div>' : '') +
-                        itemsHtml +
-                        (ev.note ? '<div class="event-note blue">' + ev.note + '</div>' : '') +
-                        '</div>';
+                if (ev.note) {
+                    bodyHtml += `<div class="event-note">${ev.note}</div>`;
+                }
 
-                    html +=
-                        '<div class="event-block">' +
-                        '<div class="event-date-badge"><span class="day">' + displayDay + '</span><span class="month">' + displayMonth + '</span></div>' +
-                        '<div class="event-content">' +
-                        '<div class="event-summary">' +
-                        '<div class="event-title">' + ev.title + (ev.badge ? '<span class="event-badge">' + ev.badge + '</span>' : '') + '</div>' +
-                        '<button class="event-toggle-btn" onclick="event.stopPropagation();toggleEvent(this.closest(\'.event-block\'))">See More <i class="fas fa-chevron-down"></i></button>' +
-                        '</div>' + detailsHtml + '</div></div>';
-                });
+                modalBody.innerHTML = bodyHtml;
 
-                container.innerHTML = html;
+                // Open modal
+                openModal('modal-event-details');
             }
 
-            window.toggleEvent = function(block) {
-                const details = block.querySelector('.event-details');
-                const btn = block.querySelector('.event-toggle-btn');
-                if (!details) return;
-                const isOpen = details.classList.toggle('open');
-                btn.classList.toggle('open', isOpen);
-                btn.innerHTML = isOpen ? 'See Less <i class="fas fa-chevron-up"></i>' : 'See More <i class="fas fa-chevron-down"></i>';
-            };
+            const fragment = document.createDocumentFragment();
 
-            renderEvents();
-            setInterval(renderEvents, 60000);
+            events.forEach((ev) => {
+                let block = document.createElement('div');
+                block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
+
+                if (ev.isRange) {
+                    const badgesHtml = (ev.badges || [])
+                        .map((b) => `<span class="event-badge">${b.text}</span>`)
+                        .join('');
+
+                    block.innerHTML = `
+                        <div class="range-content">
+                            <div class="range-dates">
+                                <div class="date-pill"><span class="day">${ev.startDay}</span><span class="month">${ev.startMonth}</span></div>
+                                <div class="range-connector"></div>
+                                <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
+                            </div>
+                            <div class="range-info">
+                                <div class="event-title">${ev.title} ${badgesHtml}</div>
+                                <div class="range-label">${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
+                            </div>
+                            <button class="event-detail-btn" type="button">See Detail</button>
+                        </div>
+                    `;
+
+                    const btn = block.querySelector('.event-detail-btn');
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEventDetails(ev);
+                    });
+                } else {
+                    block.innerHTML = `
+                        <div class="event-row">
+                            <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
+                            <div class="event-body"><div class="event-title">${ev.title} <span class="event-badge">${ev.badge}</span></div></div>
+                            <button class="event-detail-btn" type="button">See Detail</button>
+                        </div>
+                    `;
+
+                    const btn = block.querySelector('.event-detail-btn');
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEventDetails(ev);
+                    });
+                }
+
+                fragment.appendChild(block);
+            });
+
+            list.appendChild(fragment);
         })();
     </script>
 </body>
