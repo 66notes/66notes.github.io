@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#ffffff" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
+    </script>
     <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
     <title>66notes bubt - Student Dashboard</title>
     <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
@@ -42,6 +51,11 @@
         .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
         .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
+
+        .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: background var(--transition), transform 0.15s, color var(--transition); }
+        .theme-toggle-btn:active { transform: scale(0.92); }
+        .theme-toggle-btn i { pointer-events: none; }
 
         .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; }
         .page { animation: fade-in 0.3s ease; }
@@ -209,10 +223,92 @@
         .bottom-nav__item.is-active .icon-filled { display: block; }
         .bottom-nav__label { font-size: 10px; font-weight: 500; }
 
+        /* ══════════ DARK MODE ══════════ */
+        :root[data-theme="dark"] {
+            --bg: #0b1220; --surface: #131c2b; --border: #243044; --border-strong: #33415a;
+            --text: #e6ebf3; --text-secondary: #9aa8bd; --text-muted: #6b7a90;
+            --navy: #cfe0f7; --accent: #60a5fa; --accent-light: #1a2942;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
+            --shadow: 0 6px 20px rgba(0,0,0,0.45);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.55);
+        }
+        :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
+        :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
+        :root[data-theme="dark"] .notices-btn { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
+        :root[data-theme="dark"] .notices-btn:active { background: #22304a; }
+        :root[data-theme="dark"] .theme-toggle-btn { background: #1a2942; border-color: #2c405e; color: #fbbf24; }
+        :root[data-theme="dark"] .announcement-bar { background: #2a1f0e; border-color: #5c3f11; }
+        :root[data-theme="dark"] .announcement-icon .material-symbols-rounded { color: #fb923c; }
+        :root[data-theme="dark"] .announcement-line { color: #fcd34d; }
+        :root[data-theme="dark"] .message-box { color: #cbd5e1; }
+        :root[data-theme="dark"] .message-line strong { color: #bfdbfe; }
+        :root[data-theme="dark"] .next-class-bar { background: #0f1a2b; border-color: var(--border); }
+        :root[data-theme="dark"] .next-label { color: #94a3b8; }
+        :root[data-theme="dark"] .events-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .card-header { border-bottom-color: var(--border); }
+        :root[data-theme="dark"] .card-header i { color: #60a5fa; }
+        :root[data-theme="dark"] .card-header span { color: #94a3b8; }
+        :root[data-theme="dark"] .events-empty { color: #6b7a90; }
+        :root[data-theme="dark"] .event-block { background: #0f1a2b; border-color: var(--border); }
+        :root[data-theme="dark"] .event-title { color: #e6ebf3; }
+        :root[data-theme="dark"] .event-badge { background: #422006; color: #fbbf24; }
+        :root[data-theme="dark"] .event-detail-btn { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
+        :root[data-theme="dark"] .event-detail-btn:active { background: #22304a; }
+        :root[data-theme="dark"] .event-meta { color: #94a3b8; }
+        :root[data-theme="dark"] .event-items { color: #cbd5e1; }
+        :root[data-theme="dark"] .event-note { background: #422006; color: #fcd34d; }
+        :root[data-theme="dark"] .range-label { color: #94a3b8; }
+        :root[data-theme="dark"] .routine-section { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .routine-section .section-label { border-bottom-color: var(--border); }
+        :root[data-theme="dark"] .routine-table-wrap { background: #0f1a2b; border-color: var(--border); }
+        :root[data-theme="dark"] .routine-table th { background: #16233a; color: #bfdbfe; border-bottom-color: var(--border-strong); }
+        :root[data-theme="dark"] .routine-table td { background: var(--surface); color: #dbe3ef; }
+        :root[data-theme="dark"] .code-card { background: #0f1a2b; border-color: var(--border); }
+        :root[data-theme="dark"] .code-subject { color: #bfdbfe; }
+        :root[data-theme="dark"] .code-value-box { background: #16233a; border-color: #2c3f5c; }
+        :root[data-theme="dark"] .code-value { color: #bfdbfe; }
+        :root[data-theme="dark"] .copy-btn { background: #22304a; color: #cbd5e1; }
+        :root[data-theme="dark"] .copy-btn.copied-flash { background: #064e3b; color: #6ee7b7; }
+        :root[data-theme="dark"] .drive-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .drive-icon { color: #60a5fa; }
+        :root[data-theme="dark"] .community-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .cta-footer { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .cta-icon { color: #60a5fa; }
+        :root[data-theme="dark"] .cta-title { color: #bfdbfe; }
+        :root[data-theme="dark"] .page h2 { color: #bfdbfe; }
+        :root[data-theme="dark"] .faculty-item { background: #0f1a2b; border-color: var(--border); }
+        :root[data-theme="dark"] .faculty-name { color: #bfdbfe; }
+        :root[data-theme="dark"] .course-code { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
+        :root[data-theme="dark"] .faculty-number-link { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
+        :root[data-theme="dark"] .faculty-number-link:active { background: #22304a; }
+        :root[data-theme="dark"] .faculty-details { color: #a9b6c9; border-top-color: var(--border); }
+        :root[data-theme="dark"] .counsel-box { background: #12233d; border-color: #24405f; color: #bfdbfe; }
+        :root[data-theme="dark"] .counsel-title { color: #93c5fd; }
+        :root[data-theme="dark"] .counsel-line strong { color: #bfdbfe; }
+        :root[data-theme="dark"] .faculty-general-note { background: #2a1f0e; border-color: #5c3f11; color: #fcd34d; }
+        :root[data-theme="dark"] .faculty-general-note i { color: #fbbf24; }
+        :root[data-theme="dark"] .faculty-general-note strong { color: #fbbf24; }
+        :root[data-theme="dark"] .modal-box { background: var(--surface); }
+        :root[data-theme="dark"] .modal-header { border-bottom-color: var(--border); }
+        :root[data-theme="dark"] .modal-header h2 { color: #bfdbfe; }
+        :root[data-theme="dark"] .modal-close-btn { background: #22304a; color: #cbd5e1; }
+        :root[data-theme="dark"] .modal-footer { border-top-color: var(--border); }
+        :root[data-theme="dark"] .btn-modal { background: #22304a; color: #cbd5e1; }
+        :root[data-theme="dark"] .btn--filled,
+        :root[data-theme="dark"] .cta-btn,
+        :root[data-theme="dark"] .join-btn,
+        :root[data-theme="dark"] .btn-call { background: #2563eb; color: #fff; box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35); }
+        :root[data-theme="dark"] .bottom-nav { background: var(--surface); border-top-color: var(--border); }
+        :root[data-theme="dark"] .bottom-nav__item { color: #8fa0b8; }
+        :root[data-theme="dark"] .bottom-nav__item.is-active { color: #60a5fa; }
+        :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #1a2942; }
+
         @media (max-width: 480px) {
             .content { padding: 10px 10px 90px; }
             .top-app-bar__title { font-size: 1rem; }
             .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
+            .app-bar-actions { gap: 6px; }
+            .theme-toggle-btn { width: 30px; height: 30px; font-size: 0.75rem; }
             .glance { padding: 1rem 0.7rem; }
             .message-box { font-size: 0.85rem; min-height: 44px; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
@@ -278,9 +374,14 @@
 
     <header class="top-app-bar">
         <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
-        <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
-            <span class="material-symbols-rounded">description</span> Notices
-        </a>
+        <div class="app-bar-actions">
+            <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                <i class="fas fa-moon"></i>
+            </button>
+            <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
+                <span class="material-symbols-rounded">description</span> Notices
+            </a>
+        </div>
     </header>
 
     <main class="content">
@@ -381,6 +482,11 @@
                     <div class="faculty-details">
                         <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
                         <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
+                        <div class="counsel-box">
+                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
+                            <div class="counsel-line"><strong>Sunday:</strong> <span>01:30 PM – 02:30 PM</span></div>
+                            <div class="counsel-line"><strong>Wednesday:</strong> <span>11:30 AM – 12:30 PM</span></div>
+                        </div>
                     </div>
                 </div>
                 <div class="faculty-item">
@@ -485,6 +591,9 @@
               meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
             { day: '4', month: 'Oct', title: 'Math CT Exam', badge: 'CT', expiresAt: '2026-10-04T23:59:59+06:00',
               meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly' },
+            { day: '11', month: 'Oct', title: 'Math Assignment (Set)', badge: 'Assignment', expiresAt: '2026-10-11T23:59:59+06:00',
+              meta: 'Submission: 11 October', items: ['• Solve all problems from Set', '• Source: the new sheet — available in the PDFs section'],
+              note: 'Open the PDFs tab → Google Drive to find the new sheet' },
             { day: '20', month: 'Oct', title: 'Assignment (ECO) Last Date', badge: 'Assignment', expiresAt: '2026-10-20T23:59:59+06:00',
               meta: 'Deadline: 20 October', items: ['• Use review chapter questions', '• PDF will be provided'],
               note: 'Prepare your A4 page notes from class lectures and submit before Mid & Final.' },
@@ -556,6 +665,29 @@
             $('appBarTitle').innerHTML = TITLES[target];
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
+
+        /* ═══════════════ THEME TOGGLE ═══════════════ */
+
+        (function () {
+            const btn = $('themeToggle');
+            if (!btn) return;
+
+            function apply(dark, persist) {
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                btn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+                btn.setAttribute('aria-pressed', String(dark));
+                const meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) meta.setAttribute('content', dark ? '#0b1220' : '#ffffff');
+                if (persist) { try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {} }
+            }
+
+            apply(document.documentElement.getAttribute('data-theme') === 'dark', false);
+
+            btn.addEventListener('click', () => {
+                apply(document.documentElement.getAttribute('data-theme') !== 'dark', true);
+            });
+        })();
 
         /* ═══════════════ ANNOUNCEMENTS — Grist only ═══════════════ */
 
