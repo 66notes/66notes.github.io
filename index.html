@@ -6,10 +6,11 @@
     <meta name="theme-color" content="#ffffff" />
     <script>
       (function () {
+        /* Default = LIGHT. Only switch to dark if the user explicitly chose it. */
         try {
-          var saved = localStorage.getItem('theme');
-          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+          if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
         } catch (e) {}
       })();
     </script>
@@ -53,9 +54,34 @@
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
 
         .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .theme-toggle-wrap { position: relative; display: flex; align-items: center; }
         .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: background var(--transition), transform 0.15s, color var(--transition); }
         .theme-toggle-btn:active { transform: scale(0.92); }
         .theme-toggle-btn i { pointer-events: none; }
+
+        /* tiny hint bubble near the toggle — flashes 3s, then every 10s */
+        .theme-hint {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            font-size: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3px 7px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
+            z-index: 25;
+        }
+        .theme-hint.show { opacity: 1; transform: translateY(0); }
 
         .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; }
         .page { animation: fade-in 0.3s ease; }
@@ -237,6 +263,7 @@
         :root[data-theme="dark"] .notices-btn { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
         :root[data-theme="dark"] .notices-btn:active { background: #22304a; }
         :root[data-theme="dark"] .theme-toggle-btn { background: #1a2942; border-color: #2c405e; color: #fbbf24; }
+        :root[data-theme="dark"] .theme-hint { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
         :root[data-theme="dark"] .announcement-bar { background: #2a1f0e; border-color: #5c3f11; }
         :root[data-theme="dark"] .announcement-icon .material-symbols-rounded { color: #fb923c; }
         :root[data-theme="dark"] .announcement-line { color: #fcd34d; }
@@ -309,6 +336,7 @@
             .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
             .app-bar-actions { gap: 6px; }
             .theme-toggle-btn { width: 30px; height: 30px; font-size: 0.75rem; }
+            .theme-hint { font-size: 0.45rem; padding: 2px 5px; }
             .glance { padding: 1rem 0.7rem; }
             .message-box { font-size: 0.85rem; min-height: 44px; }
             .routine-table { font-size: 0.62rem; min-width: 320px; }
@@ -375,9 +403,12 @@
     <header class="top-app-bar">
         <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
         <div class="app-bar-actions">
-            <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-                <i class="fas fa-moon"></i>
-            </button>
+            <div class="theme-toggle-wrap">
+                <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <span class="theme-hint" id="themeHint" aria-hidden="true">Dark mode ›</span>
+            </div>
             <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
                 <span class="material-symbols-rounded">description</span> Notices
             </a>
@@ -680,6 +711,9 @@
                 const meta = document.querySelector('meta[name="theme-color"]');
                 if (meta) meta.setAttribute('content', dark ? '#0b1220' : '#ffffff');
                 if (persist) { try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {} }
+                // keep the hint label in sync
+                const hint = $('themeHint');
+                if (hint) hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
             }
 
             apply(document.documentElement.getAttribute('data-theme') === 'dark', false);
@@ -687,6 +721,47 @@
             btn.addEventListener('click', () => {
                 apply(document.documentElement.getAttribute('data-theme') !== 'dark', true);
             });
+        })();
+
+        /* ═══════════════ THEME HINT (flash 3s, repeat every 10s) ═══════════════ */
+
+        (function () {
+            const hint = $('themeHint');
+            if (!hint) return;
+
+            const SHOW_MS = 3000;   // visible for 3 seconds
+            const CYCLE_MS = 10000; // repeat every 10 seconds
+
+            let hideTimer = null;
+            let loopTimer = null;
+
+            function flash() {
+                // refresh label in case the theme changed while hidden
+                const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+                hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
+
+                hint.classList.add('show');
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(() => hint.classList.remove('show'), SHOW_MS);
+            }
+
+            function start() {
+                stop();
+                flash();                                  // show immediately on open
+                loopTimer = setInterval(flash, CYCLE_MS); // then every 10 seconds
+            }
+
+            function stop() {
+                clearInterval(loopTimer);
+                clearTimeout(hideTimer);
+                hint.classList.remove('show');
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stop(); else start();
+            });
+
+            if (!document.hidden) start();
         })();
 
         /* ═══════════════ ANNOUNCEMENTS — Grist only ═══════════════ */
