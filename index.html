@@ -141,14 +141,63 @@
         .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
         .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
 
-        .wifi-home-card { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: var(--radius-lg); padding: 1.2rem 1rem; text-align: center; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.25); margin-top: 1rem; text-decoration: none; display: block; color: #fff; transition: transform 0.15s; position: relative; overflow: hidden; }
-        .wifi-home-card::before { content: ''; position: absolute; top: -40%; right: -20%; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
-        .wifi-home-card::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 140px; height: 140px; background: rgba(255,255,255,0.06); border-radius: 50%; }
-        .wifi-home-card:active { transform: scale(0.98); }
-        .wifi-home-icon { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; position: relative; z-index: 1; }
-        .wifi-home-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; position: relative; z-index: 1; }
-        .wifi-home-desc { font-size: 0.72rem; opacity: 0.9; margin-bottom: 0.7rem; position: relative; z-index: 1; }
-        .wifi-home-cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.4rem; border-radius: 40px; background: rgba(255,255,255,0.22); font-weight: 600; font-size: 0.78rem; border: 1px solid rgba(255,255,255,0.35); position: relative; z-index: 1; }
+        /* ══════════ COMPACT WHITE WiFi CARD ══════════ */
+        .wifi-home-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.7rem 0.9rem;
+            margin-top: 0.9rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s, background var(--transition), border-color var(--transition);
+        }
+        .wifi-home-card::before,
+        .wifi-home-card::after { display: none; }
+        .wifi-home-card:active { transform: scale(0.99); background: var(--accent-light); }
+        .wifi-home-icon {
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            color: var(--accent);
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .wifi-home-title {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--navy);
+            margin: 0;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .wifi-home-desc { display: none; }
+        .wifi-home-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.28rem 0.75rem;
+            border-radius: 30px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.66rem;
+            border: 1px solid #dbeafe;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .modal-overlay.active { display: flex; }
@@ -190,7 +239,8 @@
 
         .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
         .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-        .drive-icon { font-size: 2.5rem; color: var(--accent); }
+        .drive-icon { font-size: 2.5rem; color: var(--accent); display: flex; align-items: center; justify-content: center; height: 52px; }
+        .drive-icon img { width: 52px; height: 52px; object-fit: contain; display: block; }
         .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
         .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
         .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
@@ -198,11 +248,9 @@
         .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
 
         .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
-        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-decoration: none; box-shadow: var(--shadow-sm); }
-        .c-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
-        .c-icon.classroom { background: #15803d; }
-        .c-icon.whatsapp { background: #25D366; }
-        .c-icon.messenger { background: #0084FF; }
+        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; text-decoration: none; box-shadow: var(--shadow-sm); }
+        .c-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; background: transparent; overflow: hidden; }
+        .c-icon img { width: 34px; height: 34px; object-fit: contain; display: block; }
         .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
 
         .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
@@ -297,7 +345,6 @@
         :root[data-theme="dark"] .copy-btn { background: #22304a; color: #cbd5e1; }
         :root[data-theme="dark"] .copy-btn.copied-flash { background: #064e3b; color: #6ee7b7; }
         :root[data-theme="dark"] .drive-card { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .drive-icon { color: #60a5fa; }
         :root[data-theme="dark"] .community-card { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .cta-footer { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .cta-icon { color: #60a5fa; }
@@ -329,6 +376,10 @@
         :root[data-theme="dark"] .bottom-nav__item { color: #8fa0b8; }
         :root[data-theme="dark"] .bottom-nav__item.is-active { color: #60a5fa; }
         :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #1a2942; }
+        :root[data-theme="dark"] .wifi-home-card:active { background: #1a2942; }
+        :root[data-theme="dark"] .wifi-home-icon { background: #1a2942; color: #60a5fa; }
+        :root[data-theme="dark"] .wifi-home-title { color: #bfdbfe; }
+        :root[data-theme="dark"] .wifi-home-cta { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
 
         @media (max-width: 480px) {
             .content { padding: 10px 10px 90px; }
@@ -360,6 +411,13 @@
             .event-date, .date-pill { width: 44px; height: 44px; }
             .event-date .day, .date-pill .day { font-size: 0.9rem; }
             .event-title { font-size: 0.74rem; }
+            .wifi-home-card { padding: 0.6rem 0.75rem; gap: 0.5rem; }
+            .wifi-home-title { font-size: 0.76rem; }
+            .wifi-home-cta { font-size: 0.6rem; padding: 0.22rem 0.6rem; }
+            .drive-icon img { width: 46px; height: 46px; }
+            .drive-icon { height: 46px; }
+            .c-icon img { width: 30px; height: 30px; }
+            .c-icon { width: 34px; height: 34px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -447,9 +505,8 @@
 
             <a href="wifi.html" class="wifi-home-card">
                 <span class="wifi-home-icon"><i class="fas fa-wifi"></i></span>
-                <div class="wifi-home-title">WiFi Pass Collection</div>
-                <div class="wifi-home-desc">(collecting WiFi passwords of the whole university)</div>
-                <span class="wifi-home-cta"><i class="fas fa-arrow-right"></i> Open WiFi Hub</span>
+                <span class="wifi-home-title">WiFi Pass Collection</span>
+                <span class="wifi-home-cta"><i class="fas fa-arrow-right"></i> Open</span>
             </a>
 
             <div class="cta-footer">
@@ -466,7 +523,9 @@
             <p class="subtitle">Study materials and class communities</p>
             <div class="drive-grid">
                 <div class="drive-card">
-                    <span class="drive-icon material-symbols-rounded">folder</span>
+                    <span class="drive-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Drive_icon_(2026).svg/960px-Google_Drive_icon_(2026).svg.png" alt="Google Drive" loading="lazy" />
+                    </span>
                     <div class="drive-title">Google Drive</div>
                     <div class="drive-desc">All PDFs, notes, and study materials</div>
                     <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" class="btn btn--filled btn--large" rel="noopener">
@@ -476,15 +535,15 @@
             </div>
             <div class="community-grid">
                 <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon classroom"><i class="fas fa-chalkboard-user"></i></span>
+                    <span class="c-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/960px-Google_Classroom_Logo.svg.png" alt="Classroom" loading="lazy" /></span>
                     <span class="c-title">Classroom</span>
                 </a>
                 <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon whatsapp"><i class="fab fa-whatsapp"></i></span>
+                    <span class="c-icon"><i class="fab fa-whatsapp" style="color:#25D366;font-size:2rem;"></i></span>
                     <span class="c-title">WhatsApp</span>
                 </a>
                 <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon messenger"><i class="fab fa-facebook-messenger"></i></span>
+                    <span class="c-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Facebook_Messenger_logo_2025.svg/3840px-Facebook_Messenger_logo_2025.svg.png" alt="Messenger" loading="lazy" /></span>
                     <span class="c-title">Messenger</span>
                 </a>
             </div>
@@ -611,17 +670,21 @@
             { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
         ];
 
-        // Grist document — announcement text lives in column B.
-        // No hardcoded fallback: if Grist is unreachable, the bar stays hidden.
-        const GRIST_DOC_ID = '5Wv1tdZd6muX';
-        const GRIST_TABLE  = 'Table1';
-        const GRIST_API    = `https://docs.getgrist.com/api/docs/${GRIST_DOC_ID}/tables/${GRIST_TABLE}/records`;
+        /* ═══════════════ ANNOUNCEMENTS (hardcoded, with optional expiry) ═══════════════ */
+        const ANNOUNCEMENTS = [
+            { text: 'Registration date is extended to 8 Oct.', expiresAt: '2026-10-09T00:00:00+06:00' },
+            { text: 'If you missed any CT, contact your faculty.' },
+            { text: 'If you are facing any problem in the website, inform CRs.' }
+        ];
 
         const EVENTS = [
             { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', expiresAt: '2026-09-28T23:59:59+06:00',
               meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
             { day: '4', month: 'Oct', title: 'Math CT Exam', badge: 'CT', expiresAt: '2026-10-04T23:59:59+06:00',
               meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly' },
+            { day: '11', month: 'Oct', title: 'Management CT (Ch. 1)', badge: 'CT', expiresAt: '2026-10-11T23:59:59+06:00',
+              meta: 'Chapter 1', items: ['• Chapter 1', '• Check the PDFs section'],
+              note: 'Contact your faculty if anything is unclear' },
             { day: '11', month: 'Oct', title: 'Math Assignment (Set)', badge: 'Assignment', expiresAt: '2026-10-11T23:59:59+06:00',
               meta: 'Submission: 11 October', items: ['• Solve all problems from Set', '• Source: the new sheet — available in the PDFs section'],
               note: 'Open the PDFs tab → Google Drive to find the new sheet' },
@@ -711,7 +774,6 @@
                 const meta = document.querySelector('meta[name="theme-color"]');
                 if (meta) meta.setAttribute('content', dark ? '#0b1220' : '#ffffff');
                 if (persist) { try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {} }
-                // keep the hint label in sync
                 const hint = $('themeHint');
                 if (hint) hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
             }
@@ -736,7 +798,6 @@
             let loopTimer = null;
 
             function flash() {
-                // refresh label in case the theme changed while hidden
                 const dark = document.documentElement.getAttribute('data-theme') === 'dark';
                 hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
 
@@ -747,8 +808,8 @@
 
             function start() {
                 stop();
-                flash();                                  // show immediately on open
-                loopTimer = setInterval(flash, CYCLE_MS); // then every 10 seconds
+                flash();
+                loopTimer = setInterval(flash, CYCLE_MS);
             }
 
             function stop() {
@@ -764,7 +825,7 @@
             if (!document.hidden) start();
         })();
 
-        /* ═══════════════ ANNOUNCEMENTS — Grist only ═══════════════ */
+        /* ═══════════════ ANNOUNCEMENTS — hardcoded ═══════════════ */
 
         let annTimer = null;
         function buildAnnouncements(lines) {
@@ -789,16 +850,13 @@
             annTimer = rotate(box.children, 4500);
         }
 
-        // Fetch from Grist. Bar stays hidden until data arrives; stays hidden on failure.
-        fetch(GRIST_API, { cache: 'no-store' })
-            .then(r => r.ok ? r.json() : Promise.reject(r.status))
-            .then(data => {
-                const lines = (data.records || [])
-                    .map(rec => (rec.fields && rec.fields.B ? String(rec.fields.B).trim() : ''))
-                    .filter(Boolean);
-                buildAnnouncements(lines);
-            })
-            .catch(() => { /* stay hidden, no fallback */ });
+        (function initAnnouncements() {
+            const now = Date.now();
+            const lines = ANNOUNCEMENTS
+                .filter(a => !a.expiresAt || now < Date.parse(a.expiresAt))
+                .map(a => a.text);
+            buildAnnouncements(lines);
+        })();
 
         /* ═══════════════ CLASS STATUS ═══════════════ */
 
