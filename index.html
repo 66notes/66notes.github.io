@@ -4,16 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#ffffff" />
-    <script>
-      (function () {
-        /* Default = LIGHT. Only switch to dark if the user explicitly chose it. */
-        try {
-          if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-          }
-        } catch (e) {}
-      })();
-    </script>
     <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
     <title>66notes bubt - Student Dashboard</title>
     <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
@@ -43,7 +33,7 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh; line-height: 1.5; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; }
         .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
 
         .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
@@ -54,34 +44,9 @@
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
 
         .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-        .theme-toggle-wrap { position: relative; display: flex; align-items: center; }
         .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: background var(--transition), transform 0.15s, color var(--transition); }
         .theme-toggle-btn:active { transform: scale(0.92); }
         .theme-toggle-btn i { pointer-events: none; }
-
-        /* tiny hint bubble near the toggle — flashes 3s, then every 10s */
-        .theme-hint {
-            position: absolute;
-            top: calc(100% + 6px);
-            right: 0;
-            font-size: 0.5rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            white-space: nowrap;
-            color: var(--text-secondary);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 3px 7px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-            opacity: 0;
-            transform: translateY(-4px);
-            transition: opacity 0.35s ease, transform 0.35s ease;
-            pointer-events: none;
-            z-index: 25;
-        }
-        .theme-hint.show { opacity: 1; transform: translateY(0); }
 
         .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; }
         .page { animation: fade-in 0.3s ease; }
@@ -118,30 +83,44 @@
         .events-list { display: flex; flex-direction: column; gap: 8px; }
         .events-empty { text-align: center; padding: 1.2rem 0.5rem; font-size: 0.75rem; color: #9ca3af; font-weight: 500; }
         .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; }
-        .event-row { display: flex; gap: 12px; align-items: center; padding: 12px; }
-        .event-date { flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .event-row { display: flex; gap: 10px; align-items: center; padding: 12px; }
+        .event-date { flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .event-date .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
         .event-body { flex: 1; min-width: 0; }
-        .event-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; line-height: 1.3; }
-        .event-badge { font-size: 0.48rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: #fef3c7; color: #b45309; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+        .event-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; line-height: 1.3; margin-bottom: 5px; }
+        .event-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+        .event-tag { font-size: 0.5rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.04em; white-space: nowrap; line-height: 1.4; }
+        .event-tag.time { background: #dbeafe; color: #1e40af; }
+        .event-tag.day { background: #ede9fe; color: #5b21b6; }
+        .event-tag.holiday { background: #fee2e2; color: #991b1b; }
+        .event-tag.range { background: #fef3c7; color: #92400e; }
         .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
         .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
         .event-block.range-event { padding: 12px; }
         .range-content { display: flex; gap: 12px; align-items: center; }
         .range-dates { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 6px; }
-        .date-pill { width: 48px; height: 48px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .date-pill { width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .date-pill.end { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); }
         .date-pill .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .date-pill .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
         .range-connector { width: 2px; height: 12px; background: #2563eb; border-radius: 1px; }
         .range-info { flex: 1; min-width: 0; }
-        .range-label { font-size: 0.58rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+        .range-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; line-height: 1.3; margin-bottom: 5px; }
+        .range-label { font-size: 0.55rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
         .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
         .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
         .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
 
-        /* ══════════ COMPACT WHITE WiFi CARD ══════════ */
+        .syllabus-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 10px; padding: 0.75rem 0.9rem; margin-top: 10px; }
+        .syllabus-title { font-weight: 700; font-size: 0.78rem; color: #1e40af; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.35rem; }
+        .syllabus-title i { font-size: 0.8rem; }
+        .syllabus-list { margin: 0; padding-left: 1.3rem; font-size: 0.74rem; color: #1e3a8a; line-height: 1.7; font-weight: 500; }
+        .syllabus-list li { margin-bottom: 2px; }
+        .syllabus-note { font-size: 0.64rem; color: #1e40af; margin-top: 0.5rem; font-style: italic; display: flex; align-items: center; gap: 0.3rem; }
+
+        .class-hidden { display: none !important; }
+
         .wifi-home-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -201,7 +180,7 @@
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; max-height: 85dvh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
+        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
         @keyframes modal-in { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
         .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
@@ -215,11 +194,15 @@
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
         .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
         .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
-        .routine-table-wrap { width: 100%; overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; }
-        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; min-width: 380px; }
-        .routine-table th { text-align: left; padding: 10px 12px; font-weight: 700; font-size: 0.62rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; white-space: nowrap; text-transform: uppercase; }
-        .routine-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; background: #fff; color: #1f2a3e; white-space: nowrap; }
+        .routine-section .routine-table-wrap + .section-label,
+        .routine-section .codes-section + .section-label { margin-top: 1.1rem; }
+
+        .routine-table-wrap { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; overflow: hidden; }
+        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.66rem; table-layout: fixed; }
+        .routine-table th { text-align: left; padding: 8px 6px; font-weight: 700; font-size: 0.56rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; text-transform: uppercase; letter-spacing: 0.02em; vertical-align: top; }
+        .routine-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: top; background: #fff; color: #1f2a3e; word-break: break-word; line-height: 1.35; font-weight: 500; }
         .routine-table tbody tr:last-child td { border-bottom: none; }
+        .routine-table .dow { font-size: 0.5rem; color: #9ca3af; font-weight: 600; display: block; margin-top: 1px; }
 
         .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
         .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
@@ -227,13 +210,13 @@
         .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
         .code-card { display: flex; align-items: center; gap: 0.5rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.6rem; border: 1px solid var(--border); min-height: 42px; flex-wrap: wrap; }
         .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .eco-dot { background: #8b5cf6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
-        .mgt-dot { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
-        .qua-dot { background: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
+        .eco-dot { background: #8b5cf6; }
+        .mgt-dot { background: #f59e0b; }
+        .qua-dot { background: #06b6d4; }
         .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
         .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
         .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
-        .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: 1px solid transparent; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; font-family: 'Poppins', sans-serif; }
+        .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; font-family: 'Poppins', sans-serif; }
         .copy-btn.copied-flash { background: #d1fae5; color: #065f46; }
         .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
 
@@ -244,7 +227,7 @@
         .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
         .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
         .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-        .btn--filled { background: var(--navy); color: #fff; box-shadow: 0 2px 8px rgba(13, 43, 78, 0.15); }
+        .btn--filled { background: var(--navy); color: #fff; }
         .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
 
         .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
@@ -255,19 +238,20 @@
 
         .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
         .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
-        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.2rem; }
+        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.15rem; }
         .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
         .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
+        .faculty-subject { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; margin: 2px 0 4px; line-height: 1.3; }
         .faculty-number-link { font-size: 0.78rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.15rem 0.65rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; text-decoration: none; display: inline-block; }
         .faculty-number-link:active { background: #dbeafe; }
-        .faculty-actions { margin-top: 0.35rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .faculty-actions { margin-top: 0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
         .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; min-height: 32px; text-decoration: none; min-width: 64px; }
-        .btn-fac:active { transform: scale(0.95); }
-        .btn-call { background: var(--navy); color: #fff; box-shadow: 0 2px 6px rgba(13, 43, 78, 0.15); }
-        .btn-whatsapp { background: #25D366; color: #fff; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3); }
-        .btn-email { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3); }
+        .btn-fac:active { transform: scale(0.96); opacity: 0.92; }
+        .btn-call { background: var(--navy); color: #fff; }
+        .btn-whatsapp { background: #25D366; color: #fff; }
+        .btn-email { background: var(--accent); color: #fff; }
         .btn-fac i { font-size: 0.78rem; }
-        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.2rem; }
+        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.2rem; }
         .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
         .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
         .faculty-details .value { color: var(--text); font-weight: 400; }
@@ -284,102 +268,130 @@
         .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
         .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
         .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
-        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; box-shadow: 0 3px 12px rgba(13, 43, 78, 0.25); min-height: 42px; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; min-height: 42px; }
 
-        .bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04); }
-        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); }
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            display: flex;
+            height: 72px;
+            min-height: 72px;
+            max-height: 72px;
+            flex-shrink: 0;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); flex-shrink: 0; }
         .bottom-nav__item.is-active { color: var(--accent); }
-        .bottom-nav__icon { width: 52px; height: 30px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); }
+        .bottom-nav__icon { width: 52px; height: 30px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); flex-shrink: 0; }
         .bottom-nav__item.is-active .bottom-nav__icon { background: var(--accent-light); }
-        .bottom-nav__icon svg { width: 22px; height: 22px; display: block; fill: currentColor; }
+        .bottom-nav__icon svg { width: 22px; height: 22px; display: block; fill: currentColor; flex-shrink: 0; }
         .bottom-nav__item .icon-filled { display: none; }
         .bottom-nav__item.is-active .icon-outline { display: none; }
         .bottom-nav__item.is-active .icon-filled { display: block; }
-        .bottom-nav__label { font-size: 10px; font-weight: 500; }
+        .bottom-nav__label { font-size: 10px; font-weight: 500; line-height: 1; }
 
-        /* ══════════ DARK MODE ══════════ */
+        /* ══════════ DARK MODE — NEUTRAL GREY ══════════ */
         :root[data-theme="dark"] {
-            --bg: #0b1220; --surface: #131c2b; --border: #243044; --border-strong: #33415a;
-            --text: #e6ebf3; --text-secondary: #9aa8bd; --text-muted: #6b7a90;
-            --navy: #cfe0f7; --accent: #60a5fa; --accent-light: #1a2942;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
-            --shadow: 0 6px 20px rgba(0,0,0,0.45);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.55);
+            --bg: #0f0f10; --surface: #1a1a1c; --border: #2a2a2d; --border-strong: #3a3a3e;
+            --text: #eaeaea; --text-secondary: #a0a0a3; --text-muted: #6e6e72;
+            --navy: #e4e4e6; --accent: #7bb0ff; --accent-light: #242428;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+            --shadow: 0 6px 20px rgba(0,0,0,0.5);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
         }
         :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
         :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .notices-btn { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
-        :root[data-theme="dark"] .notices-btn:active { background: #22304a; }
-        :root[data-theme="dark"] .theme-toggle-btn { background: #1a2942; border-color: #2c405e; color: #fbbf24; }
-        :root[data-theme="dark"] .theme-hint { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
-        :root[data-theme="dark"] .announcement-bar { background: #2a1f0e; border-color: #5c3f11; }
+        :root[data-theme="dark"] .notices-btn { background: #242428; border-color: #333338; color: #a3c4ff; }
+        :root[data-theme="dark"] .notices-btn:active { background: #2a2a2f; }
+        :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
+        :root[data-theme="dark"] .announcement-bar { background: #2a2419; border-color: #4a3a1a; }
         :root[data-theme="dark"] .announcement-icon .material-symbols-rounded { color: #fb923c; }
         :root[data-theme="dark"] .announcement-line { color: #fcd34d; }
-        :root[data-theme="dark"] .message-box { color: #cbd5e1; }
-        :root[data-theme="dark"] .message-line strong { color: #bfdbfe; }
-        :root[data-theme="dark"] .next-class-bar { background: #0f1a2b; border-color: var(--border); }
-        :root[data-theme="dark"] .next-label { color: #94a3b8; }
+        :root[data-theme="dark"] .message-box { color: #c8c8cb; }
+        :root[data-theme="dark"] .message-line strong { color: #a3c4ff; }
+        :root[data-theme="dark"] .next-class-bar { background: #161618; border-color: var(--border); }
+        :root[data-theme="dark"] .next-label { color: #9a9a9e; }
         :root[data-theme="dark"] .events-card { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .card-header { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .card-header i { color: #60a5fa; }
-        :root[data-theme="dark"] .card-header span { color: #94a3b8; }
-        :root[data-theme="dark"] .events-empty { color: #6b7a90; }
-        :root[data-theme="dark"] .event-block { background: #0f1a2b; border-color: var(--border); }
-        :root[data-theme="dark"] .event-title { color: #e6ebf3; }
-        :root[data-theme="dark"] .event-badge { background: #422006; color: #fbbf24; }
-        :root[data-theme="dark"] .event-detail-btn { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
-        :root[data-theme="dark"] .event-detail-btn:active { background: #22304a; }
-        :root[data-theme="dark"] .event-meta { color: #94a3b8; }
-        :root[data-theme="dark"] .event-items { color: #cbd5e1; }
-        :root[data-theme="dark"] .event-note { background: #422006; color: #fcd34d; }
-        :root[data-theme="dark"] .range-label { color: #94a3b8; }
+        :root[data-theme="dark"] .card-header i { color: #7bb0ff; }
+        :root[data-theme="dark"] .card-header span { color: #9a9a9e; }
+        :root[data-theme="dark"] .events-empty { color: #6e6e72; }
+        :root[data-theme="dark"] .event-block { background: #161618; border-color: var(--border); }
+        :root[data-theme="dark"] .event-title { color: #eaeaea; }
+        :root[data-theme="dark"] .range-title { color: #eaeaea; }
+        :root[data-theme="dark"] .event-tag.time { background: #2a3a5c; color: #c8d8f0; }
+        :root[data-theme="dark"] .event-tag.day { background: #3a2a5c; color: #ddd0f5; }
+        :root[data-theme="dark"] .event-tag.holiday { background: #5c1f1f; color: #f5c8c8; }
+        :root[data-theme="dark"] .event-tag.range { background: #4a3a1a; color: #f0d8a0; }
+        :root[data-theme="dark"] .event-detail-btn { background: #242428; border-color: #333338; color: #a3c4ff; }
+        :root[data-theme="dark"] .event-detail-btn:active { background: #2a2a2f; }
+        :root[data-theme="dark"] .event-meta { color: #9a9a9e; }
+        :root[data-theme="dark"] .event-items { color: #c8c8cb; }
+        :root[data-theme="dark"] .event-note { background: #3a2e14; color: #f0d89a; }
+        :root[data-theme="dark"] .range-label { color: #9a9a9e; }
+        :root[data-theme="dark"] .syllabus-box { background: #1e1e22; border-color: #333338; }
+        :root[data-theme="dark"] .syllabus-title { color: #a3c4ff; }
+        :root[data-theme="dark"] .syllabus-list { color: #c8d8f0; }
+        :root[data-theme="dark"] .syllabus-note { color: #a3c4ff; }
         :root[data-theme="dark"] .routine-section { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .routine-section .section-label { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .routine-table-wrap { background: #0f1a2b; border-color: var(--border); }
-        :root[data-theme="dark"] .routine-table th { background: #16233a; color: #bfdbfe; border-bottom-color: var(--border-strong); }
-        :root[data-theme="dark"] .routine-table td { background: var(--surface); color: #dbe3ef; }
-        :root[data-theme="dark"] .code-card { background: #0f1a2b; border-color: var(--border); }
-        :root[data-theme="dark"] .code-subject { color: #bfdbfe; }
-        :root[data-theme="dark"] .code-value-box { background: #16233a; border-color: #2c3f5c; }
-        :root[data-theme="dark"] .code-value { color: #bfdbfe; }
-        :root[data-theme="dark"] .copy-btn { background: #22304a; color: #cbd5e1; }
-        :root[data-theme="dark"] .copy-btn.copied-flash { background: #064e3b; color: #6ee7b7; }
+        :root[data-theme="dark"] .routine-table-wrap { background: #161618; border-color: var(--border); }
+        :root[data-theme="dark"] .routine-table th { background: #1e1e22; color: #c8d8f0; border-bottom-color: var(--border-strong); }
+        :root[data-theme="dark"] .routine-table td { background: var(--surface); color: #d4d4d7; }
+        :root[data-theme="dark"] .routine-table .dow { color: #6e6e72; }
+        :root[data-theme="dark"] .code-card { background: #161618; border-color: var(--border); }
+        :root[data-theme="dark"] .code-subject { color: #c8d8f0; }
+        :root[data-theme="dark"] .code-value-box { background: #1e1e22; border-color: #333338; }
+        :root[data-theme="dark"] .code-value { color: #c8d8f0; }
+        :root[data-theme="dark"] .copy-btn { background: #2a2a2f; color: #c8c8cb; }
+        :root[data-theme="dark"] .copy-btn.copied-flash { background: #143d2e; color: #6ee7b7; }
         :root[data-theme="dark"] .drive-card { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .community-card { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .cta-footer { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .cta-icon { color: #60a5fa; }
-        :root[data-theme="dark"] .cta-title { color: #bfdbfe; }
-        :root[data-theme="dark"] .page h2 { color: #bfdbfe; }
-        :root[data-theme="dark"] .faculty-item { background: #0f1a2b; border-color: var(--border); }
-        :root[data-theme="dark"] .faculty-name { color: #bfdbfe; }
-        :root[data-theme="dark"] .course-code { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
-        :root[data-theme="dark"] .faculty-number-link { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
-        :root[data-theme="dark"] .faculty-number-link:active { background: #22304a; }
-        :root[data-theme="dark"] .faculty-details { color: #a9b6c9; border-top-color: var(--border); }
-        :root[data-theme="dark"] .counsel-box { background: #12233d; border-color: #24405f; color: #bfdbfe; }
-        :root[data-theme="dark"] .counsel-title { color: #93c5fd; }
-        :root[data-theme="dark"] .counsel-line strong { color: #bfdbfe; }
-        :root[data-theme="dark"] .faculty-general-note { background: #2a1f0e; border-color: #5c3f11; color: #fcd34d; }
+        :root[data-theme="dark"] .cta-icon { color: #7bb0ff; }
+        :root[data-theme="dark"] .cta-title { color: #c8d8f0; }
+        :root[data-theme="dark"] .page h2 { color: #c8d8f0; }
+        :root[data-theme="dark"] .faculty-item { background: #161618; border-color: var(--border); }
+        :root[data-theme="dark"] .faculty-name { color: #c8d8f0; }
+        :root[data-theme="dark"] .faculty-subject { color: #a0a0a3; }
+        :root[data-theme="dark"] .course-code { background: #242428; border-color: #333338; color: #a3c4ff; }
+        :root[data-theme="dark"] .faculty-number-link { background: #242428; border-color: #333338; color: #a3c4ff; }
+        :root[data-theme="dark"] .faculty-number-link:active { background: #2a2a2f; }
+        :root[data-theme="dark"] .faculty-details { color: #a0a0a3; border-top-color: var(--border); }
+        :root[data-theme="dark"] .counsel-box { background: #1e1e22; border-color: #333338; color: #c8d8f0; }
+        :root[data-theme="dark"] .counsel-title { color: #a3c4ff; }
+        :root[data-theme="dark"] .counsel-line strong { color: #c8d8f0; }
+        :root[data-theme="dark"] .faculty-general-note { background: #2a2419; border-color: #4a3a1a; color: #f0d89a; }
         :root[data-theme="dark"] .faculty-general-note i { color: #fbbf24; }
         :root[data-theme="dark"] .faculty-general-note strong { color: #fbbf24; }
         :root[data-theme="dark"] .modal-box { background: var(--surface); }
         :root[data-theme="dark"] .modal-header { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .modal-header h2 { color: #bfdbfe; }
-        :root[data-theme="dark"] .modal-close-btn { background: #22304a; color: #cbd5e1; }
+        :root[data-theme="dark"] .modal-header h2 { color: #c8d8f0; }
+        :root[data-theme="dark"] .modal-close-btn { background: #2a2a2f; color: #c8c8cb; }
         :root[data-theme="dark"] .modal-footer { border-top-color: var(--border); }
-        :root[data-theme="dark"] .btn-modal { background: #22304a; color: #cbd5e1; }
+        :root[data-theme="dark"] .btn-modal { background: #2a2a2f; color: #c8c8cb; }
         :root[data-theme="dark"] .btn--filled,
         :root[data-theme="dark"] .cta-btn,
         :root[data-theme="dark"] .join-btn,
-        :root[data-theme="dark"] .btn-call { background: #2563eb; color: #fff; box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35); }
+        :root[data-theme="dark"] .btn-call { background: #2563eb; color: #fff; }
         :root[data-theme="dark"] .bottom-nav { background: var(--surface); border-top-color: var(--border); }
-        :root[data-theme="dark"] .bottom-nav__item { color: #8fa0b8; }
-        :root[data-theme="dark"] .bottom-nav__item.is-active { color: #60a5fa; }
-        :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #1a2942; }
-        :root[data-theme="dark"] .wifi-home-card:active { background: #1a2942; }
-        :root[data-theme="dark"] .wifi-home-icon { background: #1a2942; color: #60a5fa; }
-        :root[data-theme="dark"] .wifi-home-title { color: #bfdbfe; }
-        :root[data-theme="dark"] .wifi-home-cta { background: #1a2942; border-color: #2c405e; color: #93c5fd; }
+        :root[data-theme="dark"] .bottom-nav__item { color: #909095; }
+        :root[data-theme="dark"] .bottom-nav__item.is-active { color: #7bb0ff; }
+        :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #242428; }
+        :root[data-theme="dark"] .wifi-home-card:active { background: #242428; }
+        :root[data-theme="dark"] .wifi-home-icon { background: #242428; color: #7bb0ff; }
+        :root[data-theme="dark"] .wifi-home-title { color: #c8d8f0; }
+        :root[data-theme="dark"] .wifi-home-cta { background: #242428; border-color: #333338; color: #a3c4ff; }
 
         @media (max-width: 480px) {
             .content { padding: 10px 10px 90px; }
@@ -387,19 +399,20 @@
             .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
             .app-bar-actions { gap: 6px; }
             .theme-toggle-btn { width: 30px; height: 30px; font-size: 0.75rem; }
-            .theme-hint { font-size: 0.45rem; padding: 2px 5px; }
             .glance { padding: 1rem 0.7rem; }
             .message-box { font-size: 0.85rem; min-height: 44px; }
-            .routine-table { font-size: 0.62rem; min-width: 320px; }
-            .routine-table th, .routine-table td { padding: 7px 8px; }
+            .routine-table { font-size: 0.58rem; }
+            .routine-table th { font-size: 0.5rem; padding: 6px 4px; }
+            .routine-table td { padding: 6px 4px; }
             .code-subject { font-size: 0.6rem; min-width: 48px; }
             .code-value { font-size: 0.6rem; }
             .copy-btn, .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
             .faculty-name { font-size: 0.8rem; }
+            .faculty-subject { font-size: 0.66rem; }
             .faculty-number-link { font-size: 0.7rem; }
             .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
             .btn--large { font-size: 13px; height: 42px; }
-            .bottom-nav { height: 64px; }
+            .bottom-nav { height: 64px; min-height: 64px; max-height: 64px; }
             .bottom-nav__label { font-size: 9px; }
             .bottom-nav__icon { width: 46px; height: 26px; }
             .bottom-nav__icon svg { width: 20px; height: 20px; }
@@ -407,10 +420,12 @@
             .modal-body { font-size: 0.75rem; padding: 1rem; }
             .modal-header h2 { font-size: 0.95rem; }
             .events-card { padding: 14px 12px 10px; }
-            .event-row { padding: 10px; }
-            .event-date, .date-pill { width: 44px; height: 44px; }
+            .event-row { padding: 10px; gap: 8px; }
+            .event-date, .date-pill { width: 42px; height: 42px; }
             .event-date .day, .date-pill .day { font-size: 0.9rem; }
-            .event-title { font-size: 0.74rem; }
+            .event-title, .range-title { font-size: 0.72rem; }
+            .event-tag { font-size: 0.46rem; padding: 2px 6px; }
+            .event-detail-btn { font-size: 0.58rem; padding: 4px 9px; }
             .wifi-home-card { padding: 0.6rem 0.75rem; gap: 0.5rem; }
             .wifi-home-title { font-size: 0.76rem; }
             .wifi-home-cta { font-size: 0.6rem; padding: 0.22rem 0.6rem; }
@@ -418,6 +433,8 @@
             .drive-icon { height: 46px; }
             .c-icon img { width: 30px; height: 30px; }
             .c-icon { width: 34px; height: 34px; }
+            .syllabus-list { font-size: 0.7rem; }
+            .syllabus-title { font-size: 0.72rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -461,12 +478,9 @@
     <header class="top-app-bar">
         <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
         <div class="app-bar-actions">
-            <div class="theme-toggle-wrap">
-                <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <span class="theme-hint" id="themeHint" aria-hidden="true">Dark mode ›</span>
-            </div>
+            <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                <i class="fas fa-moon"></i>
+            </button>
             <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
                 <span class="material-symbols-rounded">description</span> Notices
             </a>
@@ -513,7 +527,7 @@
                 <span class="cta-icon material-symbols-rounded">code</span>
                 <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
                 <div class="cta-desc">You can customize it yourself.</div>
-                <a href="contact.html" class="cta-btn"><i class="fas fa-arrow-right"></i> Contact Now</a>
+                <a href="https://www.facebook.com/profile.php?id=61594792364808" target="_blank" class="cta-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Contact Now</a>
             </div>
         </section>
 
@@ -524,7 +538,7 @@
             <div class="drive-grid">
                 <div class="drive-card">
                     <span class="drive-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Google_Drive_icon_(2026).svg/960px-Google_Drive_icon_(2026).svg.png" alt="Google Drive" loading="lazy" />
+                        <img src="https://github.com/66notes/66notes.github.io/blob/main/images/driveicon.png?raw=true" alt="Google Drive" loading="lazy" />
                     </span>
                     <div class="drive-title">Google Drive</div>
                     <div class="drive-desc">All PDFs, notes, and study materials</div>
@@ -535,15 +549,15 @@
             </div>
             <div class="community-grid">
                 <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Google_Classroom_Logo.svg/960px-Google_Classroom_Logo.svg.png" alt="Classroom" loading="lazy" /></span>
+                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/classroomicon.png?raw=true" alt="Classroom" loading="lazy" /></span>
                     <span class="c-title">Classroom</span>
                 </a>
                 <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><i class="fab fa-whatsapp" style="color:#25D366;font-size:2rem;"></i></span>
+                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/whatsapicon.png?raw=true" alt="WhatsApp" loading="lazy" /></span>
                     <span class="c-title">WhatsApp</span>
                 </a>
                 <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Facebook_Messenger_logo_2025.svg/3840px-Facebook_Messenger_logo_2025.svg.png" alt="Messenger" loading="lazy" /></span>
+                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/messengericon.png?raw=true" alt="Messenger" loading="lazy" /></span>
                     <span class="c-title">Messenger</span>
                 </a>
             </div>
@@ -564,6 +578,7 @@
                         <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
                         <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
                     </div>
+                    <div class="faculty-subject">Principles of Management</div>
                     <div class="faculty-actions">
                         <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
@@ -584,6 +599,7 @@
                         <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
                         <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
                     </div>
+                    <div class="faculty-subject">Fundamentals of Mathematics</div>
                     <div class="faculty-actions">
                         <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
@@ -604,6 +620,7 @@
                         <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
                         <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
                     </div>
+                    <div class="faculty-subject">Micro Economics</div>
                     <div class="faculty-actions">
                         <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
                         <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
@@ -670,7 +687,18 @@
             { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
         ];
 
-        /* ═══════════════ ANNOUNCEMENTS (hardcoded, with optional expiry) ═══════════════ */
+        const EXAM_SCHEDULE = [
+            { course: 'MGT 1101', day: '25', month: 'Oct', dow: 'Sunday',    time: '10:00 AM – 11:30 AM', room: '4705 & 4703', start: '2026-10-25T10:00:00+06:00', end: '2026-10-25T11:30:00+06:00' },
+            { course: 'QUA 1101', day: '28', month: 'Oct', dow: 'Wednesday', time: '03:00 PM – 04:30 PM', room: '4701',         start: '2026-10-28T15:00:00+06:00', end: '2026-10-28T16:30:00+06:00' },
+            { course: 'ECO 1101', day: '30', month: 'Oct', dow: 'Friday',    time: '09:15 AM – 10:45 AM', room: '4505 & 4504', start: '2026-10-30T09:15:00+06:00', end: '2026-10-30T10:45:00+06:00' }
+        ];
+
+        const SYLLABUS = {
+            'MGT 1101': { chapters: ['Chapter 1', 'Chapter 2'], note: 'Materials available in the PDFs section.' },
+            'QUA 1101': { chapters: ['Set', 'Equation', 'Index & Logarithm'], note: 'Materials available in the PDFs section.' },
+            'ECO 1101': { chapters: ['Chapter 1', 'Chapter 2', 'Chapter 3'], note: 'Materials available in Drive.' }
+        };
+
         const ANNOUNCEMENTS = [
             { text: 'Registration date is extended to 8 Oct.', expiresAt: '2026-10-09T00:00:00+06:00' },
             { text: 'If you missed any CT, contact your faculty.' },
@@ -697,14 +725,45 @@
                 '4. Final Exam- এরপর ফেরত দেওয়া এসাইনমেন্ট ফাইনালি জমা নিবে।',
                 '5. Deadline Miss হলে নিজ দায়িত্বে ফ্যাকাল্টি রুমে গিয়ে জমা দিয়ে ফেরত আনবেন।'
               ] },
-            { isRange: true, startDay: '24', startMonth: 'Oct', endDay: '31', endMonth: 'Oct',
-              title: 'Mid Exam (MGT, ECO, QUA)', badges: ['Midterm', 'Estimated'], rangeLabel: 'Estimated Window',
-              expiresAt: '2026-10-31T23:59:59+06:00', meta: 'Estimated date range',
-              items: ['📘 QUA 1101: Set, Equation, Index & algorithms', '📘 MGT 1101: Syllabus TBA', '📘 ECO 1101: Syllabus TBA'],
-              note: 'Syllabus details will be updated when available' }
+
+            { isRange: true, startDay: '20', startMonth: 'Oct', endDay: '24', endMonth: 'Oct',
+              title: 'Holiday', expiresAt: '2026-10-24T23:59:59+06:00',
+              rangeLabel: 'Holiday Period',
+              timeTag: 'Holiday', timeTagClass: 'holiday',
+              dayTag: '20 – 24 Oct', dayTagClass: 'range',
+              meta: 'Classes & exams resume on 25 October.',
+              items: ['🎉 20 – 24 October 2026', '📚 Prepare for Mid Exams during the break'],
+              note: 'Enjoy the break!' },
+
+            { day: '25', month: 'Oct', title: 'MGT 1101 Mid Exam',
+              expiresAt: '2026-10-25T11:30:00+06:00',
+              isExam: true, syllabusKey: 'MGT 1101',
+              timeTag: '10:00 AM', dayTag: 'Sunday',
+              meta: '🕒 10:00 AM – 11:30 AM',
+              items: ['📅 Sunday, 25 October 2026', '📍 Room: 4705 & 4703'],
+              note: 'Arrive at least 15 minutes early.' },
+            { day: '28', month: 'Oct', title: 'QUA 1101 Mid Exam',
+              expiresAt: '2026-10-28T16:30:00+06:00',
+              isExam: true, syllabusKey: 'QUA 1101',
+              timeTag: '03:00 PM', dayTag: 'Wednesday',
+              meta: '🕒 03:00 PM – 04:30 PM',
+              items: ['📅 Wednesday, 28 October 2026', '📍 Room: 4701'],
+              note: 'Arrive at least 15 minutes early.' },
+            { day: '30', month: 'Oct', title: 'ECO 1101 Mid Exam',
+              expiresAt: '2026-10-30T10:45:00+06:00',
+              isExam: true, syllabusKey: 'ECO 1101',
+              timeTag: '09:15 AM', dayTag: 'Friday',
+              meta: '🕒 09:15 AM – 10:45 AM',
+              items: ['📅 Friday, 30 October 2026', '📍 Room: 4505 & 4504'],
+              note: 'Arrive at least 15 minutes early.' }
         ];
 
         const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
+        const EXAM_MODE_START = Date.parse('2026-10-19T17:45:00+06:00');
+        const EXAM_MODE_END   = Date.parse('2026-10-30T11:00:00+06:00');
+        const CLASS_HIDE_START = Date.parse('2026-10-19T17:45:00+06:00');
+        const CLASS_HIDE_END   = Date.parse('2026-10-30T17:45:00+06:00');
+
         const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
 
@@ -766,72 +825,29 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }));
 
-        /* ═══════════════ THEME TOGGLE ═══════════════ */
+        /* ═══════════════ THEME TOGGLE — session only ═══════════════ */
 
         (function () {
             const btn = $('themeToggle');
             if (!btn) return;
 
-            function apply(dark, persist) {
+            function apply(dark) {
                 document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
                 btn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
                 btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
                 btn.setAttribute('aria-pressed', String(dark));
                 const meta = document.querySelector('meta[name="theme-color"]');
-                if (meta) meta.setAttribute('content', dark ? '#0b1220' : '#ffffff');
-                if (persist) { try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {} }
-                const hint = $('themeHint');
-                if (hint) hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
+                if (meta) meta.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
             }
 
-            apply(document.documentElement.getAttribute('data-theme') === 'dark', false);
+            apply(false);
 
             btn.addEventListener('click', () => {
-                apply(document.documentElement.getAttribute('data-theme') !== 'dark', true);
+                apply(document.documentElement.getAttribute('data-theme') !== 'dark');
             });
         })();
 
-        /* ═══════════════ THEME HINT (flash 3s, repeat every 10s) ═══════════════ */
-
-        (function () {
-            const hint = $('themeHint');
-            if (!hint) return;
-
-            const SHOW_MS = 3000;   // visible for 3 seconds
-            const CYCLE_MS = 10000; // repeat every 10 seconds
-
-            let hideTimer = null;
-            let loopTimer = null;
-
-            function flash() {
-                const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-                hint.textContent = dark ? 'Light mode ›' : 'Dark mode ›';
-
-                hint.classList.add('show');
-                clearTimeout(hideTimer);
-                hideTimer = setTimeout(() => hint.classList.remove('show'), SHOW_MS);
-            }
-
-            function start() {
-                stop();
-                flash();
-                loopTimer = setInterval(flash, CYCLE_MS);
-            }
-
-            function stop() {
-                clearInterval(loopTimer);
-                clearTimeout(hideTimer);
-                hint.classList.remove('show');
-            }
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) stop(); else start();
-            });
-
-            if (!document.hidden) start();
-        })();
-
-        /* ═══════════════ ANNOUNCEMENTS — hardcoded ═══════════════ */
+        /* ═══════════════ ANNOUNCEMENTS ═══════════════ */
 
         let annTimer = null;
         function buildAnnouncements(lines) {
@@ -877,7 +893,7 @@
             return null;
         }
 
-        function getStatus(t) {
+        function getClassStatus(t) {
             if (Date.now() < SEMESTER_START) {
                 return { slides: ['📅 Classes start on <strong>6 September</strong>', 'Check the routine below!'], label: 'UPCOMING', running: false, detail: 'Classes start on 6th Sep' };
             }
@@ -898,6 +914,65 @@
             };
         }
 
+        /* ═══════════════ EXAM MODE AI ═══════════════ */
+
+        function getExamStatus(now) {
+            let running = null, next = null;
+            for (const ex of EXAM_SCHEDULE) {
+                const s = Date.parse(ex.start), e = Date.parse(ex.end);
+                if (now >= s && now <= e) { running = ex; break; }
+                if (now < s && !next) next = ex;
+            }
+
+            if (running) {
+                const endTime = running.time.split('–')[1].trim();
+                return {
+                    slides: [
+                        `▶️ <strong>${running.course}</strong> exam is running`,
+                        `🕒 Ends at ${endTime} · 📍 Room ${running.room}`,
+                        `💡 Stay calm & focused!`,
+                        `🎫 Admit Card দরকার হলে হাতে রাখুন`
+                    ],
+                    label: 'EXAM NOW', running: true,
+                    detail: `${running.course} · Room ${running.room}`
+                };
+            }
+
+            if (next) {
+                const daysLeft = Math.max(0, Math.ceil((Date.parse(next.start) - now) / 86400000));
+                const daysStr = daysLeft === 0 ? 'today' : daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
+                return {
+                    slides: [
+                        `📝 Next exam: <strong>${next.course}</strong>`,
+                        `📅 ${next.day} ${next.month} (${next.dow}) · 🕒 ${next.time}`,
+                        `📍 Room ${next.room} · ${daysStr}`,
+                        `💡 Try to arrive 30 minutes earlier`,
+                        `🎫 Don't forget your Admit Card`
+                    ],
+                    label: 'EXAM', running: false,
+                    detail: `${next.course} · ${next.day} ${next.month} · ${next.time} · Room ${next.room}`
+                };
+            }
+
+            return {
+                slides: ['📚 Exams in progress', '💡 Try to arrive 30 minutes earlier', '🎫 Don\'t forget your Admit Card'],
+                label: 'EXAM', running: false, detail: 'Exam period'
+            };
+        }
+
+        function getStatus(t) {
+            const now = Date.now();
+            if (now >= EXAM_MODE_END) {
+                return {
+                    slides: ['📢 Check Messenger For Class Start Updates'],
+                    label: 'NOTICE', running: false,
+                    detail: 'Class schedule updates will be posted on Messenger.'
+                };
+            }
+            if (now >= EXAM_MODE_START) return getExamStatus(now);
+            return getClassStatus(t);
+        }
+
         let slideKey = '', slideTimer = null;
         function showSlides(slides) {
             const key = slides.join('|');
@@ -911,10 +986,22 @@
 
         /* ═══════════════ ROUTINE + CODES ═══════════════ */
 
-        (function () {
+        (function buildRoutine() {
+            const root = $('routineContent');
+            if (!root) return;
+
+            const examRows = EXAM_SCHEDULE.map(e =>
+                `<tr>
+                    <td><strong>${e.day} ${e.month}</strong><span class="dow">${e.dow}</span></td>
+                    <td>${e.time}</td>
+                    <td>${e.course}</td>
+                    <td>${e.room}</td>
+                </tr>`
+            ).join('');
+
             const byDay = {};
             CLASSES.forEach(c => (byDay[c.day] = byDay[c.day] || []).push(c));
-            const rows = Object.keys(byDay).map(d => byDay[d].map((c, i) =>
+            const classRows = Object.keys(byDay).map(d => byDay[d].map((c, i) =>
                 '<tr>' +
                 (i === 0 ? `<td rowspan="${byDay[d].length}"><strong>${DAYS[d].slice(0, 3).toUpperCase()}</strong></td>` : '') +
                 `<td>${to12p(c.sh, c.sm)} – ${to12p(c.eh, c.em)}</td><td>${c.room}</td><td>${c.course}</td><td>${c.fac}</td></tr>`
@@ -929,18 +1016,28 @@
                     ${c.url ? `<a href="${c.url}" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>` : ''}
                 </div>`).join('');
 
-            const root = $('routineContent');
             root.innerHTML = `
-                <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                <div class="section-label"><i class="fas fa-clipboard-list"></i> Exam Routine</div>
                 <div class="routine-table-wrap">
                     <table class="routine-table">
-                        <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
-                        <tbody>${rows}</tbody>
+                        <colgroup><col style="width:20%"><col style="width:30%"><col style="width:24%"><col style="width:26%"></colgroup>
+                        <thead><tr><th>Date</th><th>Time</th><th>Course</th><th>Room</th></tr></thead>
+                        <tbody>${examRows}</tbody>
                     </table>
                 </div>
-                <div class="codes-section">
-                    <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                    <div class="codes-grid">${codes}</div>
+                <div id="classRoutineBlock">
+                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
+                    <div class="routine-table-wrap">
+                        <table class="routine-table">
+                            <colgroup><col style="width:14%"><col style="width:26%"><col style="width:14%"><col style="width:22%"><col style="width:24%"></colgroup>
+                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
+                            <tbody>${classRows}</tbody>
+                        </table>
+                    </div>
+                    <div class="codes-section">
+                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
+                        <div class="codes-grid">${codes}</div>
+                    </div>
                 </div>`;
 
             root.addEventListener('click', e => {
@@ -955,17 +1052,36 @@
             });
         })();
 
+        function updateClassVisibility() {
+            const block = $('classRoutineBlock');
+            if (!block) return;
+            const now = Date.now();
+            const hide = now >= CLASS_HIDE_START && now < CLASS_HIDE_END;
+            block.classList.toggle('class-hidden', hide);
+        }
+
         /* ═══════════════ PINNED EVENTS ═══════════════ */
 
         function openEventDetails(ev) {
             const badges = ev.badges || (ev.badge ? [ev.badge] : []);
             $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title + ' ' +
-                badges.map(b => `<span class="event-badge">${b}</span>`).join(' ');
+                badges.map(b => `<span class="event-tag time">${b}</span>`).join(' ');
 
             const date = ev.isRange ? `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}` : `${ev.day} ${ev.month}`;
             let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${date}</div>`;
             if (ev.meta) html += `<div class="event-meta">${ev.meta}</div>`;
             if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
+
+            if (ev.isExam && ev.syllabusKey && SYLLABUS[ev.syllabusKey]) {
+                const syl = SYLLABUS[ev.syllabusKey];
+                html += `
+                    <div class="syllabus-box">
+                        <div class="syllabus-title"><i class="fas fa-book-open"></i> Syllabus</div>
+                        <ol class="syllabus-list">${syl.chapters.map(c => `<li>${c}</li>`).join('')}</ol>
+                        <div class="syllabus-note"><i class="fas fa-info-circle"></i> ${syl.note}</div>
+                    </div>`;
+            }
+
             if (ev.note) html += `<div class="event-note">${ev.note}</div>`;
             $('event-modal-body').innerHTML = html;
             openModal();
@@ -974,8 +1090,18 @@
         function buildBlock(ev) {
             const block = document.createElement('div');
             block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
+            const btnLabel = ev.isExam ? 'See Syllabus ›' : 'See Detail';
+
+            const timeTagCls = ev.timeTagClass || 'time';
+            const dayTagCls = ev.dayTagClass || 'day';
+            const tagsHtml = (ev.timeTag || ev.dayTag)
+                ? `<div class="event-tags">
+                       ${ev.timeTag ? `<span class="event-tag ${timeTagCls}">${ev.timeTag}</span>` : ''}
+                       ${ev.dayTag ? `<span class="event-tag ${dayTagCls}">${ev.dayTag}</span>` : ''}
+                   </div>`
+                : '';
+
             if (ev.isRange) {
-                const badges = ev.badges.map(b => `<span class="event-badge">${b}</span>`).join('');
                 block.innerHTML = `
                     <div class="range-content">
                         <div class="range-dates">
@@ -984,17 +1110,21 @@
                             <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
                         </div>
                         <div class="range-info">
-                            <div class="event-title">${ev.title} ${badges}</div>
+                            <div class="range-title">${ev.title}</div>
+                            ${tagsHtml}
                             <div class="range-label">${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
                         </div>
-                        <button class="event-detail-btn" type="button">See Detail</button>
+                        <button class="event-detail-btn" type="button">${btnLabel}</button>
                     </div>`;
             } else {
                 block.innerHTML = `
                     <div class="event-row">
                         <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
-                        <div class="event-body"><div class="event-title">${ev.title} <span class="event-badge">${ev.badge}</span></div></div>
-                        <button class="event-detail-btn" type="button">See Detail</button>
+                        <div class="event-body">
+                            <div class="event-title">${ev.title}</div>
+                            ${tagsHtml}
+                        </div>
+                        <button class="event-detail-btn" type="button">${btnLabel}</button>
                     </div>`;
             }
             block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
@@ -1019,7 +1149,7 @@
             list.appendChild(frag);
         }
 
-        /* ═══════════════ ONE TIMER FOR EVERYTHING ═══════════════ */
+        /* ═══════════════ REFRESH LOOP ═══════════════ */
 
         function refresh() {
             const t = dhakaNow();
@@ -1030,6 +1160,7 @@
             $('barDot').className = 'status-dot' + (s.running ? ' running' : '');
             $('barDetail').innerHTML = s.detail;
             renderEvents();
+            updateClassVisibility();
         }
 
         function loop() {
