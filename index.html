@@ -39,9 +39,46 @@
         .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
         .top-app-bar__title span { color: var(--accent); }
-        .notices-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: 30px; background: var(--accent-light); color: var(--accent); font-size: 0.7rem; font-weight: 600; text-decoration: none; border: 1px solid #dbeafe; transition: background var(--transition), transform 0.15s; min-height: 34px; white-space: nowrap; cursor: pointer; }
-        .notices-btn:active { transform: scale(0.96); background: #e0e9ff; }
+        
+        /* Updated Notices Button */
+        .notices-btn { 
+            position: relative;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            padding: 7px 15px; 
+            border-radius: 30px; 
+            background: #1e40af; /* Solid dark blue */
+            color: #ffffff; 
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            text-decoration: none; 
+            border: none;
+            transition: background var(--transition), transform 0.15s; 
+            min-height: 34px; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3);
+        }
+        .notices-btn:active { transform: scale(0.96); background: #1d4ed8; }
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
+        
+        .notification-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 9px;
+            height: 9px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
 
         .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: background var(--transition), transform 0.15s, color var(--transition); }
@@ -82,8 +119,9 @@
         .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
         .events-list { display: flex; flex-direction: column; gap: 8px; }
         .events-empty { text-align: center; padding: 1.2rem 0.5rem; font-size: 0.75rem; color: #9ca3af; font-weight: 500; }
-        .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; }
-        .event-row { display: flex; gap: 10px; align-items: center; padding: 12px; }
+        
+        .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; padding: 12px; }
+        .event-row { display: flex; gap: 10px; align-items: center; }
         .event-date { flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .event-date .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
@@ -97,29 +135,10 @@
         .event-tag.range { background: #fef3c7; color: #92400e; }
         .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
         .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
-        .event-block.range-event { padding: 12px; }
-        .range-content { display: flex; gap: 12px; align-items: center; }
-        .range-dates { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 6px; }
-        .date-pill { width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .date-pill.end { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); }
-        .date-pill .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
-        .date-pill .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-        .range-connector { width: 2px; height: 12px; background: #2563eb; border-radius: 1px; }
-        .range-info { flex: 1; min-width: 0; }
-        .range-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; line-height: 1.3; margin-bottom: 5px; }
-        .range-label { font-size: 0.55rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
+        
         .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
         .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
         .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
-
-        .syllabus-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 10px; padding: 0.75rem 0.9rem; margin-top: 10px; }
-        .syllabus-title { font-weight: 700; font-size: 0.78rem; color: #1e40af; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.35rem; }
-        .syllabus-title i { font-size: 0.8rem; }
-        .syllabus-list { margin: 0; padding-left: 1.3rem; font-size: 0.74rem; color: #1e3a8a; line-height: 1.7; font-weight: 500; }
-        .syllabus-list li { margin-bottom: 2px; }
-        .syllabus-note { font-size: 0.64rem; color: #1e40af; margin-top: 0.5rem; font-style: italic; display: flex; align-items: center; gap: 0.3rem; }
-
-        .class-hidden { display: none !important; }
 
         .wifi-home-card {
             background: var(--surface);
@@ -311,8 +330,9 @@
         }
         :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
         :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .notices-btn { background: #242428; border-color: #333338; color: #a3c4ff; }
-        :root[data-theme="dark"] .notices-btn:active { background: #2a2a2f; }
+        :root[data-theme="dark"] .notices-btn { background: #1e40af; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        :root[data-theme="dark"] .notices-btn:active { background: #1d4ed8; }
+        :root[data-theme="dark"] .notification-dot { border-color: var(--surface); }
         :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
         :root[data-theme="dark"] .announcement-bar { background: #2a2419; border-color: #4a3a1a; }
         :root[data-theme="dark"] .announcement-icon .material-symbols-rounded { color: #fb923c; }
@@ -339,10 +359,6 @@
         :root[data-theme="dark"] .event-items { color: #c8c8cb; }
         :root[data-theme="dark"] .event-note { background: #3a2e14; color: #f0d89a; }
         :root[data-theme="dark"] .range-label { color: #9a9a9e; }
-        :root[data-theme="dark"] .syllabus-box { background: #1e1e22; border-color: #333338; }
-        :root[data-theme="dark"] .syllabus-title { color: #a3c4ff; }
-        :root[data-theme="dark"] .syllabus-list { color: #c8d8f0; }
-        :root[data-theme="dark"] .syllabus-note { color: #a3c4ff; }
         :root[data-theme="dark"] .routine-section { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .routine-section .section-label { border-bottom-color: var(--border); }
         :root[data-theme="dark"] .routine-table-wrap { background: #161618; border-color: var(--border); }
@@ -421,9 +437,9 @@
             .modal-header h2 { font-size: 0.95rem; }
             .events-card { padding: 14px 12px 10px; }
             .event-row { padding: 10px; gap: 8px; }
-            .event-date, .date-pill { width: 42px; height: 42px; }
-            .event-date .day, .date-pill .day { font-size: 0.9rem; }
-            .event-title, .range-title { font-size: 0.72rem; }
+            .event-date { width: 42px; height: 42px; }
+            .event-date .day { font-size: 0.9rem; }
+            .event-title { font-size: 0.72rem; }
             .event-tag { font-size: 0.46rem; padding: 2px 6px; }
             .event-detail-btn { font-size: 0.58rem; padding: 4px 9px; }
             .wifi-home-card { padding: 0.6rem 0.75rem; gap: 0.5rem; }
@@ -433,8 +449,6 @@
             .drive-icon { height: 46px; }
             .c-icon img { width: 30px; height: 30px; }
             .c-icon { width: 34px; height: 34px; }
-            .syllabus-list { font-size: 0.7rem; }
-            .syllabus-title { font-size: 0.72rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -483,6 +497,7 @@
             </button>
             <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
                 <span class="material-symbols-rounded">description</span> Notices
+                <span class="notification-dot"></span>
             </a>
         </div>
     </header>
@@ -538,7 +553,7 @@
             <div class="drive-grid">
                 <div class="drive-card">
                     <span class="drive-icon">
-                        <img src="https://github.com/66notes/66notes.github.io/blob/main/images/driveicon.png?raw=true" alt="Google Drive" loading="lazy" />
+                        <img src="https://img.icons8.com/fluency/96/google-drive--v1.png" alt="Google Drive" loading="lazy" />
                     </span>
                     <div class="drive-title">Google Drive</div>
                     <div class="drive-desc">All PDFs, notes, and study materials</div>
@@ -549,15 +564,15 @@
             </div>
             <div class="community-grid">
                 <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/classroomicon.png?raw=true" alt="Classroom" loading="lazy" /></span>
+                    <span class="c-icon"><img src="https://img.icons8.com/fluency/96/google-classroom.png" alt="Classroom" loading="lazy" /></span>
                     <span class="c-title">Classroom</span>
                 </a>
                 <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/whatsapicon.png?raw=true" alt="WhatsApp" loading="lazy" /></span>
+                    <span class="c-icon"><img src="https://img.icons8.com/emoji/96/whatsapp.png" alt="WhatsApp" loading="lazy" /></span>
                     <span class="c-title">WhatsApp</span>
                 </a>
                 <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://github.com/66notes/66notes.github.io/blob/main/images/messengericon.png?raw=true" alt="Messenger" loading="lazy" /></span>
+                    <span class="c-icon"><img src="https://img.icons8.com/fluency/96/facebook-messenger--v1.png" alt="Messenger" loading="lazy" /></span>
                     <span class="c-title">Messenger</span>
                 </a>
             </div>
@@ -688,82 +703,108 @@
         ];
 
         const EXAM_SCHEDULE = [
-            { course: 'MGT 1101', day: '25', month: 'Oct', dow: 'Sunday',    time: '10:00 AM – 11:30 AM', room: '4705 & 4703', start: '2026-10-25T10:00:00+06:00', end: '2026-10-25T11:30:00+06:00' },
-            { course: 'QUA 1101', day: '28', month: 'Oct', dow: 'Wednesday', time: '03:00 PM – 04:30 PM', room: '4701',         start: '2026-10-28T15:00:00+06:00', end: '2026-10-28T16:30:00+06:00' },
-            { course: 'ECO 1101', day: '30', month: 'Oct', dow: 'Friday',    time: '09:15 AM – 10:45 AM', room: '4505 & 4504', start: '2026-10-30T09:15:00+06:00', end: '2026-10-30T10:45:00+06:00' }
+            { course: 'Supple Mid Exam', day: '09', month: 'Nov', dow: 'Monday', time: 'TBA', room: 'TBA', start: '2026-11-09T00:00:00+06:00', end: '2026-11-12T23:59:59+06:00' }
         ];
-
-        const SYLLABUS = {
-            'MGT 1101': { chapters: ['Chapter 1', 'Chapter 2'], note: 'Materials available in the PDFs section.' },
-            'QUA 1101': { chapters: ['Set', 'Equation', 'Index & Logarithm'], note: 'Materials available in the PDFs section.' },
-            'ECO 1101': { chapters: ['Chapter 1', 'Chapter 2', 'Chapter 3'], note: 'Materials available in Drive.' }
-        };
 
         const ANNOUNCEMENTS = [
-            { text: 'Registration date is extended to 8 Oct.', expiresAt: '2026-10-09T00:00:00+06:00' },
             { text: 'If you missed any CT, contact your faculty.' },
-            { text: 'If you are facing any problem in the website, inform CRs.' }
+            { text: 'ALL PDFs are in PDFs > DRIVE Section' },
+            { text: 'KEEP An Eye in Messenger for normal Updates' }
         ];
 
+        // SKIP_DATES for AI Reminder: Skip Sunday Nov 1 and Victory Day Dec 16
+        const SKIP_DATES = ['2026-11-01', '2026-12-16'];
+
         const EVENTS = [
-            { day: '28', month: 'Sep', title: 'ECO CT Exam', badge: 'CT', expiresAt: '2026-09-28T23:59:59+06:00',
-              meta: 'Syllabus provided', items: ['• Chapter 1', '• CT r ag porjonto ja poriyeche tai syllabus'], note: 'Check with faculty for confirmation' },
-            { day: '4', month: 'Oct', title: 'Math CT Exam', badge: 'CT', expiresAt: '2026-10-04T23:59:59+06:00',
-              meta: 'Syllabus provided', items: ['• Set', '• Index'], note: 'Prepare accordingly' },
-            { day: '11', month: 'Oct', title: 'Management CT (Ch. 1)', badge: 'CT', expiresAt: '2026-10-11T23:59:59+06:00',
-              meta: 'Chapter 1', items: ['• Chapter 1', '• Check the PDFs section'],
-              note: 'Contact your faculty if anything is unclear' },
-            { day: '11', month: 'Oct', title: 'Math Assignment (Set)', badge: 'Assignment', expiresAt: '2026-10-11T23:59:59+06:00',
-              meta: 'Submission: 11 October', items: ['• Solve all problems from Set', '• Source: the new sheet — available in the PDFs section'],
-              note: 'Open the PDFs tab → Google Drive to find the new sheet' },
-            { day: '12', month: 'Oct', title: 'ECO Assignment', badge: 'Chapter 1 + 2', expiresAt: '2026-10-12T23:59:59+06:00',
-              meta: 'Date: 12 October (Monday)',
-              items: [
-                '1. Chapter 2 Review Questions আজ/কালকের মধ্যে দিবে ওটা সহ Assignment দিতে হবে (Chapter 1 + 2 Review Qus.)',
-                '2. যেদিন জমা নেবে, তার পরের দিন/class-এ ফেরত দেবে।',
-                '3. ফেরত দেওয়া assignment presentation-এর দিন আবার দেখাতে হবে, না হলে marking হবে না।',
-                '4. Final Exam- এরপর ফেরত দেওয়া এসাইনমেন্ট ফাইনালি জমা নিবে।',
-                '5. Deadline Miss হলে নিজ দায়িত্বে ফ্যাকাল্টি রুমে গিয়ে জমা দিয়ে ফেরত আনবেন।'
-              ] },
-
-            { isRange: true, startDay: '20', startMonth: 'Oct', endDay: '24', endMonth: 'Oct',
-              title: 'Holiday', expiresAt: '2026-10-24T23:59:59+06:00',
-              rangeLabel: 'Holiday Period',
-              timeTag: 'Holiday', timeTagClass: 'holiday',
-              dayTag: '20 – 24 Oct', dayTagClass: 'range',
-              meta: 'Classes & exams resume on 25 October.',
-              items: ['🎉 20 – 24 October 2026', '📚 Prepare for Mid Exams during the break'],
-              note: 'Enjoy the break!' },
-
-            { day: '25', month: 'Oct', title: 'MGT 1101 Mid Exam',
-              expiresAt: '2026-10-25T11:30:00+06:00',
-              isExam: true, syllabusKey: 'MGT 1101',
-              timeTag: '10:00 AM', dayTag: 'Sunday',
-              meta: '🕒 10:00 AM – 11:30 AM',
-              items: ['📅 Sunday, 25 October 2026', '📍 Room: 4705 & 4703'],
-              note: 'Arrive at least 15 minutes early.' },
-            { day: '28', month: 'Oct', title: 'QUA 1101 Mid Exam',
-              expiresAt: '2026-10-28T16:30:00+06:00',
-              isExam: true, syllabusKey: 'QUA 1101',
-              timeTag: '03:00 PM', dayTag: 'Wednesday',
-              meta: '🕒 03:00 PM – 04:30 PM',
-              items: ['📅 Wednesday, 28 October 2026', '📍 Room: 4701'],
-              note: 'Arrive at least 15 minutes early.' },
-            { day: '30', month: 'Oct', title: 'ECO 1101 Mid Exam',
-              expiresAt: '2026-10-30T10:45:00+06:00',
-              isExam: true, syllabusKey: 'ECO 1101',
-              timeTag: '09:15 AM', dayTag: 'Friday',
-              meta: '🕒 09:15 AM – 10:45 AM',
-              items: ['📅 Friday, 30 October 2026', '📍 Room: 4505 & 4504'],
-              note: 'Arrive at least 15 minutes early.' }
+            { 
+                title: 'Classes Start', 
+                day: '02', month: 'Nov', 
+                startDate: '2026-11-02T00:00:00+06:00',
+                tags: ['Class', 'Monday'],
+                expiresAt: '2026-11-02T23:59:59+06:00',
+                items: ['Current running routine will be followed.'],
+                note: 'Welcome back!'
+            },
+            { 
+                title: 'SUPPLE EXAM REGISTRATION LAST DATE', 
+                day: '03', month: 'Nov', 
+                startDate: '2026-11-03T00:00:00+06:00',
+                tags: ['Deadline', 'Tuesday'],
+                expiresAt: '2026-11-03T23:59:59+06:00',
+                color: '#991b1b', // Dark Red
+                items: ['Fee: Tk. 1000/- per course'],
+                note: 'Submit online application.'
+            },
+            { 
+                title: 'Supple MID EXAM', 
+                startDay: '09', startMonth: 'Nov', endDay: '12', endMonth: 'Nov', 
+                startDate: '2026-11-09T00:00:00+06:00',
+                tags: ['Exams', '09-12 Nov'],
+                expiresAt: '2026-11-12T23:59:59+06:00',
+                color: '#a16207', // Dark Yellow
+                items: ['Supplementary Mid-Term Examination'],
+                note: 'Check schedule with faculty.'
+            },
+            { 
+                title: 'New Semester Pre-Registration Spring 2027', 
+                startDay: '22', startMonth: 'Nov', endDay: '29', endMonth: 'Nov', 
+                startDate: '2026-11-22T00:00:00+06:00',
+                tags: ['Notice', '22-29 Nov'],
+                expiresAt: '2026-11-29T23:59:59+06:00',
+                color: '#991b1b', // Dark Red
+                items: ['Pre-Registration for Spring 2027'],
+                note: 'Complete your pre-registration.'
+            },
+            { 
+                title: 'Payment of tuition fees', 
+                startDay: '25', startMonth: 'Nov', endDay: '10', endMonth: 'Dec', 
+                startDate: '2026-11-25T00:00:00+06:00',
+                tags: ['Fees', '25 Nov - 10 Dec'],
+                expiresAt: '2026-12-10T23:59:59+06:00',
+                items: ['Final Installment (without late fee)'],
+                note: 'Pay before the deadline to avoid late fees.'
+            },
+            { 
+                title: 'Payment of tuition fees', 
+                startDay: '11', startMonth: 'Dec', endDay: '15', endMonth: 'Dec', 
+                startDate: '2026-12-11T00:00:00+06:00',
+                tags: ['Fees', '11-15 Dec'],
+                expiresAt: '2026-12-15T23:59:59+06:00',
+                items: ['Final Installment (with late fee Tk. 1,000) / [Make your 0 balance]'],
+                note: 'Late fee applied.'
+            },
+            { 
+                title: 'Last day of classes before Final Examination', 
+                day: '15', month: 'Dec', 
+                startDate: '2026-12-15T00:00:00+06:00',
+                tags: ['Notice', 'Tuesday'],
+                expiresAt: '2026-12-15T23:59:59+06:00',
+                items: ['Last day of classes'],
+                note: 'Prepare for finals.'
+            },
+            { 
+                title: 'Victory Day Holiday', 
+                day: '16', month: 'Dec', 
+                startDate: '2026-12-16T00:00:00+06:00',
+                tags: ['Holiday', 'Wednesday'],
+                expiresAt: '2026-12-16T23:59:59+06:00',
+                color: '#166534', // Dark Green
+                items: ['Victory Day Holiday'],
+                note: 'Enjoy the holiday.'
+            },
+            { 
+                title: 'Final Examination', 
+                startDay: '17', startMonth: 'Dec', endDay: '24', endMonth: 'Dec', 
+                startDate: '2026-12-17T00:00:00+06:00',
+                tags: ['Exams', '17-24 Dec'],
+                expiresAt: '2026-12-24T23:59:59+06:00',
+                color: '#991b1b', // Dark Red
+                items: ['Final Examination for all courses'],
+                note: 'Good luck!'
+            }
         ];
 
         const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
-        const EXAM_MODE_START = Date.parse('2026-10-19T17:45:00+06:00');
-        const EXAM_MODE_END   = Date.parse('2026-10-30T11:00:00+06:00');
-        const CLASS_HIDE_START = Date.parse('2026-10-19T17:45:00+06:00');
-        const CLASS_HIDE_END   = Date.parse('2026-10-30T17:45:00+06:00');
-
         const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
 
@@ -777,6 +818,11 @@
         const pad = n => String(n).padStart(2, '0');
         const to12 = (h, m) => (h % 12 || 12) + ':' + pad(m);
         const to12p = (h, m) => pad(h % 12 || 12) + ':' + pad(m);
+
+        function getDhakaDateStr(offset = 0) {
+            const d = new Date(Date.now() + 6 * 3600000 + offset * 86400000);
+            return d.toISOString().split('T')[0];
+        }
 
         function rotate(els, ms) {
             if (!els || !els.length) return null;
@@ -888,7 +934,14 @@
             for (let off = 0; off <= 7; off++) {
                 const day = (t.day + off) % 7;
                 const c = CLASSES.find(c => c.day === day && (off > 0 || c.s > t.min));
-                if (c) return { kind: off === 0 ? 'today' : 'next', c };
+                if (c) {
+                    // Check if this class falls on a skip date
+                    const dateStr = getDhakaDateStr(off);
+                    if (SKIP_DATES.includes(dateStr)) {
+                        continue; // Skip this class
+                    }
+                    return { kind: off === 0 ? 'today' : 'next', c };
+                }
             }
             return null;
         }
@@ -912,65 +965,6 @@
                 slides: ['📅 Next: ' + when, `<strong>${c.course}</strong> at ${to12(c.sh, c.sm)}`, 'Room ' + c.room],
                 label: st.kind === 'today' ? 'TODAY' : 'NEXT', running: false, detail
             };
-        }
-
-        /* ═══════════════ EXAM MODE AI ═══════════════ */
-
-        function getExamStatus(now) {
-            let running = null, next = null;
-            for (const ex of EXAM_SCHEDULE) {
-                const s = Date.parse(ex.start), e = Date.parse(ex.end);
-                if (now >= s && now <= e) { running = ex; break; }
-                if (now < s && !next) next = ex;
-            }
-
-            if (running) {
-                const endTime = running.time.split('–')[1].trim();
-                return {
-                    slides: [
-                        `▶️ <strong>${running.course}</strong> exam is running`,
-                        `🕒 Ends at ${endTime} · 📍 Room ${running.room}`,
-                        `💡 Stay calm & focused!`,
-                        `🎫 Admit Card দরকার হলে হাতে রাখুন`
-                    ],
-                    label: 'EXAM NOW', running: true,
-                    detail: `${running.course} · Room ${running.room}`
-                };
-            }
-
-            if (next) {
-                const daysLeft = Math.max(0, Math.ceil((Date.parse(next.start) - now) / 86400000));
-                const daysStr = daysLeft === 0 ? 'today' : daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
-                return {
-                    slides: [
-                        `📝 Next exam: <strong>${next.course}</strong>`,
-                        `📅 ${next.day} ${next.month} (${next.dow}) · 🕒 ${next.time}`,
-                        `📍 Room ${next.room} · ${daysStr}`,
-                        `💡 Try to arrive 30 minutes earlier`,
-                        `🎫 Don't forget your Admit Card`
-                    ],
-                    label: 'EXAM', running: false,
-                    detail: `${next.course} · ${next.day} ${next.month} · ${next.time} · Room ${next.room}`
-                };
-            }
-
-            return {
-                slides: ['📚 Exams in progress', '💡 Try to arrive 30 minutes earlier', '🎫 Don\'t forget your Admit Card'],
-                label: 'EXAM', running: false, detail: 'Exam period'
-            };
-        }
-
-        function getStatus(t) {
-            const now = Date.now();
-            if (now >= EXAM_MODE_END) {
-                return {
-                    slides: ['📢 Check Messenger For Class Start Updates'],
-                    label: 'NOTICE', running: false,
-                    detail: 'Class schedule updates will be posted on Messenger.'
-                };
-            }
-            if (now >= EXAM_MODE_START) return getExamStatus(now);
-            return getClassStatus(t);
         }
 
         let slideKey = '', slideTimer = null;
@@ -1052,81 +1046,59 @@
             });
         })();
 
-        function updateClassVisibility() {
-            const block = $('classRoutineBlock');
-            if (!block) return;
-            const now = Date.now();
-            const hide = now >= CLASS_HIDE_START && now < CLASS_HIDE_END;
-            block.classList.toggle('class-hidden', hide);
-        }
-
         /* ═══════════════ PINNED EVENTS ═══════════════ */
 
         function openEventDetails(ev) {
-            const badges = ev.badges || (ev.badge ? [ev.badge] : []);
-            $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title + ' ' +
-                badges.map(b => `<span class="event-tag time">${b}</span>`).join(' ');
+            $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title;
 
-            const date = ev.isRange ? `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}` : `${ev.day} ${ev.month}`;
-            let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${date}</div>`;
-            if (ev.meta) html += `<div class="event-meta">${ev.meta}</div>`;
-            if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
-
-            if (ev.isExam && ev.syllabusKey && SYLLABUS[ev.syllabusKey]) {
-                const syl = SYLLABUS[ev.syllabusKey];
-                html += `
-                    <div class="syllabus-box">
-                        <div class="syllabus-title"><i class="fas fa-book-open"></i> Syllabus</div>
-                        <ol class="syllabus-list">${syl.chapters.map(c => `<li>${c}</li>`).join('')}</ol>
-                        <div class="syllabus-note"><i class="fas fa-info-circle"></i> ${syl.note}</div>
-                    </div>`;
+            let dateStr = '';
+            if (ev.startDay && ev.endDay) {
+                dateStr = `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}`;
+            } else {
+                dateStr = `${ev.day} ${ev.month}`;
             }
 
+            let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${dateStr}</div>`;
+            
+            if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
             if (ev.note) html += `<div class="event-note">${ev.note}</div>`;
+            
             $('event-modal-body').innerHTML = html;
             openModal();
         }
 
         function buildBlock(ev) {
             const block = document.createElement('div');
-            block.className = 'event-block' + (ev.isRange ? ' range-event' : '');
-            const btnLabel = ev.isExam ? 'See Syllabus ›' : 'See Detail';
-
-            const timeTagCls = ev.timeTagClass || 'time';
-            const dayTagCls = ev.dayTagClass || 'day';
-            const tagsHtml = (ev.timeTag || ev.dayTag)
-                ? `<div class="event-tags">
-                       ${ev.timeTag ? `<span class="event-tag ${timeTagCls}">${ev.timeTag}</span>` : ''}
-                       ${ev.dayTag ? `<span class="event-tag ${dayTagCls}">${ev.dayTag}</span>` : ''}
-                   </div>`
+            block.className = 'event-block';
+            
+            // Dynamic Date Logic: If event has started, show end date. Otherwise show start date.
+            const now = Date.now();
+            const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
+            
+            let displayDay = ev.day;
+            let displayMonth = ev.month;
+            
+            if (ev.startDay && ev.endDay) {
+                displayDay = isStarted ? ev.endDay : ev.startDay;
+                displayMonth = isStarted ? ev.endMonth : ev.startMonth;
+            }
+            
+            const tagsHtml = ev.tags 
+                ? `<div class="event-tags">${ev.tags.map((t, i) => `<span class="event-tag ${i === 0 ? 'time' : 'day'}">${t}</span>`).join('')}</div>`
                 : '';
 
-            if (ev.isRange) {
-                block.innerHTML = `
-                    <div class="range-content">
-                        <div class="range-dates">
-                            <div class="date-pill"><span class="day">${ev.startDay}</span><span class="month">${ev.startMonth}</span></div>
-                            <div class="range-connector"></div>
-                            <div class="date-pill end"><span class="day">${ev.endDay}</span><span class="month">${ev.endMonth}</span></div>
-                        </div>
-                        <div class="range-info">
-                            <div class="range-title">${ev.title}</div>
-                            ${tagsHtml}
-                            <div class="range-label">${ev.rangeLabel}: ${ev.startDay} – ${ev.endDay} ${ev.endMonth}</div>
-                        </div>
-                        <button class="event-detail-btn" type="button">${btnLabel}</button>
-                    </div>`;
-            } else {
-                block.innerHTML = `
-                    <div class="event-row">
-                        <div class="event-date"><span class="day">${ev.day}</span><span class="month">${ev.month}</span></div>
-                        <div class="event-body">
-                            <div class="event-title">${ev.title}</div>
-                            ${tagsHtml}
-                        </div>
-                        <button class="event-detail-btn" type="button">${btnLabel}</button>
-                    </div>`;
-            }
+            const bgStyle = ev.color ? `style="background: ${ev.color}"` : '';
+
+            block.innerHTML = `
+                <div class="event-row">
+                    <div class="event-date" ${bgStyle}><span class="day">${displayDay}</span><span class="month">${displayMonth}</span></div>
+                    <div class="event-body">
+                        <div class="event-title">${ev.title}</div>
+                        ${tagsHtml}
+                    </div>
+                    <button class="event-detail-btn" type="button">See Detail</button>
+                </div>`;
+                
             block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
             return block;
         }
@@ -1154,13 +1126,12 @@
         function refresh() {
             const t = dhakaNow();
             $('clockDisplay').textContent = to12(t.h, t.m) + (t.h >= 12 ? ' PM' : ' AM');
-            const s = getStatus(t);
+            const s = getClassStatus(t);
             showSlides(s.slides);
             $('barLabel').textContent = s.label;
             $('barDot').className = 'status-dot' + (s.running ? ' running' : '');
             $('barDetail').innerHTML = s.detail;
             renderEvents();
-            updateClassVisibility();
         }
 
         function loop() {
