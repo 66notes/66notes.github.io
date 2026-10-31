@@ -11,12 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
     <noscript>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     </noscript>
 
     <style>
@@ -24,302 +20,147 @@
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
             --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
             --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
-            --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
-            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+            --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
             --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
             --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; }
-        .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-size: 24px; line-height: 1; }
-
-        .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-        .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
-        .top-app-bar__title span { color: var(--accent); }
-        
-        /* Updated Notices Button */
-        .notices-btn { 
-            position: relative;
-            display: inline-flex; 
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            -webkit-font-smoothing: antialiased; 
+            min-height: 100vh; 
+            min-height: 100dvh;
+            display: flex; 
+            flex-direction: column; 
             align-items: center; 
-            gap: 5px; 
-            padding: 7px 15px; 
-            border-radius: 30px; 
-            background: #1e40af; /* Solid dark blue */
-            color: #ffffff; 
-            font-size: 0.7rem; 
-            font-weight: 600; 
-            text-decoration: none; 
-            border: none;
-            transition: background var(--transition), transform 0.15s; 
-            min-height: 34px; 
-            white-space: nowrap; 
-            cursor: pointer; 
-            box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3);
-        }
-        .notices-btn:active { transform: scale(0.96); background: #1d4ed8; }
-        .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
-        
-        .notification-dot {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 9px;
-            height: 9px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid var(--surface);
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            justify-content: center; 
+            line-height: 1.5;
+            padding: 20px;
         }
 
-        .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-        .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: 0.85rem; cursor: pointer; flex-shrink: 0; transition: background var(--transition), transform 0.15s, color var(--transition); }
+        /* Top Bar for Theme Toggle */
+        .top-app-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; }
+        .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+        .top-app-bar__title span { color: var(--accent); }
+        .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--accent); font-size: 0.85rem; cursor: pointer; transition: background var(--transition), transform 0.15s, color var(--transition); box-shadow: var(--shadow-sm); }
         .theme-toggle-btn:active { transform: scale(0.92); }
-        .theme-toggle-btn i { pointer-events: none; }
 
-        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 100px; }
-        .page { animation: fade-in 0.3s ease; }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .page h2 { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.15rem; }
-        .page .subtitle { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.9rem; }
-
-        .announcement-bar { display: flex; align-items: center; gap: 0.75rem; background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 0.5rem 1rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
-        .announcement-bar.hidden { display: none; }
-        .announcement-icon .material-symbols-rounded { color: #ea580c; font-size: 1.5rem; width: 24px; height: 24px; display: inline-block; }
-        .announcement-text { flex: 1; min-height: 2rem; display: flex; align-items: center; position: relative; }
-        .announcement-line { position: absolute; width: 100%; opacity: 0; transform: translateX(10px); transition: opacity 0.5s ease, transform 0.5s ease; font-weight: 600; font-size: 0.85rem; color: #7c2d12; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .announcement-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
-
-        .glance { background: var(--surface); border-radius: var(--radius-xl); padding: 1.2rem 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; margin-bottom: 1rem; }
-        .section-title { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
-        .live-indicator { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); animation: pulse 1.8s infinite; flex-shrink: 0; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
-        .reminder-main { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
-        .message-box { min-height: 48px; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.95rem; color: #2d3748; position: relative; width: 100%; }
-        .message-line { position: absolute; width: 100%; text-align: center; opacity: 0; transform: translateX(12px); transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); pointer-events: none; padding: 0 0.2rem; }
-        .message-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
-        .message-line strong { font-weight: 700; color: var(--navy); }
-        .clock-display { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; font-variant-numeric: tabular-nums; margin-top: 0.1rem; }
-        .next-class-bar { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; background: #f8fafc; border-radius: 12px; padding: 0.4rem 0.7rem; border: 1px solid var(--border); font-weight: 500; justify-content: center; flex-wrap: wrap; min-height: 38px; margin-top: 0.4rem; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
-        .status-dot.running { background: var(--green); }
-        .next-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: #4b5563; font-size: 0.6rem; }
-
-        .events-card { border-radius: 16px; background: #fff; border: 1px solid #eef2f6; padding: 16px 14px 12px; margin-bottom: 12px; box-shadow: var(--shadow); }
-        .card-header { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 11px; margin-bottom: 12px; border-bottom: 1px solid #eef2f6; }
-        .card-header i { color: #2563eb; font-size: 0.82rem; }
-        .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
-        .events-list { display: flex; flex-direction: column; gap: 8px; }
-        .events-empty { text-align: center; padding: 1.2rem 0.5rem; font-size: 0.75rem; color: #9ca3af; font-weight: 500; }
-        
-        .event-block { background: #fafbfc; border: 1px solid #eef2f6; border-radius: 12px; overflow: hidden; padding: 12px; }
-        .event-row { display: flex; gap: 10px; align-items: center; }
-        .event-date { flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .event-date .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
-        .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-        .event-body { flex: 1; min-width: 0; }
-        .event-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; line-height: 1.3; margin-bottom: 5px; }
-        .event-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-        .event-tag { font-size: 0.5rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.04em; white-space: nowrap; line-height: 1.4; }
-        .event-tag.time { background: #dbeafe; color: #1e40af; }
-        .event-tag.day { background: #ede9fe; color: #5b21b6; }
-        .event-tag.holiday { background: #fee2e2; color: #991b1b; }
-        .event-tag.range { background: #fef3c7; color: #92400e; }
-        .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
-        .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
-        
-        .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
-        .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
-        .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
-
-        .wifi-home-card {
+        /* Login Card */
+        .login-container {
+            width: 100%;
+            max-width: 420px;
             background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 2rem;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 0.7rem 0.9rem;
-            margin-top: 0.9rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-            color: var(--text);
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.15s, background var(--transition), border-color var(--transition);
+            box-shadow: var(--shadow-lg);
+            animation: fade-in 0.4s ease;
         }
-        .wifi-home-card::before,
-        .wifi-home-card::after { display: none; }
-        .wifi-home-card:active { transform: scale(0.99); background: var(--accent-light); }
-        .wifi-home-icon {
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: var(--accent-light);
-            color: var(--accent);
-            flex-shrink: 0;
-            margin: 0;
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .wifi-home-title {
-            font-weight: 600;
-            font-size: 0.82rem;
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
             color: var(--navy);
-            margin: 0;
-            flex: 1;
-            min-width: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.5px;
         }
-        .wifi-home-desc { display: none; }
-        .wifi-home-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.28rem 0.75rem;
-            border-radius: 30px;
-            background: var(--accent-light);
-            color: var(--accent);
+
+        .login-header h1 span { color: var(--accent); }
+
+        .login-header p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 0.66rem;
-            border: 1px solid #dbeafe;
-            flex-shrink: 0;
-            white-space: nowrap;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 1rem; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 640px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; animation: modal-in 0.25s ease; }
-        @keyframes modal-in { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
-        .modal-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-        .modal-header h2 i { color: var(--accent); }
-        .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; flex-shrink: 0; }
-        .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); }
-        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; }
-        .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; min-height: 38px; background: #f3f4f6; color: #374151; }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700; /* Makes the numbers (66, 4, DEMO) bold */
+            color: var(--text);
+            background: var(--bg);
+            border: 1.5px solid var(--border-strong);
+            border-radius: var(--radius);
+            outline: none;
+            transition: border-color var(--transition), background var(--transition);
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
 
-        .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
-        .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
-        .routine-section .section-label::after { content: ''; position: absolute; bottom: -1.5px; left: 50%; transform: translateX(-50%); width: 44px; height: 3px; background: var(--accent); border-radius: 2px; }
-        .routine-section .section-label i { color: var(--accent); margin-right: 0.35rem; }
-        .routine-section .routine-table-wrap + .section-label,
-        .routine-section .codes-section + .section-label { margin-top: 1.1rem; }
-
-        .routine-table-wrap { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); background: #fafbfc; margin-bottom: 1rem; overflow: hidden; }
-        .routine-table { width: 100%; border-collapse: collapse; font-size: 0.66rem; table-layout: fixed; }
-        .routine-table th { text-align: left; padding: 8px 6px; font-weight: 700; font-size: 0.56rem; color: var(--navy); border-bottom: 2px solid #dde1e8; background: #f5f6f9; text-transform: uppercase; letter-spacing: 0.02em; vertical-align: top; }
-        .routine-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: top; background: #fff; color: #1f2a3e; word-break: break-word; line-height: 1.35; font-weight: 500; }
-        .routine-table tbody tr:last-child td { border-bottom: none; }
-        .routine-table .dow { font-size: 0.5rem; color: #9ca3af; font-weight: 600; display: block; margin-top: 1px; }
-
-        .codes-section { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1.5px solid #e9edf2; }
-        .codes-label { font-weight: 700; font-size: 0.78rem; color: var(--navy); text-align: center; margin-bottom: 0.6rem; }
-        .codes-label i { color: var(--accent); margin-right: 0.35rem; }
-        .codes-grid { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
-        .code-card { display: flex; align-items: center; gap: 0.5rem; background: #fafbfc; border-radius: var(--radius-sm); padding: 0.4rem 0.6rem; border: 1px solid var(--border); min-height: 42px; flex-wrap: wrap; }
-        .code-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .eco-dot { background: #8b5cf6; }
-        .mgt-dot { background: #f59e0b; }
-        .qua-dot { background: #06b6d4; }
-        .code-subject { font-weight: 700; font-size: 0.7rem; white-space: nowrap; min-width: 58px; color: var(--navy); flex-shrink: 0; }
-        .code-value-box { flex: 1; background: #f0f3f8; border-radius: 6px; padding: 0.1rem 0.6rem; border: 1px solid #e2e6ed; text-align: center; min-width: 0; overflow: hidden; }
-        .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
-        .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; font-family: 'Poppins', sans-serif; }
-        .copy-btn.copied-flash { background: #d1fae5; color: #065f46; }
-        .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
-
-        .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
-        .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-        .drive-icon { font-size: 2.5rem; color: var(--accent); display: flex; align-items: center; justify-content: center; height: 52px; }
-        .drive-icon img { width: 52px; height: 52px; object-fit: contain; display: block; }
-        .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
-        .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
-        .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-        .btn--filled { background: var(--navy); color: #fff; }
-        .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
-
-        .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
-        .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; text-decoration: none; box-shadow: var(--shadow-sm); }
-        .c-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; background: transparent; overflow: hidden; }
-        .c-icon img { width: 34px; height: 34px; object-fit: contain; display: block; }
-        .c-title { font-weight: 600; font-size: 0.66rem; color: var(--text); }
-
-        .faculty-list { display: flex; flex-direction: column; gap: 0.7rem; }
-        .faculty-item { background: #f9fafb; border-radius: 12px; border: 1px solid var(--border); padding: 0.75rem 0.8rem; }
-        .faculty-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem 0.4rem; margin-bottom: 0.15rem; }
-        .faculty-name { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.3; }
-        .course-code { font-weight: 600; font-size: 0.7rem; color: var(--accent); background: var(--accent-light); padding: 0.05rem 0.4rem; border-radius: 4px; border: 1px solid #dbeafe; margin-left: 0.3rem; display: inline-block; }
-        .faculty-subject { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; margin: 2px 0 4px; line-height: 1.3; }
-        .faculty-number-link { font-size: 0.78rem; font-weight: 600; color: #1e40af; background: #eff6ff; padding: 0.15rem 0.65rem; border-radius: 8px; border: 1px solid #dbeafe; white-space: nowrap; text-decoration: none; display: inline-block; }
-        .faculty-number-link:active { background: #dbeafe; }
-        .faculty-actions { margin-top: 0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; min-height: 32px; text-decoration: none; min-width: 64px; }
-        .btn-fac:active { transform: scale(0.96); opacity: 0.92; }
-        .btn-call { background: var(--navy); color: #fff; }
-        .btn-whatsapp { background: #25D366; color: #fff; }
-        .btn-email { background: var(--accent); color: #fff; }
-        .btn-fac i { font-size: 0.78rem; }
-        .faculty-details { font-size: 0.65rem; color: #4b5563; border-top: 1px dashed #e9edf2; padding-top: 0.35rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.2rem; }
-        .detail-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0.5rem; align-items: baseline; }
-        .faculty-details .label { font-weight: 600; color: var(--text-secondary); }
-        .faculty-details .value { color: var(--text); font-weight: 400; }
-        .counsel-box { background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 0.5rem 0.7rem; margin-top: 0.4rem; font-size: 0.62rem; color: #1e3a8a; }
-        .counsel-title { font-weight: 700; font-size: 0.65rem; color: #1e40af; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.3rem; }
-        .counsel-title i { font-size: 0.7rem; }
-        .counsel-line { display: flex; gap: 0.3rem; padding: 0.1rem 0; line-height: 1.4; }
-        .counsel-line strong { color: #1e3a8a; min-width: 68px; font-weight: 600; }
-        .faculty-general-note { margin-top: 0.9rem; background: #fef3c7; border: 1px solid #fde68a; border-radius: 12px; padding: 0.75rem 0.9rem; font-size: 0.68rem; color: #78350f; line-height: 1.55; display: flex; gap: 0.5rem; align-items: flex-start; }
-        .faculty-general-note i { color: #d97706; font-size: 0.9rem; margin-top: 0.1rem; flex-shrink: 0; }
-        .faculty-general-note strong { color: #b45309; }
-
-        .cta-footer { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; box-shadow: var(--shadow); margin-top: 1rem; }
-        .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
-        .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
-        .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
-        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; min-height: 42px; }
-
-        .bottom-nav {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 30;
-            display: flex;
-            height: 72px;
-            min-height: 72px;
-            max-height: 72px;
-            flex-shrink: 0;
-            padding-bottom: env(safe-area-inset-bottom, 0);
+        .form-control:focus {
+            border-color: var(--accent);
             background: var(--surface);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-            transform: translate3d(0, 0, 0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            will-change: transform;
         }
-        .bottom-nav__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: none; background: transparent; cursor: pointer; padding: 6px 0 10px; color: var(--text-secondary); font-family: 'Poppins', sans-serif; transition: color var(--transition); flex-shrink: 0; }
-        .bottom-nav__item.is-active { color: var(--accent); }
-        .bottom-nav__icon { width: 52px; height: 30px; border-radius: 28px; display: flex; align-items: center; justify-content: center; transition: background-color var(--transition); flex-shrink: 0; }
-        .bottom-nav__item.is-active .bottom-nav__icon { background: var(--accent-light); }
-        .bottom-nav__icon svg { width: 22px; height: 22px; display: block; fill: currentColor; flex-shrink: 0; }
-        .bottom-nav__item .icon-filled { display: none; }
-        .bottom-nav__item.is-active .icon-outline { display: none; }
-        .bottom-nav__item.is-active .icon-filled { display: block; }
-        .bottom-nav__label { font-size: 10px; font-weight: 500; line-height: 1; }
 
-        /* ══════════ DARK MODE — NEUTRAL GREY ══════════ */
+        /* Custom Select Arrow */
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '\f107'; /* FontAwesome angle-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.9rem;
+            margin-top: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--navy);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background var(--transition), transform 0.15s;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+            background: var(--accent);
+        }
+
+        /* Dark Mode */
         :root[data-theme="dark"] {
             --bg: #0f0f10; --surface: #1a1a1c; --border: #2a2a2d; --border-strong: #3a3a3e;
             --text: #eaeaea; --text-secondary: #a0a0a3; --text-muted: #6e6e72;
@@ -328,819 +169,133 @@
             --shadow: 0 6px 20px rgba(0,0,0,0.5);
             --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
         }
+        
         :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
-        :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .notices-btn { background: #1e40af; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
-        :root[data-theme="dark"] .notices-btn:active { background: #1d4ed8; }
-        :root[data-theme="dark"] .notification-dot { border-color: var(--surface); }
-        :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
-        :root[data-theme="dark"] .announcement-bar { background: #2a2419; border-color: #4a3a1a; }
-        :root[data-theme="dark"] .announcement-icon .material-symbols-rounded { color: #fb923c; }
-        :root[data-theme="dark"] .announcement-line { color: #fcd34d; }
-        :root[data-theme="dark"] .message-box { color: #c8c8cb; }
-        :root[data-theme="dark"] .message-line strong { color: #a3c4ff; }
-        :root[data-theme="dark"] .next-class-bar { background: #161618; border-color: var(--border); }
-        :root[data-theme="dark"] .next-label { color: #9a9a9e; }
-        :root[data-theme="dark"] .events-card { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .card-header { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .card-header i { color: #7bb0ff; }
-        :root[data-theme="dark"] .card-header span { color: #9a9a9e; }
-        :root[data-theme="dark"] .events-empty { color: #6e6e72; }
-        :root[data-theme="dark"] .event-block { background: #161618; border-color: var(--border); }
-        :root[data-theme="dark"] .event-title { color: #eaeaea; }
-        :root[data-theme="dark"] .range-title { color: #eaeaea; }
-        :root[data-theme="dark"] .event-tag.time { background: #2a3a5c; color: #c8d8f0; }
-        :root[data-theme="dark"] .event-tag.day { background: #3a2a5c; color: #ddd0f5; }
-        :root[data-theme="dark"] .event-tag.holiday { background: #5c1f1f; color: #f5c8c8; }
-        :root[data-theme="dark"] .event-tag.range { background: #4a3a1a; color: #f0d8a0; }
-        :root[data-theme="dark"] .event-detail-btn { background: #242428; border-color: #333338; color: #a3c4ff; }
-        :root[data-theme="dark"] .event-detail-btn:active { background: #2a2a2f; }
-        :root[data-theme="dark"] .event-meta { color: #9a9a9e; }
-        :root[data-theme="dark"] .event-items { color: #c8c8cb; }
-        :root[data-theme="dark"] .event-note { background: #3a2e14; color: #f0d89a; }
-        :root[data-theme="dark"] .range-label { color: #9a9a9e; }
-        :root[data-theme="dark"] .routine-section { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .routine-section .section-label { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .routine-table-wrap { background: #161618; border-color: var(--border); }
-        :root[data-theme="dark"] .routine-table th { background: #1e1e22; color: #c8d8f0; border-bottom-color: var(--border-strong); }
-        :root[data-theme="dark"] .routine-table td { background: var(--surface); color: #d4d4d7; }
-        :root[data-theme="dark"] .routine-table .dow { color: #6e6e72; }
-        :root[data-theme="dark"] .code-card { background: #161618; border-color: var(--border); }
-        :root[data-theme="dark"] .code-subject { color: #c8d8f0; }
-        :root[data-theme="dark"] .code-value-box { background: #1e1e22; border-color: #333338; }
-        :root[data-theme="dark"] .code-value { color: #c8d8f0; }
-        :root[data-theme="dark"] .copy-btn { background: #2a2a2f; color: #c8c8cb; }
-        :root[data-theme="dark"] .copy-btn.copied-flash { background: #143d2e; color: #6ee7b7; }
-        :root[data-theme="dark"] .drive-card { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .community-card { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .cta-footer { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .cta-icon { color: #7bb0ff; }
-        :root[data-theme="dark"] .cta-title { color: #c8d8f0; }
-        :root[data-theme="dark"] .page h2 { color: #c8d8f0; }
-        :root[data-theme="dark"] .faculty-item { background: #161618; border-color: var(--border); }
-        :root[data-theme="dark"] .faculty-name { color: #c8d8f0; }
-        :root[data-theme="dark"] .faculty-subject { color: #a0a0a3; }
-        :root[data-theme="dark"] .course-code { background: #242428; border-color: #333338; color: #a3c4ff; }
-        :root[data-theme="dark"] .faculty-number-link { background: #242428; border-color: #333338; color: #a3c4ff; }
-        :root[data-theme="dark"] .faculty-number-link:active { background: #2a2a2f; }
-        :root[data-theme="dark"] .faculty-details { color: #a0a0a3; border-top-color: var(--border); }
-        :root[data-theme="dark"] .counsel-box { background: #1e1e22; border-color: #333338; color: #c8d8f0; }
-        :root[data-theme="dark"] .counsel-title { color: #a3c4ff; }
-        :root[data-theme="dark"] .counsel-line strong { color: #c8d8f0; }
-        :root[data-theme="dark"] .faculty-general-note { background: #2a2419; border-color: #4a3a1a; color: #f0d89a; }
-        :root[data-theme="dark"] .faculty-general-note i { color: #fbbf24; }
-        :root[data-theme="dark"] .faculty-general-note strong { color: #fbbf24; }
-        :root[data-theme="dark"] .modal-box { background: var(--surface); }
-        :root[data-theme="dark"] .modal-header { border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .modal-header h2 { color: #c8d8f0; }
-        :root[data-theme="dark"] .modal-close-btn { background: #2a2a2f; color: #c8c8cb; }
-        :root[data-theme="dark"] .modal-footer { border-top-color: var(--border); }
-        :root[data-theme="dark"] .btn-modal { background: #2a2a2f; color: #c8c8cb; }
-        :root[data-theme="dark"] .btn--filled,
-        :root[data-theme="dark"] .cta-btn,
-        :root[data-theme="dark"] .join-btn,
-        :root[data-theme="dark"] .btn-call { background: #2563eb; color: #fff; }
-        :root[data-theme="dark"] .bottom-nav { background: var(--surface); border-top-color: var(--border); }
-        :root[data-theme="dark"] .bottom-nav__item { color: #909095; }
-        :root[data-theme="dark"] .bottom-nav__item.is-active { color: #7bb0ff; }
-        :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #242428; }
-        :root[data-theme="dark"] .wifi-home-card:active { background: #242428; }
-        :root[data-theme="dark"] .wifi-home-icon { background: #242428; color: #7bb0ff; }
-        :root[data-theme="dark"] .wifi-home-title { color: #c8d8f0; }
-        :root[data-theme="dark"] .wifi-home-cta { background: #242428; border-color: #333338; color: #a3c4ff; }
-
-        @media (max-width: 480px) {
-            .content { padding: 10px 10px 90px; }
-            .top-app-bar__title { font-size: 1rem; }
-            .notices-btn { font-size: 0.6rem; padding: 5px 10px; min-height: 28px; }
-            .app-bar-actions { gap: 6px; }
-            .theme-toggle-btn { width: 30px; height: 30px; font-size: 0.75rem; }
-            .glance { padding: 1rem 0.7rem; }
-            .message-box { font-size: 0.85rem; min-height: 44px; }
-            .routine-table { font-size: 0.58rem; }
-            .routine-table th { font-size: 0.5rem; padding: 6px 4px; }
-            .routine-table td { padding: 6px 4px; }
-            .code-subject { font-size: 0.6rem; min-width: 48px; }
-            .code-value { font-size: 0.6rem; }
-            .copy-btn, .join-btn { font-size: 0.5rem; min-height: 24px; padding: 0.1rem 0.5rem; }
-            .faculty-name { font-size: 0.8rem; }
-            .faculty-subject { font-size: 0.66rem; }
-            .faculty-number-link { font-size: 0.7rem; }
-            .btn-fac { font-size: 0.62rem; min-height: 30px; min-width: 56px; padding: 0.18rem 0.7rem; }
-            .btn--large { font-size: 13px; height: 42px; }
-            .bottom-nav { height: 64px; min-height: 64px; max-height: 64px; }
-            .bottom-nav__label { font-size: 9px; }
-            .bottom-nav__icon { width: 46px; height: 26px; }
-            .bottom-nav__icon svg { width: 20px; height: 20px; }
-            .announcement-line { font-size: 0.7rem; white-space: normal; }
-            .modal-body { font-size: 0.75rem; padding: 1rem; }
-            .modal-header h2 { font-size: 0.95rem; }
-            .events-card { padding: 14px 12px 10px; }
-            .event-row { padding: 10px; gap: 8px; }
-            .event-date { width: 42px; height: 42px; }
-            .event-date .day { font-size: 0.9rem; }
-            .event-title { font-size: 0.72rem; }
-            .event-tag { font-size: 0.46rem; padding: 2px 6px; }
-            .event-detail-btn { font-size: 0.58rem; padding: 4px 9px; }
-            .wifi-home-card { padding: 0.6rem 0.75rem; gap: 0.5rem; }
-            .wifi-home-title { font-size: 0.76rem; }
-            .wifi-home-cta { font-size: 0.6rem; padding: 0.22rem 0.6rem; }
-            .drive-icon img { width: 46px; height: 46px; }
-            .drive-icon { height: 46px; }
-            .c-icon img { width: 30px; height: 30px; }
-            .c-icon { width: 34px; height: 34px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-        }
+        :root[data-theme="dark"] .login-container { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .login-header h1 { color: #eaeaea; }
+        :root[data-theme="dark"] .form-control { background: #161618; border-color: #333338; color: #eaeaea; }
+        :root[data-theme="dark"] .form-control:focus { border-color: #7bb0ff; }
+        :root[data-theme="dark"] .btn-submit { background: #2563eb; color: #fff; }
+        :root[data-theme="dark"] .btn-submit:active { background: #1d4ed8; }
+        :root[data-theme="dark"] .theme-toggle-btn { background: #1a1a1c; border-color: #2a2a2d; color: #fbbf24; }
     </style>
+    <!-- Font Awesome for the dropdown arrow -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
-    <nav class="bottom-nav" aria-label="Main navigation">
-        <button class="bottom-nav__item is-active" data-target="page-home" aria-label="Home" aria-current="page">
-            <span class="bottom-nav__icon">
-                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
-                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            </span>
-            <span class="bottom-nav__label">Home</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-pdfs" aria-label="PDFs">
-            <span class="bottom-nav__icon">
-                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
-                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
-            </span>
-            <span class="bottom-nav__label">PDFs</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-routine" aria-label="Routine">
-            <span class="bottom-nav__icon">
-                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
-                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-            </span>
-            <span class="bottom-nav__label">Routine</span>
-        </button>
-        <button class="bottom-nav__item" data-target="page-faculty" aria-label="Faculty">
-            <span class="bottom-nav__icon">
-                <svg class="icon-outline" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM12 6.75c-1.24 0-2.25 1.01-2.25 2.25s1.01 2.25 2.25 2.25 2.25-1.01 2.25-2.25S13.24 6.75 12 6.75zM17 17v-1.5c0-1.67-3.33-2.5-5-2.5s-5 .83-5 2.5V17h10z"/></svg>
-                <svg class="icon-filled" viewBox="0 0 24 24"><path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/></svg>
-            </span>
-            <span class="bottom-nav__label">Faculty</span>
-        </button>
-    </nav>
-
     <header class="top-app-bar">
-        <h1 class="top-app-bar__title" id="appBarTitle">66<span>Notes</span></h1>
-        <div class="app-bar-actions">
-            <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-                <i class="fas fa-moon"></i>
-            </button>
-            <a href="https://bubt.edu.bd/notice" target="_blank" class="notices-btn" rel="noopener">
-                <span class="material-symbols-rounded">description</span> Notices
-                <span class="notification-dot"></span>
-            </a>
-        </div>
+        <h1 class="top-app-bar__title">66<span>Notes</span></h1>
+        <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
     </header>
 
-    <main class="content">
-
-        <!-- HOME -->
-        <section class="page" id="page-home">
-            <div class="announcement-bar hidden" id="announcementBar">
-                <span class="announcement-icon"><span class="material-symbols-rounded">campaign</span></span>
-                <div class="announcement-text" id="announcementText"></div>
-            </div>
-
-            <div class="glance">
-                <div class="section-title"><span class="live-indicator"></span> AI Reminder</div>
-                <div class="reminder-main">
-                    <div class="message-box" id="messageBox"></div>
-                    <div class="clock-display" id="clockDisplay">Loading...</div>
-                </div>
-                <div class="next-class-bar">
-                    <span class="status-dot" id="barDot"></span>
-                    <span class="next-label" id="barLabel">...</span>
-                    <span id="barDetail">...</span>
-                </div>
-            </div>
-
-            <div class="events-card">
-                <div class="card-header">
-                    <i class="fas fa-thumbtack"></i>
-                    <span>Pinned Events</span>
-                </div>
-                <div class="events-list" id="eventsList"></div>
-            </div>
-
-            <a href="wifi.html" class="wifi-home-card">
-                <span class="wifi-home-icon"><i class="fas fa-wifi"></i></span>
-                <span class="wifi-home-title">WiFi Pass Collection</span>
-                <span class="wifi-home-cta"><i class="fas fa-arrow-right"></i> Open</span>
-            </a>
-
-            <div class="cta-footer">
-                <span class="cta-icon material-symbols-rounded">code</span>
-                <div class="cta-title">For PeraLess CR Management You Can Make a Website for Your Section/Intake Too.</div>
-                <div class="cta-desc">You can customize it yourself.</div>
-                <a href="https://www.facebook.com/profile.php?id=61594792364808" target="_blank" class="cta-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Contact Now</a>
-            </div>
-        </section>
-
-        <!-- PDFs -->
-        <section class="page" id="page-pdfs" hidden>
-            <h2>All Resources</h2>
-            <p class="subtitle">Study materials and class communities</p>
-            <div class="drive-grid">
-                <div class="drive-card">
-                    <span class="drive-icon">
-                        <img src="https://img.icons8.com/fluency/96/google-drive--v1.png" alt="Google Drive" loading="lazy" />
-                    </span>
-                    <div class="drive-title">Google Drive</div>
-                    <div class="drive-desc">All PDFs, notes, and study materials</div>
-                    <a href="https://drive.google.com/drive/folders/12XM4WM-wv75OaSk3aC0VH1hOWlWIjsJg?usp=sharing" target="_blank" class="btn btn--filled btn--large" rel="noopener">
-                        <span class="material-symbols-rounded">open_in_new</span> Open Drive
-                    </a>
-                </div>
-            </div>
-            <div class="community-grid">
-                <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://img.icons8.com/fluency/96/google-classroom.png" alt="Classroom" loading="lazy" /></span>
-                    <span class="c-title">Classroom</span>
-                </a>
-                <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://img.icons8.com/emoji/96/whatsapp.png" alt="WhatsApp" loading="lazy" /></span>
-                    <span class="c-title">WhatsApp</span>
-                </a>
-                <a href="https://m.me/j/AbbHXZKjMGMaHt38/?send_source=gc%3Acopy_invite_link_c" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://img.icons8.com/fluency/96/facebook-messenger--v1.png" alt="Messenger" loading="lazy" /></span>
-                    <span class="c-title">Messenger</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- ROUTINE -->
-        <section class="page" id="page-routine" hidden>
-            <div class="routine-section" id="routineContent"></div>
-        </section>
-
-        <!-- FACULTY -->
-        <section class="page" id="page-faculty" hidden>
-            <h2>Faculty</h2>
-            <p class="subtitle">Contact your instructors</p>
-            <div class="faculty-list">
-                <div class="faculty-item">
-                    <div class="faculty-row">
-                        <span class="faculty-name">Md. Johirul Islam (JI) <span class="course-code">MGT 1101</span></span>
-                        <a href="tel:01914898292" class="faculty-number-link">01914898292</a>
-                    </div>
-                    <div class="faculty-subject">Principles of Management</div>
-                    <div class="faculty-actions">
-                        <a href="tel:01914898292" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                        <a href="https://wa.me/8801914898292" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="mailto:johir@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                    </div>
-                    <div class="faculty-details">
-                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B4/902</span></div>
-                        <div class="detail-line"><span class="label">Email:</span> <span class="value">johir@bubt.edu.bd</span></div>
-                        <div class="counsel-box">
-                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                            <div class="counsel-line"><strong>Sunday:</strong> <span>01:30 PM – 02:30 PM</span></div>
-                            <div class="counsel-line"><strong>Wednesday:</strong> <span>11:30 AM – 12:30 PM</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="faculty-item">
-                    <div class="faculty-row">
-                        <span class="faculty-name">Taskia Akhtar (TKA) <span class="course-code">QUA 1101</span></span>
-                        <a href="tel:01913045537" class="faculty-number-link">01913045537</a>
-                    </div>
-                    <div class="faculty-subject">Fundamentals of Mathematics</div>
-                    <div class="faculty-actions">
-                        <a href="tel:01913045537" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                        <a href="https://wa.me/8801913045537" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="mailto:taskia@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                    </div>
-                    <div class="faculty-details">
-                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B3/207</span></div>
-                        <div class="detail-line"><span class="label">Department:</span> <span class="value">Mathematics &amp; Statistics</span></div>
-                        <div class="detail-line"><span class="label">Email:</span> <span class="value">taskia@bubt.edu.bd</span></div>
-                        <div class="counsel-box">
-                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                            <div class="counsel-line"><strong>Monday:</strong> <span>09:45 AM – 11:15 AM</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="faculty-item">
-                    <div class="faculty-row">
-                        <span class="faculty-name">K. M. Rahmatullah Rahat (KMR) <span class="course-code">ECO 1101</span></span>
-                        <a href="tel:01735692906" class="faculty-number-link">01735692906</a>
-                    </div>
-                    <div class="faculty-subject">Micro Economics</div>
-                    <div class="faculty-actions">
-                        <a href="tel:01735692906" class="btn-fac btn-call"><i class="fas fa-phone"></i> Call</a>
-                        <a href="https://wa.me/8801735692906" target="_blank" class="btn-fac btn-whatsapp" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="mailto:rahmatullahrahat@bubt.edu.bd" class="btn-fac btn-email"><i class="fas fa-envelope"></i> Email</a>
-                    </div>
-                    <div class="faculty-details">
-                        <div class="detail-line"><span class="label">Room:</span> <span class="value">B-1 / 701</span></div>
-                        <div class="detail-line"><span class="label">Department:</span> <span class="value">Economics</span></div>
-                        <div class="detail-line"><span class="label">Email:</span> <span class="value">rahmatullahrahat@bubt.edu.bd</span></div>
-                        <div class="counsel-box">
-                            <div class="counsel-title"><i class="fas fa-clock"></i> Counseling Hours</div>
-                            <div class="counsel-line"><strong>Tuesday:</strong> <span>01:15 PM – 02:45 PM</span></div>
-                            <div class="counsel-line"><strong>Wednesday:</strong> <span>11:15 AM – 02:45 PM</span></div>
-                            <div class="counsel-line"><strong>Thursday:</strong> <span>01:15 PM – 04:15 PM</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="faculty-general-note">
-                <i class="fas fa-info-circle"></i>
-                <div>You can visit during the counseling hours listed above. If you'd like to meet outside of these hours, you can still reach out — <strong>just call the teacher in advance to book a suitable time.</strong></div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Event details modal -->
-    <div class="modal-overlay" id="modal-event-details" role="dialog" aria-modal="true" aria-labelledby="event-modal-title">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="event-modal-title"></h2>
-                <button class="modal-close-btn" type="button" aria-label="Close" data-close>✕</button>
-            </div>
-            <div class="modal-body" id="event-modal-body"></div>
-            <div class="modal-footer">
-                <button class="btn-modal" type="button" data-close>Close</button>
-            </div>
+    <main class="login-container">
+        <div class="login-header">
+            <h1>Welcome<span>.</span></h1>
+            <p>Select Section & Intake and Press "Continue" if already Selected.</p>
         </div>
-    </div>
+
+        <form id="loginForm">
+            <!-- Institute -->
+            <div class="form-group">
+                <label for="institute">Institute</label>
+                <div class="select-wrapper">
+                    <select class="form-control" id="institute" required>
+                        <option value="DEFAULT" selected>DEFAULT</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Intake -->
+            <div class="form-group">
+                <label for="intake">Intake</label>
+                <div class="select-wrapper">
+                    <select class="form-control" id="intake" required>
+                        <option value="66" selected>66</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section -->
+            <div class="form-group">
+                <label for="section">Section</label>
+                <div class="select-wrapper">
+                    <select class="form-control" id="section" required>
+                        <option value="4" selected>4</option>
+                        <option value="DEMO">DEMO</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Continue ></button>
+        </form>
+    </main>
 
     <script>
     (function () {
         'use strict';
-        const $ = id => document.getElementById(id);
 
-        /* ═══════════════ DATA ═══════════════ */
-
-        const CLASSES = [
-            [0, '14:45', '16:15', 'MGT 1101', '4905', 'JI'],
-            [0, '16:15', '17:45', 'QUA 1101', '4905', 'TKA'],
-            [1, '11:15', '12:45', 'ECO 1101', '4304', 'KMR'],
-            [1, '13:15', '14:45', 'QUA 1101', '4304', 'TKA'],
-            [3, '08:15', '09:45', 'ECO 1101', '4905', 'KMR'],
-            [3, '09:45', '11:15', 'MGT 1101', '4905', 'JI']
-        ].map(([day, s, e, course, room, fac]) => {
-            const [sh, sm] = s.split(':').map(Number), [eh, em] = e.split(':').map(Number);
-            return { day, sh, sm, eh, em, s: sh * 60 + sm, e: eh * 60 + em, course, room, fac };
-        }).sort((a, b) => a.day - b.day || a.s - b.s);
-
-        const CODES = [
-            { subject: 'ECO 1101', dot: 'eco', code: 'snycxehv', url: 'https://classroom.google.com/c/ODc4MDQ1OTQ2MDQw?cjc=snycxehv' },
-            { subject: 'MGT 1101', dot: 'mgt', code: 'im2z2sar' },
-            { subject: 'QUA 1101', dot: 'qua', code: 'oz3bz3af', url: 'https://classroom.google.com/c/ODcyNzk1MzM5Nzgy?cjc=oz3bz3af' }
-        ];
-
-        const EXAM_SCHEDULE = [
-            { course: 'Supple Mid Exam', day: '09', month: 'Nov', dow: 'Monday', time: 'TBA', room: 'TBA', start: '2026-11-09T00:00:00+06:00', end: '2026-11-12T23:59:59+06:00' }
-        ];
-
-        const ANNOUNCEMENTS = [
-            { text: 'If you missed any CT, contact your faculty.' },
-            { text: 'ALL PDFs are in PDFs > DRIVE Section' },
-            { text: 'KEEP An Eye in Messenger for normal Updates' }
-        ];
-
-        // SKIP_DATES for AI Reminder: Skip Sunday Nov 1 and Victory Day Dec 16
-        const SKIP_DATES = ['2026-11-01', '2026-12-16'];
-
-        const EVENTS = [
-            { 
-                title: 'Classes Start', 
-                day: '02', month: 'Nov', 
-                startDate: '2026-11-02T00:00:00+06:00',
-                tags: ['Class', 'Monday'],
-                expiresAt: '2026-11-02T23:59:59+06:00',
-                items: ['Current running routine will be followed.'],
-                note: 'Welcome back!'
-            },
-            { 
-                title: 'SUPPLE EXAM REGISTRATION LAST DATE', 
-                day: '03', month: 'Nov', 
-                startDate: '2026-11-03T00:00:00+06:00',
-                tags: ['Deadline', 'Tuesday'],
-                expiresAt: '2026-11-03T23:59:59+06:00',
-                color: '#991b1b', // Dark Red
-                items: ['Fee: Tk. 1000/- per course'],
-                note: 'Submit online application.'
-            },
-            { 
-                title: 'Supple MID EXAM', 
-                startDay: '09', startMonth: 'Nov', endDay: '12', endMonth: 'Nov', 
-                startDate: '2026-11-09T00:00:00+06:00',
-                tags: ['Exams', '09-12 Nov'],
-                expiresAt: '2026-11-12T23:59:59+06:00',
-                color: '#a16207', // Dark Yellow
-                items: ['Supplementary Mid-Term Examination'],
-                note: 'Check schedule with faculty.'
-            },
-            { 
-                title: 'New Semester Pre-Registration Spring 2027', 
-                startDay: '22', startMonth: 'Nov', endDay: '29', endMonth: 'Nov', 
-                startDate: '2026-11-22T00:00:00+06:00',
-                tags: ['Notice', '22-29 Nov'],
-                expiresAt: '2026-11-29T23:59:59+06:00',
-                color: '#991b1b', // Dark Red
-                items: ['Pre-Registration for Spring 2027'],
-                note: 'Complete your pre-registration.'
-            },
-            { 
-                title: 'Payment of tuition fees', 
-                startDay: '25', startMonth: 'Nov', endDay: '10', endMonth: 'Dec', 
-                startDate: '2026-11-25T00:00:00+06:00',
-                tags: ['Fees', '25 Nov - 10 Dec'],
-                expiresAt: '2026-12-10T23:59:59+06:00',
-                items: ['Final Installment (without late fee)'],
-                note: 'Pay before the deadline to avoid late fees.'
-            },
-            { 
-                title: 'Payment of tuition fees', 
-                startDay: '11', startMonth: 'Dec', endDay: '15', endMonth: 'Dec', 
-                startDate: '2026-12-11T00:00:00+06:00',
-                tags: ['Fees', '11-15 Dec'],
-                expiresAt: '2026-12-15T23:59:59+06:00',
-                items: ['Final Installment (with late fee Tk. 1,000) / [Make your 0 balance]'],
-                note: 'Late fee applied.'
-            },
-            { 
-                title: 'Last day of classes before Final Examination', 
-                day: '15', month: 'Dec', 
-                startDate: '2026-12-15T00:00:00+06:00',
-                tags: ['Notice', 'Tuesday'],
-                expiresAt: '2026-12-15T23:59:59+06:00',
-                items: ['Last day of classes'],
-                note: 'Prepare for finals.'
-            },
-            { 
-                title: 'Victory Day Holiday', 
-                day: '16', month: 'Dec', 
-                startDate: '2026-12-16T00:00:00+06:00',
-                tags: ['Holiday', 'Wednesday'],
-                expiresAt: '2026-12-16T23:59:59+06:00',
-                color: '#166534', // Dark Green
-                items: ['Victory Day Holiday'],
-                note: 'Enjoy the holiday.'
-            },
-            { 
-                title: 'Final Examination', 
-                startDay: '17', startMonth: 'Dec', endDay: '24', endMonth: 'Dec', 
-                startDate: '2026-12-17T00:00:00+06:00',
-                tags: ['Exams', '17-24 Dec'],
-                expiresAt: '2026-12-24T23:59:59+06:00',
-                color: '#991b1b', // Dark Red
-                items: ['Final Examination for all courses'],
-                note: 'Good luck!'
-            }
-        ];
-
-        const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
-        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
-
-        /* ═══════════════ HELPERS ═══════════════ */
-
-        function dhakaNow() {
-            const d = new Date(Date.now() + 6 * 3600000);
-            const h = d.getUTCHours(), m = d.getUTCMinutes();
-            return { day: d.getUTCDay(), h, m, min: h * 60 + m };
-        }
-        const pad = n => String(n).padStart(2, '0');
-        const to12 = (h, m) => (h % 12 || 12) + ':' + pad(m);
-        const to12p = (h, m) => pad(h % 12 || 12) + ':' + pad(m);
-
-        function getDhakaDateStr(offset = 0) {
-            const d = new Date(Date.now() + 6 * 3600000 + offset * 86400000);
-            return d.toISOString().split('T')[0];
+        /* ═══════════════ THEME TOGGLE ═══════════════ */
+        const themeBtn = document.getElementById('themeToggle');
+        
+        function applyTheme(dark) {
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            themeBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
         }
 
-        function rotate(els, ms) {
-            if (!els || !els.length) return null;
-            let i = 0;
-            els[0].classList.add('active');
-            if (els.length < 2) return null;
-            return setInterval(() => {
-                els[i].classList.remove('active');
-                i = (i + 1) % els.length;
-                els[i].classList.add('active');
-            }, ms);
+        applyTheme(false); // Default light mode
+
+        themeBtn.addEventListener('click', () => {
+            applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+        });
+
+        /* ═══════════════ PREFERENCES LOGIC ═══════════════ */
+        const instSelect = document.getElementById('institute');
+        const intakeSelect = document.getElementById('intake');
+        const secSelect = document.getElementById('section');
+
+        // Keys for localStorage
+        const PREF_KEY = '66notes_login_prefs';
+
+        // Load saved preferences
+        try {
+            const saved = JSON.parse(localStorage.getItem(PREF_KEY));
+            if (saved) {
+                if (saved.institute) instSelect.value = saved.institute;
+                if (saved.intake) intakeSelect.value = saved.intake;
+                if (saved.section) secSelect.value = saved.section;
+            }
+        } catch (e) {
+            console.warn('Could not load preferences');
         }
 
-        function copyText(text) {
-            if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
-            return new Promise((ok, fail) => {
-                const ta = document.createElement('textarea');
-                ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px';
-                document.body.appendChild(ta); ta.select();
-                try { document.execCommand('copy') ? ok() : fail(); } catch (e) { fail(e); }
-                ta.remove();
-            });
-        }
+        // Save preferences when form is submitted
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
 
-        /* ═══════════════ MODAL ═══════════════ */
-
-        const modal = $('modal-event-details');
-        const openModal = () => { modal.classList.add('active'); document.body.style.overflow = 'hidden'; };
-        const closeModal = () => { modal.classList.remove('active'); document.body.style.overflow = ''; };
-        modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) closeModal(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-        /* ═══════════════ NAV ═══════════════ */
-
-        const navItems = document.querySelectorAll('.bottom-nav__item');
-        const pages = document.querySelectorAll('.page');
-        navItems.forEach(item => item.addEventListener('click', () => {
-            const target = item.dataset.target;
-            navItems.forEach(i => {
-                const on = i === item;
-                i.classList.toggle('is-active', on);
-                if (on) i.setAttribute('aria-current', 'page'); else i.removeAttribute('aria-current');
-            });
-            pages.forEach(p => { p.hidden = p.id !== target; });
-            $('appBarTitle').innerHTML = TITLES[target];
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }));
-
-        /* ═══════════════ THEME TOGGLE — session only ═══════════════ */
-
-        (function () {
-            const btn = $('themeToggle');
-            if (!btn) return;
-
-            function apply(dark) {
-                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-                btn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-                btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-                btn.setAttribute('aria-pressed', String(dark));
-                const meta = document.querySelector('meta[name="theme-color"]');
-                if (meta) meta.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
-            }
-
-            apply(false);
-
-            btn.addEventListener('click', () => {
-                apply(document.documentElement.getAttribute('data-theme') !== 'dark');
-            });
-        })();
-
-        /* ═══════════════ ANNOUNCEMENTS ═══════════════ */
-
-        let annTimer = null;
-        function buildAnnouncements(lines) {
-            const bar = $('announcementBar');
-            const box = $('announcementText');
-            if (!bar || !box) return;
-            if (!lines.length) {
-                bar.classList.add('hidden');
-                box.innerHTML = '';
-                clearInterval(annTimer);
-                return;
-            }
-            box.innerHTML = '';
-            lines.forEach(text => {
-                const s = document.createElement('span');
-                s.className = 'announcement-line';
-                s.textContent = text;
-                box.appendChild(s);
-            });
-            bar.classList.remove('hidden');
-            clearInterval(annTimer);
-            annTimer = rotate(box.children, 4500);
-        }
-
-        (function initAnnouncements() {
-            const now = Date.now();
-            const lines = ANNOUNCEMENTS
-                .filter(a => !a.expiresAt || now < Date.parse(a.expiresAt))
-                .map(a => a.text);
-            buildAnnouncements(lines);
-        })();
-
-        /* ═══════════════ CLASS STATUS ═══════════════ */
-
-        function findStatus(t) {
-            const run = CLASSES.find(c => c.day === t.day && t.min >= c.s && t.min < c.e);
-            if (run) return { kind: 'run', c: run };
-            for (let off = 0; off <= 7; off++) {
-                const day = (t.day + off) % 7;
-                const c = CLASSES.find(c => c.day === day && (off > 0 || c.s > t.min));
-                if (c) {
-                    // Check if this class falls on a skip date
-                    const dateStr = getDhakaDateStr(off);
-                    if (SKIP_DATES.includes(dateStr)) {
-                        continue; // Skip this class
-                    }
-                    return { kind: off === 0 ? 'today' : 'next', c };
-                }
-            }
-            return null;
-        }
-
-        function getClassStatus(t) {
-            if (Date.now() < SEMESTER_START) {
-                return { slides: ['📅 Classes start on <strong>6 September</strong>', 'Check the routine below!'], label: 'UPCOMING', running: false, detail: 'Classes start on 6th Sep' };
-            }
-            const st = findStatus(t);
-            if (!st) return { slides: ['📚 No classes scheduled', 'Enjoy your free time!'], label: 'IDLE', running: false, detail: 'No class scheduled.' };
-
-            const c = st.c;
-            const when = st.kind === 'next' ? DAYS[c.day] : 'Today';
-            const time = to12(c.sh, c.sm) + '–' + to12(c.eh, c.em);
-            const detail = `<span class="nc-day">${when}</span> · <span class="nc-course">${c.course}</span> · <span class="nc-time">${time}</span> · <span class="nc-room">${c.room}</span>`;
-
-            if (st.kind === 'run') {
-                return { slides: [`▶️ <strong>${c.course}</strong> is running`, 'Ends at ' + to12(c.eh, c.em)], label: 'RUNNING', running: true, detail };
-            }
-            return {
-                slides: ['📅 Next: ' + when, `<strong>${c.course}</strong> at ${to12(c.sh, c.sm)}`, 'Room ' + c.room],
-                label: st.kind === 'today' ? 'TODAY' : 'NEXT', running: false, detail
+            // Save to localStorage
+            const prefs = {
+                institute: instSelect.value,
+                intake: intakeSelect.value,
+                section: secSelect.value
             };
-        }
+            localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
 
-        let slideKey = '', slideTimer = null;
-        function showSlides(slides) {
-            const key = slides.join('|');
-            if (key === slideKey) return;
-            slideKey = key;
-            const box = $('messageBox');
-            box.innerHTML = slides.map(h => `<div class="message-line">${h}</div>`).join('');
-            clearInterval(slideTimer);
-            slideTimer = rotate(box.children, 4000);
-        }
-
-        /* ═══════════════ ROUTINE + CODES ═══════════════ */
-
-        (function buildRoutine() {
-            const root = $('routineContent');
-            if (!root) return;
-
-            const examRows = EXAM_SCHEDULE.map(e =>
-                `<tr>
-                    <td><strong>${e.day} ${e.month}</strong><span class="dow">${e.dow}</span></td>
-                    <td>${e.time}</td>
-                    <td>${e.course}</td>
-                    <td>${e.room}</td>
-                </tr>`
-            ).join('');
-
-            const byDay = {};
-            CLASSES.forEach(c => (byDay[c.day] = byDay[c.day] || []).push(c));
-            const classRows = Object.keys(byDay).map(d => byDay[d].map((c, i) =>
-                '<tr>' +
-                (i === 0 ? `<td rowspan="${byDay[d].length}"><strong>${DAYS[d].slice(0, 3).toUpperCase()}</strong></td>` : '') +
-                `<td>${to12p(c.sh, c.sm)} – ${to12p(c.eh, c.em)}</td><td>${c.room}</td><td>${c.course}</td><td>${c.fac}</td></tr>`
-            ).join('')).join('');
-
-            const codes = CODES.map(c => `
-                <div class="code-card">
-                    <span class="code-icon-dot ${c.dot}-dot"></span>
-                    <span class="code-subject">${c.subject}</span>
-                    <div class="code-value-box"><span class="code-value">${c.code}</span></div>
-                    <button class="copy-btn" type="button" data-code="${c.code}"><i class="fas fa-copy"></i> Copy</button>
-                    ${c.url ? `<a href="${c.url}" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>` : ''}
-                </div>`).join('');
-
-            root.innerHTML = `
-                <div class="section-label"><i class="fas fa-clipboard-list"></i> Exam Routine</div>
-                <div class="routine-table-wrap">
-                    <table class="routine-table">
-                        <colgroup><col style="width:20%"><col style="width:30%"><col style="width:24%"><col style="width:26%"></colgroup>
-                        <thead><tr><th>Date</th><th>Time</th><th>Course</th><th>Room</th></tr></thead>
-                        <tbody>${examRows}</tbody>
-                    </table>
-                </div>
-                <div id="classRoutineBlock">
-                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                    <div class="routine-table-wrap">
-                        <table class="routine-table">
-                            <colgroup><col style="width:14%"><col style="width:26%"><col style="width:14%"><col style="width:22%"><col style="width:24%"></colgroup>
-                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
-                            <tbody>${classRows}</tbody>
-                        </table>
-                    </div>
-                    <div class="codes-section">
-                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                        <div class="codes-grid">${codes}</div>
-                    </div>
-                </div>`;
-
-            root.addEventListener('click', e => {
-                const btn = e.target.closest('.copy-btn');
-                if (!btn || btn.classList.contains('copied-flash')) return;
-                const orig = btn.innerHTML;
-                copyText(btn.dataset.code).then(() => {
-                    btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-                    btn.classList.add('copied-flash');
-                    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied-flash'); }, 1500);
-                }).catch(() => alert('Could not copy.'));
-            });
-        })();
-
-        /* ═══════════════ PINNED EVENTS ═══════════════ */
-
-        function openEventDetails(ev) {
-            $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title;
-
-            let dateStr = '';
-            if (ev.startDay && ev.endDay) {
-                dateStr = `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}`;
-            } else {
-                dateStr = `${ev.day} ${ev.month}`;
+            // Redirect logic
+            let targetUrl = 'https://66notes.github.io/4'; // Default
+            
+            if (prefs.section === '4') {
+                targetUrl = 'https://66notes.github.io/4';
+            } else if (prefs.section === 'DEMO') {
+                targetUrl = 'https://66notes.github.io/demo';
             }
 
-            let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${dateStr}</div>`;
-            
-            if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
-            if (ev.note) html += `<div class="event-note">${ev.note}</div>`;
-            
-            $('event-modal-body').innerHTML = html;
-            openModal();
-        }
-
-        function buildBlock(ev) {
-            const block = document.createElement('div');
-            block.className = 'event-block';
-            
-            // Dynamic Date Logic: If event has started, show end date. Otherwise show start date.
-            const now = Date.now();
-            const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
-            
-            let displayDay = ev.day;
-            let displayMonth = ev.month;
-            
-            if (ev.startDay && ev.endDay) {
-                displayDay = isStarted ? ev.endDay : ev.startDay;
-                displayMonth = isStarted ? ev.endMonth : ev.startMonth;
-            }
-            
-            const tagsHtml = ev.tags 
-                ? `<div class="event-tags">${ev.tags.map((t, i) => `<span class="event-tag ${i === 0 ? 'time' : 'day'}">${t}</span>`).join('')}</div>`
-                : '';
-
-            const bgStyle = ev.color ? `style="background: ${ev.color}"` : '';
-
-            block.innerHTML = `
-                <div class="event-row">
-                    <div class="event-date" ${bgStyle}><span class="day">${displayDay}</span><span class="month">${displayMonth}</span></div>
-                    <div class="event-body">
-                        <div class="event-title">${ev.title}</div>
-                        ${tagsHtml}
-                    </div>
-                    <button class="event-detail-btn" type="button">See Detail</button>
-                </div>`;
-                
-            block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
-            return block;
-        }
-
-        let shownKey = null;
-        function renderEvents() {
-            const now = Date.now();
-            const visible = EVENTS.filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt));
-            const key = visible.map(ev => ev.title).join('|');
-            if (key === shownKey) return;
-            shownKey = key;
-            const list = $('eventsList');
-            list.innerHTML = '';
-            if (!visible.length) {
-                list.innerHTML = '<div class="events-empty">No upcoming events.</div>';
-                return;
-            }
-            const frag = document.createDocumentFragment();
-            visible.forEach(ev => frag.appendChild(buildBlock(ev)));
-            list.appendChild(frag);
-        }
-
-        /* ═══════════════ REFRESH LOOP ═══════════════ */
-
-        function refresh() {
-            const t = dhakaNow();
-            $('clockDisplay').textContent = to12(t.h, t.m) + (t.h >= 12 ? ' PM' : ' AM');
-            const s = getClassStatus(t);
-            showSlides(s.slides);
-            $('barLabel').textContent = s.label;
-            $('barDot').className = 'status-dot' + (s.running ? ' running' : '');
-            $('barDetail').innerHTML = s.detail;
-            renderEvents();
-        }
-
-        function loop() {
-            if (!document.hidden) refresh();
-            setTimeout(loop, 60000 - (Date.now() % 60000) + 50);
-        }
-        document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
-        refresh();
-        setTimeout(loop, 60000 - (Date.now() % 60000) + 50);
+            window.location.href = targetUrl;
+        });
     })();
     </script>
 </body>
