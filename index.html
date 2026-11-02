@@ -1,302 +1,1254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="google-site-verification" content="DUhSlZZlkWLDp04O71VciiUsekAN75p1lpoH8JjM1LA" />
-    <title>66notes bubt - Student Dashboard</title>
-    <meta name="description" content="66Notes BUBT student dashboard for BUBT Intake66." />
-    <link rel="canonical" href="https://66notes.github.io/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    </noscript>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#0a0a0c" />
+<title>66Share — Peer-to-peer file sharing</title>
 
-    <style>
-        :root {
-            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
-            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
-            --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
-            --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
-            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            -webkit-font-smoothing: antialiased; 
-            min-height: 100vh; 
-            min-height: 100dvh;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            line-height: 1.5;
-            padding: 20px;
-        }
+<!-- LZ-String: compress SDP so the QR code stays small and scannable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+<!-- QR generator -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<!-- QR scanner -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
-        /* Top Bar for Theme Toggle */
-        .top-app-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 14px; }
-        .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
-        .top-app-bar__title span { color: var(--accent); }
-        .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--accent); font-size: 0.85rem; cursor: pointer; transition: background var(--transition), transform 0.15s, color var(--transition); box-shadow: var(--shadow-sm); }
-        .theme-toggle-btn:active { transform: scale(0.92); }
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    html, body {
+        height: 100vh; height: 100dvh;
+        overflow: hidden;
+        font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        background: #0a0a0c; color: #e8e8ea;
+        -webkit-font-smoothing: antialiased;
+        overscroll-behavior: none;
+    }
 
-        /* Login Card */
-        .login-container {
-            width: 100%;
-            max-width: 420px;
-            background: var(--surface);
-            border-radius: var(--radius-xl);
-            padding: 2.5rem 2rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-lg);
-            animation: fade-in 0.4s ease;
-        }
+    /* ══════════ APP SHELL ══════════ */
+    .app {
+        position: fixed; inset: 0;
+        display: flex; flex-direction: column;
+        padding-top: env(safe-area-inset-top, 0);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        background: radial-gradient(circle at 20% 5%, rgba(139,92,246,.16), transparent 42%),
+                    radial-gradient(circle at 85% 95%, rgba(37,99,235,.14), transparent 42%);
+    }
 
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* ══════════ TOP BAR ══════════ */
+    .topbar {
+        flex-shrink: 0;
+        display: flex; align-items: center; justify-content: space-between;
+        height: 56px; padding: 0 16px;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+        background: rgba(10,10,12,.7);
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    }
+    .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 1.05rem; letter-spacing: -.2px; }
+    .brand-ico {
+        width: 30px; height: 30px; border-radius: 9px;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg,#8b5cf6,#6d28d9); color: #fff;
+        font-size: .82rem; box-shadow: 0 4px 14px rgba(139,92,246,.4);
+    }
+    .brand-ico svg { width: 16px; height: 16px; fill: currentColor; }
+    .brand span { color: #a78bfa; }
+    .back-btn {
+        width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        color: #cfcfd3; cursor: pointer; font-size: .95rem;
+        display: flex; align-items: center; justify-content: center;
+        transition: background .18s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
+    .back-btn.hidden { visibility: hidden; pointer-events: none; }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    /* ══════════ MAIN AREA ══════════ */
+    .main { flex: 1; position: relative; overflow: hidden; }
+    .view {
+        position: absolute; inset: 0;
+        display: none; flex-direction: column;
+        align-items: center;
+        padding: 22px 18px 26px;
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        animation: view-in .25s cubic-bezier(.34,1.4,.64,1);
+    }
+    .view.active { display: flex; }
+    @keyframes view-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .login-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.4rem;
-            letter-spacing: -0.5px;
-        }
+    /* ══════════ HOME ══════════ */
+    .home-hero { text-align: center; padding: 26px 0 22px; }
+    .home-hero h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -.6px; line-height: 1.15; margin-bottom: 10px; }
+    .home-hero h1 span { color: #a78bfa; }
+    .home-hero p { font-size: .84rem; color: #8b8b93; max-width: 340px; margin: 0 auto; line-height: 1.6; }
 
-        .login-header h1 span { color: var(--accent); }
+    .action-btn {
+        display: flex; align-items: center; gap: 14px;
+        width: 100%; max-width: 400px;
+        padding: 18px 20px; margin-bottom: 12px;
+        border-radius: 18px; border: 1.5px solid rgba(255,255,255,.09);
+        background: #16181f; color: #e8e8ea; cursor: pointer;
+        text-align: left; font-family: inherit;
+        transition: transform .15s, border-color .18s, background .18s, box-shadow .2s;
+    }
+    .action-btn:hover { transform: translateY(-2px); border-color: rgba(139,92,246,.5); background: #1c1f2a; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    .action-btn:active { transform: translateY(0) scale(.99); }
+    .action-btn .ab-icon {
+        width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.15rem; color: #fff;
+    }
+    .action-btn.create .ab-icon { background: linear-gradient(135deg,#8b5cf6,#6d28d9); box-shadow: 0 6px 18px rgba(139,92,246,.35); }
+    .action-btn.join .ab-icon { background: linear-gradient(135deg,#2563eb,#1d4ed8); box-shadow: 0 6px 18px rgba(37,99,235,.35); }
+    .action-btn .ab-copy { flex: 1; min-width: 0; }
+    .action-btn .ab-copy b { display: block; font-size: .92rem; font-weight: 700; line-height: 1.3; color: #fff; }
+    .action-btn .ab-copy small { display: block; font-size: .72rem; color: #8b8b93; line-height: 1.35; margin-top: 2px; }
+    .action-btn .ab-arrow { color: #8b8b93; font-size: .85rem; flex-shrink: 0; }
 
-        .login-header p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+    .home-hint {
+        margin-top: 8px; max-width: 400px; text-align: center;
+        font-size: .72rem; color: #6e6e72; line-height: 1.55;
+    }
+    .home-hint b { color: #a78bfa; font-weight: 600; }
 
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
+    /* ══════════ STEP VIEWS ══════════ */
+    .step-head { text-align: center; margin-bottom: 18px; }
+    .step-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 12px; border-radius: 30px; font-size: .64rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .08em;
+        background: rgba(139,92,246,.14); color: #a78bfa;
+        border: 1px solid rgba(139,92,246,.3); margin-bottom: 10px;
+    }
+    .step-head h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.3px; margin-bottom: 6px; }
+    .step-head p { font-size: .8rem; color: #8b8b93; line-height: 1.55; max-width: 340px; margin: 0 auto; }
+    .step-head p b { color: #e8e8ea; font-weight: 600; }
 
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    /* ══════════ QR BOX ══════════ */
+    .qr-wrap {
+        width: 100%; max-width: 340px;
+        display: flex; flex-direction: column; align-items: center;
+        margin: 4px 0 16px;
+    }
+    .qr-frame {
+        position: relative;
+        padding: 14px; border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 16px 44px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .qr-frame canvas {
+        display: block;
+        max-width: 100%; height: auto;
+        border-radius: 4px;
+    }
+    .qr-skeleton {
+        width: min(280px, 78vw); height: min(280px, 78vw);
+        border-radius: 6px;
+        background:
+            linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+            linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+            linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+        background-size: 24px 24px;
+        background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+        display: flex; align-items: center; justify-content: center;
+        color: #666; font-size: .72rem; text-align: center;
+        padding: 16px; line-height: 1.5;
+    }
+    .qr-caption {
+        margin-top: 10px; font-size: .7rem; color: #8b8b93;
+        text-align: center; font-weight: 500;
+    }
 
-        .form-control {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700; /* Makes the numbers (66, 4, DEMO) bold */
-            color: var(--text);
-            background: var(--bg);
-            border: 1.5px solid var(--border-strong);
-            border-radius: var(--radius);
-            outline: none;
-            transition: border-color var(--transition), background var(--transition);
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
+    /* ══════════ BUTTONS ══════════ */
+    .btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; max-width: 400px;
+        padding: 13px 22px; border-radius: 40px; border: none;
+        font-family: inherit; font-size: .84rem; font-weight: 600;
+        cursor: pointer; min-height: 48px;
+        transition: background .18s, transform .12s, box-shadow .2s;
+        user-select: none; -webkit-user-select: none;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn:disabled:active { transform: none; }
+    .btn.primary {
+        background: linear-gradient(135deg,#8b5cf6,#6d28d9); color: #fff;
+        box-shadow: 0 8px 24px rgba(139,92,246,.35);
+    }
+    .btn.primary:hover:not(:disabled) { background: linear-gradient(135deg,#7c3aed,#5b21b6); box-shadow: 0 10px 30px rgba(139,92,246,.45); }
+    .btn.blue {
+        background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff;
+        box-shadow: 0 8px 24px rgba(37,99,235,.35);
+    }
+    .btn.blue:hover:not(:disabled) { background: linear-gradient(135deg,#1d4ed8,#1e40af); }
+    .btn.ghost {
+        background: #1c1f2a; color: #cfcfd3; border: 1px solid rgba(255,255,255,.1);
+    }
+    .btn.ghost:hover:not(:disabled) { background: #262832; color: #fff; }
+    .btn.danger {
+        background: rgba(239,68,68,.14); color: #f87171;
+        border: 1px solid rgba(239,68,68,.3);
+    }
+    .btn.danger:hover:not(:disabled) { background: rgba(239,68,68,.2); }
+    .btn i { font-size: .85rem; }
 
-        .form-control:focus {
-            border-color: var(--accent);
-            background: var(--surface);
-        }
+    .divider {
+        display: flex; align-items: center; gap: 10px;
+        width: 100%; max-width: 400px;
+        margin: 14px 0;
+        color: #555; font-size: .64rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .1em;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.08); }
 
-        /* Custom Select Arrow */
-        .select-wrapper {
-            position: relative;
-        }
+    /* ══════════ TEXTAREA ══════════ */
+    .paste-area {
+        width: 100%; max-width: 400px;
+        min-height: 70px; max-height: 120px;
+        padding: 10px 12px;
+        border-radius: 10px; border: 1px solid rgba(255,255,255,.1);
+        background: #0f1117; color: #cfcfd3;
+        font-family: 'Courier New', monospace; font-size: .66rem;
+        resize: none; outline: none; line-height: 1.45;
+        word-break: break-all;
+        margin-bottom: 10px;
+    }
+    .paste-area:focus { border-color: #8b5cf6; }
+    .paste-area::placeholder { color: #4a4a50; }
 
-        .select-wrapper::after {
-            content: '\f107'; /* FontAwesome angle-down */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
+    /* ══════════ STATUS ══════════ */
+    .status {
+        display: flex; align-items: center; gap: 9px;
+        width: 100%; max-width: 400px;
+        padding: 11px 14px; border-radius: 10px;
+        font-size: .76rem; font-weight: 500; line-height: 1.45;
+        background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.25);
+        color: #c4b5fd; margin-top: 12px;
+    }
+    .status i { flex-shrink: 0; color: #a78bfa; }
+    .status.error { background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); color: #fca5a5; }
+    .status.error i { color: #f87171; }
+    .status.success { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.3); color: #86efac; }
+    .status.success i { color: #4ade80; }
 
-        .btn-submit {
-            width: 100%;
-            padding: 0.9rem;
-            margin-top: 1rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #fff;
-            background: var(--navy);
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: background var(--transition), transform 0.15s;
-        }
+    /* ══════════ CONNECTED VIEW ══════════ */
+    .conn-badge {
+        display: flex; flex-direction: column; align-items: center;
+        padding: 22px 0 6px; text-align: center;
+    }
+    .conn-icon {
+        width: 72px; height: 72px; border-radius: 50%;
+        background: linear-gradient(135deg,#22c55e,#16a34a); color: #fff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.7rem; margin-bottom: 14px;
+        box-shadow: 0 12px 36px rgba(34,197,94,.35);
+        animation: conn-pop .4s cubic-bezier(.34,1.6,.64,1);
+    }
+    @keyframes conn-pop { from { transform: scale(0); } to { transform: scale(1); } }
+    .conn-badge h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+    .conn-badge p { font-size: .78rem; color: #8b8b93; }
 
-        .btn-submit:active {
-            transform: scale(0.98);
-            background: var(--accent);
-        }
+    .file-picker {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; max-width: 400px;
+        padding: 16px 22px; margin: 18px 0 16px;
+        border-radius: 14px; border: 2px dashed rgba(139,92,246,.4);
+        background: rgba(139,92,246,.06); color: #c4b5fd;
+        cursor: pointer; font-family: inherit; font-size: .86rem; font-weight: 600;
+        transition: border-color .18s, background .18s;
+    }
+    .file-picker:hover { border-color: #a78bfa; background: rgba(139,92,246,.12); color: #e0d5ff; }
+    .file-picker:active { transform: scale(.99); }
+    .file-picker input { display: none; }
+    .file-picker i { font-size: 1.05rem; color: #a78bfa; }
 
-        /* Dark Mode */
-        :root[data-theme="dark"] {
-            --bg: #0f0f10; --surface: #1a1a1c; --border: #2a2a2d; --border-strong: #3a3a3e;
-            --text: #eaeaea; --text-secondary: #a0a0a3; --text-muted: #6e6e72;
-            --navy: #e4e4e6; --accent: #7bb0ff; --accent-light: #242428;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
-            --shadow: 0 6px 20px rgba(0,0,0,0.5);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
-        }
-        
-        :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
-        :root[data-theme="dark"] .login-container { background: var(--surface); border-color: var(--border); }
-        :root[data-theme="dark"] .login-header h1 { color: #eaeaea; }
-        :root[data-theme="dark"] .form-control { background: #161618; border-color: #333338; color: #eaeaea; }
-        :root[data-theme="dark"] .form-control:focus { border-color: #7bb0ff; }
-        :root[data-theme="dark"] .btn-submit { background: #2563eb; color: #fff; }
-        :root[data-theme="dark"] .btn-submit:active { background: #1d4ed8; }
-        :root[data-theme="dark"] .theme-toggle-btn { background: #1a1a1c; border-color: #2a2a2d; color: #fbbf24; }
-    </style>
-    <!-- Font Awesome for the dropdown arrow -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    .transfers {
+        width: 100%; max-width: 400px;
+        display: flex; flex-direction: column; gap: 8px;
+        margin-bottom: 14px;
+    }
+    .transfer {
+        padding: 11px 14px; border-radius: 11px;
+        background: #16181f; border: 1px solid rgba(255,255,255,.08);
+    }
+    .transfer.incoming { background: #101720; border-color: rgba(37,99,235,.2); }
+    .transfer-header {
+        display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+    }
+    .transfer-dir {
+        width: 22px; height: 22px; border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .68rem; flex-shrink: 0;
+    }
+    .transfer-dir.out { background: rgba(139,92,246,.2); color: #c4b5fd; }
+    .transfer-dir.in { background: rgba(37,99,235,.2); color: #93c5fd; }
+    .transfer-name {
+        flex: 1; min-width: 0;
+        font-size: .74rem; font-weight: 600; color: #e8e8ea;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .transfer-bar {
+        height: 4px; border-radius: 2px;
+        background: rgba(255,255,255,.06); overflow: hidden;
+    }
+    .transfer-bar > i {
+        display: block; height: 100%; width: 0;
+        background: linear-gradient(90deg,#8b5cf6,#2563eb);
+        border-radius: 2px; transition: width .2s ease;
+    }
+    .transfer.incoming .transfer-bar > i {
+        background: linear-gradient(90deg,#2563eb,#06b6d4);
+    }
+    .transfer-meta {
+        display: flex; justify-content: space-between;
+        font-size: .62rem; color: #8b8b93; margin-top: 5px;
+    }
+    .transfer-meta .t-status { font-weight: 600; }
+    .transfer-meta .t-status.done { color: #4ade80; }
+    .transfer-meta .t-status.error { color: #f87171; }
+    .dl-btn {
+        display: inline-flex; align-items: center; gap: 5px;
+        margin-top: 7px; padding: 5px 12px; border-radius: 20px;
+        background: rgba(37,99,235,.2); color: #93c5fd;
+        border: 1px solid rgba(37,99,235,.35);
+        font-size: .68rem; font-weight: 600; text-decoration: none;
+        font-family: inherit;
+    }
+    .dl-btn:hover { background: rgba(37,99,235,.3); }
+
+    /* ══════════ SCANNER ══════════ */
+    .scanner {
+        position: fixed; inset: 0; z-index: 900;
+        display: none; background: #000;
+        align-items: center; justify-content: center;
+    }
+    .scanner.active { display: flex; }
+    .scanner video {
+        width: 100%; height: 100%; object-fit: cover;
+        display: block;
+    }
+    .scan-frame {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: min(260px, 70vw); height: min(260px, 70vw);
+        transform: translate(-50%, -50%);
+        border: 2px solid rgba(167,139,250,.9);
+        border-radius: 18px;
+        box-shadow: 0 0 0 4000px rgba(0,0,0,.55);
+        pointer-events: none;
+    }
+    .scan-frame::before, .scan-frame::after {
+        content: ''; position: absolute;
+        width: 36px; height: 36px;
+        border: 4px solid #a78bfa;
+    }
+    .scan-frame::before { top: -4px; left: -4px; border-right: none; border-bottom: none; border-top-left-radius: 18px; }
+    .scan-frame::after { bottom: -4px; right: -4px; border-left: none; border-top: none; border-bottom-right-radius: 18px; }
+    .scan-hint {
+        position: absolute; top: calc(50% + min(140px, 38vw));
+        left: 50%; transform: translateX(-50%);
+        padding: 8px 18px; border-radius: 30px;
+        background: rgba(0,0,0,.75); color: #e8e8ea;
+        font-size: .78rem; font-weight: 600;
+        white-space: nowrap;
+    }
+    .scan-close {
+        position: absolute; top: calc(20px + env(safe-area-inset-top, 0)); right: 20px;
+        width: 46px; height: 46px; border-radius: 50%;
+        background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+        color: #fff; font-size: 1.1rem; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .scan-close:active { transform: scale(.94); }
+
+    /* ══════════ TOAST ══════════ */
+    .toast {
+        position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom, 0));
+        transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+        z-index: 1000; max-width: 85vw;
+        padding: 11px 20px; border-radius: 30px;
+        background: #1c1f2a; color: #e8e8ea;
+        border: 1px solid rgba(255,255,255,.12);
+        font-size: .78rem; font-weight: 500; text-align: center;
+        box-shadow: 0 12px 36px rgba(0,0,0,.5);
+        transition: opacity .25s ease, transform .25s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { background: #2a1414; border-color: rgba(239,68,68,.4); color: #fca5a5; }
+
+    /* ══════════ RESPONSIVE ══════════ */
+    @media (min-height: 700px) {
+        .home-hero { padding: 40px 0 30px; }
+        .action-btn { padding: 20px 22px; }
+    }
+    @media (min-height: 900px) {
+        .home-hero { padding: 60px 0 40px; }
+        .home-hero h1 { font-size: 2.2rem; }
+    }
+    @media (max-width: 380px) {
+        .home-hero h1 { font-size: 1.6rem; }
+        .step-head h2 { font-size: 1.1rem; }
+        .action-btn .ab-icon { width: 42px; height: 42px; font-size: 1rem; }
+    }
+</style>
 </head>
 <body>
 
-    <header class="top-app-bar">
-        <h1 class="top-app-bar__title">66<span>Notes</span></h1>
-        <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode">
-            <i class="fas fa-moon"></i>
+<div class="app">
+    <!-- ══════════ TOP BAR ══════════ -->
+    <header class="topbar">
+        <button class="back-btn hidden" id="backBtn" type="button" aria-label="Back">
+            <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="brand">
+            <span class="brand-ico">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18l7.9 3.95L12 12.09 4.1 8.13 12 4.18zM4 9.87l7 3.5v6.86l-7-3.5V9.87zm9 10.36v-6.86l7-3.5v6.86l-7 3.5z"/></svg>
+            </span>
+            66<span>Share</span>
+        </div>
+        <span style="width:38px"></span>
     </header>
 
-    <main class="login-container">
-        <div class="login-header">
-            <h1>Welcome<span>.</span></h1>
-            <p>Select Section & Intake and Press "Continue" if already Selected.</p>
-        </div>
+    <main class="main">
 
-        <form id="loginForm">
-            <!-- Institute -->
-            <div class="form-group">
-                <label for="institute">Institute</label>
-                <div class="select-wrapper">
-                    <select class="form-control" id="institute" required>
-                        <option value="DEFAULT" selected>DEFAULT</option>
-                    </select>
-                </div>
+        <!-- ══════════ HOME ══════════ -->
+        <section class="view active" data-view="home">
+            <div class="home-hero">
+                <h1>Send files<br/><span>device to device.</span></h1>
+                <p>No server. No uploads. Files travel directly between your devices over an encrypted peer-to-peer channel.</p>
             </div>
 
-            <!-- Intake -->
-            <div class="form-group">
-                <label for="intake">Intake</label>
-                <div class="select-wrapper">
-                    <select class="form-control" id="intake" required>
-                        <option value="66" selected>66</option>
-                    </select>
-                </div>
+            <button class="action-btn create" id="btnCreate" type="button">
+                <span class="ab-icon"><i class="fas fa-qrcode"></i></span>
+                <span class="ab-copy">
+                    <b>Create Share</b>
+                    <small>Show a QR for the other device to scan</small>
+                </span>
+                <i class="fas fa-arrow-right ab-arrow"></i>
+            </button>
+
+            <button class="action-btn join" id="btnJoin" type="button">
+                <span class="ab-icon"><i class="fas fa-camera"></i></span>
+                <span class="ab-copy">
+                    <b>Join Share</b>
+                    <small>Scan the other device's QR</small>
+                </span>
+                <i class="fas fa-arrow-right ab-arrow"></i>
+            </button>
+
+            <p class="home-hint">
+                Both devices must have this page open.<br/>
+                Works <b>phone ↔ phone</b> and <b>phone ↔ PC</b>.
+            </p>
+        </section>
+
+        <!-- ══════════ CREATE (offer QR) ══════════ -->
+        <section class="view" data-view="create">
+            <div class="step-head">
+                <div class="step-badge"><i class="fas fa-qrcode"></i> Step 1 of 2</div>
+                <h2>Show this to the other device</h2>
+                <p>Have them tap <b>Join Share</b> and scan this QR code.</p>
             </div>
 
-            <!-- Section -->
-            <div class="form-group">
-                <label for="section">Section</label>
-                <div class="select-wrapper">
-                    <select class="form-control" id="section" required>
-                        <option value="4" selected>4</option>
-                        <option value="DEMO">DEMO</option>
-                    </select>
+            <div class="qr-wrap">
+                <div class="qr-frame">
+                    <div class="qr-skeleton" id="offerSkeleton">Generating QR…</div>
+                    <canvas id="offerCanvas" hidden></canvas>
                 </div>
+                <div class="qr-caption">Waiting for them to scan…</div>
             </div>
 
-            <button type="submit" class="btn-submit">Continue ></button>
-        </form>
+            <div class="divider">Then</div>
+
+            <button class="btn primary" id="btnScanAnswer" type="button">
+                <i class="fas fa-camera"></i> Scan their answer QR
+            </button>
+            <div class="divider">or</div>
+            <textarea class="paste-area" id="answerInput" placeholder="Paste the answer code they give you…"></textarea>
+            <button class="btn ghost" id="btnAcceptAnswer" type="button">
+                <i class="fas fa-link"></i> Connect with pasted code
+            </button>
+
+            <div class="status" id="createStatus" hidden>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <span></span>
+            </div>
+        </section>
+
+        <!-- ══════════ JOIN (scan offer) ══════════ -->
+        <section class="view" data-view="join">
+            <div class="step-head">
+                <div class="step-badge"><i class="fas fa-camera"></i> Join a share</div>
+                <h2>Scan the creator's QR</h2>
+                <p>Point your camera at the QR code shown on the other device.</p>
+            </div>
+
+            <button class="btn blue" id="btnScanOffer" type="button" style="margin-top:12px;">
+                <i class="fas fa-camera"></i> Open camera
+            </button>
+
+            <div class="divider">or</div>
+
+            <textarea class="paste-area" id="offerInput" placeholder="Paste the offer code instead…"></textarea>
+            <button class="btn ghost" id="btnAcceptOffer" type="button">
+                <i class="fas fa-link"></i> Continue with pasted code
+            </button>
+
+            <div class="status" id="joinStatus" hidden>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <span></span>
+            </div>
+        </section>
+
+        <!-- ══════════ ANSWER (show answer QR) ══════════ -->
+        <section class="view" data-view="answer">
+            <div class="step-head">
+                <div class="step-badge"><i class="fas fa-qrcode"></i> Step 2 of 2</div>
+                <h2>Show this back to the creator</h2>
+                <p>Have them scan this QR (or copy the code to them).</p>
+            </div>
+
+            <div class="qr-wrap">
+                <div class="qr-frame">
+                    <div class="qr-skeleton" id="answerSkeleton">Generating QR…</div>
+                    <canvas id="answerCanvas" hidden></canvas>
+                </div>
+                <div class="qr-caption">Waiting for the creator to scan…</div>
+            </div>
+
+            <button class="btn ghost" id="btnCopyAnswer" type="button">
+                <i class="fas fa-copy"></i> Copy answer code
+            </button>
+
+            <div class="status" id="answerStatus" hidden>
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <span></span>
+            </div>
+        </section>
+
+        <!-- ══════════ CONNECTED ══════════ -->
+        <section class="view" data-view="connected">
+            <div class="conn-badge">
+                <div class="conn-icon"><i class="fas fa-check"></i></div>
+                <h2>Connected</h2>
+                <p>Send files in either direction — they arrive instantly.</p>
+            </div>
+
+            <label class="file-picker" for="fileInput">
+                <i class="fas fa-folder-plus"></i>
+                <span>Choose files to send</span>
+                <input type="file" id="fileInput" multiple />
+            </label>
+
+            <div class="transfers" id="transfers"></div>
+
+            <button class="btn danger" id="btnDisconnect" type="button">
+                <i class="fas fa-plug"></i> Disconnect
+            </button>
+        </section>
+
     </main>
+</div>
 
-    <script>
-    (function () {
-        'use strict';
+<!-- ══════════ SCANNER OVERLAY ══════════ -->
+<div class="scanner" id="scanner">
+    <video id="scanVideo" autoplay playsinline muted></video>
+    <div class="scan-frame"></div>
+    <div class="scan-hint">Point at the QR code</div>
+    <button class="scan-close" id="scanClose" type="button" aria-label="Close scanner">
+        <i class="fas fa-xmark"></i>
+    </button>
+</div>
 
-        /* ═══════════════ THEME TOGGLE ═══════════════ */
-        const themeBtn = document.getElementById('themeToggle');
-        
-        function applyTheme(dark) {
-            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-            themeBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            const meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
+<!-- ══════════ TOAST ══════════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ═══════════ CONSTANTS ═══════════ */
+    const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
+    const CHUNK_SIZE = 16384;       // 16 KB per data-channel message
+    const MAX_BUFFERED = 1048576;   // 1 MB backpressure threshold
+    const FILE_ID_LEN = 8;          // fixed-length file ID prefix in binary chunks
+
+    /* ═══════════ STATE ═══════════ */
+    const state = {
+        pc: null,
+        dc: null,
+        receiving: {},     // fileId → {name, size, mime, chunks:[], received, rowEl}
+        cameraStream: null,
+        scanRAF: null,
+        pendingPurpose: null,  // 'offer' | 'answer'
+        currentView: 'home'
+    };
+
+    /* ═══════════ DOM ═══════════ */
+    const $ = id => document.getElementById(id);
+    const views = document.querySelectorAll('.view');
+    const backBtn = $('backBtn');
+    const toastEl = $('toast');
+    const scanner = $('scanner');
+    const scanVideo = $('scanVideo');
+    const scanCanvas = document.createElement('canvas');
+
+    /* ═══════════ TOAST ═══════════ */
+    let toastTimer;
+    function toast(msg, isError) {
+        toastEl.textContent = msg;
+        toastEl.className = 'toast show' + (isError ? ' error' : '');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    /* ═══════════ VIEW NAVIGATION ═══════════ */
+    function showView(name) {
+        state.currentView = name;
+        views.forEach(v => v.classList.toggle('active', v.dataset.view === name));
+        backBtn.classList.toggle('hidden', name === 'home');
+    }
+    backBtn.addEventListener('click', () => {
+        if (state.currentView === 'home') return;
+        if (state.currentView === 'connected') {
+            if (!confirm('Disconnect and lose the current session?')) return;
         }
+        resetEverything();
+        showView('home');
+    });
 
-        applyTheme(false); // Default light mode
-
-        themeBtn.addEventListener('click', () => {
-            applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
-        });
-
-        /* ═══════════════ PREFERENCES LOGIC ═══════════════ */
-        const instSelect = document.getElementById('institute');
-        const intakeSelect = document.getElementById('intake');
-        const secSelect = document.getElementById('section');
-
-        // Keys for localStorage
-        const PREF_KEY = '66notes_login_prefs';
-
-        // Load saved preferences
+    /* ═══════════ SDP ENCODE / DECODE ═══════════ */
+    function encodeSdp(sdp) {
+        if (window.LZString) {
+            try { return LZString.compressToEncodedURIComponent(sdp); }
+            catch (e) { /* fall through */ }
+        }
+        // Fallback: base64 of URI-encoded (larger but works)
+        return btoa(unescape(encodeURIComponent(sdp))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+    function decodeSdp(str) {
+        str = (str || '').trim();
+        if (!str) return null;
+        // Raw SDP pasted directly
+        if (str.startsWith('v=0')) return str;
+        // Try LZ-String
+        if (window.LZString) {
+            try {
+                const out = LZString.decompressFromEncodedURIComponent(str);
+                if (out && out.startsWith('v=0')) return out;
+            } catch (e) {}
+        }
+        // Try base64 fallback
         try {
-            const saved = JSON.parse(localStorage.getItem(PREF_KEY));
-            if (saved) {
-                if (saved.institute) instSelect.value = saved.institute;
-                if (saved.intake) intakeSelect.value = saved.intake;
-                if (saved.section) secSelect.value = saved.section;
-            }
-        } catch (e) {
-            console.warn('Could not load preferences');
+            const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+            const padded = b64 + '==='.slice((b64.length + 3) % 4);
+            const decoded = decodeURIComponent(escape(atob(padded)));
+            if (decoded.startsWith('v=0')) return decoded;
+        } catch (e) {}
+        return null;
+    }
+
+    /* ═══════════ QR RENDERING ═══════════ */
+    async function renderQR(canvasId, skeletonId, payload) {
+        const canvas = $(canvasId);
+        const skeleton = $(skeletonId);
+
+        // Fit QR to screen width but never exceed 300px
+        const size = Math.min(300, Math.max(200, Math.floor(window.innerWidth * 0.72)));
+
+        try {
+            await QRCode.toCanvas(canvas, payload, {
+                width: size,
+                margin: 2,
+                errorCorrectionLevel: 'M',
+                color: { dark: '#000000', light: '#ffffff' }
+            });
+            canvas.hidden = false;
+            skeleton.hidden = true;
+        } catch (err) {
+            console.error('QR render failed:', err);
+            canvas.hidden = true;
+            skeleton.hidden = false;
+            skeleton.innerHTML = '⚠️ QR payload is too large.<br/>Use the copy / paste code instead.';
+        }
+    }
+
+    /* ═══════════ ICE GATHERING ═══════════ */
+    function waitForIce(pc, timeoutMs = 3000) {
+        return new Promise(resolve => {
+            if (pc.iceGatheringState === 'complete') return resolve();
+            let done = false;
+            const finish = () => {
+                if (done) return;
+                done = true;
+                pc.removeEventListener('icegatheringstatechange', onChange);
+                resolve();
+            };
+            const onChange = () => {
+                if (pc.iceGatheringState === 'complete') finish();
+            };
+            pc.addEventListener('icegatheringstatechange', onChange);
+            setTimeout(finish, timeoutMs);
+        });
+    }
+
+    /* ═══════════ STATUS HELPERS ═══════════ */
+    function setStatus(id, msg, type) {
+        const el = $(id);
+        if (!el) return;
+        if (!msg) { el.hidden = true; return; }
+        el.hidden = false;
+        el.className = 'status' + (type ? ' ' + type : '');
+        const icons = {
+            error: 'fa-triangle-exclamation',
+            success: 'fa-circle-check',
+            '': 'fa-circle-notch fa-spin'
+        };
+        const icon = icons[type || ''] || icons[''];
+        el.innerHTML = `<i class="fas ${icon}"></i><span>${escapeHtml(msg)}</span>`;
+    }
+    function escapeHtml(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
+    /* ═══════════ CREATE OFFER ═══════════ */
+    async function startCreate() {
+        resetConnection();
+        setStatus('createStatus', 'Preparing your QR…');
+
+        const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        state.pc = pc;
+
+        // We create the data channel — the joiner will receive it
+        const dc = pc.createDataChannel('66share', { ordered: true });
+        setupDataChannel(dc);
+
+        pc.onconnectionstatechange = handleConnectionStateChange;
+
+        try {
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            await waitForIce(pc);
+
+            const encoded = encodeSdp(pc.localDescription.sdp);
+            await renderQR('offerCanvas', 'offerSkeleton', encoded);
+
+            setStatus('createStatus', 'QR ready — waiting for the other device to scan.');
+            showView('create');
+        } catch (err) {
+            console.error(err);
+            setStatus('createStatus', 'Could not create the offer. Try again.', 'error');
+            toast('Failed to create share', true);
+        }
+    }
+
+    /* ═══════════ JOIN — SCAN OR PASTE OFFER ═══════════ */
+    async function acceptOffer(encodedOffer) {
+        resetConnection();
+        setStatus('joinStatus', 'Reading the offer…');
+
+        const sdp = decodeSdp(encodedOffer);
+        if (!sdp) {
+            setStatus('joinStatus', 'That does not look like a valid offer code.', 'error');
+            toast('Invalid offer code', true);
+            return;
         }
 
-        // Save preferences when form is submitted
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
+        const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+        state.pc = pc;
 
-            // Save to localStorage
-            const prefs = {
-                institute: instSelect.value,
-                intake: intakeSelect.value,
-                section: secSelect.value
-            };
-            localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+        pc.ondatachannel = e => {
+            setupDataChannel(e.channel);
+        };
+        pc.onconnectionstatechange = handleConnectionStateChange;
 
-            // Redirect logic
-            let targetUrl = 'https://66notes.github.io/4'; // Default
-            
-            if (prefs.section === '4') {
-                targetUrl = 'https://66notes.github.io/4';
-            } else if (prefs.section === 'DEMO') {
-                targetUrl = 'https://66notes.github.io/demo';
+        try {
+            await pc.setRemoteDescription({ type: 'offer', sdp });
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            await waitForIce(pc);
+
+            const encoded = encodeSdp(pc.localDescription.sdp);
+            await renderQR('answerCanvas', 'answerSkeleton', encoded);
+
+            setStatus('answerStatus', 'Show this QR to the creator — or copy the code.');
+            showView('answer');
+        } catch (err) {
+            console.error(err);
+            setStatus('joinStatus', 'Could not process that offer. Try scanning again.', 'error');
+        }
+    }
+
+    /* ═══════════ CREATE — ACCEPT ANSWER ═══════════ */
+    async function acceptAnswer(encodedAnswer) {
+        if (!state.pc) { toast('No pending connection', true); return; }
+        setStatus('createStatus', 'Connecting…');
+
+        const sdp = decodeSdp(encodedAnswer);
+        if (!sdp) {
+            setStatus('createStatus', 'That does not look like a valid answer code.', 'error');
+            return;
+        }
+
+        try {
+            await state.pc.setRemoteDescription({ type: 'answer', sdp });
+            // Connection state change handler will fire 'connected'
+        } catch (err) {
+            console.error(err);
+            setStatus('createStatus', 'Could not use that answer code.', 'error');
+        }
+    }
+
+    /* ═══════════ CONNECTION STATE ═══════════ */
+    function handleConnectionStateChange() {
+        const pc = state.pc;
+        if (!pc) return;
+        const s = pc.connectionState;
+
+        if (s === 'connected') {
+            // DC onopen will fire shortly after; we show the view there for reliability
+        } else if (s === 'failed') {
+            toast('Connection failed', true);
+            setStatus('createStatus', 'Connection failed — try again.', 'error');
+            setStatus('answerStatus', 'Connection failed — try again.', 'error');
+            setStatus('joinStatus', 'Connection failed — try again.', 'error');
+        } else if (s === 'disconnected') {
+            toast('Connection lost', true);
+        }
+    }
+
+    /* ═══════════ DATA CHANNEL ═══════════ */
+    function setupDataChannel(dc) {
+        state.dc = dc;
+        dc.binaryType = 'arraybuffer';
+
+        dc.onopen = () => {
+            showView('connected');
+            setStatus('createStatus', null);
+            setStatus('answerStatus', null);
+            setStatus('joinStatus', null);
+            toast('Connected! Pick files to send.');
+        };
+
+        dc.onmessage = handleDcMessage;
+
+        dc.onclose = () => {
+            if (state.currentView === 'connected') {
+                toast('Connection closed', true);
+            }
+        };
+
+        dc.onerror = e => {
+            console.error('DataChannel error:', e);
+        };
+    }
+
+    /* ═══════════ MESSAGE HANDLING ═══════════ */
+    function handleDcMessage(e) {
+        // String messages = JSON metadata
+        if (typeof e.data === 'string') {
+            let msg;
+            try { msg = JSON.parse(e.data); } catch { return; }
+
+            if (msg.type === 'meta') {
+                startReceiving(msg);
+            } else if (msg.type === 'end') {
+                finishReceiving(msg.id);
+            } else if (msg.type === 'ping') {
+                // keepalive — ignore
+            }
+            return;
+        }
+
+        // Binary = file chunk with 8-byte id prefix
+        const bytes = new Uint8Array(e.data);
+        if (bytes.byteLength < FILE_ID_LEN) return;
+
+        const idBytes = bytes.subarray(0, FILE_ID_LEN);
+        const fileId = new TextDecoder().decode(idBytes).replace(/\0+$/, '');
+        const chunk = bytes.subarray(FILE_ID_LEN);
+
+        const r = state.receiving[fileId];
+        if (!r) return;
+
+        r.chunks.push(chunk);
+        r.received += chunk.byteLength;
+        updateReceiveProgress(r);
+    }
+
+    /* ═══════════ RECEIVING ═══════════ */
+    function startReceiving(msg) {
+        const row = document.createElement('div');
+        row.className = 'transfer incoming';
+        row.innerHTML = `
+            <div class="transfer-header">
+                <div class="transfer-dir in"><i class="fas fa-arrow-down"></i></div>
+                <div class="transfer-name">${escapeHtml(msg.name)}</div>
+            </div>
+            <div class="transfer-bar"><i></i></div>
+            <div class="transfer-meta">
+                <span class="t-status">Receiving…</span>
+                <span class="t-pct">0% · ${formatBytes(msg.size)}</span>
+            </div>`;
+        $('transfers').appendChild(row);
+
+        state.receiving[msg.id] = {
+            id: msg.id,
+            name: msg.name,
+            size: msg.size,
+            mime: msg.mime || 'application/octet-stream',
+            chunks: [],
+            received: 0,
+            rowEl: row
+        };
+    }
+
+    function updateReceiveProgress(r) {
+        const pct = r.size ? Math.min(100, Math.round((r.received / r.size) * 100)) : 100;
+        const bar = r.rowEl.querySelector('.transfer-bar > i');
+        const pctEl = r.rowEl.querySelector('.t-pct');
+        if (bar) bar.style.width = pct + '%';
+        if (pctEl) pctEl.textContent = `${pct}% · ${formatBytes(r.size)}`;
+    }
+
+    function finishReceiving(fileId) {
+        const r = state.receiving[fileId];
+        if (!r) return;
+
+        const blob = new Blob(r.chunks, { type: r.mime });
+        const url = URL.createObjectURL(blob);
+
+        // Try auto-download
+        try {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = sanitizeFilename(r.name);
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } catch (e) {
+            console.warn('Auto-download blocked', e);
+        }
+
+        // Always add a re-download button
+        const dl = document.createElement('a');
+        dl.className = 'dl-btn';
+        dl.href = url;
+        dl.download = sanitizeFilename(r.name);
+        dl.innerHTML = '<i class="fas fa-download"></i> Download';
+        r.rowEl.appendChild(dl);
+
+        r.rowEl.querySelector('.t-status').textContent = 'Saved';
+        r.rowEl.querySelector('.t-status').classList.add('done');
+        r.rowEl.querySelector('.transfer-bar > i').style.width = '100%';
+
+        // Free memory after a while
+        setTimeout(() => URL.revokeObjectURL(url), 5 * 60 * 1000);
+
+        delete state.receiving[fileId];
+        toast(`Received ${r.name}`);
+    }
+
+    /* ═══════════ SENDING ═══════════ */
+    async function sendFile(file) {
+        const dc = state.dc;
+        if (!dc || dc.readyState !== 'open') {
+            toast('Not connected', true);
+            return;
+        }
+        if (file.size === 0) {
+            toast('Empty file, skipping.', true);
+            return;
+        }
+
+        const id = generateFileId();
+        const row = document.createElement('div');
+        row.className = 'transfer';
+        row.innerHTML = `
+            <div class="transfer-header">
+                <div class="transfer-dir out"><i class="fas fa-arrow-up"></i></div>
+                <div class="transfer-name">${escapeHtml(file.name)}</div>
+            </div>
+            <div class="transfer-bar"><i></i></div>
+            <div class="transfer-meta">
+                <span class="t-status">Sending…</span>
+                <span class="t-pct">0% · ${formatBytes(file.size)}</span>
+            </div>`;
+        $('transfers').appendChild(row);
+
+        const bar = row.querySelector('.transfer-bar > i');
+        const pctEl = row.querySelector('.t-pct');
+        const statusEl = row.querySelector('.t-status');
+
+        try {
+            // Send metadata
+            dc.send(JSON.stringify({
+                type: 'meta',
+                id,
+                name: file.name,
+                size: file.size,
+                mime: file.type || 'application/octet-stream'
+            }));
+
+            const idBytes = new TextEncoder().encode(id.padEnd(FILE_ID_LEN, '0').slice(0, FILE_ID_LEN));
+
+            let offset = 0;
+            while (offset < file.size) {
+                if (dc.readyState !== 'open') {
+                    statusEl.textContent = 'Disconnected';
+                    statusEl.classList.add('error');
+                    return;
+                }
+
+                // Backpressure: wait until the buffer drains
+                while (dc.bufferedAmount > MAX_BUFFERED) {
+                    if (dc.readyState !== 'open') break;
+                    await sleep(20);
+                }
+
+                const slice = file.slice(offset, offset + CHUNK_SIZE);
+                const buf = await slice.arrayBuffer();
+
+                // Prefix chunk with fileId
+                const combined = new Uint8Array(idBytes.byteLength + buf.byteLength);
+                combined.set(idBytes, 0);
+                combined.set(new Uint8Array(buf), idBytes.byteLength);
+                dc.send(combined);
+
+                offset += buf.byteLength;
+                const pct = Math.round((offset / file.size) * 100);
+                bar.style.width = pct + '%';
+                pctEl.textContent = `${pct}% · ${formatBytes(file.size)}`;
             }
 
-            window.location.href = targetUrl;
+            dc.send(JSON.stringify({ type: 'end', id }));
+            statusEl.textContent = 'Sent';
+            statusEl.classList.add('done');
+            bar.style.width = '100%';
+            pctEl.textContent = `100% · ${formatBytes(file.size)}`;
+        } catch (err) {
+            console.error('Send failed:', err);
+            statusEl.textContent = 'Failed';
+            statusEl.classList.add('error');
+        }
+    }
+
+    async function sendFilesSequentially(files) {
+        for (const f of files) {
+            await sendFile(f);
+        }
+    }
+
+    /* ═══════════ HELPERS ═══════════ */
+    function generateFileId() {
+        let s = '';
+        while (s.length < FILE_ID_LEN) {
+            s += Math.random().toString(36).slice(2);
+        }
+        return s.slice(0, FILE_ID_LEN);
+    }
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+    function formatBytes(n) {
+        if (n < 1024) return n + ' B';
+        if (n < 1048576) return (n / 1024).toFixed(0) + ' KB';
+        if (n < 1073741824) return (n / 1048576).toFixed(1) + ' MB';
+        return (n / 1073741824).toFixed(2) + ' GB';
+    }
+    function sanitizeFilename(name) {
+        return (name || 'download').replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').slice(0, 200);
+    }
+
+    /* ═══════════ SCANNER ═══════════ */
+    async function openScanner(purpose) {
+        state.pendingPurpose = purpose;
+        scanner.classList.add('active');
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: { ideal: 'environment' },
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false
+            });
+            state.cameraStream = stream;
+            scanVideo.srcObject = stream;
+            await scanVideo.play();
+            scanLoop();
+        } catch (err) {
+            console.error('Camera error:', err);
+            toast('Camera unavailable. Paste the code instead.', true);
+            closeScanner();
+        }
+    }
+
+    function closeScanner() {
+        scanner.classList.remove('active');
+        if (state.scanRAF) {
+            cancelAnimationFrame(state.scanRAF);
+            state.scanRAF = null;
+        }
+        if (state.cameraStream) {
+            state.cameraStream.getTracks().forEach(t => t.stop());
+            state.cameraStream = null;
+        }
+        scanVideo.srcObject = null;
+    }
+
+    let lastScanTime = 0;
+    function scanLoop() {
+        if (!scanner.classList.contains('active')) return;
+
+        const now = performance.now();
+        if (now - lastScanTime > 120 && scanVideo.readyState === scanVideo.HAVE_ENOUGH_DATA) {
+            lastScanTime = now;
+            const w = scanVideo.videoWidth;
+            const h = scanVideo.videoHeight;
+            if (w && h) {
+                scanCanvas.width = w;
+                scanCanvas.height = h;
+                const ctx = scanCanvas.getContext('2d', { willReadFrequently: true });
+                ctx.drawImage(scanVideo, 0, 0, w, h);
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const code = jsQR(imgData.data, w, h, { inversionAttempts: 'dontInvert' });
+                if (code && code.data) {
+                    const data = code.data;
+                    const purpose = state.pendingPurpose;
+                    closeScanner();
+                    handleScanned(purpose, data);
+                    return;
+                }
+            }
+        }
+        state.scanRAF = requestAnimationFrame(scanLoop);
+    }
+
+    function handleScanned(purpose, text) {
+        if (purpose === 'offer') acceptOffer(text);
+        else if (purpose === 'answer') acceptAnswer(text);
+    }
+
+    /* ═══════════ RESET / CLEANUP ═══════════ */
+    function resetConnection() {
+        try { if (state.dc) state.dc.close(); } catch (e) {}
+        try { if (state.pc) state.pc.close(); } catch (e) {}
+        state.pc = null;
+        state.dc = null;
+        state.receiving = {};
+        $('transfers').innerHTML = '';
+        $('fileInput').value = '';
+        ['createStatus', 'answerStatus', 'joinStatus'].forEach(id => {
+            const el = $(id);
+            if (el) { el.hidden = true; el.className = 'status'; }
         });
-    })();
-    </script>
+    }
+
+    function resetEverything() {
+        resetConnection();
+        closeScanner();
+        $('answerInput').value = '';
+        $('offerInput').value = '';
+        $('offerCanvas').hidden = true;
+        $('answerCanvas').hidden = true;
+        $('offerSkeleton').hidden = false;
+        $('answerSkeleton').hidden = false;
+        $('offerSkeleton').textContent = 'Generating QR…';
+        $('answerSkeleton').textContent = 'Generating QR…';
+    }
+
+    /* ═══════════ EVENT BINDINGS ═══════════ */
+    $('btnCreate').addEventListener('click', startCreate);
+
+    $('btnJoin').addEventListener('click', () => {
+        resetConnection();
+        showView('join');
+    });
+
+    $('btnScanOffer').addEventListener('click', () => openScanner('offer'));
+    $('btnScanAnswer').addEventListener('click', () => openScanner('answer'));
+
+    $('btnAcceptOffer').addEventListener('click', () => {
+        const v = $('offerInput').value.trim();
+        if (!v) { toast('Paste the offer code first', true); return; }
+        acceptOffer(v);
+    });
+
+    $('btnAcceptAnswer').addEventListener('click', () => {
+        const v = $('answerInput').value.trim();
+        if (!v) { toast('Paste the answer code first', true); return; }
+        acceptAnswer(v);
+    });
+
+    $('btnCopyAnswer').addEventListener('click', async () => {
+        const txt = $('answerCanvas').dataset.encoded || '';
+        if (!txt) { toast('QR not ready yet', true); return; }
+        try {
+            await navigator.clipboard.writeText(txt);
+            toast('Copied to clipboard');
+        } catch {
+            // Fallback for old browsers
+            const ta = document.createElement('textarea');
+            ta.value = txt;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            toast('Copied');
+        }
+    });
+
+    $('fileInput').addEventListener('change', e => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        e.target.value = '';
+        sendFilesSequentially(files);
+    });
+
+    $('btnDisconnect').addEventListener('click', () => {
+        if (!confirm('Disconnect this session?')) return;
+        resetEverything();
+        showView('home');
+    });
+
+    $('scanClose').addEventListener('click', closeScanner);
+
+    // Store the encoded answer on the canvas for copy-button use
+    const originalRenderQR = renderQR;
+    renderQR = async function (canvasId, skeletonId, payload) {
+        await originalRenderQR(canvasId, skeletonId, payload);
+        const canvas = $(canvasId);
+        canvas.dataset.encoded = payload;
+    };
+
+    /* ═══════════ DRAG & DROP FILES ON CONNECTED VIEW ═══════════ */
+    ['dragover', 'drop'].forEach(evt => {
+        window.addEventListener(evt, e => {
+            if (state.currentView !== 'connected') return;
+            e.preventDefault();
+            if (evt === 'drop' && e.dataTransfer && e.dataTransfer.files.length) {
+                sendFilesSequentially(Array.from(e.dataTransfer.files));
+            }
+        });
+    });
+
+    /* ═══════════ CLEAN UP ON UNLOAD ═══════════ */
+    window.addEventListener('beforeunload', e => {
+        if (state.pc && state.pc.connectionState === 'connected') {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    /* ═══════════ START ═══════════ */
+    showView('home');
+
+})();
+</script>
 </body>
 </html>
