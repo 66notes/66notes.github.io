@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#ffffff" />
+<title>66notes - PDF Presentation Player</title>
+<meta name="description" content="Drag & drop a PDF and present it fullscreen with zoom, text highlighting, and free-draw highlights. History is kept in localStorage." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<!-- PDF rendering -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<style>
+    /* ═══════════════ DESIGN TOKENS ═══════════════ */
+    :root {
+        --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+        --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+        --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
+        --green: #22c55e; --amber: #f59e0b; --purple: #8b5cf6;
+        --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, .03);
+        --shadow: 0 6px 20px rgba(0, 0, 0, .05);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, .07);
+        --transition: .2s cubic-bezier(.4, 0, .2, 1);
+    }
+    :root[data-theme="dark"] {
+        --bg: #0f0f10; --surface: #1a1a1c; --border: #2a2a2d; --border-strong: #3a3a3e;
+        --text: #eaeaea; --text-secondary: #a0a0a3; --text-muted: #6e6e72;
+        --navy: #e4e4e6; --accent: #7bb0ff; --accent-light: #242428;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, .4);
+        --shadow: 0 6px 20px rgba(0, 0, 0, .5);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, .6);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+    body {
+        font-family: 'Poppins', system-ui, sans-serif;
+        background: var(--bg); color: var(--text);
+        -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5;
+        transition: background .25s, color .25s;
+    }
+
+    /* ═══════════════ TOP APP BAR ═══════════════ */
+    .top-app-bar {
+        position: sticky; top: 0; z-index: 10;
+        display: flex; align-items: center; justify-content: space-between;
+        height: 56px; padding: 0 18px;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+    }
+    .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -.3px; }
+    .top-app-bar__title span { color: var(--accent); }
+    .app-bar-actions { display: flex; align-items: center; gap: 8px; }
+    .theme-toggle-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 34px; height: 34px; border-radius: 50%;
+        background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent);
+        font-size: .85rem; cursor: pointer; transition: background var(--transition), transform .15s;
+    }
+    .theme-toggle-btn:active { transform: scale(.92); }
+    :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
+
+    /* ═══════════════ LANDING ═══════════════ */
+    .content { max-width: 860px; margin: 0 auto; padding: 46px 20px 40px; }
+    .hero { text-align: center; margin-bottom: 34px; }
+    .hero h1 { font-size: 2.1rem; line-height: 1.2; font-weight: 700; color: var(--navy); letter-spacing: -.6px; margin-bottom: 12px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: .92rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+
+    .dropzone {
+        position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 10px; padding: 56px 24px; cursor: pointer;
+        background: var(--surface); border: 2px dashed var(--border-strong);
+        border-radius: var(--radius-xl); box-shadow: var(--shadow);
+        transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .dropzone:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+    .dropzone.dragover { border-color: var(--accent); background: var(--accent-light); transform: scale(1.012); box-shadow: var(--shadow-lg); }
+    .dz-icon {
+        width: 68px; height: 68px; border-radius: 20px;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--accent-light); color: var(--accent); font-size: 1.6rem;
+        transition: transform var(--transition);
+    }
+    .dropzone.dragover .dz-icon { transform: translateY(-4px); }
+    .dz-title { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+    .dz-sub { font-size: .8rem; color: var(--text-secondary); }
+    .dz-btn {
+        display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
+        padding: 10px 24px; border-radius: 40px; background: var(--navy); color: #fff;
+        font-size: .82rem; font-weight: 600; min-height: 42px;
+        box-shadow: 0 4px 14px rgba(13, 43, 78, .18);
+    }
+    :root[data-theme="dark"] .dz-btn { background: #2563eb; box-shadow: 0 4px 14px rgba(37, 99, 235, .3); }
+    .dz-loading {
+        position: absolute; inset: 0; display: none; align-items: center; justify-content: center; gap: 10px;
+        border-radius: inherit; background: var(--surface);
+        font-size: .85rem; font-weight: 600; color: var(--accent); z-index: 2;
+    }
+    .dropzone.is-loading .dz-loading { display: flex; }
+    .dropzone.is-loading > *:not(.dz-loading) { visibility: hidden; }
+    .spinner-sm {
+        width: 20px; height: 20px; border-radius: 50%;
+        border: 2.5px solid rgba(37, 99, 235, .2); border-top-color: var(--accent);
+        animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pptx-mini-row { display: flex; justify-content: center; margin-top: 14px; }
+    .pptx-mini-btn {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 7px 16px; border: none; border-radius: 30px;
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        color: #fff; font-family: 'Poppins', sans-serif;
+        font-size: .72rem; font-weight: 600; cursor: pointer;
+        box-shadow: 0 4px 12px rgba(234, 88, 12, .28);
+        transition: transform .15s, box-shadow .2s;
+    }
+    .pptx-mini-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(234, 88, 12, .38); }
+    .pptx-mini-btn:active { transform: translateY(0); }
+    .pptx-mini-btn i { font-size: .7rem; }
+
+    .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+    .chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 5px 14px; border-radius: 30px; font-size: .7rem; font-weight: 600;
+        background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+        box-shadow: var(--shadow-sm);
+    }
+    .chip i { color: var(--accent); font-size: .72rem; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 34px; }
+    .feature-card {
+        background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+        padding: 20px 16px; box-shadow: var(--shadow-sm);
+    }
+    .feature-card .f-icon {
+        width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center;
+        background: var(--accent-light); color: var(--accent); font-size: .95rem; margin-bottom: 12px;
+    }
+    .feature-card h3 { font-size: .84rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .feature-card p { font-size: .73rem; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ═══════════════ HISTORY ═══════════════ */
+    .history-section { margin-top: 34px; }
+    .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .history-header h2 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .clear-history-btn {
+        background: transparent; border: 1px solid var(--border); border-radius: 20px;
+        padding: 4px 12px; font-family: 'Poppins', sans-serif; font-size: .68rem; font-weight: 600;
+        color: var(--text-secondary); cursor: pointer; transition: background var(--transition);
+    }
+    .clear-history-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-item {
+        display: flex; align-items: center; gap: 12px;
+        background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 10px 14px; box-shadow: var(--shadow-sm);
+        transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .history-item:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+    .history-icon {
+        width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: #fee2e2; color: #dc2626; font-size: .9rem;
+    }
+    .history-info { flex: 1; min-width: 0; }
+    .history-name {
+        font-size: .8rem; font-weight: 600; color: var(--navy);
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .history-meta { font-size: .64rem; color: var(--text-muted); margin-top: 1px; }
+    .history-open {
+        padding: 5px 16px; border-radius: 20px; border: none; flex-shrink: 0;
+        background: var(--navy); color: #fff; font-family: 'Poppins', sans-serif;
+        font-size: .68rem; font-weight: 600; cursor: pointer;
+    }
+    :root[data-theme="dark"] .history-open { background: #2563eb; }
+    .history-remove {
+        width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+        font-size: .7rem;
+    }
+    .history-remove:hover { background: #fee2e2; color: #dc2626; }
+
+    /* ═══════════════ BACK TO HOME FOOTER ═══════════════ */
+    .home-footer {
+        max-width: 860px; margin: 0 auto;
+        padding: 6px 20px 40px;
+        display: flex; justify-content: center;
+    }
+    .back-home-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+        padding: 11px 28px; border-radius: 40px; text-decoration: none;
+        background: var(--surface); border: 1px solid var(--border);
+        color: var(--navy); font-size: .82rem; font-weight: 600;
+        min-height: 44px; box-shadow: var(--shadow-sm);
+        transition: background var(--transition), border-color var(--transition), transform .15s, box-shadow var(--transition);
+    }
+    .back-home-btn:hover {
+        background: var(--accent-light); border-color: var(--accent);
+        color: var(--accent); box-shadow: var(--shadow);
+    }
+    .back-home-btn:active { transform: scale(.97); }
+    .back-home-btn i { font-size: .8rem; }
+
+    /* ═══════════════ TOAST ═══════════════ */
+    .toast {
+        position: fixed; left: 50%; bottom: 34px; z-index: 300;
+        transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+        background: #0d2b4e; color: #fff; padding: 12px 22px; border-radius: 40px;
+        font-size: .82rem; font-weight: 500; max-width: 90vw; text-align: center;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, .28);
+        transition: opacity .25s ease, transform .25s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ═══════════════ MODALS ═══════════════ */
+    .modal-overlay {
+        position: fixed; inset: 0; z-index: 400;
+        display: none; align-items: center; justify-content: center;
+        background: rgba(0, 0, 0, .6); padding: 20px;
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+        background: var(--surface); border-radius: var(--radius-xl);
+        max-width: 480px; width: 100%; padding: 26px 24px 22px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+        animation: modal-in .22s cubic-bezier(.34, 1.4, .64, 1);
+        text-align: center;
+    }
+    @keyframes modal-in { from { opacity: 0; transform: scale(.94) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-icon {
+        width: 60px; height: 60px; border-radius: 18px; margin: 0 auto 16px;
+        display: flex; align-items: center; justify-content: center;
+        background: #fff7ed; color: #ea580c; font-size: 1.5rem;
+    }
+    .modal-icon.danger { background: #fee2e2; color: #dc2626; }
+    :root[data-theme="dark"] .modal-icon { background: #2a2419; color: #fb923c; }
+    :root[data-theme="dark"] .modal-icon.danger { background: #3d1a1a; color: #f87171; }
+    .modal-box h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .modal-box p { font-size: .82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 18px; }
+    .modal-box p b { color: var(--text); font-weight: 600; }
+    .modal-steps {
+        text-align: left; background: var(--bg); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px;
+        font-size: .78rem; color: var(--text); line-height: 1.7;
+    }
+    .modal-steps ol { padding-left: 18px; margin: 0; }
+    .modal-steps li { margin-bottom: 4px; }
+    .modal-steps li:last-child { margin-bottom: 0; }
+    .modal-link-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 12px 20px; border-radius: 40px; text-decoration: none;
+        background: #ea580c; color: #fff; font-size: .85rem; font-weight: 600;
+        min-height: 46px; margin-bottom: 10px;
+        transition: background .18s, transform .12s;
+        box-shadow: 0 6px 18px rgba(234, 88, 12, .3);
+    }
+    .modal-link-btn:hover { background: #c2410c; }
+    .modal-link-btn:active { transform: scale(.98); }
+    .modal-close-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 100%; padding: 10px 20px; border-radius: 40px;
+        background: transparent; border: 1px solid var(--border);
+        color: var(--text-secondary); font-family: 'Poppins', sans-serif;
+        font-size: .78rem; font-weight: 600; cursor: pointer; min-height: 42px;
+        transition: background var(--transition);
+    }
+    .modal-close-btn:hover { background: var(--bg); }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-actions > * { flex: 1; margin-bottom: 0 !important; }
+    .modal-danger-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        padding: 10px 20px; border-radius: 40px; border: none;
+        background: #dc2626; color: #fff; font-family: 'Poppins', sans-serif;
+        font-size: .78rem; font-weight: 600; cursor: pointer; min-height: 42px;
+        transition: background .18s, transform .12s;
+    }
+    .modal-danger-btn:hover { background: #b91c1c; }
+    .modal-danger-btn:active { transform: scale(.97); }
+
+    /* ═══════════════ VIEWER ═══════════════ */
+    .viewer {
+        position: fixed; inset: 0; z-index: 100; background: #0a0a0c;
+        user-select: none; -webkit-user-select: none;
+    }
+    .viewer[hidden] { display: none; }
+
+    .stage { position: absolute; inset: 0; padding: 68px 92px 96px; overflow: hidden; }
+    .stage-inner {
+        position: relative; width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    .slide-wrap {
+        position: relative; flex: none;
+        transform-origin: center center;
+        will-change: transform;
+        box-shadow: 0 26px 70px rgba(0, 0, 0, .6);
+        border-radius: 3px;
+        background: #fff;
+    }
+
+    .slide-canvas-pdf { display: block; border-radius: 3px; background: #fff; }
+
+    .highlight-layer {
+        position: absolute; inset: 0; pointer-events: none; z-index: 1;
+        overflow: hidden;
+    }
+    /* Text-selection highlights (multiply blends with the text) */
+    .hl-rect {
+        position: absolute;
+        background: rgba(250, 204, 21, .5);
+        border-radius: 2px;
+        mix-blend-mode: multiply;
+        box-shadow: inset 0 0 0 1px rgba(234, 179, 8, .45);
+    }
+    /* Free-draw highlights — lighter fill + clear border so text stays readable */
+    .hl-rect.hl-free {
+        background: rgba(253, 224, 71, .42);
+        mix-blend-mode: normal;
+        border: 1.5px solid rgba(202, 138, 4, .65);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .18), 0 1px 4px rgba(0, 0, 0, .12);
+        border-radius: 3px;
+    }
+    .hl-rect.hl-preview {
+        background: rgba(253, 224, 71, .3);
+        border: 1.5px dashed rgba(202, 138, 4, .8);
+        box-shadow: none;
+        mix-blend-mode: normal;
+        border-radius: 3px;
+    }
+
+    /* pdf.js text layer — invisible but selectable */
+    .textLayer {
+        position: absolute; inset: 0; z-index: 2;
+        overflow: hidden; line-height: 1;
+        text-align: initial;
+        -webkit-text-size-adjust: none; text-size-adjust: none;
+        forced-color-adjust: none;
+        transform-origin: 0 0;
+        pointer-events: none; user-select: none; -webkit-user-select: none;
+    }
+    .textLayer span, .textLayer br {
+        color: transparent;
+        position: absolute;
+        white-space: pre;
+        cursor: text;
+        transform-origin: 0% 0%;
+    }
+    .textLayer span::selection, .textLayer br::selection { background: rgba(59, 130, 246, .35); }
+
+    /* free-draw capture layer */
+    .draw-layer {
+        position: absolute; inset: 0; z-index: 3;
+        pointer-events: none;
+    }
+
+    /* ── TOOL MODES ── */
+    .viewer[data-tool="select"] .textLayer,
+    .viewer[data-tool="hltext"] .textLayer {
+        pointer-events: auto; user-select: text; -webkit-user-select: text;
+    }
+    .viewer[data-tool="hldraw"] .draw-layer {
+        pointer-events: auto; cursor: crosshair;
+    }
+    .viewer[data-tool="pan"] .stage { cursor: grab; }
+    .viewer[data-tool="pan"] .stage.dragging { cursor: grabbing; }
+
+    .stage-spinner {
+        position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -20px;
+        width: 40px; height: 40px; border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, .15); border-top-color: #3b82f6;
+        animation: spin .8s linear infinite;
+    }
+
+    .v-ui { transition: opacity .28s ease; }
+    .viewer.controls-hidden .v-ui { opacity: 0; pointer-events: none; }
+    .viewer.controls-hidden { cursor: none; }
+
+    .v-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(255, 255, 255, .08); z-index: 5; }
+    .v-progress > i { display: block; height: 100%; width: 0; background: #3b82f6; border-radius: 0 3px 3px 0; transition: width .28s cubic-bezier(.4, 0, .2, 1); }
+
+    .v-top {
+        position: absolute; top: 0; left: 0; right: 0; height: 58px; z-index: 6;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 18px; gap: 10px;
+        background: linear-gradient(180deg, rgba(10, 10, 12, .92) 0%, rgba(10, 10, 12, 0) 100%);
+    }
+    .v-top-left {
+        display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;
+    }
+    .v-file {
+        display: inline-flex; align-items: center; gap: 9px;
+        color: #e8e8ea; font-size: .78rem; font-weight: 500;
+        background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .1);
+        padding: 7px 14px; border-radius: 30px; min-width: 0;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    .v-file i { color: #f87171; font-size: .8rem; flex-shrink: 0; }
+    .v-file span { overflow: hidden; text-overflow: ellipsis; }
+
+    .v-tools {
+        display: flex; align-items: center; gap: 3px;
+        padding: 4px; border-radius: 40px;
+        background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        flex-shrink: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .v-tools::-webkit-scrollbar { display: none; }
+    .v-tools .v-icon-btn { width: 32px; height: 32px; font-size: .78rem; background: transparent; border: none; }
+    .v-tools .v-icon-btn:hover { background: rgba(255, 255, 255, .14); }
+    .v-tools .v-icon-btn.is-active { background: #2563eb; color: #fff; }
+    .v-tools .v-icon-btn.is-active:hover { background: #1d4ed8; }
+    .v-tools .v-icon-btn.hl-active { background: #facc15 !important; color: #422006 !important; }
+    .v-tools .v-icon-btn.hl-active:hover { background: #fde047 !important; }
+    .v-tools-sep {
+        width: 1px; height: 18px; background: rgba(255, 255, 255, .16);
+        margin: 0 3px; flex-shrink: 0;
+    }
+
+    .v-icon-btn {
+        width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .12);
+        color: #e8e8ea; font-size: .85rem; cursor: pointer;
+        transition: background .18s, transform .12s, color .18s;
+    }
+    .v-icon-btn:hover { background: rgba(255, 255, 255, .18); }
+    .v-icon-btn:active { transform: scale(.93); }
+    .v-icon-btn.is-active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+    .v-icon-btn.is-active:hover { background: #1d4ed8; }
+    .v-icon-btn:disabled { opacity: .32; cursor: default; }
+    .v-icon-btn:disabled:hover { background: rgba(255, 255, 255, .08); }
+
+    .v-arrow {
+        position: absolute; top: 50%; transform: translateY(-50%); z-index: 4;
+        width: 54px; height: 54px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .12);
+        color: #fff; font-size: 1rem; cursor: pointer;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        transition: background .18s, opacity .18s, transform .18s;
+    }
+    .v-arrow:hover:not(:disabled) { background: rgba(255, 255, 255, .2); }
+    .v-arrow:active:not(:disabled) { transform: translateY(-50%) scale(.94); }
+    .v-arrow:disabled { opacity: .22; cursor: default; }
+    .v-arrow.prev { left: 20px; }
+    .v-arrow.next { right: 20px; }
+
+    .v-bar {
+        position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 4;
+        display: flex; align-items: center; gap: 6px; padding: 7px;
+        background: rgba(24, 24, 28, .88); border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 40px; box-shadow: 0 14px 40px rgba(0, 0, 0, .55);
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    }
+    .v-bar .v-icon-btn { width: 40px; height: 40px; }
+    .v-counter {
+        min-width: 84px; text-align: center; padding: 0 8px;
+        color: #e8e8ea; font-size: .78rem; font-weight: 600; font-variant-numeric: tabular-nums;
+        letter-spacing: .02em; user-select: none;
+    }
+    .v-counter b { color: #fff; font-weight: 700; }
+    .v-sep { width: 1px; height: 22px; background: rgba(255, 255, 255, .13); margin: 0 2px; }
+    .v-zoom-label {
+        min-width: 46px; text-align: center; user-select: none;
+        color: #cfcfd3; font-size: .7rem; font-weight: 600; font-variant-numeric: tabular-nums;
+    }
+
+    /* ═══════════════ RESPONSIVE ═══════════════ */
+    @media (max-width: 900px) {
+        .v-bar .v-icon-btn { width: 36px; height: 36px; }
+        .v-zoom-label { min-width: 40px; }
+        .v-tools .v-icon-btn { width: 30px; height: 30px; font-size: .74rem; }
+    }
+    @media (max-width: 760px) {
+        .content { padding: 26px 14px 30px; }
+        .hero h1 { font-size: 1.5rem; }
+        .hero p { font-size: .82rem; }
+        .dropzone { padding: 40px 18px; }
+        .feature-grid { grid-template-columns: 1fr; }
+        .stage { padding: 56px 14px 84px; }
+        .v-arrow { display: none; }
+        .home-footer { padding: 4px 14px 30px; }
+        .v-bar { gap: 2px; padding: 5px; }
+        .v-bar .v-icon-btn { width: 32px; height: 32px; font-size: .75rem; }
+        .v-counter { min-width: 64px; font-size: .7rem; }
+        .v-zoom-label { display: none; }
+        .v-file { display: none; }
+        .v-tools .v-icon-btn { width: 30px; height: 30px; }
+        .v-tools-sep { height: 16px; margin: 0 2px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+</style>
+</head>
+<body>
+
+<header class="top-app-bar">
+    <h1 class="top-app-bar__title">66<span>Notes</span></h1>
+    <div class="app-bar-actions">
+        <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+</header>
+
+<main class="content">
+
+    <section class="hero">
+        <h1>Drop a PDF.<br /><span>Present it.</span></h1>
+        <p>Open PDF presentations in your browser — fullscreen, zoom, text highlighting, and free-draw highlights with undo. Nothing ever leaves your computer.</p>
+    </section>
+
+    <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".pdf" hidden />
+        <div class="dz-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="dz-title">Drag &amp; drop your PDF here</div>
+        <div class="dz-sub">or click to browse — PDF only</div>
+        <span class="dz-btn"><i class="fas fa-folder-open"></i> Choose a PDF</span>
+        <div class="dz-loading">
+            <span class="spinner-sm"></span>
+            <span id="dzLoadingText">Reading…</span>
+        </div>
+    </label>
+
+    <div class="pptx-mini-row">
+        <button class="pptx-mini-btn" id="pptxCta" type="button">
+            <i class="fas fa-file-powerpoint"></i>
+            Have a PPTX? Convert it to PDF
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <div class="chips">
+        <span class="chip"><i class="fas fa-file-pdf"></i> PDF</span>
+        <span class="chip"><i class="fas fa-magnifying-glass-plus"></i> Zoom</span>
+        <span class="chip"><i class="fas fa-highlighter"></i> Text &amp; draw highlight</span>
+        <span class="chip"><i class="fas fa-rotate-left"></i> Undo</span>
+        <span class="chip"><i class="fas fa-clock-rotate-left"></i> History</span>
+    </div>
+
+    <section class="history-section" id="historySection" hidden>
+        <div class="history-header">
+            <h2>Recent presentations</h2>
+            <button class="clear-history-btn" id="clearHistoryBtn">Clear all</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </section>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-magnifying-glass-plus"></i></div>
+            <h3>Zoom &amp; pan</h3>
+            <p>Zoom 40 % – 600 % with the toolbar or <b>Ctrl + scroll</b>. Switch to the hand tool to drag the page around.</p>
+        </div>
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-highlighter"></i></div>
+            <h3>Two highlight modes</h3>
+            <p><b>Text</b> mode auto-detects selectable text and highlights it. <b>Draw</b> mode lets you highlight anything freehand.</p>
+        </div>
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-keyboard"></i></div>
+            <h3>Undo &amp; clear</h3>
+            <p>Undo the last highlight with <b>Ctrl + Z</b> or the toolbar. Clear the whole slide with the eraser button.</p>
+        </div>
+    </div>
+
+</main>
+
+<footer class="home-footer">
+    <a href="https://66notes.github.io" class="back-home-btn">
+        <i class="fas fa-house"></i> Back to Home
+    </a>
+</footer>
+
+<!-- ═══════════════ FULLSCREEN VIEWER ═══════════════ -->
+<div class="viewer" id="viewer" data-tool="select" hidden>
+    <div class="v-progress v-ui"><i id="progressBar"></i></div>
+
+    <div class="v-top v-ui">
+        <div class="v-top-left">
+            <div class="v-file"><i class="fas fa-file-pdf"></i><span id="fileName">presentation.pdf</span></div>
+            <div class="v-tools">
+                <button class="v-icon-btn is-active" id="toolSelect" type="button" title="Select text (S)" aria-label="Select text tool"><i class="fas fa-arrow-pointer"></i></button>
+                <button class="v-icon-btn" id="toolPan" type="button" title="Hand / pan (H)" aria-label="Pan tool"><i class="fas fa-hand"></i></button>
+                <button class="v-icon-btn" id="toolHlText" type="button" title="Text highlight — select text to highlight (T)" aria-label="Text highlight tool"><i class="fas fa-highlighter"></i></button>
+                <button class="v-icon-btn" id="toolHlDraw" type="button" title="Free-draw highlight — drag to draw (D)" aria-label="Free draw highlight tool"><i class="fas fa-pencil"></i></button>
+                <div class="v-tools-sep"></div>
+                <button class="v-icon-btn" id="toolUndo" type="button" title="Undo last highlight (Ctrl + Z)" aria-label="Undo last highlight"><i class="fas fa-rotate-left"></i></button>
+                <button class="v-icon-btn" id="toolClearSlide" type="button" title="Clear all highlights on this slide" aria-label="Clear highlights on this slide"><i class="fas fa-eraser"></i></button>
+            </div>
+        </div>
+        <button class="v-icon-btn" id="closeBtn" type="button" aria-label="Close presentation"><i class="fas fa-xmark"></i></button>
+    </div>
+
+    <div class="stage" id="stage">
+        <div class="stage-inner" id="stageInner"></div>
+    </div>
+
+    <button class="v-arrow prev v-ui" id="prevBtn" type="button" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+    <button class="v-arrow next v-ui" id="nextBtn" type="button" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+
+    <div class="v-bar v-ui">
+        <button class="v-icon-btn" id="prevBtn2" type="button" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+        <div class="v-counter"><b id="curNum">1</b> / <span id="totalNum">1</span></div>
+        <button class="v-icon-btn" id="nextBtn2" type="button" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="v-sep"></div>
+
+        <button class="v-icon-btn" id="zoomOut" type="button" title="Zoom out" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+        <span class="v-zoom-label" id="zoomLabel">100%</span>
+        <button class="v-icon-btn" id="zoomIn" type="button" title="Zoom in" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+        <button class="v-icon-btn" id="zoomReset" type="button" title="Reset zoom" aria-label="Reset zoom"><i class="fas fa-compress"></i></button>
+
+        <div class="v-sep"></div>
+
+        <button class="v-icon-btn" id="fsBtn" type="button" aria-label="Toggle fullscreen"><i class="fas fa-expand"></i></button>
+    </div>
+</div>
+
+<!-- ═══════════════ PPTX → PDF MODAL ═══════════════ -->
+<div class="modal-overlay" id="pptxModal" role="dialog" aria-modal="true" aria-labelledby="pptxModalTitle">
+    <div class="modal-box">
+        <div class="modal-icon"><i class="fas fa-file-powerpoint"></i></div>
+        <h2 id="pptxModalTitle">Convert your PPTX to PDF</h2>
+        <p>This player only opens <b>PDF</b> files. Convert your PowerPoint first — it takes a few seconds and keeps all your text, images, and layout.</p>
+
+        <div class="modal-steps">
+            <ol>
+                <li>Click the orange button below to open iLovePDF</li>
+                <li>Upload your <b>.pptx</b> file there</li>
+                <li>Download the converted <b>.pdf</b></li>
+                <li>Drag that PDF back here</li>
+            </ol>
+        </div>
+
+        <a href="https://www.ilovepdf.com/powerpoint_to_pdf" target="_blank" rel="noopener" class="modal-link-btn" id="pptxConvertLink">
+            <i class="fas fa-arrow-up-right-from-square"></i> Open iLovePDF Converter
+        </a>
+        <button class="modal-close-btn" type="button" id="pptxModalClose">Got it</button>
+    </div>
+</div>
+
+<!-- ═══════════════ CLOSE CONFIRM MODAL ═══════════════ -->
+<div class="modal-overlay" id="closeConfirm" role="dialog" aria-modal="true" aria-labelledby="closeConfirmTitle">
+    <div class="modal-box">
+        <div class="modal-icon danger"><i class="fas fa-triangle-exclamation"></i></div>
+        <h2 id="closeConfirmTitle">Close presentation?</h2>
+        <p id="closeConfirmText">Are you sure you want to close this presentation?</p>
+        <div class="modal-actions">
+            <button class="modal-close-btn" type="button" id="closeCancel">Cancel</button>
+            <button class="modal-danger-btn" type="button" id="closeConfirmOk"><i class="fas fa-xmark"></i> Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    'use strict';
+
+    const $ = id => document.getElementById(id);
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+    /* ═══════════════ THEME ═══════════════ */
+    const themeBtn = $('themeToggle');
+    function applyTheme(dark) {
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        themeBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        themeBtn.setAttribute('aria-pressed', String(dark));
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
+    }
+    applyTheme(false);
+    themeBtn.addEventListener('click', () => {
+        applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+    });
+
+    /* ═══════════════ TOAST ═══════════════ */
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
+
+    /* ═══════════════ MODALS ═══════════════ */
+    const pptxModal = $('pptxModal');
+    function openPptxModal() {
+        pptxModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closePptxModal() {
+        pptxModal.classList.remove('active');
+        if (!deck) document.body.style.overflow = '';
+    }
+    $('pptxModalClose').addEventListener('click', closePptxModal);
+    pptxModal.addEventListener('click', e => { if (e.target === pptxModal) closePptxModal(); });
+    $('pptxCta').addEventListener('click', openPptxModal);
+
+    const closeConfirm = $('closeConfirm');
+    const closeConfirmText = $('closeConfirmText');
+    function requestClose() {
+        if (!deck) return;
+        const hasHighlights = deck.slides.some(s => s.highlights && s.highlights.length);
+        closeConfirmText.innerHTML = hasHighlights
+            ? 'Are you sure? All the <b>highlights you made will be removed</b> and cannot be recovered.'
+            : 'Are you sure you want to close this presentation?';
+        closeConfirm.classList.add('active');
+    }
+    function dismissCloseConfirm() { closeConfirm.classList.remove('active'); }
+    $('closeCancel').addEventListener('click', dismissCloseConfirm);
+    $('closeConfirmOk').addEventListener('click', () => {
+        dismissCloseConfirm();
+        exitViewer();
+    });
+    closeConfirm.addEventListener('click', e => { if (e.target === closeConfirm) dismissCloseConfirm(); });
+
+    document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (closeConfirm.classList.contains('active')) { dismissCloseConfirm(); return; }
+        if (pptxModal.classList.contains('active')) { closePptxModal(); }
+    });
+
+    /* ═══════════════ LOADING ═══════════════ */
+    const dropzone = $('dropzone');
+    const dzLoadingText = $('dzLoadingText');
+    function setLoading(on, text) {
+        dropzone.classList.toggle('is-loading', on);
+        if (text) dzLoadingText.textContent = text;
+    }
+
+    /* ═══════════════ HELPERS ═══════════════ */
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+        return btoa(binary);
+    }
+    function base64ToArrayBuffer(base64) {
+        const binary = atob(base64);
+        const len = binary.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+        return bytes.buffer;
+    }
+    function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+    function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(0) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    /* ═══════════════ PDF.JS ═══════════════ */
+    if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    /* ═══════════════ STATE ═══════════════ */
+    let deck = null;
+    const viewer = $('viewer');
+    const stage = $('stage');
+    const stageInner = $('stageInner');
+    const fileInput = $('fileInput');
+
+    let currentWrap = null;
+    let fitScale = 1;
+    let userZoom = 1;
+    let panX = 0, panY = 0;
+    let tool = 'select';
+
+    /* ═══════════════ BUILD SLIDE ═══════════════ */
+    async function buildSlide(slide) {
+        const page = await slide.pdf.getPage(slide.num);
+        const base = page.getViewport({ scale: 1 });
+        const vp = page.getViewport({ scale: 1600 / base.width });
+
+        const wrap = document.createElement('div');
+        wrap.className = 'slide-wrap';
+        wrap.style.width = vp.width + 'px';
+        wrap.style.height = vp.height + 'px';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.floor(vp.width));
+        canvas.height = Math.max(1, Math.floor(vp.height));
+        canvas.style.width = vp.width + 'px';
+        canvas.style.height = vp.height + 'px';
+        canvas.className = 'slide-canvas-pdf';
+
+        const ctx = canvas.getContext('2d', { alpha: false });
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+        wrap.appendChild(canvas);
+
+        const hlLayer = document.createElement('div');
+        hlLayer.className = 'highlight-layer';
+        wrap.appendChild(hlLayer);
+
+        const textLayerDiv = document.createElement('div');
+        textLayerDiv.className = 'textLayer';
+        textLayerDiv.style.width = vp.width + 'px';
+        textLayerDiv.style.height = vp.height + 'px';
+        try { textLayerDiv.style.setProperty('--scale-factor', vp.scale); } catch (e) {}
+        wrap.appendChild(textLayerDiv);
+
+        const drawLayer = document.createElement('div');
+        drawLayer.className = 'draw-layer';
+        wrap.appendChild(drawLayer);
+
+        try {
+            const textContent = await page.getTextContent();
+            let task;
+            try {
+                task = pdfjsLib.renderTextLayer({
+                    textContentSource: textContent,
+                    container: textLayerDiv,
+                    viewport: vp,
+                    textDivs: []
+                });
+            } catch (e) {
+                task = pdfjsLib.renderTextLayer({
+                    textContent,
+                    container: textLayerDiv,
+                    viewport: vp,
+                    textDivs: []
+                });
+            }
+            await task.promise;
+        } catch (err) {
+            console.warn('Text layer failed:', err);
+        }
+
+        slide.wrap = wrap;
+        slide.canvas = canvas;
+        slide.hlLayer = hlLayer;
+        slide.textLayer = textLayerDiv;
+        slide.drawLayer = drawLayer;
+    }
+
+    /* ═══════════════ HIGHLIGHT RENDER ═══════════════ */
+    function renderHighlights(slide) {
+        if (!slide || !slide.hlLayer) return;
+        slide.hlLayer.innerHTML = '';
+        (slide.highlights || []).forEach(h => {
+            h.rects.forEach(r => {
+                const d = document.createElement('div');
+                d.className = 'hl-rect' + (h.free ? ' hl-free' : '');
+                d.style.left = r.x + 'px';
+                d.style.top = r.y + 'px';
+                d.style.width = r.w + 'px';
+                d.style.height = r.h + 'px';
+                if (h.color && !h.free) d.style.background = h.color;
+                slide.hlLayer.appendChild(d);
+            });
+        });
+        updateUndoButtons();
+    }
+
+    /* ═══════════════ HIGHLIGHT MANAGEMENT ═══════════════ */
+    function addHighlight(slide, hl) {
+        if (!deck || !slide) return;
+        slide.highlights = slide.highlights || [];
+        slide.highlights.push(hl);
+        if (!deck.undoStack) deck.undoStack = [];
+        deck.undoStack.push({ slide, hl });
+        renderHighlights(slide);
+    }
+
+    function undoHighlight() {
+        if (!deck) return;
+        if (!deck.undoStack || !deck.undoStack.length) {
+            toast('Nothing to undo');
+            return;
+        }
+        const entry = deck.undoStack.pop();
+        const slide = entry.slide;
+        const idx = (slide.highlights || []).indexOf(entry.hl);
+        if (idx >= 0) slide.highlights.splice(idx, 1);
+
+        const slideIdx = deck.slides.indexOf(slide);
+        if (slideIdx >= 0 && slideIdx !== deck.index) {
+            // Jump to the slide so the user can see what was undone
+            showSlide(slideIdx);
+        } else {
+            renderHighlights(slide);
+        }
+        toast('Highlight undone');
+    }
+
+    function clearSlideHighlights() {
+        if (!deck) return;
+        const slide = deck.slides[deck.index];
+        if (!slide) return;
+        if (!slide.highlights || !slide.highlights.length) {
+            toast('No highlights on this slide');
+            return;
+        }
+        // Drop any undo entries that point at this slide
+        if (deck.undoStack) {
+            deck.undoStack = deck.undoStack.filter(e => e.slide !== slide);
+        }
+        slide.highlights = [];
+        renderHighlights(slide);
+        toast('Highlights cleared');
+    }
+
+    function updateUndoButtons() {
+        const undoBtn = $('toolUndo');
+        const clearBtn = $('toolClearSlide');
+        if (!deck) {
+            undoBtn.disabled = true;
+            clearBtn.disabled = true;
+            return;
+        }
+        undoBtn.disabled = !(deck.undoStack && deck.undoStack.length);
+        const slide = deck.slides[deck.index];
+        clearBtn.disabled = !(slide && slide.highlights && slide.highlights.length);
+    }
+
+    /* ═══════════════ CLIENT → CANVAS COORDS ═══════════════ */
+    function clientToCanvas(clientX, clientY, canvas) {
+        const r = canvas.getBoundingClientRect();
+        const cssW = parseFloat(canvas.style.width) || canvas.width;
+        const scale = (r.width / cssW) || 1;
+        return {
+            x: (clientX - r.left) / scale,
+            y: (clientY - r.top) / scale
+        };
+    }
+
+    /* ═══════════════ ZOOM / PAN ═══════════════ */
+    const zoomLabel = $('zoomLabel');
+
+    function computeFit() {
+        if (!currentWrap) return;
+        const r = stageInner.getBoundingClientRect();
+        const w = currentWrap.offsetWidth || 1;
+        const h = currentWrap.offsetHeight || 1;
+        fitScale = Math.min(r.width / w, r.height / h) || 1;
+    }
+
+    function clampPan() {
+        if (!currentWrap) return;
+        const r = stageInner.getBoundingClientRect();
+        const s = fitScale * userZoom;
+        const w = currentWrap.offsetWidth * s;
+        const h = currentWrap.offsetHeight * s;
+        const maxX = Math.max(0, (w - r.width) / 2);
+        const maxY = Math.max(0, (h - r.height) / 2);
+        panX = clamp(panX, -maxX, maxX);
+        panY = clamp(panY, -maxY, maxY);
+    }
+
+    function applyTransform() {
+        if (!currentWrap) return;
+        const s = fitScale * userZoom;
+        currentWrap.style.transform = `translate(${panX}px, ${panY}px) scale(${s})`;
+        zoomLabel.textContent = Math.round(userZoom * 100) + '%';
+    }
+
+    function setZoom(z) {
+        userZoom = clamp(z, 0.4, 6);
+        clampPan();
+        applyTransform();
+    }
+
+    $('zoomIn').addEventListener('click', () => setZoom(userZoom * 1.25));
+    $('zoomOut').addEventListener('click', () => setZoom(userZoom / 1.25));
+    $('zoomReset').addEventListener('click', () => {
+        panX = 0; panY = 0;
+        setZoom(1);
+    });
+
+    stage.addEventListener('wheel', e => {
+        if (!deck) return;
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            setZoom(userZoom * (e.deltaY < 0 ? 1.12 : 1 / 1.12));
+        }
+    }, { passive: false });
+
+    /* ═══════════════ TOOL MODES ═══════════════ */
+    const toolSelectBtn = $('toolSelect');
+    const toolPanBtn = $('toolPan');
+    const toolHlTextBtn = $('toolHlText');
+    const toolHlDrawBtn = $('toolHlDraw');
+
+    function setTool(t) {
+        tool = t;
+        viewer.setAttribute('data-tool', t);
+
+        toolSelectBtn.classList.toggle('is-active', t === 'select');
+        toolPanBtn.classList.toggle('is-active', t === 'pan');
+        toolHlTextBtn.classList.toggle('hl-active', t === 'hltext');
+        toolHlDrawBtn.classList.toggle('hl-active', t === 'hldraw');
+
+        if (t !== 'select' && t !== 'hltext') {
+            try { window.getSelection().removeAllRanges(); } catch (e) {}
+        }
+    }
+    toolSelectBtn.addEventListener('click', () => setTool('select'));
+    toolPanBtn.addEventListener('click', () => setTool('pan'));
+    toolHlTextBtn.addEventListener('click', () => setTool('hltext'));
+    toolHlDrawBtn.addEventListener('click', () => setTool('hldraw'));
+
+    $('toolUndo').addEventListener('click', undoHighlight);
+    $('toolClearSlide').addEventListener('click', clearSlideHighlights);
+
+    /* ═══════════════ INTERACTION: PAN + FREE DRAW ═══════════════ */
+    let panning = false, panStartX = 0, panStartY = 0, panOrigX = 0, panOrigY = 0;
+    let drawing = false;
+    let drawStart = null;
+    let drawPreviewEl = null;
+
+    stage.addEventListener('pointerdown', e => {
+        if (!deck || !currentWrap) return;
+        if (e.button !== 0) return;
+        if (e.target.closest('.v-ui')) return;
+
+        if (tool === 'pan') {
+            panning = true;
+            panStartX = e.clientX;
+            panStartY = e.clientY;
+            panOrigX = panX;
+            panOrigY = panY;
+            stage.classList.add('dragging');
+            try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+            return;
+        }
+
+        if (tool === 'hldraw' && e.target.closest('.draw-layer')) {
+            const slide = deck.slides[deck.index];
+            if (!slide || !slide.canvas || !slide.hlLayer) return;
+            const pt = clientToCanvas(e.clientX, e.clientY, slide.canvas);
+            drawing = true;
+            drawStart = pt;
+
+            drawPreviewEl = document.createElement('div');
+            drawPreviewEl.className = 'hl-rect hl-preview';
+            drawPreviewEl.style.left = pt.x + 'px';
+            drawPreviewEl.style.top = pt.y + 'px';
+            drawPreviewEl.style.width = '0px';
+            drawPreviewEl.style.height = '0px';
+            slide.hlLayer.appendChild(drawPreviewEl);
+
+            try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+            e.preventDefault();
+        }
+    });
+
+    stage.addEventListener('pointermove', e => {
+        if (panning) {
+            panX = panOrigX + (e.clientX - panStartX);
+            panY = panOrigY + (e.clientY - panStartY);
+            clampPan();
+            applyTransform();
+            return;
+        }
+
+        if (drawing && drawPreviewEl && drawStart && deck) {
+            const slide = deck.slides[deck.index];
+            if (!slide || !slide.canvas) return;
+            const pt = clientToCanvas(e.clientX, e.clientY, slide.canvas);
+
+            const x = Math.min(pt.x, drawStart.x);
+            const y = Math.min(pt.y, drawStart.y);
+            const w = Math.abs(pt.x - drawStart.x);
+            const h = Math.abs(pt.y - drawStart.y);
+
+            const cw = parseFloat(slide.canvas.style.width) || slide.canvas.width;
+            const ch = parseFloat(slide.canvas.style.height) || slide.canvas.height;
+
+            const nx = Math.max(0, x);
+            const ny = Math.max(0, y);
+            const nw = Math.min(w, cw - nx);
+            const nh = Math.min(h, ch - ny);
+
+            drawPreviewEl.style.left = nx + 'px';
+            drawPreviewEl.style.top = ny + 'px';
+            drawPreviewEl.style.width = nw + 'px';
+            drawPreviewEl.style.height = nh + 'px';
+        }
+    });
+
+    function finishPointer(e) {
+        if (panning) {
+            panning = false;
+            stage.classList.remove('dragging');
+            try { stage.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
+        if (drawing) {
+            drawing = false;
+            if (drawPreviewEl && deck) {
+                const slide = deck.slides[deck.index];
+                const w = parseFloat(drawPreviewEl.style.width) || 0;
+                const h = parseFloat(drawPreviewEl.style.height) || 0;
+                if (slide && w > 4 && h > 4) {
+                    const rect = {
+                        x: parseFloat(drawPreviewEl.style.left) || 0,
+                        y: parseFloat(drawPreviewEl.style.top) || 0,
+                        w, h
+                    };
+                    addHighlight(slide, { rects: [rect], free: true });
+                }
+            }
+            if (drawPreviewEl) drawPreviewEl.remove();
+            drawPreviewEl = null;
+            drawStart = null;
+            try { stage.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
+    }
+    stage.addEventListener('pointerup', finishPointer);
+    stage.addEventListener('pointercancel', finishPointer);
+
+    /* ═══════════════ AUTO TEXT HIGHLIGHT ═══════════════ */
+    let mousedownInText = false;
+
+    document.addEventListener('mousedown', e => {
+        mousedownInText = false;
+        if (!deck || tool !== 'hltext') return;
+        const slide = deck.slides[deck.index];
+        if (!slide || !slide.textLayer) return;
+        if (slide.textLayer.contains(e.target)) mousedownInText = true;
+    });
+
+    document.addEventListener('mouseup', e => {
+        if (!deck || tool !== 'hltext' || !mousedownInText) return;
+        mousedownInText = false;
+        setTimeout(applyTextHighlight, 5);
+    });
+
+    function applyTextHighlight() {
+        if (!deck) return;
+        const slide = deck.slides[deck.index];
+        if (!slide || !slide.canvas || !slide.textLayer) return;
+
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.rangeCount === 0) return;
+
+        const range = sel.getRangeAt(0);
+        if (!slide.textLayer.contains(range.commonAncestorContainer)) return;
+
+        const rects = Array.from(range.getClientRects())
+            .filter(r => r.width > 1 && r.height > 1);
+        if (!rects.length) return;
+
+        const cRect = slide.canvas.getBoundingClientRect();
+        const cssW = parseFloat(slide.canvas.style.width) || slide.canvas.width;
+        const scale = (cRect.width / cssW) || 1;
+
+        const mapped = rects.map(r => ({
+            x: (r.left - cRect.left) / scale,
+            y: (r.top - cRect.top) / scale,
+            w: r.width / scale,
+            h: r.height / scale
+        })).filter(r => r.w > 0.5 && r.h > 0.5);
+        if (!mapped.length) return;
+
+        addHighlight(slide, { rects: mapped, color: 'rgba(250, 204, 21, .5)' });
+
+        try { sel.removeAllRanges(); } catch (e) {}
+    }
+
+    /* ═══════════════ OPEN PDF ═══════════════ */
+    async function openPdfBuffer(buf, name) {
+        setLoading(true, 'Reading PDF…');
+        try {
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            const slides = [];
+            for (let i = 1; i <= pdf.numPages; i++) {
+                slides.push({
+                    num: i, pdf,
+                    wrap: null, canvas: null, hlLayer: null,
+                    textLayer: null, drawLayer: null,
+                    highlights: []
+                });
+            }
+            deck = { name, slides, index: 0, undoStack: [] };
+            setLoading(false);
+            enterViewer();
+        } catch (err) {
+            console.error(err);
+            setLoading(false);
+            toast('Could not read that PDF. It may be corrupted or password-protected.');
+        }
+    }
+
+    /* ═══════════════ HISTORY ═══════════════ */
+    const HISTORY_KEY = 'slidedeck_history';
+    const MAX_HISTORY = 8;
+
+    function getHistory() {
+        try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+        catch { return []; }
+    }
+
+    function savePdfToHistory(name, arrayBuffer) {
+        const base64 = arrayBufferToBase64(arrayBuffer);
+        const item = {
+            id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            name, timestamp: Date.now(), data: base64
+        };
+        let history = getHistory();
+        history.unshift(item);
+        if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
+        try {
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        } catch (e) {
+            if (history.length > 1) {
+                history.pop();
+                try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }
+                catch { toast('Local storage is full. History was not saved.'); }
+            } else {
+                toast('This PDF is too large for local storage history.');
+            }
+        }
+        renderHistoryList();
+    }
+
+    function renderHistoryList() {
+        const section = $('historySection');
+        const list = $('historyList');
+        if (!section || !list) return;
+
+        const history = getHistory();
+        if (!history.length) { section.hidden = true; return; }
+        section.hidden = false;
+
+        list.innerHTML = history.map(item => `
+            <div class="history-item">
+                <div class="history-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="history-info">
+                    <div class="history-name">${escapeHtml(item.name)}</div>
+                    <div class="history-meta">${new Date(item.timestamp).toLocaleDateString()} · ${formatBytes(item.data.length * 0.75)}</div>
+                </div>
+                <button class="history-open" data-id="${item.id}">Open</button>
+                <button class="history-remove" data-id="${item.id}" aria-label="Remove"><i class="fas fa-xmark"></i></button>
+            </div>
+        `).join('');
+
+        list.querySelectorAll('.history-open').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const item = getHistory().find(h => h.id === btn.dataset.id);
+                if (!item) return;
+                const buf = base64ToArrayBuffer(item.data);
+                await openPdfBuffer(buf, item.name);
+            });
+        });
+
+        list.querySelectorAll('.history-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+                const filtered = getHistory().filter(h => h.id !== id);
+                try { localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered)); } catch {}
+                renderHistoryList();
+            });
+        });
+    }
+
+    $('clearHistoryBtn').addEventListener('click', () => {
+        if (!confirm('Remove all saved presentations from this browser?')) return;
+        localStorage.removeItem(HISTORY_KEY);
+        renderHistoryList();
+    });
+
+    renderHistoryList();
+
+    /* ═══════════════ FILE INTAKE ═══════════════ */
+    async function handleFile(file) {
+        if (!file) return;
+        const ext = (file.name.split('.').pop() || '').toLowerCase();
+
+        if (ext === 'pdf') {
+            const buf = await file.arrayBuffer();
+            await openPdfBuffer(buf, file.name);
+            savePdfToHistory(file.name, buf);
+        } else if (ext === 'pptx' || ext === 'ppt') {
+            openPptxModal();
+        } else {
+            toast('Unsupported file type. Please drop a .pdf file.');
+        }
+    }
+
+    fileInput.addEventListener('change', e => {
+        const f = e.target.files && e.target.files[0];
+        if (f) handleFile(f);
+        fileInput.value = '';
+    });
+
+    let dragDepth = 0;
+    window.addEventListener('dragenter', e => {
+        e.preventDefault(); dragDepth++;
+        if (!deck) dropzone.classList.add('dragover');
+    });
+    window.addEventListener('dragover', e => e.preventDefault());
+    window.addEventListener('dragleave', e => {
+        e.preventDefault(); dragDepth = Math.max(0, dragDepth - 1);
+        if (dragDepth === 0) dropzone.classList.remove('dragover');
+    });
+    window.addEventListener('drop', e => {
+        e.preventDefault(); dragDepth = 0;
+        dropzone.classList.remove('dragover');
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) handleFile(f);
+    });
+
+    /* ═══════════════ VIEWER CONTROL ═══════════════ */
+    const progressBar = $('progressBar');
+    const curNum = $('curNum');
+    const totalNum = $('totalNum');
+    const prevBtn = $('prevBtn');
+    const nextBtn = $('nextBtn');
+    const prevBtn2 = $('prevBtn2');
+    const nextBtn2 = $('nextBtn2');
+    const fsBtn = $('fsBtn');
+    const closeBtn = $('closeBtn');
+    const fileNameEl = $('fileName');
+
+    function enterViewer() {
+        viewer.hidden = false;
+        document.body.style.overflow = 'hidden';
+        fileNameEl.textContent = deck.name;
+        totalNum.textContent = deck.slides.length;
+        setTool('select');
+        showSlide(0);
+        pokeControls();
+    }
+
+    function exitViewer() {
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        viewer.hidden = true;
+        document.body.style.overflow = '';
+        stageInner.innerHTML = '';
+        try { window.getSelection().removeAllRanges(); } catch (e) {}
+        deck = null;
+        currentWrap = null;
+        fileInput.value = '';
+        clearTimeout(hideTimer);
+        viewer.classList.remove('controls-hidden');
+    }
+
+    function evict() {
+        if (!deck) return;
+        const keep = new Set([deck.index - 1, deck.index, deck.index + 1]);
+        deck.slides.forEach((s, i) => {
+            if (!keep.has(i) && s.wrap) {
+                s.wrap = null; s.canvas = null; s.hlLayer = null;
+                s.textLayer = null; s.drawLayer = null;
+            }
+        });
+    }
+
+    async function showSlide(i) {
+        if (!deck) return;
+        i = clamp(i, 0, deck.slides.length - 1);
+        deck.index = i;
+        updateChrome();
+        try { window.getSelection().removeAllRanges(); } catch (e) {}
+
+        const slide = deck.slides[i];
+
+        if (!slide.wrap) {
+            stageInner.innerHTML = '<div class="stage-spinner"></div>';
+            try {
+                await buildSlide(slide);
+            } catch (e) {
+                console.error(e);
+                stageInner.innerHTML = '';
+                toast('This page could not be rendered.');
+                return;
+            }
+            if (!deck || deck.index !== i) return;
+        }
+
+        stageInner.innerHTML = '';
+        stageInner.appendChild(slide.wrap);
+        currentWrap = slide.wrap;
+
+        panX = 0; panY = 0; userZoom = 1;
+        requestAnimationFrame(() => {
+            computeFit();
+            applyTransform();
+            renderHighlights(slide);
+        });
+
+        evict();
+        if (deck.slides[i + 1] && !deck.slides[i + 1].wrap) {
+            buildSlide(deck.slides[i + 1]).catch(() => {});
+        }
+        updateUndoButtons();
+    }
+
+    function updateChrome() {
+        if (!deck) return;
+        const total = deck.slides.length;
+        curNum.textContent = deck.index + 1;
+        totalNum.textContent = total;
+        progressBar.style.width = ((deck.index + 1) / total * 100) + '%';
+
+        const atStart = deck.index === 0;
+        const atEnd = deck.index === total - 1;
+        prevBtn.disabled = prevBtn2.disabled = atStart;
+        nextBtn.disabled = nextBtn2.disabled = atEnd;
+    }
+
+    const next = () => deck && deck.index < deck.slides.length - 1 && showSlide(deck.index + 1);
+    const prev = () => deck && deck.index > 0 && showSlide(deck.index - 1);
+
+    nextBtn.addEventListener('click', next);
+    nextBtn2.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+    prevBtn2.addEventListener('click', prev);
+    closeBtn.addEventListener('click', requestClose);
+
+    fsBtn.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+        } else {
+            viewer.requestFullscreen().catch(() => toast('Fullscreen is not available here.'));
+        }
+    });
+    document.addEventListener('fullscreenchange', () => {
+        fsBtn.innerHTML = document.fullscreenElement
+            ? '<i class="fas fa-compress"></i>'
+            : '<i class="fas fa-expand"></i>';
+        setTimeout(() => {
+            if (!deck || !currentWrap) return;
+            computeFit();
+            clampPan();
+            applyTransform();
+        }, 80);
+    });
+
+    /* ── auto-hide UI ── */
+    let hideTimer;
+    function pokeControls() {
+        if (!deck) return;
+        viewer.classList.remove('controls-hidden');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+            if (deck) viewer.classList.add('controls-hidden');
+        }, 3000);
+    }
+    viewer.addEventListener('mousemove', pokeControls);
+    viewer.addEventListener('mousedown', pokeControls);
+    viewer.addEventListener('touchstart', pokeControls, { passive: true });
+
+    /* ── resize ── */
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (!deck || !currentWrap) return;
+            computeFit();
+            clampPan();
+            applyTransform();
+        }, 100);
+    });
+
+    /* ── keyboard ── */
+    document.addEventListener('keydown', e => {
+        if (!deck) return;
+        if (closeConfirm.classList.contains('active')) return;
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+        const k = e.key;
+
+        // Undo shortcut
+        if ((e.ctrlKey || e.metaKey) && (k === 'z' || k === 'Z')) {
+            e.preventDefault();
+            undoHighlight();
+            return;
+        }
+
+        if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') {
+            e.preventDefault(); pokeControls(); next();
+        } else if (k === 'ArrowLeft' || k === 'PageUp') {
+            e.preventDefault(); pokeControls(); prev();
+        } else if (k === 'Home') {
+            e.preventDefault(); showSlide(0);
+        } else if (k === 'End') {
+            e.preventDefault(); showSlide(deck.slides.length - 1);
+        } else if (k === '+' || k === '=') {
+            e.preventDefault(); setZoom(userZoom * 1.25);
+        } else if (k === '-' || k === '_') {
+            e.preventDefault(); setZoom(userZoom / 1.25);
+        } else if (k === '0') {
+            e.preventDefault(); panX = 0; panY = 0; setZoom(1);
+        } else if (k === 's' || k === 'S') {
+            setTool('select');
+        } else if (k === 'h' || k === 'H') {
+            setTool('pan');
+        } else if (k === 't' || k === 'T') {
+            setTool('hltext');
+        } else if (k === 'd' || k === 'D') {
+            setTool('hldraw');
+        } else if (k === 'f' || k === 'F') {
+            fsBtn.click();
+        } else if (k === 'Escape') {
+            if (!document.fullscreenElement) requestClose();
+        }
+    });
+
+})();
+</script>
+</body>
+</html>
