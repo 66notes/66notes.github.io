@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>66notes - PDF Presentation Player</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+<style>
+    :root {
+        --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+        --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+        --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
+        --green: #22c55e; --amber: #f59e0b; --purple: #8b5cf6;
+        --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,.03); --shadow: 0 6px 20px rgba(0,0,0,.05);
+        --shadow-lg: 0 10px 30px rgba(0,0,0,.07);
+        --transition: .2s cubic-bezier(.4,0,.2,1);
+    }
+    :root[data-theme="dark"] {
+        --bg: #0f0f10; --surface: #1a1a1c; --border: #2a2a2d; --border-strong: #3a3a3e;
+        --text: #eaeaea; --text-secondary: #a0a0a3; --text-muted: #6e6e72;
+        --navy: #e4e4e6; --accent: #7bb0ff; --accent-light: #242428;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,.4); --shadow: 0 6px 20px rgba(0,0,0,.5);
+        --shadow-lg: 0 10px 30px rgba(0,0,0,.6);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+    body { font-family: 'Poppins', system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; transition: background .25s, color .25s; }
+
+    /* Top bar */
+    .top-app-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 18px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+    .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -.3px; }
+    .top-app-bar__title span { color: var(--accent); }
+    .app-bar-actions { display: flex; align-items: center; gap: 8px; }
+    .theme-toggle-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); font-size: .85rem; cursor: pointer; transition: background var(--transition), transform .15s; }
+    .theme-toggle-btn:active { transform: scale(.92); }
+    :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
+
+    /* Landing */
+    .content { max-width: 860px; margin: 0 auto; padding: 46px 20px 40px; }
+    .hero { text-align: center; margin-bottom: 34px; }
+    .hero h1 { font-size: 2.1rem; line-height: 1.2; font-weight: 700; color: var(--navy); letter-spacing: -.6px; margin-bottom: 12px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: .92rem; color: var(--text-secondary); max-width: 560px; margin: 0 auto; }
+
+    .dropzone { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 56px 24px; cursor: pointer; background: var(--surface); border: 2px dashed var(--border-strong); border-radius: var(--radius-xl); box-shadow: var(--shadow); transition: border-color var(--transition), background var(--transition), transform var(--transition), box-shadow var(--transition); }
+    .dropzone:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+    .dropzone.dragover { border-color: var(--accent); background: var(--accent-light); transform: scale(1.012); box-shadow: var(--shadow-lg); }
+    .dz-icon { width: 68px; height: 68px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: var(--accent-light); color: var(--accent); font-size: 1.6rem; transition: transform var(--transition); }
+    .dropzone.dragover .dz-icon { transform: translateY(-4px); }
+    .dz-title { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+    .dz-sub { font-size: .8rem; color: var(--text-secondary); }
+    .dz-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; padding: 10px 24px; border-radius: 40px; background: var(--navy); color: #fff; font-size: .82rem; font-weight: 600; min-height: 42px; box-shadow: 0 4px 14px rgba(13,43,78,.18); }
+    :root[data-theme="dark"] .dz-btn { background: #2563eb; box-shadow: 0 4px 14px rgba(37,99,235,.3); }
+    .dz-loading { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; gap: 10px; border-radius: inherit; background: var(--surface); font-size: .85rem; font-weight: 600; color: var(--accent); z-index: 2; }
+    .dropzone.is-loading .dz-loading { display: flex; }
+    .dropzone.is-loading > *:not(.dz-loading) { visibility: hidden; }
+    .spinner-sm { width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid rgba(37,99,235,.2); border-top-color: var(--accent); animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pptx-mini-row { display: flex; justify-content: center; margin-top: 14px; }
+    .pptx-mini-btn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 16px; border: none; border-radius: 30px; background: linear-gradient(135deg,#f97316 0%,#ea580c 100%); color: #fff; font-family: 'Poppins',sans-serif; font-size: .72rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(234,88,12,.28); transition: transform .15s, box-shadow .2s; }
+    .pptx-mini-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(234,88,12,.38); }
+    .pptx-mini-btn:active { transform: translateY(0); }
+    .pptx-mini-btn i { font-size: .7rem; }
+
+    .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 30px; font-size: .7rem; font-weight: 600; background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary); box-shadow: var(--shadow-sm); }
+    .chip i { color: var(--accent); font-size: .72rem; }
+
+    /* 66Share CTA card */
+    .share-cta { margin-top: 20px; display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; background: linear-gradient(135deg,#8b5cf6 0%,#6d28d9 100%); color: #fff; border: none; border-radius: var(--radius-lg); box-shadow: 0 8px 24px rgba(109,40,217,.28); text-align: left; font-family: 'Poppins',sans-serif; transition: transform .15s, box-shadow .2s; width: 100%; }
+    .share-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(109,40,217,.38); }
+    .share-cta:active { transform: translateY(0) scale(.997); }
+    .share-cta-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.22); font-size: 1.05rem; }
+    .share-cta-copy { flex: 1; min-width: 0; }
+    .share-cta-copy b { display: block; font-size: .92rem; font-weight: 700; line-height: 1.3; }
+    .share-cta-copy small { font-size: .72rem; opacity: .9; line-height: 1.3; }
+    .share-cta-arrow { flex-shrink: 0; font-size: .85rem; opacity: .85; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 34px; }
+    .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 16px; box-shadow: var(--shadow-sm); }
+    .feature-card .f-icon { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: var(--accent-light); color: var(--accent); font-size: .95rem; margin-bottom: 12px; }
+    .feature-card h3 { font-size: .84rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .feature-card p { font-size: .73rem; color: var(--text-secondary); line-height: 1.55; }
+
+    /* History */
+    .history-section { margin-top: 34px; }
+    .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .history-header h2 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .clear-history-btn { background: transparent; border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-family: 'Poppins',sans-serif; font-size: .68rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: background var(--transition); }
+    .clear-history-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-item { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow-sm); transition: border-color var(--transition), box-shadow var(--transition); }
+    .history-item:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+    .history-icon { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; font-size: .9rem; }
+    .history-info { flex: 1; min-width: 0; }
+    .history-name { font-size: .8rem; font-weight: 600; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-meta { font-size: .64rem; color: var(--text-muted); margin-top: 1px; }
+    .history-open { padding: 5px 16px; border-radius: 20px; border: none; flex-shrink: 0; background: var(--navy); color: #fff; font-family: 'Poppins',sans-serif; font-size: .68rem; font-weight: 600; cursor: pointer; }
+    :root[data-theme="dark"] .history-open { background: #2563eb; }
+    .history-remove { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: .7rem; }
+    .history-remove:hover { background: #fee2e2; color: #dc2626; }
+
+    /* Footer */
+    .home-footer { max-width: 860px; margin: 0 auto; padding: 6px 20px 40px; display: flex; justify-content: center; }
+    .back-home-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 11px 28px; border-radius: 40px; text-decoration: none; background: var(--surface); border: 1px solid var(--border); color: var(--navy); font-size: .82rem; font-weight: 600; min-height: 44px; box-shadow: var(--shadow-sm); transition: background var(--transition), border-color var(--transition), transform .15s, box-shadow var(--transition); }
+    .back-home-btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); box-shadow: var(--shadow); }
+    .back-home-btn:active { transform: scale(.97); }
+
+    /* Toast */
+    .toast { position: fixed; left: 50%; bottom: 34px; z-index: 300; transform: translate(-50%,20px); opacity: 0; pointer-events: none; background: #0d2b4e; color: #fff; padding: 12px 22px; border-radius: 40px; font-size: .82rem; font-weight: 500; max-width: 90vw; text-align: center; box-shadow: 0 12px 34px rgba(0,0,0,.28); transition: opacity .25s ease, transform .25s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%,0); }
+
+    /* Modals */
+    .modal-overlay { position: fixed; inset: 0; z-index: 400; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.6); padding: 20px; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: var(--surface); border-radius: var(--radius-xl); max-width: 480px; width: 100%; padding: 26px 24px 22px; box-shadow: 0 24px 60px rgba(0,0,0,.4); animation: modal-in .22s cubic-bezier(.34,1.4,.64,1); text-align: center; }
+    @keyframes modal-in { from { opacity: 0; transform: scale(.94) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-icon { width: 60px; height: 60px; border-radius: 18px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; background: #fff7ed; color: #ea580c; font-size: 1.5rem; }
+    .modal-icon.danger { background: #fee2e2; color: #dc2626; }
+    :root[data-theme="dark"] .modal-icon { background: #2a2419; color: #fb923c; }
+    :root[data-theme="dark"] .modal-icon.danger { background: #3d1a1a; color: #f87171; }
+    .modal-box h2 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .modal-box p { font-size: .82rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 18px; }
+    .modal-box p b { color: var(--text); font-weight: 600; }
+    .modal-steps { text-align: left; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; font-size: .78rem; color: var(--text); line-height: 1.7; }
+    .modal-steps ol { padding-left: 18px; margin: 0; }
+    .modal-steps li { margin-bottom: 4px; }
+    .modal-steps li:last-child { margin-bottom: 0; }
+    .modal-link-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; border-radius: 40px; text-decoration: none; background: #ea580c; color: #fff; font-size: .85rem; font-weight: 600; min-height: 46px; margin-bottom: 10px; transition: background .18s, transform .12s; box-shadow: 0 6px 18px rgba(234,88,12,.3); }
+    .modal-link-btn:hover { background: #c2410c; }
+    .modal-link-btn:active { transform: scale(.98); }
+    .modal-close-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 10px 20px; border-radius: 40px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary); font-family: 'Poppins',sans-serif; font-size: .78rem; font-weight: 600; cursor: pointer; min-height: 42px; transition: background var(--transition); }
+    .modal-close-btn:hover { background: var(--bg); }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-actions > * { flex: 1; margin-bottom: 0 !important; }
+    .modal-danger-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 40px; border: none; background: #dc2626; color: #fff; font-family: 'Poppins',sans-serif; font-size: .78rem; font-weight: 600; cursor: pointer; min-height: 42px; transition: background .18s, transform .12s; }
+    .modal-danger-btn:hover { background: #b91c1c; }
+    .modal-danger-btn:active { transform: scale(.97); }
+
+    /* ══════════ VIEWER (PDF) ══════════ */
+    .viewer { position: fixed; inset: 0; z-index: 100; background: #0a0a0c; user-select: none; -webkit-user-select: none; }
+    .viewer[hidden] { display: none; }
+    .stage { position: absolute; inset: 0; padding: 68px 92px 96px; overflow: hidden; }
+    .stage-inner { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .slide-wrap { position: relative; flex: none; transform-origin: center center; will-change: transform; box-shadow: 0 26px 70px rgba(0,0,0,.6); border-radius: 3px; background: #fff; }
+    .slide-canvas-pdf { display: block; border-radius: 3px; background: #fff; }
+    .highlight-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .hl-rect { position: absolute; background: rgba(250,204,21,.5); border-radius: 2px; mix-blend-mode: multiply; box-shadow: inset 0 0 0 1px rgba(234,179,8,.45); }
+    .hl-rect.hl-free { background: rgba(253,224,71,.42); mix-blend-mode: normal; border: 1.5px solid rgba(202,138,4,.65); box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 1px 4px rgba(0,0,0,.12); border-radius: 3px; }
+    .hl-rect.hl-preview { background: rgba(253,224,71,.3); border: 1.5px dashed rgba(202,138,4,.8); box-shadow: none; mix-blend-mode: normal; border-radius: 3px; }
+    .textLayer { position: absolute; inset: 0; z-index: 2; overflow: hidden; line-height: 1; text-align: initial; -webkit-text-size-adjust: none; text-size-adjust: none; forced-color-adjust: none; transform-origin: 0 0; pointer-events: none; user-select: none; -webkit-user-select: none; }
+    .textLayer span, .textLayer br { color: transparent; position: absolute; white-space: pre; cursor: text; transform-origin: 0% 0%; }
+    .textLayer span::selection, .textLayer br::selection { background: rgba(59,130,246,.35); }
+    .draw-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+    .viewer[data-tool="select"] .textLayer, .viewer[data-tool="hltext"] .textLayer { pointer-events: auto; user-select: text; -webkit-user-select: text; }
+    .viewer[data-tool="hldraw"] .draw-layer { pointer-events: auto; cursor: crosshair; }
+    .viewer[data-tool="pan"] .stage { cursor: grab; }
+    .viewer[data-tool="pan"] .stage.dragging { cursor: grabbing; }
+    .stage-spinner { position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -20px; width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(255,255,255,.15); border-top-color: #3b82f6; animation: spin .8s linear infinite; }
+    .v-ui { transition: opacity .28s ease; }
+    .viewer.controls-hidden .v-ui { opacity: 0; pointer-events: none; }
+    .viewer.controls-hidden { cursor: none; }
+    .v-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.08); z-index: 5; }
+    .v-progress > i { display: block; height: 100%; width: 0; background: #3b82f6; border-radius: 0 3px 3px 0; transition: width .28s cubic-bezier(.4,0,.2,1); }
+    .v-top { position: absolute; top: 0; left: 0; right: 0; height: 58px; z-index: 6; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; gap: 10px; background: linear-gradient(180deg,rgba(10,10,12,.92) 0%,rgba(10,10,12,0) 100%); }
+    .v-top-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .v-file { display: inline-flex; align-items: center; gap: 9px; color: #e8e8ea; font-size: .78rem; font-weight: 500; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); padding: 7px 14px; border-radius: 30px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .v-file i { color: #f87171; font-size: .8rem; flex-shrink: 0; }
+    .v-file span { overflow: hidden; text-overflow: ellipsis; }
+    .v-tools { display: flex; align-items: center; gap: 3px; padding: 4px; border-radius: 40px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0; overflow-x: auto; scrollbar-width: none; }
+    .v-tools::-webkit-scrollbar { display: none; }
+    .v-tools .v-icon-btn { width: 32px; height: 32px; font-size: .78rem; background: transparent; border: none; }
+    .v-tools .v-icon-btn:hover { background: rgba(255,255,255,.14); }
+    .v-tools .v-icon-btn.is-active { background: #2563eb; color: #fff; }
+    .v-tools .v-icon-btn.is-active:hover { background: #1d4ed8; }
+    .v-tools .v-icon-btn.hl-active { background: #facc15 !important; color: #422006 !important; }
+    .v-tools .v-icon-btn.hl-active:hover { background: #fde047 !important; }
+    .v-tools-sep { width: 1px; height: 18px; background: rgba(255,255,255,.16); margin: 0 3px; flex-shrink: 0; }
+    .v-icon-btn { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); color: #e8e8ea; font-size: .85rem; cursor: pointer; transition: background .18s, transform .12s, color .18s; }
+    .v-icon-btn:hover { background: rgba(255,255,255,.18); }
+    .v-icon-btn:active { transform: scale(.93); }
+    .v-icon-btn.is-active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+    .v-icon-btn.is-active:hover { background: #1d4ed8; }
+    .v-icon-btn:disabled { opacity: .32; cursor: default; }
+    .v-icon-btn:disabled:hover { background: rgba(255,255,255,.08); }
+    .v-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 4; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #fff; font-size: 1rem; cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .18s, opacity .18s, transform .18s; }
+    .v-arrow:hover:not(:disabled) { background: rgba(255,255,255,.2); }
+    .v-arrow:active:not(:disabled) { transform: translateY(-50%) scale(.94); }
+    .v-arrow:disabled { opacity: .22; cursor: default; }
+    .v-arrow.prev { left: 20px; }
+    .v-arrow.next { right: 20px; }
+    .v-bar { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; align-items: center; gap: 6px; padding: 7px; background: rgba(24,24,28,.88); border: 1px solid rgba(255,255,255,.1); border-radius: 40px; box-shadow: 0 14px 40px rgba(0,0,0,.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .v-bar .v-icon-btn { width: 40px; height: 40px; }
+    .v-counter { min-width: 84px; text-align: center; padding: 0 8px; color: #e8e8ea; font-size: .78rem; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .02em; user-select: none; }
+    .v-counter b { color: #fff; font-weight: 700; }
+    .v-sep { width: 1px; height: 22px; background: rgba(255,255,255,.13); margin: 0 2px; }
+    .v-zoom-label { min-width: 46px; text-align: center; user-select: none; color: #cfcfd3; font-size: .7rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* ══════════ 66SHARE OVERLAY ══════════ */
+    .share-overlay {
+        position: fixed; inset: 0; z-index: 500; background: #0f1117;
+        display: none; align-items: center; justify-content: center;
+        padding: 20px; overflow-y: auto;
+        background-image: radial-gradient(circle at 20% 10%, rgba(139,92,246,.15), transparent 40%),
+                          radial-gradient(circle at 80% 90%, rgba(37,99,235,.12), transparent 40%);
+    }
+    .share-overlay.active { display: flex; }
+    .share-shell {
+        width: 100%; max-width: 560px;
+        background: #16181f; border: 1px solid #262832;
+        border-radius: 22px; color: #e8e8ea;
+        box-shadow: 0 30px 80px rgba(0,0,0,.6);
+        overflow: hidden; animation: share-in .3s cubic-bezier(.34,1.4,.64,1);
+    }
+    @keyframes share-in { from { opacity: 0; transform: scale(.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .share-head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 20px; border-bottom: 1px solid #262832;
+        background: rgba(139,92,246,.06);
+    }
+    .share-head h2 { font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: -.2px; }
+    .share-head h2 i { color: #a78bfa; font-size: 1rem; }
+    .share-close {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        color: #cfcfd3; cursor: pointer; font-size: .85rem;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .share-close:hover { background: rgba(255,255,255,.14); color: #fff; }
+
+    .share-body { padding: 22px 20px 24px; }
+    .share-step { display: none; }
+    .share-step.active { display: block; animation: step-in .25s ease; }
+    @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .share-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: #fff; }
+    .share-sub { font-size: .8rem; color: #a0a0a3; margin-bottom: 18px; line-height: 1.55; }
+
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+    .role-btn {
+        display: flex; flex-direction: column; align-items: center; gap: 10px;
+        padding: 24px 14px; border-radius: 16px; border: 1.5px solid #262832;
+        background: #1c1f2a; color: #e8e8ea; cursor: pointer;
+        font-family: 'Poppins',sans-serif;
+        transition: border-color .18s, background .18s, transform .12s;
+    }
+    .role-btn:hover { border-color: #8b5cf6; background: #221f33; }
+    .role-btn:active { transform: scale(.98); }
+    .role-btn .rb-icon {
+        width: 46px; height: 46px; border-radius: 13px;
+        display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg,#8b5cf6,#6d28d9); color: #fff;
+        font-size: 1.1rem;
+    }
+    .role-btn.recv .rb-icon { background: linear-gradient(135deg,#2563eb,#1d4ed8); }
+    .role-btn b { font-size: .9rem; font-weight: 700; }
+    .role-btn small { font-size: .68rem; color: #a0a0a3; text-align: center; line-height: 1.4; }
+
+    .qr-box {
+        display: flex; flex-direction: column; align-items: center; gap: 10px;
+        padding: 18px; border-radius: 16px; background: #fff; color: #000;
+        margin-bottom: 14px;
+    }
+    .qr-box canvas { display: block; max-width: 100%; height: auto; border-radius: 4px; }
+    .qr-box .qr-caption { font-size: .72rem; color: #555; font-weight: 600; text-align: center; }
+    .qr-skeleton { width: 260px; height: 260px; max-width: 100%; border-radius: 4px; background: repeating-linear-gradient(45deg,#eee 0 8px,#ddd 8px 16px); }
+
+    .share-textarea {
+        width: 100%; min-height: 62px; padding: 10px 12px;
+        border-radius: 10px; border: 1px solid #2a2c38; background: #0f1117;
+        color: #cfcfd3; font-family: 'Courier New', monospace; font-size: .68rem;
+        resize: vertical; outline: none; line-height: 1.4;
+        word-break: break-all;
+    }
+    .share-textarea:focus { border-color: #8b5cf6; }
+    .share-textarea::placeholder { color: #555; }
+
+    .share-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #8b8b93; margin: 14px 0 6px; }
+
+    .share-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 11px 20px; border-radius: 40px; border: none;
+        font-family: 'Poppins',sans-serif; font-size: .82rem; font-weight: 600;
+        cursor: pointer; min-height: 44px; transition: background .18s, transform .12s;
+        margin-top: 10px;
+    }
+    .share-btn.primary { background: linear-gradient(135deg,#8b5cf6,#6d28d9); color: #fff; box-shadow: 0 6px 20px rgba(139,92,246,.35); }
+    .share-btn.primary:hover { background: linear-gradient(135deg,#7c3aed,#5b21b6); }
+    .share-btn.primary:active { transform: scale(.98); }
+    .share-btn.ghost { background: #1c1f2a; color: #cfcfd3; border: 1px solid #2a2c38; }
+    .share-btn.ghost:hover { background: #262832; color: #fff; }
+    .share-btn:disabled { opacity: .5; cursor: default; }
+
+    .share-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: #666; font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+    .share-divider::before, .share-divider::after { content: ''; flex: 1; height: 1px; background: #2a2c38; }
+
+    .share-status { font-size: .74rem; color: #a0a0a3; padding: 10px 12px; border-radius: 8px; background: rgba(139,92,246,.08); border: 1px solid rgba(139,92,246,.2); margin-top: 12px; display: flex; align-items: center; gap: 8px; }
+    .share-status i { color: #a78bfa; flex-shrink: 0; }
+    .share-status.error { background: rgba(239,68,68,.08); border-color: rgba(239,68,68,.25); color: #fca5a5; }
+    .share-status.error i { color: #f87171; }
+
+    .share-success { text-align: center; padding: 24px 8px; }
+    .share-success .ok-icon { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 14px; background: linear-gradient(135deg,#22c55e,#16a34a); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(34,197,94,.3); animation: pop-in .4s cubic-bezier(.34,1.6,.64,1); }
+    @keyframes pop-in { from { transform: scale(0); } to { transform: scale(1); } }
+    .share-success h3 { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .share-success p { font-size: .8rem; color: #a0a0a3; margin-bottom: 18px; }
+
+    .share-file-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 14px 20px; border-radius: 14px; border: 2px dashed #2f3140;
+        background: #1a1d26; color: #cfcfd3; font-family: 'Poppins',sans-serif;
+        font-size: .85rem; font-weight: 600; cursor: pointer;
+        transition: border-color .18s, background .18s;
+        min-height: 58px;
+    }
+    .share-file-btn:hover { border-color: #8b5cf6; background: #221f33; color: #fff; }
+    .share-file-btn i { color: #a78bfa; font-size: 1.05rem; }
+
+    .share-progress-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .share-progress-item {
+        padding: 10px 12px; border-radius: 10px; background: #1a1d26;
+        border: 1px solid #262832;
+    }
+    .share-progress-name { font-size: .72rem; font-weight: 600; color: #e8e8ea; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .share-progress-bar { height: 5px; border-radius: 3px; background: #262832; overflow: hidden; }
+    .share-progress-bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#8b5cf6,#2563eb); border-radius: 3px; transition: width .2s ease; }
+    .share-progress-meta { font-size: .62rem; color: #8b8b93; margin-top: 4px; display: flex; justify-content: space-between; }
+
+    /* Camera scanner */
+    .share-scanner {
+        position: fixed; inset: 0; z-index: 600;
+        background: #000; display: none;
+        align-items: center; justify-content: center;
+        flex-direction: column;
+    }
+    .share-scanner.active { display: flex; }
+    .share-scanner video { max-width: 100%; max-height: 70vh; border-radius: 12px; }
+    .scanner-frame {
+        position: absolute; top: 50%; left: 50%; width: 260px; height: 260px;
+        transform: translate(-50%, -50%); border: 3px solid #a78bfa;
+        border-radius: 16px; box-shadow: 0 0 0 4000px rgba(0,0,0,.55);
+        pointer-events: none;
+    }
+    .scanner-frame::before, .scanner-frame::after {
+        content: ''; position: absolute; width: 40px; height: 40px;
+        border: 4px solid #a78bfa;
+    }
+    .scanner-frame::before { top: -4px; left: -4px; border-right: none; border-bottom: none; border-top-left-radius: 16px; }
+    .scanner-frame::after { bottom: -4px; right: -4px; border-left: none; border-top: none; border-bottom-right-radius: 16px; }
+    .scanner-hint { position: absolute; top: calc(50% + 150px); left: 50%; transform: translateX(-50%); color: #e8e8ea; font-size: .82rem; font-weight: 600; text-align: center; background: rgba(0,0,0,.7); padding: 8px 16px; border-radius: 30px; }
+    .scanner-close { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); color: #fff; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* ══════════ RESPONSIVE ══════════ */
+    @media (max-width: 900px) {
+        .v-bar .v-icon-btn { width: 36px; height: 36px; }
+        .v-zoom-label { min-width: 40px; }
+        .v-tools .v-icon-btn { width: 30px; height: 30px; font-size: .74rem; }
+    }
+    @media (max-width: 760px) {
+        .content { padding: 26px 14px 30px; }
+        .hero h1 { font-size: 1.5rem; }
+        .hero p { font-size: .82rem; }
+        .dropzone { padding: 40px 18px; }
+        .feature-grid { grid-template-columns: 1fr; }
+        .stage { padding: 56px 14px 84px; }
+        .v-arrow { display: none; }
+        .home-footer { padding: 4px 14px 30px; }
+        .v-bar { gap: 2px; padding: 5px; }
+        .v-bar .v-icon-btn { width: 32px; height: 32px; font-size: .75rem; }
+        .v-counter { min-width: 64px; font-size: .7rem; }
+        .v-zoom-label { display: none; }
+        .v-file { display: none; }
+        .v-tools .v-icon-btn { width: 30px; height: 30px; }
+        .v-tools-sep { height: 16px; margin: 0 2px; }
+        .role-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+</style>
+</head>
+<body>
+
+<header class="top-app-bar">
+    <h1 class="top-app-bar__title">66<span>Notes</span></h1>
+    <div class="app-bar-actions">
+        <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+</header>
+
+<main class="content">
+    <section class="hero">
+        <h1>Drop a PDF.<br /><span>Present it.</span></h1>
+        <p>Open PDF presentations in your browser — fullscreen, zoom, text &amp; free-draw highlights with undo. Nothing leaves your computer.</p>
+    </section>
+
+    <label class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept=".pdf" hidden />
+        <div class="dz-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="dz-title">Drag &amp; drop your PDF here</div>
+        <div class="dz-sub">or click to browse — PDF only</div>
+        <span class="dz-btn"><i class="fas fa-folder-open"></i> Choose a PDF</span>
+        <div class="dz-loading">
+            <span class="spinner-sm"></span>
+            <span id="dzLoadingText">Reading…</span>
+        </div>
+    </label>
+
+    <div class="pptx-mini-row">
+        <button class="pptx-mini-btn" id="pptxCta" type="button">
+            <i class="fas fa-file-powerpoint"></i>
+            Have a PPTX? Convert it to PDF
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- 66Share CTA -->
+    <button class="share-cta" id="shareCta" type="button">
+        <span class="share-cta-icon"><i class="fas fa-tower-broadcast"></i></span>
+        <span class="share-cta-copy">
+            <b>66Share — send files device to device</b>
+            <small>PC ↔ phone, no upload, no server. Just scan.</small>
+        </span>
+        <i class="fas fa-arrow-right share-cta-arrow"></i>
+    </button>
+
+    <div class="chips">
+        <span class="chip"><i class="fas fa-file-pdf"></i> PDF</span>
+        <span class="chip"><i class="fas fa-magnifying-glass-plus"></i> Zoom</span>
+        <span class="chip"><i class="fas fa-highlighter"></i> Highlights</span>
+        <span class="chip"><i class="fas fa-rotate-left"></i> Undo</span>
+        <span class="chip"><i class="fas fa-tower-broadcast"></i> 66Share</span>
+    </div>
+
+    <section class="history-section" id="historySection" hidden>
+        <div class="history-header">
+            <h2>Recent presentations</h2>
+            <button class="clear-history-btn" id="clearHistoryBtn">Clear all</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </section>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-magnifying-glass-plus"></i></div>
+            <h3>Zoom &amp; pan</h3>
+            <p>40 % – 600 % zoom, <b>Ctrl + scroll</b>, and a hand tool to drag around the slide.</p>
+        </div>
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-highlighter"></i></div>
+            <h3>Highlight &amp; undo</h3>
+            <p>Auto text-highlight, free-draw highlight, undo with <b>Ctrl + Z</b>, clear per slide.</p>
+        </div>
+        <div class="feature-card">
+            <div class="f-icon"><i class="fas fa-tower-broadcast"></i></div>
+            <h3>66Share</h3>
+            <p>Send files directly between PC and phone over WebRTC — no server, no uploads.</p>
+        </div>
+    </div>
+</main>
+
+<footer class="home-footer">
+    <a href="https://66notes.github.io" class="back-home-btn">
+        <i class="fas fa-house"></i> Back to Home
+    </a>
+</footer>
+
+<!-- ══════════ PDF VIEWER ══════════ -->
+<div class="viewer" id="viewer" data-tool="select" hidden>
+    <div class="v-progress v-ui"><i id="progressBar"></i></div>
+    <div class="v-top v-ui">
+        <div class="v-top-left">
+            <div class="v-file"><i class="fas fa-file-pdf"></i><span id="fileName">presentation.pdf</span></div>
+            <div class="v-tools">
+                <button class="v-icon-btn is-active" id="toolSelect" type="button" title="Select text (S)"><i class="fas fa-arrow-pointer"></i></button>
+                <button class="v-icon-btn" id="toolPan" type="button" title="Hand / pan (H)"><i class="fas fa-hand"></i></button>
+                <button class="v-icon-btn" id="toolHlText" type="button" title="Text highlight (T)"><i class="fas fa-highlighter"></i></button>
+                <button class="v-icon-btn" id="toolHlDraw" type="button" title="Free draw highlight (D)"><i class="fas fa-pencil"></i></button>
+                <div class="v-tools-sep"></div>
+                <button class="v-icon-btn" id="toolUndo" type="button" title="Undo (Ctrl+Z)" disabled><i class="fas fa-rotate-left"></i></button>
+                <button class="v-icon-btn" id="toolClearSlide" type="button" title="Clear this slide" disabled><i class="fas fa-eraser"></i></button>
+            </div>
+        </div>
+        <button class="v-icon-btn" id="closeBtn" type="button" aria-label="Close"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="stage" id="stage"><div class="stage-inner" id="stageInner"></div></div>
+    <button class="v-arrow prev v-ui" id="prevBtn" type="button"><i class="fas fa-chevron-left"></i></button>
+    <button class="v-arrow next v-ui" id="nextBtn" type="button"><i class="fas fa-chevron-right"></i></button>
+    <div class="v-bar v-ui">
+        <button class="v-icon-btn" id="prevBtn2" type="button"><i class="fas fa-chevron-left"></i></button>
+        <div class="v-counter"><b id="curNum">1</b> / <span id="totalNum">1</span></div>
+        <button class="v-icon-btn" id="nextBtn2" type="button"><i class="fas fa-chevron-right"></i></button>
+        <div class="v-sep"></div>
+        <button class="v-icon-btn" id="zoomOut" type="button"><i class="fas fa-minus"></i></button>
+        <span class="v-zoom-label" id="zoomLabel">100%</span>
+        <button class="v-icon-btn" id="zoomIn" type="button"><i class="fas fa-plus"></i></button>
+        <button class="v-icon-btn" id="zoomReset" type="button"><i class="fas fa-compress"></i></button>
+        <div class="v-sep"></div>
+        <button class="v-icon-btn" id="fsBtn" type="button"><i class="fas fa-expand"></i></button>
+    </div>
+</div>
+
+<!-- ══════════ 66SHARE OVERLAY ══════════ -->
+<div class="share-overlay" id="shareOverlay">
+    <div class="share-shell">
+        <div class="share-head">
+            <h2><i class="fas fa-tower-broadcast"></i> 66Share</h2>
+            <button class="share-close" id="shareClose" type="button" aria-label="Close"><i class="fas fa-xmark"></i></button>
+        </div>
+        <div class="share-body">
+
+            <!-- Step: role -->
+            <div class="share-step active" data-step="role">
+                <div class="share-title">Pick your role</div>
+                <div class="share-sub">The <b>sender</b> scans the QR code shown by the <b>receiver</b>. Files travel directly between devices — no server, no uploads.</div>
+                <div class="role-grid">
+                    <button class="role-btn send" id="roleSendBtn" type="button">
+                        <span class="rb-icon"><i class="fas fa-paper-plane"></i></span>
+                        <b>I'm sending files</b>
+                        <small>Phone usually scans the receiver's QR</small>
+                    </button>
+                    <button class="role-btn recv" id="roleRecvBtn" type="button">
+                        <span class="rb-icon"><i class="fas fa-download"></i></span>
+                        <b>I'm receiving files</b>
+                        <small>PC shows a QR for the sender to scan</small>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step: receive — show offer QR -->
+            <div class="share-step" data-step="recv-show">
+                <div class="share-title">Receiving · step 1 of 2</div>
+                <div class="share-sub">Ask the sender to <b>scan this QR code</b> with 66Share on their device.</div>
+                <div class="qr-box">
+                    <div class="qr-skeleton" id="recvQrSkeleton"></div>
+                    <canvas id="recvQrCanvas" hidden></canvas>
+                    <div class="qr-caption">Sender scans this</div>
+                </div>
+                <div class="share-label">Or paste this code to the sender</div>
+                <textarea class="share-textarea" id="recvOfferCode" readonly></textarea>
+                <button class="share-btn ghost" id="recvCopyOfferBtn" type="button"><i class="fas fa-copy"></i> Copy offer code</button>
+
+                <div class="share-divider">Then</div>
+
+                <div class="share-title">Receiving · step 2 of 2</div>
+                <div class="share-sub">After they scan, the sender will show you an <b>answer QR</b>. Scan or paste it back.</div>
+                <button class="share-btn primary" id="recvScanAnswerBtn" type="button"><i class="fas fa-camera"></i> Scan sender's answer QR</button>
+                <div class="share-label">Or paste the answer code</div>
+                <textarea class="share-textarea" id="recvAnswerInput" placeholder="Paste the answer code here…"></textarea>
+                <button class="share-btn ghost" id="recvAcceptAnswerBtn" type="button"><i class="fas fa-link"></i> Connect with this answer</button>
+                <div id="recvStatus" class="share-status" hidden></div>
+            </div>
+
+            <!-- Step: send — scan offer -->
+            <div class="share-step" data-step="send-scan">
+                <div class="share-title">Sending · step 1 of 2</div>
+                <div class="share-sub">Ask the receiver to show their QR code, then scan it here.</div>
+                <button class="share-btn primary" id="sendScanOfferBtn" type="button"><i class="fas fa-camera"></i> Scan receiver's QR</button>
+                <div class="share-divider">or</div>
+                <div class="share-label">Paste the receiver's offer code</div>
+                <textarea class="share-textarea" id="sendOfferInput" placeholder="Paste the receiver's offer code here…"></textarea>
+                <button class="share-btn ghost" id="sendAcceptOfferBtn" type="button"><i class="fas fa-link"></i> Generate answer</button>
+                <div id="sendStatus" class="share-status" hidden></div>
+            </div>
+
+            <!-- Step: send — show answer QR -->
+            <div class="share-step" data-step="send-answer">
+                <div class="share-title">Sending · step 2 of 2</div>
+                <div class="share-sub">Show this QR to the receiver so they can scan it back. Then you'll be connected.</div>
+                <div class="qr-box">
+                    <div class="qr-skeleton" id="sendQrSkeleton"></div>
+                    <canvas id="sendQrCanvas" hidden></canvas>
+                    <div class="qr-caption">Receiver scans this</div>
+                </div>
+                <div class="share-label">Or copy the answer code to send back</div>
+                <textarea class="share-textarea" id="sendAnswerCode" readonly></textarea>
+                <button class="share-btn ghost" id="sendCopyAnswerBtn" type="button"><i class="fas fa-copy"></i> Copy answer code</button>
+                <div id="sendAnswerStatus" class="share-status" hidden></div>
+            </div>
+
+            <!-- Step: connected / send files -->
+            <div class="share-step" data-step="connected">
+                <div class="share-success">
+                    <div class="ok-icon"><i class="fas fa-check"></i></div>
+                    <h3>Connected!</h3>
+                    <p id="connectedSub">Pick files to send — they'll arrive on the receiver instantly.</p>
+                </div>
+                <div id="senderUI" hidden>
+                    <label class="share-file-btn" for="shareFileInput">
+                        <i class="fas fa-folder-plus"></i> Choose files to send
+                    </label>
+                    <input type="file" id="shareFileInput" multiple hidden />
+                    <div class="share-progress-list" id="sendProgressList"></div>
+                </div>
+                <div id="receiverUI" hidden>
+                    <div class="share-status" style="margin-top:0;">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        Waiting for the sender to pick files…
+                    </div>
+                    <div class="share-progress-list" id="recvProgressList"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Camera scanner -->
+<div class="share-scanner" id="shareScanner">
+    <video id="scannerVideo" autoplay playsinline muted></video>
+    <canvas id="scannerCanvas" hidden></canvas>
+    <div class="scanner-frame"></div>
+    <div class="scanner-hint">Point at the QR code</div>
+    <button class="scanner-close" id="scannerCloseBtn" type="button" aria-label="Close"><i class="fas fa-xmark"></i></button>
+</div>
+
+<!-- PPTX modal -->
+<div class="modal-overlay" id="pptxModal">
+    <div class="modal-box">
+        <div class="modal-icon"><i class="fas fa-file-powerpoint"></i></div>
+        <h2>Convert your PPTX to PDF</h2>
+        <p>This player only opens <b>PDF</b> files. Convert your PowerPoint first — it keeps all your text, images, and layout.</p>
+        <div class="modal-steps">
+            <ol>
+                <li>Click the orange button below to open iLovePDF</li>
+                <li>Upload your <b>.pptx</b> file there</li>
+                <li>Download the converted <b>.pdf</b></li>
+                <li>Drag that PDF back here</li>
+            </ol>
+        </div>
+        <a href="https://www.ilovepdf.com/powerpoint_to_pdf" target="_blank" rel="noopener" class="modal-link-btn">
+            <i class="fas fa-arrow-up-right-from-square"></i> Open iLovePDF Converter
+        </a>
+        <button class="modal-close-btn" type="button" id="pptxModalClose">Got it</button>
+    </div>
+</div>
+
+<!-- Close confirm -->
+<div class="modal-overlay" id="closeConfirm">
+    <div class="modal-box">
+        <div class="modal-icon danger"><i class="fas fa-triangle-exclamation"></i></div>
+        <h2>Close presentation?</h2>
+        <p id="closeConfirmText">Are you sure you want to close this presentation?</p>
+        <div class="modal-actions">
+            <button class="modal-close-btn" type="button" id="closeCancel">Cancel</button>
+            <button class="modal-danger-btn" type="button" id="closeConfirmOk"><i class="fas fa-xmark"></i> Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const clamp = (v,a,b) => Math.min(b, Math.max(a,v));
+
+    /* ══════════ THEME ══════════ */
+    const themeBtn = $('themeToggle');
+    function applyTheme(dark) {
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+        themeBtn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        themeBtn.setAttribute('aria-pressed', String(dark));
+        const m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', dark ? '#0f0f10' : '#ffffff');
+    }
+    applyTheme(false);
+    themeBtn.addEventListener('click', () => applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark'));
+
+    /* ══════════ TOAST ══════════ */
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
+
+    /* ══════════ MODALS ══════════ */
+    const pptxModal = $('pptxModal');
+    $('pptxCta').addEventListener('click', () => { pptxModal.classList.add('active'); document.body.style.overflow = 'hidden'; });
+    $('pptxModalClose').addEventListener('click', () => { pptxModal.classList.remove('active'); if (!deck) document.body.style.overflow = ''; });
+    pptxModal.addEventListener('click', e => { if (e.target === pptxModal) { pptxModal.classList.remove('active'); if (!deck) document.body.style.overflow = ''; } });
+
+    const closeConfirm = $('closeConfirm');
+    const closeConfirmText = $('closeConfirmText');
+    function requestClose() {
+        if (!deck) return;
+        const hasHl = deck.slides.some(s => s.highlights && s.highlights.length);
+        closeConfirmText.innerHTML = hasHl
+            ? 'Are you sure? All the <b>highlights you made will be removed</b> and cannot be recovered.'
+            : 'Are you sure you want to close this presentation?';
+        closeConfirm.classList.add('active');
+    }
+    function dismissCC() { closeConfirm.classList.remove('active'); }
+    $('closeCancel').addEventListener('click', dismissCC);
+    $('closeConfirmOk').addEventListener('click', () => { dismissCC(); exitViewer(); });
+    closeConfirm.addEventListener('click', e => { if (e.target === closeConfirm) dismissCC(); });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            if (closeConfirm.classList.contains('active')) { dismissCC(); return; }
+            if (pptxModal.classList.contains('active')) { pptxModal.classList.remove('active'); if (!deck) document.body.style.overflow = ''; return; }
+        }
+    });
+
+    /* ══════════ LOADING ══════════ */
+    const dropzone = $('dropzone');
+    const dzLoadingText = $('dzLoadingText');
+    function setLoading(on, text) {
+        dropzone.classList.toggle('is-loading', on);
+        if (text) dzLoadingText.textContent = text;
+    }
+
+    /* ══════════ HELPERS ══════════ */
+    function ab2b64(buf) {
+        let bin = ''; const bytes = new Uint8Array(buf);
+        for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+        return btoa(bin);
+    }
+    function b642ab(b64) {
+        const bin = atob(b64); const len = bin.length; const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+        return bytes.buffer;
+    }
+    function esc(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+    function fmtBytes(n) { if (n < 1024) return n + ' B'; if (n < 1048576) return (n/1024).toFixed(0) + ' KB'; return (n/1048576).toFixed(1) + ' MB'; }
+
+    /* ══════════ PDF VIEWER ══════════ */
+    if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let deck = null;
+    const viewer = $('viewer');
+    const stage = $('stage');
+    const stageInner = $('stageInner');
+    const fileInput = $('fileInput');
+    let currentWrap = null, fitScale = 1, userZoom = 1, panX = 0, panY = 0, tool = 'select';
+
+    async function buildSlide(slide) {
+        const page = await slide.pdf.getPage(slide.num);
+        const base = page.getViewport({ scale: 1 });
+        const vp = page.getViewport({ scale: 1600 / base.width });
+        const wrap = document.createElement('div');
+        wrap.className = 'slide-wrap';
+        wrap.style.width = vp.width + 'px';
+        wrap.style.height = vp.height + 'px';
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.floor(vp.width));
+        canvas.height = Math.max(1, Math.floor(vp.height));
+        canvas.style.width = vp.width + 'px'; canvas.style.height = vp.height + 'px';
+        canvas.className = 'slide-canvas-pdf';
+        const ctx = canvas.getContext('2d', { alpha: false });
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        wrap.appendChild(canvas);
+        const hlLayer = document.createElement('div'); hlLayer.className = 'highlight-layer'; wrap.appendChild(hlLayer);
+        const textLayerDiv = document.createElement('div'); textLayerDiv.className = 'textLayer';
+        textLayerDiv.style.width = vp.width + 'px'; textLayerDiv.style.height = vp.height + 'px';
+        try { textLayerDiv.style.setProperty('--scale-factor', vp.scale); } catch(e){}
+        wrap.appendChild(textLayerDiv);
+        const drawLayer = document.createElement('div'); drawLayer.className = 'draw-layer'; wrap.appendChild(drawLayer);
+        try {
+            const tc = await page.getTextContent();
+            let task;
+            try { task = pdfjsLib.renderTextLayer({ textContentSource: tc, container: textLayerDiv, viewport: vp, textDivs: [] }); }
+            catch(e) { task = pdfjsLib.renderTextLayer({ textContent: tc, container: textLayerDiv, viewport: vp, textDivs: [] }); }
+            await task.promise;
+        } catch(err) { console.warn('Text layer failed:', err); }
+        slide.wrap = wrap; slide.canvas = canvas; slide.hlLayer = hlLayer; slide.textLayer = textLayerDiv; slide.drawLayer = drawLayer;
+    }
+
+    function renderHighlights(slide) {
+        if (!slide || !slide.hlLayer) return;
+        slide.hlLayer.innerHTML = '';
+        (slide.highlights || []).forEach(h => {
+            h.rects.forEach(r => {
+                const d = document.createElement('div');
+                d.className = 'hl-rect' + (h.free ? ' hl-free' : '');
+                d.style.left = r.x + 'px'; d.style.top = r.y + 'px';
+                d.style.width = r.w + 'px'; d.style.height = r.h + 'px';
+                if (h.color && !h.free) d.style.background = h.color;
+                slide.hlLayer.appendChild(d);
+            });
+        });
+        updateUndoButtons();
+    }
+
+    function addHighlight(slide, hl) {
+        if (!deck || !slide) return;
+        slide.highlights = slide.highlights || [];
+        slide.highlights.push(hl);
+        if (!deck.undoStack) deck.undoStack = [];
+        deck.undoStack.push({ slide, hl });
+        renderHighlights(slide);
+    }
+
+    function undoHighlight() {
+        if (!deck || !deck.undoStack || !deck.undoStack.length) { toast('Nothing to undo'); return; }
+        const entry = deck.undoStack.pop();
+        const idx = (entry.slide.highlights || []).indexOf(entry.hl);
+        if (idx >= 0) entry.slide.highlights.splice(idx, 1);
+        const sIdx = deck.slides.indexOf(entry.slide);
+        if (sIdx >= 0 && sIdx !== deck.index) showSlide(sIdx);
+        else renderHighlights(entry.slide);
+        toast('Highlight undone');
+    }
+
+    function clearSlideHighlights() {
+        if (!deck) return;
+        const slide = deck.slides[deck.index];
+        if (!slide) return;
+        if (!slide.highlights || !slide.highlights.length) { toast('No highlights on this slide'); return; }
+        if (deck.undoStack) deck.undoStack = deck.undoStack.filter(e => e.slide !== slide);
+        slide.highlights = [];
+        renderHighlights(slide);
+        toast('Highlights cleared');
+    }
+
+    function updateUndoButtons() {
+        $('toolUndo').disabled = !(deck && deck.undoStack && deck.undoStack.length);
+        const s = deck && deck.slides[deck.index];
+        $('toolClearSlide').disabled = !(s && s.highlights && s.highlights.length);
+    }
+
+    function clientToCanvas(cx, cy, canvas) {
+        const r = canvas.getBoundingClientRect();
+        const cssW = parseFloat(canvas.style.width) || canvas.width;
+        const scale = (r.width / cssW) || 1;
+        return { x: (cx - r.left) / scale, y: (cy - r.top) / scale };
+    }
+
+    const zoomLabel = $('zoomLabel');
+    function computeFit() {
+        if (!currentWrap) return;
+        const r = stageInner.getBoundingClientRect();
+        const w = currentWrap.offsetWidth || 1;
+        const h = currentWrap.offsetHeight || 1;
+        fitScale = Math.min(r.width / w, r.height / h) || 1;
+    }
+    function clampPan() {
+        if (!currentWrap) return;
+        const r = stageInner.getBoundingClientRect();
+        const s = fitScale * userZoom;
+        const w = currentWrap.offsetWidth * s;
+        const h = currentWrap.offsetHeight * s;
+        panX = clamp(panX, -Math.max(0,(w-r.width)/2), Math.max(0,(w-r.width)/2));
+        panY = clamp(panY, -Math.max(0,(h-r.height)/2), Math.max(0,(h-r.height)/2));
+    }
+    function applyTransform() {
+        if (!currentWrap) return;
+        const s = fitScale * userZoom;
+        currentWrap.style.transform = `translate(${panX}px, ${panY}px) scale(${s})`;
+        zoomLabel.textContent = Math.round(userZoom * 100) + '%';
+    }
+    function setZoom(z) { userZoom = clamp(z, 0.4, 6); clampPan(); applyTransform(); }
+
+    $('zoomIn').addEventListener('click', () => setZoom(userZoom * 1.25));
+    $('zoomOut').addEventListener('click', () => setZoom(userZoom / 1.25));
+    $('zoomReset').addEventListener('click', () => { panX = 0; panY = 0; setZoom(1); });
+    stage.addEventListener('wheel', e => { if (!deck) return; if (e.ctrlKey || e.metaKey) { e.preventDefault(); setZoom(userZoom * (e.deltaY < 0 ? 1.12 : 1/1.12)); } }, { passive: false });
+
+    function setTool(t) {
+        tool = t;
+        viewer.setAttribute('data-tool', t);
+        $('toolSelect').classList.toggle('is-active', t === 'select');
+        $('toolPan').classList.toggle('is-active', t === 'pan');
+        $('toolHlText').classList.toggle('hl-active', t === 'hltext');
+        $('toolHlDraw').classList.toggle('hl-active', t === 'hldraw');
+        if (t !== 'select' && t !== 'hltext') { try { window.getSelection().removeAllRanges(); } catch(e){} }
+    }
+    $('toolSelect').addEventListener('click', () => setTool('select'));
+    $('toolPan').addEventListener('click', () => setTool('pan'));
+    $('toolHlText').addEventListener('click', () => setTool('hltext'));
+    $('toolHlDraw').addEventListener('click', () => setTool('hldraw'));
+    $('toolUndo').addEventListener('click', undoHighlight);
+    $('toolClearSlide').addEventListener('click', clearSlideHighlights);
+
+    let panning = false, panSX = 0, panSY = 0, panOX = 0, panOY = 0;
+    let drawing = false, drawStart = null, drawPreviewEl = null;
+
+    stage.addEventListener('pointerdown', e => {
+        if (!deck || !currentWrap || e.button !== 0 || e.target.closest('.v-ui')) return;
+        if (tool === 'pan') {
+            panning = true; panSX = e.clientX; panSY = e.clientY; panOX = panX; panOY = panY;
+            stage.classList.add('dragging');
+            try { stage.setPointerCapture(e.pointerId); } catch(err){}
+            return;
+        }
+        if (tool === 'hldraw' && e.target.closest('.draw-layer')) {
+            const slide = deck.slides[deck.index];
+            if (!slide || !slide.canvas || !slide.hlLayer) return;
+            const pt = clientToCanvas(e.clientX, e.clientY, slide.canvas);
+            drawing = true; drawStart = pt;
+            drawPreviewEl = document.createElement('div');
+            drawPreviewEl.className = 'hl-rect hl-preview';
+            drawPreviewEl.style.left = pt.x + 'px'; drawPreviewEl.style.top = pt.y + 'px';
+            drawPreviewEl.style.width = '0px'; drawPreviewEl.style.height = '0px';
+            slide.hlLayer.appendChild(drawPreviewEl);
+            try { stage.setPointerCapture(e.pointerId); } catch(err){}
+            e.preventDefault();
+        }
+    });
+    stage.addEventListener('pointermove', e => {
+        if (panning) { panX = panOX + (e.clientX - panSX); panY = panOY + (e.clientY - panSY); clampPan(); applyTransform(); return; }
+        if (drawing && drawPreviewEl && drawStart && deck) {
+            const slide = deck.slides[deck.index];
+            if (!slide || !slide.canvas) return;
+            const pt = clientToCanvas(e.clientX, e.clientY, slide.canvas);
+            const x = Math.min(pt.x, drawStart.x), y = Math.min(pt.y, drawStart.y);
+            const w = Math.abs(pt.x - drawStart.x), h = Math.abs(pt.y - drawStart.y);
+            const cw = parseFloat(slide.canvas.style.width) || slide.canvas.width;
+            const ch = parseFloat(slide.canvas.style.height) || slide.canvas.height;
+            const nx = Math.max(0, x), ny = Math.max(0, y);
+            const nw = Math.min(w, cw - nx), nh = Math.min(h, ch - ny);
+            drawPreviewEl.style.left = nx + 'px'; drawPreviewEl.style.top = ny + 'px';
+            drawPreviewEl.style.width = nw + 'px'; drawPreviewEl.style.height = nh + 'px';
+        }
+    });
+    function finishPointer(e) {
+        if (panning) { panning = false; stage.classList.remove('dragging'); try { stage.releasePointerCapture(e.pointerId); } catch(err){} }
+        if (drawing) {
+            drawing = false;
+            if (drawPreviewEl && deck) {
+                const slide = deck.slides[deck.index];
+                const w = parseFloat(drawPreviewEl.style.width) || 0;
+                const h = parseFloat(drawPreviewEl.style.height) || 0;
+                if (slide && w > 4 && h > 4) {
+                    addHighlight(slide, { rects: [{ x: parseFloat(drawPreviewEl.style.left)||0, y: parseFloat(drawPreviewEl.style.top)||0, w, h }], free: true });
+                }
+            }
+            if (drawPreviewEl) drawPreviewEl.remove();
+            drawPreviewEl = null; drawStart = null;
+            try { stage.releasePointerCapture(e.pointerId); } catch(err){}
+        }
+    }
+    stage.addEventListener('pointerup', finishPointer);
+    stage.addEventListener('pointercancel', finishPointer);
+
+    let mousedownInText = false;
+    document.addEventListener('mousedown', e => {
+        mousedownInText = false;
+        if (!deck || tool !== 'hltext') return;
+        const s = deck.slides[deck.index];
+        if (s && s.textLayer && s.textLayer.contains(e.target)) mousedownInText = true;
+    });
+    document.addEventListener('mouseup', () => {
+        if (!deck || tool !== 'hltext' || !mousedownInText) return;
+        mousedownInText = false;
+        setTimeout(applyTextHighlight, 5);
+    });
+    function applyTextHighlight() {
+        if (!deck) return;
+        const slide = deck.slides[deck.index];
+        if (!slide || !slide.canvas || !slide.textLayer) return;
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.rangeCount === 0) return;
+        const range = sel.getRangeAt(0);
+        if (!slide.textLayer.contains(range.commonAncestorContainer)) return;
+        const rects = Array.from(range.getClientRects()).filter(r => r.width > 1 && r.height > 1);
+        if (!rects.length) return;
+        const cRect = slide.canvas.getBoundingClientRect();
+        const cssW = parseFloat(slide.canvas.style.width) || slide.canvas.width;
+        const scale = (cRect.width / cssW) || 1;
+        const mapped = rects.map(r => ({
+            x: (r.left - cRect.left) / scale, y: (r.top - cRect.top) / scale,
+            w: r.width / scale, h: r.height / scale
+        })).filter(r => r.w > 0.5 && r.h > 0.5);
+        if (!mapped.length) return;
+        addHighlight(slide, { rects: mapped, color: 'rgba(250,204,21,.5)' });
+        try { sel.removeAllRanges(); } catch(e){}
+    }
+
+    async function openPdfBuffer(buf, name) {
+        setLoading(true, 'Reading PDF…');
+        try {
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            const slides = [];
+            for (let i = 1; i <= pdf.numPages; i++) slides.push({ num: i, pdf, wrap: null, canvas: null, hlLayer: null, textLayer: null, drawLayer: null, highlights: [] });
+            deck = { name, slides, index: 0, undoStack: [] };
+            setLoading(false);
+            enterViewer();
+        } catch (err) { console.error(err); setLoading(false); toast('Could not read that PDF.'); }
+    }
+
+    /* ══════════ HISTORY ══════════ */
+    const HISTORY_KEY = 'slidedeck_history';
+    const MAX_HISTORY = 8;
+    function getHistory() { try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; } }
+    function savePdfToHistory(name, buf) {
+        const item = { id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), name, timestamp: Date.now(), data: ab2b64(buf) };
+        let hist = getHistory(); hist.unshift(item);
+        if (hist.length > MAX_HISTORY) hist = hist.slice(0, MAX_HISTORY);
+        try { localStorage.setItem(HISTORY_KEY, JSON.stringify(hist)); }
+        catch (e) {
+            if (hist.length > 1) { hist.pop(); try { localStorage.setItem(HISTORY_KEY, JSON.stringify(hist)); } catch { toast('Storage full.'); } }
+            else toast('This PDF is too large for history.');
+        }
+        renderHistoryList();
+    }
+    function renderHistoryList() {
+        const section = $('historySection'), list = $('historyList');
+        const hist = getHistory();
+        if (!hist.length) { section.hidden = true; return; }
+        section.hidden = false;
+        list.innerHTML = hist.map(item => `
+            <div class="history-item">
+                <div class="history-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="history-info">
+                    <div class="history-name">${esc(item.name)}</div>
+                    <div class="history-meta">${new Date(item.timestamp).toLocaleDateString()} · ${fmtBytes(item.data.length * 0.75)}</div>
+                </div>
+                <button class="history-open" data-id="${item.id}">Open</button>
+                <button class="history-remove" data-id="${item.id}" aria-label="Remove"><i class="fas fa-xmark"></i></button>
+            </div>`).join('');
+        list.querySelectorAll('.history-open').forEach(b => b.addEventListener('click', async e => {
+            e.stopPropagation();
+            const item = getHistory().find(h => h.id === b.dataset.id);
+            if (!item) return;
+            await openPdfBuffer(b642ab(item.data), item.name);
+        }));
+        list.querySelectorAll('.history-remove').forEach(b => b.addEventListener('click', e => {
+            e.stopPropagation();
+            const filtered = getHistory().filter(h => h.id !== b.dataset.id);
+            try { localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered)); } catch {}
+            renderHistoryList();
+        }));
+    }
+    $('clearHistoryBtn').addEventListener('click', () => {
+        if (!confirm('Remove all saved presentations?')) return;
+        localStorage.removeItem(HISTORY_KEY);
+        renderHistoryList();
+    });
+    renderHistoryList();
+
+    /* ══════════ FILE INTAKE (PDF) ══════════ */
+    async function handlePdfFile(file) {
+        if (!file) return;
+        const ext = (file.name.split('.').pop() || '').toLowerCase();
+        if (ext === 'pdf') {
+            const buf = await file.arrayBuffer();
+            await openPdfBuffer(buf, file.name);
+            savePdfToHistory(file.name, buf);
+        } else if (ext === 'pptx' || ext === 'ppt') {
+            pptxModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else toast('Unsupported file type. Drop a .pdf.');
+    }
+    fileInput.addEventListener('change', e => { const f = e.target.files?.[0]; if (f) handlePdfFile(f); fileInput.value = ''; });
+    let dragDepth = 0;
+    window.addEventListener('dragenter', e => { e.preventDefault(); dragDepth++; if (!deck) dropzone.classList.add('dragover'); });
+    window.addEventListener('dragover', e => e.preventDefault());
+    window.addEventListener('dragleave', e => { e.preventDefault(); dragDepth = Math.max(0, dragDepth-1); if (dragDepth === 0) dropzone.classList.remove('dragover'); });
+    window.addEventListener('drop', e => {
+        e.preventDefault(); dragDepth = 0; dropzone.classList.remove('dragover');
+        const f = e.dataTransfer?.files?.[0];
+        if (f) handlePdfFile(f);
+    });
+
+    /* ══════════ PDF VIEWER CONTROLS ══════════ */
+    function enterViewer() {
+        viewer.hidden = false; document.body.style.overflow = 'hidden';
+        $('fileName').textContent = deck.name;
+        $('totalNum').textContent = deck.slides.length;
+        setTool('select');
+        showSlide(0);
+        pokeControls();
+    }
+    function exitViewer() {
+        if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+        viewer.hidden = true; document.body.style.overflow = '';
+        stageInner.innerHTML = ''; try { window.getSelection().removeAllRanges(); } catch(e){}
+        deck = null; currentWrap = null; fileInput.value = '';
+        clearTimeout(hideTimer); viewer.classList.remove('controls-hidden');
+    }
+    function evict() {
+        if (!deck) return;
+        const keep = new Set([deck.index - 1, deck.index, deck.index + 1]);
+        deck.slides.forEach((s, i) => { if (!keep.has(i) && s.wrap) { s.wrap = null; s.canvas = null; s.hlLayer = null; s.textLayer = null; s.drawLayer = null; } });
+    }
+    async function showSlide(i) {
+        if (!deck) return;
+        i = clamp(i, 0, deck.slides.length - 1);
+        deck.index = i;
+        updateChrome();
+        try { window.getSelection().removeAllRanges(); } catch(e){}
+        const slide = deck.slides[i];
+        if (!slide.wrap) {
+            stageInner.innerHTML = '<div class="stage-spinner"></div>';
+            try { await buildSlide(slide); } catch (e) { console.error(e); stageInner.innerHTML = ''; toast('Page render failed.'); return; }
+            if (!deck || deck.index !== i) return;
+        }
+        stageInner.innerHTML = ''; stageInner.appendChild(slide.wrap);
+        currentWrap = slide.wrap;
+        panX = 0; panY = 0; userZoom = 1;
+        requestAnimationFrame(() => { computeFit(); applyTransform(); renderHighlights(slide); });
+        evict();
+        if (deck.slides[i+1] && !deck.slides[i+1].wrap) buildSlide(deck.slides[i+1]).catch(()=>{});
+        updateUndoButtons();
+    }
+    function updateChrome() {
+        if (!deck) return;
+        const t = deck.slides.length;
+        $('curNum').textContent = deck.index + 1;
+        $('totalNum').textContent = t;
+        $('progressBar').style.width = ((deck.index + 1) / t * 100) + '%';
+        $('prevBtn').disabled = $('prevBtn2').disabled = deck.index === 0;
+        $('nextBtn').disabled = $('nextBtn2').disabled = deck.index === t - 1;
+    }
+    const next = () => deck && deck.index < deck.slides.length - 1 && showSlide(deck.index + 1);
+    const prev = () => deck && deck.index > 0 && showSlide(deck.index - 1);
+    $('nextBtn').addEventListener('click', next); $('nextBtn2').addEventListener('click', next);
+    $('prevBtn').addEventListener('click', prev); $('prevBtn2').addEventListener('click', prev);
+    $('closeBtn').addEventListener('click', requestClose);
+    $('fsBtn').addEventListener('click', () => {
+        if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+        else viewer.requestFullscreen().catch(()=>toast('Fullscreen unavailable.'));
+    });
+    document.addEventListener('fullscreenchange', () => {
+        $('fsBtn').innerHTML = document.fullscreenElement ? '<i class="fas fa-compress"></i>' : '<i class="fas fa-expand"></i>';
+        setTimeout(() => { if (deck && currentWrap) { computeFit(); clampPan(); applyTransform(); } }, 80);
+    });
+
+    let hideTimer;
+    function pokeControls() {
+        if (!deck) return;
+        viewer.classList.remove('controls-hidden');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => { if (deck) viewer.classList.add('controls-hidden'); }, 3000);
+    }
+    viewer.addEventListener('mousemove', pokeControls);
+    viewer.addEventListener('mousedown', pokeControls);
+    viewer.addEventListener('touchstart', pokeControls, { passive: true });
+
+    let rzT;
+    window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(() => { if (deck && currentWrap) { computeFit(); clampPan(); applyTransform(); } }, 100); });
+
+    document.addEventListener('keydown', e => {
+        if (!deck || closeConfirm.classList.contains('active')) return;
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+        const k = e.key;
+        if ((e.ctrlKey || e.metaKey) && (k === 'z' || k === 'Z')) { e.preventDefault(); undoHighlight(); return; }
+        if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); pokeControls(); next(); }
+        else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); pokeControls(); prev(); }
+        else if (k === 'Home') { e.preventDefault(); showSlide(0); }
+        else if (k === 'End') { e.preventDefault(); showSlide(deck.slides.length - 1); }
+        else if (k === '+' || k === '=') { e.preventDefault(); setZoom(userZoom * 1.25); }
+        else if (k === '-' || k === '_') { e.preventDefault(); setZoom(userZoom / 1.25); }
+        else if (k === '0') { e.preventDefault(); panX = 0; panY = 0; setZoom(1); }
+        else if (k === 's' || k === 'S') setTool('select');
+        else if (k === 'h' || k === 'H') setTool('pan');
+        else if (k === 't' || k === 'T') setTool('hltext');
+        else if (k === 'd' || k === 'D') setTool('hldraw');
+        else if (k === 'f' || k === 'F') $('fsBtn').click();
+        else if (k === 'Escape' && !document.fullscreenElement) requestClose();
+    });
+
+    /* ══════════════════════════════════════════════════════════
+       66SHARE — WebRTC peer-to-peer file transfer (no server)
+       ══════════════════════════════════════════════════════════ */
+
+    const RTC_CONFIG = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+    const CHUNK_SIZE = 16384;
+    const MAX_BUFFER = 1048576; // 1 MB backpressure
+
+    const shareOverlay = $('shareOverlay');
+    const scannerEl = $('shareScanner');
+    const scannerVideo = $('scannerVideo');
+    const scannerCanvas = $('scannerCanvas');
+
+    const shareState = {
+        role: null,
+        pc: null,
+        dc: null,
+        offerSdp: null,
+        answerSdp: null,
+        receiving: null,
+        queue: Promise.resolve(),
+        scannerStream: null,
+        scannerRAF: null,
+    };
+
+    /* ---------- UI navigation ---------- */
+    function showShareStep(name) {
+        document.querySelectorAll('.share-step').forEach(el => el.classList.toggle('active', el.dataset.step === name));
+    }
+    function openShare() {
+        shareOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        showShareStep('role');
+    }
+    function closeShare() {
+        shareOverlay.classList.remove('active');
+        if (!deck) document.body.style.overflow = '';
+        resetShare();
+    }
+    function resetShare() {
+        try { if (shareState.pc) shareState.pc.close(); } catch(e){}
+        shareState.pc = null; shareState.dc = null;
+        shareState.offerSdp = null; shareState.answerSdp = null;
+        shareState.receiving = null; shareState.role = null;
+        shareState.queue = Promise.resolve();
+        $('recvOfferCode').value = '';
+        $('recvAnswerInput').value = '';
+        $('sendOfferInput').value = '';
+        $('sendAnswerCode').value = '';
+        $('recvQrCanvas').hidden = true; $('recvQrSkeleton').hidden = false;
+        $('sendQrCanvas').hidden = true; $('sendQrSkeleton').hidden = false;
+        $('recvStatus').hidden = true; $('sendStatus').hidden = true; $('sendAnswerStatus').hidden = true;
+        $('sendProgressList').innerHTML = ''; $('recvProgressList').innerHTML = '';
+        $('senderUI').hidden = true; $('receiverUI').hidden = true;
+        $('shareFileInput').value = '';
+        stopScanner();
+    }
+
+    $('shareCta').addEventListener('click', openShare);
+    $('shareClose').addEventListener('click', closeShare);
+    shareOverlay.addEventListener('click', e => { if (e.target === shareOverlay) closeShare(); });
+
+    /* ---------- QR helpers ---------- */
+    async function drawQr(canvas, text, skeleton) {
+        skeleton.hidden = true;
+        canvas.hidden = false;
+        try {
+            await QRCode.toCanvas(canvas, text, { width: 260, margin: 1, errorCorrectionLevel: 'M', color: { dark: '#000', light: '#fff' } });
+        } catch (err) {
+            console.error(err);
+            toast('QR too large — please use copy/paste.');
+            canvas.hidden = true; skeleton.hidden = false;
+        }
+    }
+
+    /* ---------- ICE gathering ---------- */
+    function waitForIce(pc, timeout = 3500) {
+        return new Promise(resolve => {
+            if (pc.iceGatheringState === 'complete') return resolve();
+            const onState = () => {
+                if (pc.iceGatheringState === 'complete') {
+                    pc.removeEventListener('icegatheringstatechange', onState);
+                    resolve();
+                }
+            };
+            pc.addEventListener('icegatheringstatechange', onState);
+            setTimeout(() => { pc.removeEventListener('icegatheringstatechange', onState); resolve(); }, timeout);
+        });
+    }
+
+    /* ---------- Data channel setup ---------- */
+    function setupDataChannel(dc) {
+        dc.binaryType = 'arraybuffer';
+        dc.onopen = () => {
+            // The connection is fully open — navigate both sides
+            showShareStep('connected');
+            if (shareState.role === 'send') {
+                $('senderUI').hidden = false;
+                $('receiverUI').hidden = true;
+                $('connectedSub').textContent = 'Pick files to send — they arrive on the receiver instantly.';
+            } else {
+                $('senderUI').hidden = true;
+                $('receiverUI').hidden = false;
+                $('connectedSub').textContent = 'Waiting for the sender to pick files…';
+            }
+        };
+        dc.onmessage = handleDcMessage;
+        dc.onclose = () => { toast('Connection closed'); };
+        shareState.dc = dc;
+    }
+
+    /* ---------- File transfer ---------- */
+    async function sendFiles(files) {
+        const dc = shareState.dc;
+        if (!dc || dc.readyState !== 'open') { toast('Not connected'); return; }
+        for (const file of files) {
+            const id = Math.random().toString(36).slice(2, 10);
+            const row = document.createElement('div');
+            row.className = 'share-progress-item';
+            row.innerHTML = `
+                <div class="share-progress-name">${esc(file.name)}</div>
+                <div class="share-progress-bar"><i style="width:0%"></i></div>
+                <div class="share-progress-meta"><span class="pg-status">Sending…</span><span class="pg-pct">0%</span></div>`;
+            $('sendProgressList').appendChild(row);
+            const bar = row.querySelector('.share-progress-bar > i');
+            const pct = row.querySelector('.pg-pct');
+            const status = row.querySelector('.pg-status');
+
+            // Metadata
+            dc.send(JSON.stringify({ type: 'meta', id, name: file.name, size: file.size, mime: file.type || 'application/octet-stream' }));
+
+            let offset = 0;
+            while (offset < file.size) {
+                if (dc.readyState !== 'open') { status.textContent = 'Aborted'; return; }
+                while (dc.bufferedAmount > MAX_BUFFER) await new Promise(r => setTimeout(r, 30));
+                const slice = file.slice(offset, offset + CHUNK_SIZE);
+                const buf = await slice.arrayBuffer();
+                dc.send(buf);
+                offset += buf.byteLength;
+                const p = Math.round(offset / file.size * 100);
+                bar.style.width = p + '%'; pct.textContent = p + '%';
+            }
+            dc.send(JSON.stringify({ type: 'end', id }));
+            status.textContent = 'Sent';
+            bar.style.width = '100%'; pct.textContent = '100%';
+        }
+    }
+
+    function handleDcMessage(e) {
+        if (typeof e.data === 'string') {
+            let msg;
+            try { msg = JSON.parse(e.data); } catch { return; }
+            if (msg.type === 'meta') {
+                shareState.receiving = { id: msg.id, name: msg.name, size: msg.size, mime: msg.mime, chunks: [], received: 0 };
+                const row = document.createElement('div');
+                row.className = 'share-progress-item';
+                row.dataset.fileId = msg.id;
+                row.innerHTML = `
+                    <div class="share-progress-name">${esc(msg.name)}</div>
+                    <div class="share-progress-bar"><i style="width:0%"></i></div>
+                    <div class="share-progress-meta"><span class="pg-status">Receiving…</span><span class="pg-pct">0%</span></div>`;
+                $('recvProgressList').appendChild(row);
+            } else if (msg.type === 'end') {
+                const r = shareState.receiving;
+                if (!r) return;
+                const blob = new Blob(r.chunks, { type: r.mime });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = r.name;
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 60000);
+                const row = $('recvProgressList').querySelector(`[data-file-id="${r.id}"]`);
+                if (row) {
+                    row.querySelector('.pg-status').textContent = 'Saved';
+                    row.querySelector('.pg-pct').textContent = '100%';
+                    row.querySelector('.share-progress-bar > i').style.width = '100%';
+                }
+                shareState.receiving = null;
+            }
+        } else {
+            const r = shareState.receiving;
+            if (!r) return;
+            r.chunks.push(e.data);
+            r.received += e.data.byteLength;
+            const row = $('recvProgressList').querySelector(`[data-file-id="${r.id}"]`);
+            if (row) {
+                const p = Math.round(r.received / r.size * 100);
+                row.querySelector('.share-progress-bar > i').style.width = p + '%';
+                row.querySelector('.pg-pct').textContent = p + '%';
+            }
+        }
+    }
+
+    /* ---------- RECEIVER flow ---------- */
+    async function startReceive() {
+        shareState.role = 'receive';
+        shareState.pc = new RTCPeerConnection(RTC_CONFIG);
+        const dc = shareState.pc.createDataChannel('file', { ordered: true });
+        setupDataChannel(dc);
+        shareState.pc.onconnectionstatechange = () => {
+            if (shareState.pc && shareState.pc.connectionState === 'failed') {
+                setStatus('recvStatus', 'Connection failed — try again.', true);
+            }
+        };
+
+        const offer = await shareState.pc.createOffer();
+        await shareState.pc.setLocalDescription(offer);
+        await waitForIce(shareState.pc);
+
+        shareState.offerSdp = shareState.pc.localDescription.sdp;
+        const payload = JSON.stringify({ t: 'offer', sdp: shareState.offerSdp });
+
+        $('recvOfferCode').value = payload;
+        await drawQr($('recvQrCanvas'), payload, $('recvQrSkeleton'));
+        showShareStep('recv-show');
+    }
+
+    async function acceptAnswer(answerText) {
+        if (!shareState.pc) { toast('No pending connection'); return; }
+        let sdp;
+        try {
+            const parsed = JSON.parse(answerText.trim());
+            sdp = parsed.t === 'answer' ? parsed.sdp : parsed.sdp || answerText;
+        } catch { sdp = answerText.trim(); }
+        try {
+            await shareState.pc.setRemoteDescription({ type: 'answer', sdp });
+            setStatus('recvStatus', 'Answer accepted — waiting for connection…');
+        } catch (e) {
+            console.error(e);
+            setStatus('recvStatus', 'Could not use that answer code.', true);
+        }
+    }
+
+    $('roleRecvBtn').addEventListener('click', () => { startReceive().catch(e => { console.error(e); toast('Failed to start.'); }); });
+    $('recvCopyOfferBtn').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText($('recvOfferCode').value); toast('Offer copied'); }
+        catch { $('recvOfferCode').select(); document.execCommand('copy'); toast('Offer copied'); }
+    });
+    $('recvScanAnswerBtn').addEventListener('click', () => openScanner('answer'));
+    $('recvAcceptAnswerBtn').addEventListener('click', () => {
+        const v = $('recvAnswerInput').value.trim();
+        if (!v) { toast('Paste the answer code first'); return; }
+        acceptAnswer(v);
+    });
+
+    /* ---------- SENDER flow ---------- */
+    $('roleSendBtn').addEventListener('click', () => {
+        shareState.role = 'send';
+        showShareStep('send-scan');
+    });
+
+    $('sendScanOfferBtn').addEventListener('click', () => openScanner('offer'));
+
+    async function acceptOffer(offerText) {
+        let sdp;
+        try {
+            const parsed = JSON.parse(offerText.trim());
+            sdp = parsed.t === 'offer' ? parsed.sdp : parsed.sdp || offerText;
+        } catch { sdp = offerText.trim(); }
+
+        try {
+            shareState.pc = new RTCPeerConnection(RTC_CONFIG);
+            shareState.pc.ondatachannel = e => setupDataChannel(e.channel);
+            shareState.pc.onconnectionstatechange = () => {
+                if (shareState.pc && shareState.pc.connectionState === 'failed') setStatus('sendAnswerStatus', 'Connection failed — try again.', true);
+            };
+            await shareState.pc.setRemoteDescription({ type: 'offer', sdp });
+            const answer = await shareState.pc.createAnswer();
+            await shareState.pc.setLocalDescription(answer);
+            await waitForIce(shareState.pc);
+
+            shareState.answerSdp = shareState.pc.localDescription.sdp;
+            const payload = JSON.stringify({ t: 'answer', sdp: shareState.answerSdp });
+
+            $('sendAnswerCode').value = payload;
+            await drawQr($('sendQrCanvas'), payload, $('sendQrSkeleton'));
+            showShareStep('send-answer');
+            setStatus('sendAnswerStatus', 'Show this QR to the receiver, or copy the code to them.');
+        } catch (e) {
+            console.error(e);
+            setStatus('sendStatus', 'Could not read that offer code.', true);
+        }
+    }
+
+    $('sendAcceptOfferBtn').addEventListener('click', () => {
+        const v = $('sendOfferInput').value.trim();
+        if (!v) { toast('Paste the offer code first'); return; }
+        acceptOffer(v);
+    });
+    $('sendCopyAnswerBtn').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText($('sendAnswerCode').value); toast('Answer copied'); }
+        catch { $('sendAnswerCode').select(); document.execCommand('copy'); toast('Answer copied'); }
+    });
+
+    /* ---------- File picker ---------- */
+    $('shareFileInput').addEventListener('change', e => {
+        const files = Array.from(e.target.files || []);
+        if (!files.length) return;
+        sendFiles(files).catch(err => { console.error(err); toast('Transfer failed.'); });
+        e.target.value = '';
+    });
+
+    /* ---------- Status helper ---------- */
+    function setStatus(id, msg, error) {
+        const el = $(id);
+        if (!el) return;
+        el.hidden = false;
+        el.className = 'share-status' + (error ? ' error' : '');
+        el.innerHTML = `<i class="fas ${error ? 'fa-triangle-exclamation' : 'fa-info-circle'}"></i> <span>${esc(msg)}</span>`;
+    }
+
+    /* ---------- QR scanner ---------- */
+    let scannerResolver = null;
+    function openScanner(purpose) {
+        scannerEl.classList.add('active');
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false })
+            .then(stream => {
+                shareState.scannerStream = stream;
+                scannerVideo.srcObject = stream;
+                scannerVideo.play().catch(()=>{});
+                scanLoop(purpose);
+            })
+            .catch(err => {
+                console.error(err);
+                toast('Camera access denied or unavailable.');
+                closeScanner();
+            });
+    }
+
+    function scanLoop(purpose) {
+        if (scannerVideo.readyState === scannerVideo.HAVE_ENOUGH_DATA) {
+            const w = scannerVideo.videoWidth, h = scannerVideo.videoHeight;
+            if (w && h) {
+                scannerCanvas.width = w; scannerCanvas.height = h;
+                const ctx = scannerCanvas.getContext('2d');
+                ctx.drawImage(scannerVideo, 0, 0, w, h);
+                const img = ctx.getImageData(0, 0, w, h);
+                const code = jsQR(img.data, w, h, { inversionAttempts: 'dontInvert' });
+                if (code && code.data) {
+                    handleScanned(purpose, code.data);
+                    return;
+                }
+            }
+        }
+        shareState.scannerRAF = requestAnimationFrame(() => scanLoop(purpose));
+    }
+
+    function handleScanned(purpose, text) {
+        closeScanner();
+        if (purpose === 'offer') acceptOffer(text);
+        else if (purpose === 'answer') acceptAnswer(text);
+    }
+
+    function closeScanner() {
+        scannerEl.classList.remove('active');
+        cancelAnimationFrame(shareState.scannerRAF);
+        shareState.scannerRAF = null;
+        if (shareState.scannerStream) {
+            shareState.scannerStream.getTracks().forEach(t => t.stop());
+            shareState.scannerStream = null;
+        }
+        scannerVideo.srcObject = null;
+    }
+    function stopScanner() { if (scannerEl.classList.contains('active')) closeScanner(); }
+    $('scannerCloseBtn').addEventListener('click', closeScanner);
+
+    /* Prevent page close while sharing */
+    window.addEventListener('beforeunload', e => {
+        if (shareState.pc && shareState.pc.connectionState === 'connected') {
+            e.preventDefault(); e.returnValue = '';
+        }
+    });
+
+})();
+</script>
+</body>
+</html>
