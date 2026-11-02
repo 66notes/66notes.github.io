@@ -23,7 +23,7 @@
         :root {
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
             --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
-            --navy: #0d2b4e; --accent: #2563eb; --accent-light: #eff6ff;
+            --navy: #0d2b4e; --accent: #123cf3; --accent-light: #eef2ff;
             --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
             --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
@@ -40,7 +40,6 @@
         .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
         .top-app-bar__title span { color: var(--accent); }
         
-        /* Updated Notices Button */
         .notices-btn { 
             position: relative;
             display: inline-flex; 
@@ -48,7 +47,7 @@
             gap: 5px; 
             padding: 7px 15px; 
             border-radius: 30px; 
-            background: #1e40af; /* Solid dark blue */
+            background: var(--accent);
             color: #ffffff; 
             font-size: 0.7rem; 
             font-weight: 600; 
@@ -58,9 +57,9 @@
             min-height: 34px; 
             white-space: nowrap; 
             cursor: pointer; 
-            box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 2px 6px rgba(18, 60, 243, 0.3);
         }
-        .notices-btn:active { transform: scale(0.96); background: #1d4ed8; }
+        .notices-btn:active { transform: scale(0.96); background: #1032d9; }
         .notices-btn .material-symbols-rounded { font-size: 16px; width: 16px; height: 16px; display: inline-block; }
         
         .notification-dot {
@@ -115,7 +114,7 @@
 
         .events-card { border-radius: 16px; background: #fff; border: 1px solid #eef2f6; padding: 16px 14px 12px; margin-bottom: 12px; box-shadow: var(--shadow); }
         .card-header { display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 11px; margin-bottom: 12px; border-bottom: 1px solid #eef2f6; }
-        .card-header i { color: #2563eb; font-size: 0.82rem; }
+        .card-header i { color: var(--accent); font-size: 0.82rem; }
         .card-header span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; }
         .events-list { display: flex; flex-direction: column; gap: 8px; }
         .events-empty { text-align: center; padding: 1.2rem 0.5rem; font-size: 0.75rem; color: #9ca3af; font-weight: 500; }
@@ -133,7 +132,7 @@
         .event-tag.day { background: #ede9fe; color: #5b21b6; }
         .event-tag.holiday { background: #fee2e2; color: #991b1b; }
         .event-tag.range { background: #fef3c7; color: #92400e; }
-        .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
+        .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: var(--accent); font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
         .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
         
         .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
@@ -237,8 +236,9 @@
         .code-value { font-weight: 700; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); white-space: nowrap; }
         .copy-btn { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; cursor: pointer; border: none; background: #e8ecf2; color: #374151; min-height: 26px; display: flex; align-items: center; gap: 0.2rem; font-family: 'Poppins', sans-serif; }
         .copy-btn.copied-flash { background: #d1fae5; color: #065f46; }
-        .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--navy); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
+        .join-btn { flex-shrink: 0; padding: 0.15rem 0.7rem; border-radius: 30px; font-weight: 600; font-size: 0.55rem; border: none; background: var(--accent); color: #fff; min-height: 26px; display: flex; align-items: center; gap: 0.25rem; text-decoration: none; }
 
+        /* ══════════ PDFs SECTION ══════════ */
         .drive-grid { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
         .drive-card { background: var(--surface); border-radius: var(--radius-lg); padding: 1.2rem 1rem; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
         .drive-icon { font-size: 2.5rem; color: var(--accent); display: flex; align-items: center; justify-content: center; height: 52px; }
@@ -246,8 +246,53 @@
         .drive-title { font-weight: 600; font-size: 1rem; color: var(--text); }
         .drive-desc { font-size: 0.8rem; color: var(--text-secondary); }
         .btn { height: 40px; padding: 0 24px; border-radius: 40px; border: none; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-        .btn--filled { background: var(--navy); color: #fff; }
+        .btn--filled { background: var(--accent); color: #fff; }
         .btn--large { height: 48px; padding: 0 32px; font-size: 16px; width: 100%; justify-content: center; }
+
+        .small-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+        .small-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.15s, background var(--transition), border-color var(--transition);
+        }
+        .small-card:active {
+            transform: scale(0.97);
+            background: var(--accent-light);
+        }
+        .small-card-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .small-card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .small-card-title {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--navy);
+            line-height: 1.2;
+        }
 
         .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.8rem; }
         .community-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.4rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.35rem; text-decoration: none; box-shadow: var(--shadow-sm); }
@@ -266,7 +311,7 @@
         .faculty-actions { margin-top: 0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
         .btn-fac { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.22rem 0.95rem; border-radius: 40px; font-weight: 600; font-size: 0.68rem; border: none; cursor: pointer; min-height: 32px; text-decoration: none; min-width: 64px; }
         .btn-fac:active { transform: scale(0.96); opacity: 0.92; }
-        .btn-call { background: var(--navy); color: #fff; }
+        .btn-call { background: var(--accent); color: #fff; }
         .btn-whatsapp { background: #25D366; color: #fff; }
         .btn-email { background: var(--accent); color: #fff; }
         .btn-fac i { font-size: 0.78rem; }
@@ -287,7 +332,7 @@
         .cta-icon { font-size: 2rem; color: var(--accent); display: block; margin-bottom: 0.2rem; }
         .cta-title { font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: 0.1rem; }
         .cta-desc { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.6rem; }
-        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--navy); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; min-height: 42px; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.6rem; border-radius: 40px; background: var(--accent); color: #fff; font-weight: 600; font-size: 0.8rem; text-decoration: none; min-height: 42px; }
 
         .bottom-nav {
             position: fixed;
@@ -330,8 +375,8 @@
         }
         :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
         :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
-        :root[data-theme="dark"] .notices-btn { background: #1e40af; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
-        :root[data-theme="dark"] .notices-btn:active { background: #1d4ed8; }
+        :root[data-theme="dark"] .notices-btn { background: var(--accent); color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+        :root[data-theme="dark"] .notices-btn:active { background: #1032d9; }
         :root[data-theme="dark"] .notification-dot { border-color: var(--surface); }
         :root[data-theme="dark"] .theme-toggle-btn { background: #242428; border-color: #333338; color: #fbbf24; }
         :root[data-theme="dark"] .announcement-bar { background: #2a2419; border-color: #4a3a1a; }
@@ -372,6 +417,9 @@
         :root[data-theme="dark"] .copy-btn { background: #2a2a2f; color: #c8c8cb; }
         :root[data-theme="dark"] .copy-btn.copied-flash { background: #143d2e; color: #6ee7b7; }
         :root[data-theme="dark"] .drive-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .small-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .small-card:active { background: #242428; }
+        :root[data-theme="dark"] .small-card-title { color: #c8d8f0; }
         :root[data-theme="dark"] .community-card { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .cta-footer { background: var(--surface); border-color: var(--border); }
         :root[data-theme="dark"] .cta-icon { color: #7bb0ff; }
@@ -399,10 +447,10 @@
         :root[data-theme="dark"] .btn--filled,
         :root[data-theme="dark"] .cta-btn,
         :root[data-theme="dark"] .join-btn,
-        :root[data-theme="dark"] .btn-call { background: #2563eb; color: #fff; }
+        :root[data-theme="dark"] .btn-call { background: var(--accent); color: #fff; }
         :root[data-theme="dark"] .bottom-nav { background: var(--surface); border-top-color: var(--border); }
         :root[data-theme="dark"] .bottom-nav__item { color: #909095; }
-        :root[data-theme="dark"] .bottom-nav__item.is-active { color: #7bb0ff; }
+        :root[data-theme="dark"] .bottom-nav__item.is-active { color: var(--accent); }
         :root[data-theme="dark"] .bottom-nav__item.is-active .bottom-nav__icon { background: #242428; }
         :root[data-theme="dark"] .wifi-home-card:active { background: #242428; }
         :root[data-theme="dark"] .wifi-home-icon { background: #242428; color: #7bb0ff; }
@@ -447,6 +495,9 @@
             .wifi-home-cta { font-size: 0.6rem; padding: 0.22rem 0.6rem; }
             .drive-icon img { width: 46px; height: 46px; }
             .drive-icon { height: 46px; }
+            .small-card { padding: 0.8rem 0.4rem; gap: 0.4rem; }
+            .small-card-icon { width: 34px; height: 34px; }
+            .small-card-title { font-size: 0.7rem; }
             .c-icon img { width: 30px; height: 30px; }
             .c-icon { width: 34px; height: 34px; }
         }
@@ -561,12 +612,25 @@
                         <span class="material-symbols-rounded">open_in_new</span> Open Drive
                     </a>
                 </div>
+
+                <!-- Side by side smaller cards for Presentation -->
+                <div class="small-cards-grid">
+                    <a href="https://drive.google.com/drive/folders/1gkCqhrpnW7L-GRLAT8KdDCAG5SHFWtw1" target="_blank" class="small-card" rel="noopener">
+                        <span class="small-card-icon">
+                            <img src="https://img.icons8.com/badges/48/upload.png" alt="Upload Presentation" loading="lazy" />
+                        </span>
+                        <span class="small-card-title">Upload Presentation</span>
+                    </a>
+                    <a href="https://66notes.github.io/pdfslide" target="_blank" class="small-card" rel="noopener">
+                        <span class="small-card-icon">
+                            <img src="https://img.icons8.com/fluency/96/pdf-2.png" alt="PDF Slide Show" loading="lazy" />
+                        </span>
+                        <span class="small-card-title">PDF Slide Show</span>
+                    </a>
+                </div>
             </div>
-            <div class="community-grid">
-                <a href="https://classroom.google.com/c/ODcwNjYyNTg5OTI5?cjc=fqv76kik" target="_blank" class="community-card" rel="noopener">
-                    <span class="c-icon"><img src="https://img.icons8.com/fluency/96/google-classroom.png" alt="Classroom" loading="lazy" /></span>
-                    <span class="c-title">Classroom</span>
-                </a>
+            
+            <div class="community-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 1.5rem;">
                 <a href="https://chat.whatsapp.com/IWyDnjTr5lk5S2nQuSbxvM" target="_blank" class="community-card" rel="noopener">
                     <span class="c-icon"><img src="https://img.icons8.com/emoji/96/whatsapp.png" alt="WhatsApp" loading="lazy" /></span>
                     <span class="c-title">WhatsApp</span>
@@ -712,7 +776,6 @@
             { text: 'KEEP An Eye in Messenger for normal Updates' }
         ];
 
-        // SKIP_DATES for AI Reminder: Skip Sunday Nov 1 and Victory Day Dec 16
         const SKIP_DATES = ['2026-11-01', '2026-12-16'];
 
         const EVENTS = [
@@ -935,10 +998,9 @@
                 const day = (t.day + off) % 7;
                 const c = CLASSES.find(c => c.day === day && (off > 0 || c.s > t.min));
                 if (c) {
-                    // Check if this class falls on a skip date
                     const dateStr = getDhakaDateStr(off);
                     if (SKIP_DATES.includes(dateStr)) {
-                        continue; // Skip this class
+                        continue;
                     }
                     return { kind: off === 0 ? 'today' : 'next', c };
                 }
@@ -1071,7 +1133,6 @@
             const block = document.createElement('div');
             block.className = 'event-block';
             
-            // Dynamic Date Logic: If event has started, show end date. Otherwise show start date.
             const now = Date.now();
             const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
             
