@@ -124,6 +124,7 @@
         .event-date { flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px; background: linear-gradient(135deg, #0d2b4e 0%, #14365e 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .event-date .day { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1; }
         .event-date .month { font-size: 0.44rem; font-weight: 700; color: rgba(255, 255, 255, 0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+        .event-date .fa-question { color: #fff; font-size: 1.2rem; }
         .event-body { flex: 1; min-width: 0; }
         .event-title { font-size: 0.76rem; font-weight: 700; color: #1e2a3e; line-height: 1.3; margin-bottom: 5px; }
         .event-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
@@ -148,8 +149,11 @@
         .modal-header h2 i { color: var(--accent); }
         .modal-close-btn { background: #f3f4f6; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #4b5563; flex-shrink: 0; }
         .modal-body { padding: 1.5rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.7; color: var(--text); }
-        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; justify-content: flex-end; flex-shrink: 0; }
-        .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer; min-height: 38px; background: #f3f4f6; color: #374151; }
+        
+        .modal-footer { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; justify-content: flex-end; flex-shrink: 0; flex-wrap: wrap; }
+        .btn-modal { padding: 0.4rem 1.4rem; border-radius: 40px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.75rem; border: none; cursor: pointer; min-height: 36px; background: #f3f4f6; color: #374151; }
+        .btn-modal.btn-copy { background: var(--accent-light); color: var(--accent); }
+        .btn-modal.btn-calendar { background: var(--navy); color: #fff; }
 
         .routine-section { background: var(--surface); border-radius: var(--radius-lg); padding: 1.1rem 1rem 0.9rem; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 1rem; }
         .routine-section .section-label { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text); text-align: center; margin-bottom: 0.7rem; padding-bottom: 0.45rem; border-bottom: 1.5px solid #e9edf2; position: relative; }
@@ -406,6 +410,8 @@
         :root[data-theme="dark"] .modal-close-btn { background: #222a35; color: #cbd5e1; }
         :root[data-theme="dark"] .modal-footer { border-top-color: var(--border); }
         :root[data-theme="dark"] .btn-modal { background: #222a35; color: #cbd5e1; }
+        :root[data-theme="dark"] .btn-modal.btn-copy { background: #1e2638; color: #93c5fd; }
+        :root[data-theme="dark"] .btn-modal.btn-calendar { background: var(--accent); color: #fff; }
         :root[data-theme="dark"] .btn--filled,
         :root[data-theme="dark"] .cta-btn,
         :root[data-theme="dark"] .join-btn,
@@ -455,6 +461,8 @@
             .small-card-title { font-size: 0.7rem; }
             .c-icon img { width: 30px; height: 30px; }
             .c-icon { width: 34px; height: 34px; }
+            .modal-footer { gap: 0.4rem; padding: 0.6rem 1rem 1rem; }
+            .btn-modal { font-size: 0.62rem; padding: 0.3rem 0.8rem; min-height: 32px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -694,6 +702,8 @@
             </div>
             <div class="modal-body" id="event-modal-body"></div>
             <div class="modal-footer">
+                <button class="btn-modal btn-copy" type="button" id="btn-copy-event">Copy Details</button>
+                <button class="btn-modal btn-calendar" type="button" id="btn-add-calendar">Add to Calendar</button>
                 <button class="btn-modal" type="button" data-close>Close</button>
             </div>
         </div>
@@ -730,6 +740,15 @@
 
         const SKIP_DATES = ['2026-11-01', '2026-12-16'];
 
+        // AI Reminder Custom Overrides (Date specific)
+        const CUSTOM_AI_OVERRIDES = {
+            '2026-11-18': { title: 'ECO CT Exam', label: 'EXAM', detail: 'ECO CT Exam · Room 4905' },
+            '2026-11-22': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
+            '2026-11-29': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
+            '2026-12-06': { title: 'Mathematics Class (No MGT)', label: 'CLASS', detail: 'QUA 1101 · Room 4905' },
+            '2026-12-09': { title: 'ECO Class (No MGT)', label: 'CLASS', detail: 'ECO 1101 · Room 4905' }
+        };
+
         const EVENTS = [
             { 
                 title: 'Classes Start', 
@@ -756,7 +775,7 @@
                 startDate: '2026-11-09T00:00:00+06:00',
                 tags: ['Exams', '09-12 Nov'],
                 expiresAt: '2026-11-12T23:59:59+06:00',
-                color: '#a16207',
+                color: '#991b1b',
                 items: ['Supplementary Mid-Term Examination'],
                 note: 'Check schedule with faculty.'
             },
@@ -767,7 +786,7 @@
                 tags: ['Exam', 'Wednesday'],
                 expiresAt: '2026-11-18T09:45:00+06:00',
                 color: '#991b1b',
-                items: ['ECO 1101 CT Exam', 'During class time (8:15 AM - 9:45 AM)'],
+                items: ['ECO 1101 CT Exam', 'During class time (8:15 AM - 9:45 AM)', 'Syllabus: Chapter 4, Chapter 5'],
                 note: 'Contact faculty for syllabus.'
             },
             { 
@@ -776,6 +795,7 @@
                 startDate: '2026-11-22T00:00:00+06:00',
                 tags: ['Presentation', 'Sunday'],
                 expiresAt: '2026-11-22T16:15:00+06:00',
+                color: '#166534',
                 items: ['The Visionaries', 'Team Believers', 'Team Phoenix', 'INSIGHT CIRCLE'],
                 note: 'During class time.'
             },
@@ -785,8 +805,39 @@
                 startDate: '2026-11-29T00:00:00+06:00',
                 tags: ['Presentation', 'Sunday'],
                 expiresAt: '2026-11-29T16:15:00+06:00',
+                color: '#166534',
                 items: ['The Business Titans', 'BLUEPRINTS', 'Marginal Analysts'],
                 note: 'During class time.'
+            },
+            { 
+                title: 'MGT Make Up Class', 
+                day: '23', month: 'Nov', 
+                startDate: '2026-11-23T00:00:00+06:00',
+                tags: ['Make Up', 'Monday'],
+                expiresAt: '2026-11-23T23:59:59+06:00',
+                items: ['Room 201', 'Time: 9:45 AM - 11:15 AM'],
+                note: 'Make up for missed classes.'
+            },
+            { 
+                title: 'MGT Assignment (Slide Print)', 
+                day: '22', month: 'Nov', 
+                dynamicDay: { after: '2026-11-23T00:00:00+06:00', newDay: '29', newMonth: 'Nov' },
+                startDate: '2026-11-22T00:00:00+06:00',
+                tags: ['Assignment', 'Sunday'],
+                expiresAt: '2026-11-29T23:59:59+06:00',
+                color: '#166534',
+                items: ['Just print the pptx slide and give the hard copy on the presentation day.'],
+                note: 'Deadline is on the presentation day.'
+            },
+            { 
+                title: 'No MGT Class', 
+                day: '06', month: 'Dec', 
+                dynamicDay: { after: '2026-12-07T00:00:00+06:00', newDay: '09', newMonth: 'Dec' },
+                startDate: '2026-12-06T00:00:00+06:00',
+                tags: ['Notice', 'Dec 6/9'],
+                expiresAt: '2026-12-09T23:59:59+06:00',
+                items: ['This is why Make Up class is done, or will happen.'],
+                note: 'No MGT class on Dec 6 and Dec 9.'
             },
             { 
                 title: 'New Semester Pre-Registration Spring 2027', 
@@ -809,20 +860,21 @@
             },
             { 
                 title: 'ECO Assignment', 
-                day: 'TBA', month: 'Dec', 
+                day: '?', month: '', 
                 startDate: '2026-11-15T00:00:00+06:00',
                 tags: ['Assignment', 'TBA'],
                 expiresAt: '2026-12-11T00:00:00+06:00',
-                color: '#a16207',
+                color: '#166534',
                 items: ['Assignment is always on Review Questions ALL of them that are provided and will be provided after mid and before final.'],
                 note: 'Deadline unknown. Check with faculty.'
             },
             { 
                 title: 'ECO Presentation', 
-                day: 'TBA', month: 'Dec', 
+                day: '?', month: '', 
                 startDate: '2026-11-15T00:00:00+06:00',
                 tags: ['Presentation', 'TBA'],
                 expiresAt: '2026-12-11T00:00:00+06:00',
+                color: '#166534',
                 items: ['Deadline unknown.'],
                 note: 'Check with faculty.'
             },
@@ -887,6 +939,10 @@
         }
 
         function getEventDateString(ev) {
+            if (ev.day === '?') return 'Date TBA';
+            if (ev.dynamicDay && Date.now() >= Date.parse(ev.dynamicDay.after)) {
+                return `${ev.dynamicDay.newDay} ${ev.dynamicDay.newMonth}`;
+            }
             if (ev.startDay && ev.endDay) {
                 return `${ev.startDay}–${ev.endDay} ${ev.startMonth}`;
             }
@@ -905,14 +961,30 @@
             }, ms);
         }
 
+        // Improved Copy Function for Local HTML
         function copyText(text) {
-            if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
-            return new Promise((ok, fail) => {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            return new Promise((resolve, reject) => {
                 const ta = document.createElement('textarea');
-                ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px';
-                document.body.appendChild(ta); ta.select();
-                try { document.execCommand('copy') ? ok() : fail(); } catch (e) { fail(e); }
-                ta.remove();
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.top = '0';
+                ta.style.left = '0';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                try {
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    if (successful) resolve();
+                    else reject(new Error('execCommand failed'));
+                } catch (err) {
+                    document.body.removeChild(ta);
+                    reject(err);
+                }
             });
         }
 
@@ -923,6 +995,104 @@
         const closeModal = () => { modal.classList.remove('active'); document.body.style.overflow = ''; };
         modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) closeModal(); });
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        let currentOpenEvent = null;
+
+        $('btn-copy-event').addEventListener('click', function() {
+            if (!currentOpenEvent) return;
+            const ev = currentOpenEvent;
+            const dateStr = getEventDateString(ev);
+            
+            let text = `Event: ${ev.title}\nDate: ${dateStr}\n\n`;
+            if (ev.items) text += ev.items.map(i => `• ${i}`).join('\n') + '\n';
+            if (ev.note) text += `\nNote: ${ev.note}`;
+            
+            const btn = this;
+            const orig = btn.innerHTML;
+            copyText(text).then(() => {
+                btn.innerHTML = 'Copied!';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            }).catch(() => {
+                btn.innerHTML = 'Failed';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            });
+        });
+
+        $('btn-add-calendar').addEventListener('click', function() {
+            if (!currentOpenEvent) return;
+            const ev = currentOpenEvent;
+            
+            let activeDay = ev.day;
+            let activeMonth = ev.month;
+            if (ev.dynamicDay && Date.now() >= Date.parse(ev.dynamicDay.after)) {
+                activeDay = ev.dynamicDay.newDay;
+                activeMonth = ev.dynamicDay.newMonth;
+            } else if (ev.startDay && ev.endDay) {
+                activeDay = ev.startDay;
+                activeMonth = ev.startMonth;
+            }
+            
+            const monthMap = { 'Jan':'01','Feb':'02','Mar':'03','Apr':'04','May':'05','Jun':'06','Jul':'07','Aug':'08','Sep':'09','Oct':'10','Nov':'11','Dec':'12' };
+            const m = monthMap[activeMonth] || '01';
+            const d = activeDay.padStart(2, '0');
+            
+            let startHour = '09';
+            let startMin = '00';
+            let endHour = '10';
+            let endMin = '00';
+            
+            const textToSearch = ev.title + ' ' + (ev.note || '') + ' ' + (ev.items ? ev.items.join(' ') : '');
+            const timeMatch = textToSearch.match(/(\d+):(\d+)/);
+            if (timeMatch) {
+                startHour = timeMatch[1].padStart(2, '0');
+                startMin = timeMatch[2];
+                endHour = (parseInt(startHour) + 1).toString().padStart(2, '0');
+                endMin = startMin;
+            }
+            
+            const dtStart = `2026${m}${d}T${startHour}${startMin}00`;
+            const dtEnd = `2026${m}${d}T${endHour}${endMin}00`;
+            const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            
+            let desc = (ev.items || []).join('\\n');
+            if (ev.note) desc += '\\n' + ev.note;
+            
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//66notes//Event//EN',
+                'BEGIN:VEVENT',
+                `UID:${Date.now()}@66notes.github.io`,
+                `DTSTAMP:${dtStamp}`,
+                `DTSTART:${dtStart}`,
+                `DTEND:${dtEnd}`,
+                `SUMMARY:${ev.title}`,
+                `DESCRIPTION:${desc}`,
+                'BEGIN:VALARM',
+                'TRIGGER:-P3D',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:Reminder for ' + ev.title,
+                'END:VALARM',
+                'BEGIN:VALARM',
+                'TRIGGER:-P1D',
+                'ACTION:DISPLAY',
+                'DESCRIPTION:Reminder for ' + ev.title,
+                'END:VALARM',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${ev.title.replace(/\s+/g, '_')}.ics`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
 
         /* ═══════════════ NAV ═══════════════ */
 
@@ -989,9 +1159,13 @@
 
         (function initAnnouncements() {
             const now = Date.now();
-            // Grab the first 3 valid upcoming events from the EVENTS array and prepend their dates
             const lines = EVENTS
                 .filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt))
+                .sort((a, b) => {
+                    const tsA = a.startDate ? Date.parse(a.startDate) : (a.expiresAt ? Date.parse(a.expiresAt) : 0);
+                    const tsB = b.startDate ? Date.parse(b.startDate) : (b.expiresAt ? Date.parse(b.expiresAt) : 0);
+                    return tsA - tsB;
+                })
                 .slice(0, 3)
                 .map(ev => `[${getEventDateString(ev)}] ${ev.title}`);
             buildAnnouncements(lines);
@@ -1037,8 +1211,19 @@
             };
         }
 
-        // AI Reminder is strictly for class schedules now
         function getStatus(t) {
+            const dateStr = getDhakaDateStr(0);
+            
+            if (CUSTOM_AI_OVERRIDES[dateStr]) {
+                const override = CUSTOM_AI_OVERRIDES[dateStr];
+                return {
+                    slides: [`📌 <strong>${override.title}</strong>`, `📅 ${override.detail}`],
+                    label: override.label,
+                    running: false,
+                    detail: override.detail
+                };
+            }
+            
             return getClassStatus(t);
         }
 
@@ -1124,13 +1309,17 @@
         /* ═══════════════ PINNED EVENTS ═══════════════ */
 
         function openEventDetails(ev) {
+            currentOpenEvent = ev;
+            
             $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title;
 
             let dateStr = '';
-            if (ev.startDay && ev.endDay) {
+            if (ev.day === '?') {
+                dateStr = 'Date TBA';
+            } else if (ev.startDay && ev.endDay) {
                 dateStr = `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}`;
             } else {
-                dateStr = `${ev.day} ${ev.month}`;
+                dateStr = getEventDateString(ev);
             }
 
             let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${dateStr}</div>`;
@@ -1147,12 +1336,15 @@
             block.className = 'event-block';
             
             const now = Date.now();
-            const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
             
             let displayDay = ev.day;
             let displayMonth = ev.month;
             
-            if (ev.startDay && ev.endDay) {
+            if (ev.dynamicDay && now >= Date.parse(ev.dynamicDay.after)) {
+                displayDay = ev.dynamicDay.newDay;
+                displayMonth = ev.dynamicDay.newMonth;
+            } else if (ev.startDay && ev.endDay) {
+                const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
                 displayDay = isStarted ? ev.endDay : ev.startDay;
                 displayMonth = isStarted ? ev.endMonth : ev.startMonth;
             }
@@ -1162,10 +1354,17 @@
                 : '';
 
             const bgStyle = ev.color ? `style="background: ${ev.color}"` : '';
+            
+            let dateContent = '';
+            if (displayDay === '?') {
+                dateContent = `<i class="fas fa-question"></i>`;
+            } else {
+                dateContent = `<span class="day">${displayDay}</span><span class="month">${displayMonth}</span>`;
+            }
 
             block.innerHTML = `
                 <div class="event-row">
-                    <div class="event-date" ${bgStyle}><span class="day">${displayDay}</span><span class="month">${displayMonth}</span></div>
+                    <div class="event-date" ${bgStyle}>${dateContent}</div>
                     <div class="event-body">
                         <div class="event-title">${ev.title}</div>
                         ${tagsHtml}
@@ -1180,7 +1379,15 @@
         let shownKey = null;
         function renderEvents() {
             const now = Date.now();
-            const visible = EVENTS.filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt));
+            // Sort events chronologically by startDate (or expiresAt if no startDate)
+            const visible = EVENTS
+                .filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt))
+                .sort((a, b) => {
+                    const tsA = a.startDate ? Date.parse(a.startDate) : (a.expiresAt ? Date.parse(a.expiresAt) : 0);
+                    const tsB = b.startDate ? Date.parse(b.startDate) : (b.expiresAt ? Date.parse(b.expiresAt) : 0);
+                    return tsA - tsB;
+                });
+                
             const key = visible.map(ev => ev.title).join('|');
             if (key === shownKey) return;
             shownKey = key;
