@@ -79,7 +79,7 @@
         /* Ludo Board (15x15) */
         .board-wrapper {
             width: 100%; max-width: 400px; aspect-ratio: 1;
-            background: #ffffff; border-radius: 4px;
+            background: #ffffff; border-radius: 0px; /* Strictly square */
             box-shadow: var(--shadow); padding: 2px; border: 2px solid var(--board-line);
             position: relative;
         }
@@ -104,7 +104,7 @@
         
         .base-inner {
             position: absolute; inset: 10%; background: #ffffff;
-            border-radius: 0px; /* Removed rounding */
+            border-radius: 0px; /* Strictly square */
             display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15%;
             border: 2px solid var(--board-line);
         }
@@ -121,12 +121,15 @@
         .start-blue { background: var(--blue) !important; }
         .start-yellow { background: var(--yellow) !important; }
         
-        /* Center (STRICTLY 4 TRIANGLES - NO ROUNDING, NO TROPHY) */
+        /* Center - 4 Sharp Triangles (NO GRADIENTS) */
         .center-home {
-            grid-area: 7 / 7 / 10 / 10; position: relative;
-            background: conic-gradient(from 45deg, var(--red) 0deg 90deg, var(--green) 90deg 180deg, var(--yellow) 180deg 270deg, var(--blue) 270deg 360deg);
-            border: 1px solid var(--board-line);
+            grid-area: 7 / 7 / 10 / 10; position: relative; display: flex; flex-wrap: wrap;
         }
+        .triangle { width: 50%; height: 50%; }
+        .t-top { background: var(--red); clip-path: polygon(0 0, 100% 0, 50% 50%); }
+        .t-right { background: var(--green); clip-path: polygon(100% 0, 100% 100%, 50% 50%); }
+        .t-bottom { background: var(--yellow); clip-path: polygon(0 100%, 100% 100%, 50% 50%); }
+        .t-left { background: var(--blue); clip-path: polygon(0 0, 0 100%, 50% 50%); }
 
         /* Pawns */
         .pawn { 
@@ -146,7 +149,7 @@
         .pawn-selectable {
             animation: pulse-ring 1s infinite;
             cursor: pointer;
-            box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 12px 6px rgba(255, 215, 0, 0.8);
             z-index: 20;
         }
         @keyframes pulse-ring {
@@ -287,7 +290,13 @@
                 <div class="base-green"><div class="base-inner"></div></div>
                 <div class="base-blue"><div class="base-inner" id="base-p2"></div></div>
                 <div class="base-yellow"><div class="base-inner"></div></div>
-                <div class="center-home"></div>
+                <!-- Sharp Center Triangles -->
+                <div class="center-home">
+                    <div class="triangle t-top"></div>
+                    <div class="triangle t-right"></div>
+                    <div class="triangle t-bottom"></div>
+                    <div class="triangle t-left"></div>
+                </div>
             </div>
         </div>
 
@@ -423,6 +432,8 @@
 
             statusTxt.innerHTML = 'Connecting to server...';
 
+            // 🔴 IMPORTANT: Replace this URL with your Render.com URL once you create it!
+            // Example: https://ludo-server-abc.onrender.com
             socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['websocket', 'polling'],
                 reconnection: true,
