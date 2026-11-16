@@ -18,8 +18,8 @@
             --accent: #123cf3; --accent-light: #eef2ff; 
             
             /* Ludo Colors */
-            --red-base: #ef4444; --red-light: #fee2e2; --red-dark: #b91c1c;
-            --blue-base: #3b82f6; --blue-light: #dbeafe; --blue-dark: #1d4ed8;
+            --red: #ef4444; --green: #22c55e; --yellow: #eab308; --blue: #3b82f6;
+            --red-dark: #b91c1c; --blue-dark: #1d4ed8;
             --board-bg: #ffffff; --board-line: #cbd5e1;
             
             --radius: 14px; --shadow: 0 6px 20px rgba(0,0,0,0.08);
@@ -104,33 +104,42 @@
         
         /* Path Styling */
         .cell.path { border: 1px solid var(--board-line); }
-        .cell.safe { background: #f8fafc; }
+        .cell.safe { background: #f1f5f9; }
         .cell.safe::after { content: '★'; position: absolute; font-size: 0.5rem; color: #94a3b8; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         
-        /* Bases */
-        .base-red { background: var(--red-base); border: 2px solid var(--red-dark); grid-area: 1 / 1 / 7 / 7; }
-        .base-blue { background: var(--blue-base); border: 2px solid var(--blue-dark); grid-area: 10 / 10 / 16 / 16; }
+        /* Ludo King Style Bases */
+        .base-red { background: var(--red); grid-area: 1 / 1 / 7 / 7; border: 2px solid var(--board-line); }
+        .base-green { background: var(--green); grid-area: 1 / 10 / 7 / 16; border: 2px solid var(--board-line); }
+        .base-blue { background: var(--blue); grid-area: 10 / 1 / 16 / 7; border: 2px solid var(--board-line); }
+        .base-yellow { background: var(--yellow); grid-area: 10 / 10 / 16 / 16; border: 2px solid var(--board-line); }
         
         .base-inner {
-            position: absolute; inset: 15%; background: var(--board-bg);
-            border-radius: 10px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-            place-items: center; padding: 10%; gap: 10%;
+            position: absolute; inset: 15%; background: #ffffff;
+            border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            padding: 10%; gap: 15%; border: 2px solid var(--board-line);
         }
         
-        /* Home Columns */
-        .home-path-red { background: var(--red-base); border: 1px solid var(--board-line); }
-        .home-path-blue { background: var(--blue-base); border: 1px solid var(--board-line); }
+        /* Colored Starting Homes */
+        .home-path-red { background: var(--red); border: 1px solid var(--board-line); }
+        .home-path-green { background: var(--green); border: 1px solid var(--board-line); }
+        .home-path-blue { background: var(--blue); border: 1px solid var(--board-line); }
+        .home-path-yellow { background: var(--yellow); border: 1px solid var(--board-line); }
         
-        /* Center */
+        .start-red { background: var(--red) !important; }
+        .start-green { background: var(--green) !important; }
+        .start-blue { background: var(--blue) !important; }
+        .start-yellow { background: var(--yellow) !important; }
+        
+        /* Center Clean Look */
         .center-home {
             grid-area: 7 / 7 / 10 / 10; position: relative;
-            background: conic-gradient(var(--red-base) 0deg 90deg, var(--blue-base) 90deg 180deg, #fbbf24 180deg 270deg, #22c55e 270deg 360deg);
+            background: conic-gradient(from 45deg, var(--red) 0deg 90deg, var(--green) 90deg 180deg, var(--yellow) 180deg 270deg, var(--blue) 270deg 360deg);
             border: 1px solid var(--board-line); display: flex; align-items: center; justify-content: center;
         }
         .center-home::after {
             content: '🏆'; font-size: 1.2rem;
-            background: var(--board-bg); width: 60%; height: 60%; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+            background: #ffffff; width: 60%; height: 60%; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
         }
 
         /* Pawns */
@@ -138,15 +147,15 @@
             position: absolute; width: 70%; height: 70%; border-radius: 50%; 
             top: 15%; left: 15%; z-index: 10; transition: all 0.3s ease-in-out;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3);
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center; border: 2px solid white;
         }
         .pawn::after {
-            content: ''; width: 30%; height: 30%; border-radius: 50%; background: rgba(255,255,255,0.5);
+            content: ''; width: 30%; height: 30%; border-radius: 50%; background: rgba(255,255,255,0.6);
         }
-        .pawn-p1 { background: var(--red-base); border: 1.5px solid var(--red-dark); }
-        .pawn-p2 { background: var(--blue-base); border: 1.5px solid var(--blue-dark); }
+        .pawn-p1 { background: var(--red); border-color: var(--red-dark); }
+        .pawn-p2 { background: var(--blue); border-color: var(--blue-dark); }
         
-        .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.3; }
+        .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.4; }
         
         /* ══════════ DICE 3D ══════════ */
         .controls { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
@@ -185,12 +194,10 @@
         :root[data-theme="dark"] {
             --bg: #0b0e14; --surface: #151a22; --border: #222a35; --text: #f0f4f8;
             --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
-            --board-bg: #151a22; --board-line: #313b4c;
+            --board-bg: #e2e8f0; --board-line: #94a3b8; /* Lighter board in dark mode for visibility */
         }
-        :root[data-theme="dark"] .dice-face { background: #1e293b; border-color: #0f172a; }
-        :root[data-theme="dark"] .dot { background: #f8fafc; }
-        :root[data-theme="dark"] .cell.safe { background: #0f131a; }
-        :root[data-theme="dark"] .center-home::after { background: var(--surface); }
+        :root[data-theme="dark"] .cell.safe { background: #cbd5e1; }
+        :root[data-theme="dark"] .base-inner { background: #f8fafc; }
     </style>
 </head>
 <body>
@@ -239,7 +246,9 @@
         <div class="board-wrapper">
             <div class="board" id="board">
                 <div class="base-red"><div class="base-inner" id="base-p1"></div></div>
+                <div class="base-green"><div class="base-inner"></div></div>
                 <div class="base-blue"><div class="base-inner" id="base-p2"></div></div>
+                <div class="base-yellow"><div class="base-inner"></div></div>
                 <div class="center-home"></div>
             </div>
         </div>
@@ -417,6 +426,8 @@
             for (let r = 0; r < 15; r++) {
                 for (let c = 0; c < 15; c++) {
                     if (r < 6 && c < 6) continue;
+                    if (r < 6 && c > 8) continue;
+                    if (r > 8 && c < 6) continue;
                     if (r > 8 && c > 8) continue;
                     if (r >= 6 && r <= 8 && c >= 6 && c <= 8) continue;
 
@@ -429,10 +440,19 @@
                     
                     if (isPath) {
                         cell.classList.add('path');
+                        
+                        // Colored Paths
                         if (c === 7 && r > 0 && r < 6) cell.classList.add('home-path-red');
                         if (c === 7 && r > 8 && r < 14) cell.classList.add('home-path-blue');
+                        if (r === 7 && c > 0 && c < 6) cell.classList.add('home-path-red'); // Ludo King style: red enters from left
+                        if (r === 7 && c > 8 && c < 14) cell.classList.add('home-path-blue'); // blue enters from right
                         
-                        if ((r === 6 && c === 1) || (r === 8 && c === 2) || (r === 13 && c === 6) || (r === 8 && c === 13) || (r === 6 && c === 12) || (r === 1 && c === 8)) {
+                        // Start zones
+                        if (r === 6 && c === 1) cell.classList.add('start-red');
+                        if (r === 8 && c === 13) cell.classList.add('start-blue');
+                        
+                        // Safe Stars
+                        if ((r === 8 && c === 2) || (r === 6 && c === 12) || (r === 13 && c === 6) || (r === 1 && c === 8)) {
                             cell.classList.add('safe');
                         }
                     }
@@ -495,8 +515,11 @@
                 4: {x: 0, y: 90}, 5: {x: -90, y: 0}, 6: {x: 0, y: 180}
             };
             
-            currentX += 720 + faceMap[diceValue].x;
-            currentY += 720 + faceMap[diceValue].y;
+            // Random multiplier for spins to ensure it feels different each time
+            const spins = 4 + Math.floor(Math.random() * 3);
+            currentX = spins * 360 + faceMap[diceValue].x;
+            currentY = spins * 360 + faceMap[diceValue].y;
+            
             cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
 
             setTimeout(() => {
@@ -521,6 +544,10 @@
             });
 
             if (validMoves.length === 0) {
+                // No valid moves. Emit to sync opponent before skipping.
+                if (mode === 'online' && ((turn === 1 && myOnlineId === 1) || (turn === 2 && myOnlineId === 2))) {
+                    socket.emit('move', { roomName, moveData: { pawns: myPawns, extraTurn: false } });
+                }
                 setTimeout(nextTurn, 600);
             } else if (validMoves.length === 1) {
                 setTimeout(() => executeMove(validMoves[0], dice), 300);
