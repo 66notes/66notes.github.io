@@ -361,12 +361,12 @@
 
             statusTxt.innerHTML = 'Connecting...';
 
-            // Connect to Enzonic Subdomain
+            // FORCED POLLING TO BYPASS ENZONIC BLOCK
             socket = io('https://66notes-game.enzonic.dev', {
-                transports: ['websocket', 'polling'], 
+                transports: ['polling'], 
                 secure: true,
                 reconnection: true,
-                reconnectionAttempts: 3
+                reconnectionAttempts: 5
             }); 
 
             socket.on('connect', () => {
