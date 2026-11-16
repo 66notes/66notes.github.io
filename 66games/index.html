@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>66Games · Play</title>
+    <meta name="description" content="66Games dashboard — Ludo, Chess, Snake Ludo, Carrom & Coin Flip. Log in with your roll to play." />
+    <link rel="canonical" href="https://66notes.github.io/games/" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </noscript>
+
+    <style>
+        :root {
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+            --navy: #0d2b4e; --accent: #123cf3; --accent-light: #eef2ff;
+            --orange: #ea580c; --orange-light: #fff7ed; --orange-soft: #ffedd5;
+            --green: #22c55e;
+            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.07);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; }
+
+        /* ══════════ TOP APP BAR ══════════ */
+        .top-app-bar {
+            position: sticky; top: 0; z-index: 10;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px; padding: 0 14px;
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .top-app-bar__title { font-size: 1.15rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; flex-shrink: 0; }
+        .top-app-bar__title span { color: var(--accent); }
+        .app-bar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+        .nav-icon-btn, .theme-toggle-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px; border-radius: 50%;
+            background: var(--accent-light); border: 1px solid #dbeafe;
+            color: var(--accent); font-size: 0.8rem; text-decoration: none;
+            cursor: pointer; flex-shrink: 0;
+            transition: background var(--transition), transform 0.15s, color var(--transition);
+        }
+        .nav-icon-btn:active, .theme-toggle-btn:active { transform: scale(0.92); }
+        .nav-icon-btn i, .theme-toggle-btn i { pointer-events: none; }
+
+        /* ══════════ CONTENT ══════════ */
+        .content { max-width: 780px; margin: 0 auto; padding: 14px 14px 40px; }
+
+        /* ══════════ HERO BRAND ══════════ */
+        .brand-hero {
+            text-align: center;
+            padding: 1.6rem 0.5rem 1.4rem;
+            background: linear-gradient(180deg, var(--orange-light) 0%, transparent 100%);
+            border-radius: var(--radius-xl);
+            margin-bottom: 0.8rem;
+        }
+        .brand-logo {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 2rem; font-weight: 700;
+            color: var(--navy); letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .brand-logo .brand-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 46px; height: 46px; border-radius: 14px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: #fff; font-size: 1.35rem;
+            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.35);
+        }
+        .brand-accent {
+            background: linear-gradient(135deg, #f97316, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .brand-tagline {
+            margin-top: 0.6rem;
+            font-size: 0.72rem; font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em; text-transform: uppercase;
+        }
+
+        /* ══════════ WELCOME BAR ══════════ */
+        .welcome-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 0.6rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 0.75rem 0.95rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.1rem;
+        }
+        .welcome-bar[hidden] { display: none; }
+        .welcome-text { display: flex; flex-direction: column; min-width: 0; }
+        .welcome-label { font-size: 0.62rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .welcome-name { font-size: 0.92rem; font-weight: 700; color: var(--navy); line-height: 1.2; word-break: break-word; }
+        
+        /* Updated Logout Button */
+        .logout-btn {
+            flex-shrink: 0;
+            height: 32px;
+            padding: 0 12px;
+            border-radius: 20px;
+            background: #fef2f2; border: 1px solid #fecaca;
+            color: #dc2626; cursor: pointer; font-size: 0.72rem; font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            transition: transform 0.15s, background var(--transition);
+        }
+        .logout-btn:active { transform: scale(0.92); background: #fee2e2; }
+
+        /* ══════════ SECTION LABEL ══════════ */
+        .section-label {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--text-secondary);
+            margin: 1.4rem 0 0.7rem;
+        }
+        .section-label > span:first-child { display: inline-flex; align-items: center; gap: 0.35rem; }
+        .section-label i { color: var(--accent); font-size: 0.75rem; }
+
+        .live-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 9px; border-radius: 20px;
+            background: #f0fdf4; border: 1px solid #bbf7d0;
+            color: #15803d; font-size: 0.58rem; font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+        .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 1.8s infinite; }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70%  { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* ══════════ COIN FLIP ══════════ */
+        .coinflip-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1rem 1.2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0.9rem;
+        }
+        .coinflip-card .section-head {
+            width: 100%;
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.85rem; font-weight: 700; color: var(--navy);
+        }
+        .coinflip-card .section-head i { color: var(--orange); margin-right: 0.35rem; }
+        .solo-chip {
+            font-size: 0.5rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 20px;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            background: #fef3c7; color: #92400e;
+        }
+
+        .coin-stage { perspective: 1000px; display: flex; align-items: center; justify-content: center; padding: 0.4rem 0; }
+        .coin-container { width: 130px; height: 130px; position: relative; }
+        .coin {
+            width: 100%; height: 100%; position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+            cursor: pointer;
+        }
+        .coin-face {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            backface-visibility: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.6rem; font-weight: 700; color: #fff;
+            box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .coin-heads { background: linear-gradient(135deg, #f59e0b, #d97706); transform: rotateY(0deg); }
+        .coin-tails { background: linear-gradient(135deg, #ea580c, #c2410c); transform: rotateY(180deg); }
+
+        .coin-result {
+            font-size: 0.85rem; font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em; text-transform: uppercase;
+            min-height: 1.2rem;
+        }
+        .coin-result.heads { color: #d97706; }
+        .coin-result.tails { color: #c2410c; }
+        .coin-result.flipping { color: var(--text-muted); }
+
+        .flip-btn {
+            display: inline-flex; align-items: center; gap: 0.45rem;
+            padding: 0.55rem 1.5rem; border-radius: 40px;
+            background: var(--accent); color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem; font-weight: 600;
+            border: none; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(18, 60, 243, 0.3);
+            transition: transform 0.15s, background var(--transition);
+        }
+        .flip-btn:active { transform: scale(0.96); background: #1032d9; }
+
+        /* ══════════ GAMES GRID ══════════ */
+        .game-card {
+            position: relative;
+            display: flex; flex-direction: column; gap: 0.3rem;
+            padding: 1.05rem 0.85rem 1rem;
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.15s ease, border-color var(--transition), box-shadow var(--transition);
+        }
+        .game-card:active { transform: scale(0.97); }
+
+        .game-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            color: var(--card-color, var(--accent));
+            background: var(--card-bg, var(--accent-light));
+            flex-shrink: 0;
+            margin-bottom: 0.35rem;
+        }
+        .game-title { font-weight: 700; font-size: 0.88rem; color: var(--navy); line-height: 1.2; }
+        .game-desc { font-size: 0.65rem; color: var(--text-secondary); line-height: 1.3; }
+
+        .game-badge {
+            position: absolute; top: 0.55rem; right: 0.55rem;
+            font-size: 0.5rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 20px;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            background: #dbeafe; color: #1e40af;
+        }
+
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+
+        .card-ludo   { --card-color: #123cf3; --card-bg: #eef2ff; }
+        .card-chess  { --card-color: #8b5cf6; --card-bg: #f3e8ff; }
+        .card-snake  { --card-color: #16a34a; --card-bg: #dcfce7; }
+        .card-carrom { --card-color: #ea580c; --card-bg: #ffedd5; }
+
+        /* ══════════ INFO NOTE ══════════ */
+        .info-note {
+            margin-top: 1.2rem;
+            background: #eff6ff; border: 1px solid #dbeafe;
+            border-radius: var(--radius);
+            padding: 0.7rem 0.9rem;
+            font-size: 0.7rem; color: #1e3a8a;
+            display: flex; gap: 0.55rem; align-items: flex-start;
+            line-height: 1.55;
+        }
+        .info-note i { font-size: 0.85rem; flex-shrink: 0; margin-top: 0.1rem; color: #2563eb; }
+        .info-note strong { color: #1e40af; font-weight: 700; }
+
+        /* ══════════ FOOTER ══════════ */
+        .footer {
+            margin-top: 2rem; padding-top: 1.2rem;
+            border-top: 1px solid var(--border);
+            text-align: center; font-size: 0.7rem;
+            color: var(--text-muted);
+            display: flex; flex-direction: column; gap: 0.45rem;
+        }
+        .footer a { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
+        .footer a i { font-size: 0.6rem; }
+
+        /* ══════════ LOGIN OVERLAY (Blur Removed) ══════════ */
+        .login-overlay {
+            position: fixed; inset: 0;
+            background: rgba(13, 43, 78, 0.85); /* Solid dark tint, no blur for performance */
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.25s ease;
+        }
+        .login-overlay.hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .login-card {
+            width: 100%; max-width: 380px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 1.8rem 1.4rem 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            display: flex; flex-direction: column; gap: 0.65rem;
+            text-align: center;
+            animation: popIn 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+        }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        .login-brand {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            font-size: 1.3rem; font-weight: 700; color: var(--navy);
+            margin-bottom: 0.2rem;
+        }
+        .login-brand i {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px; border-radius: 10px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: #fff; font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
+        }
+        .login-card h2 { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+        .login-sub { font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+
+        .roll-input {
+            width: 100%;
+            height: 54px;
+            padding: 0 1rem;
+            border-radius: 14px;
+            border: 2px solid var(--border-strong);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem; font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.4em;
+            padding-left: calc(1rem + 0.4em);
+            transition: border-color var(--transition), background var(--transition);
+            outline: none;
+        }
+        .roll-input:focus { border-color: var(--accent); background: var(--surface); }
+        .roll-input::placeholder { color: var(--text-muted); font-weight: 500; letter-spacing: 0.1em; }
+
+        .roll-hint { font-size: 0.66rem; color: var(--text-muted); font-weight: 500; }
+        .roll-hint strong { color: var(--accent); font-weight: 700; letter-spacing: 0.06em; }
+
+        .login-error {
+            font-size: 0.7rem; font-weight: 600;
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            display: none;
+        }
+        .login-error.show { display: block; }
+
+        .login-btn {
+            height: 48px;
+            border-radius: 40px;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem; font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.3rem;
+            box-shadow: 0 4px 12px rgba(18, 60, 243, 0.3);
+            transition: transform 0.15s, background var(--transition);
+        }
+        .login-btn:active { transform: scale(0.97); background: #1032d9; }
+
+        /* ══════════ INTAKE QUESTION (Roll 138) ══════════ */
+        .intake-options {
+            display: flex; flex-direction: column; gap: 0.6rem;
+            margin-top: 0.3rem;
+        }
+        .intake-option {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            border-radius: 14px;
+            border: 2px solid var(--border-strong);
+            background: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            text-align: left;
+            transition: transform 0.15s, border-color var(--transition), background var(--transition);
+        }
+        .intake-option:active { transform: scale(0.97); }
+        .intake-option:hover { border-color: var(--accent); }
+        .intake-option__circle {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; font-weight: 700; color: #fff;
+            flex-shrink: 0;
+        }
+        .intake-option__circle.yes { background: linear-gradient(135deg, #123cf3, #2563eb); }
+        .intake-option__circle.no  { background: linear-gradient(135deg, #ea580c, #f59e0b); }
+        .intake-option__body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+        .intake-option__label { font-size: 0.62rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+        .intake-option__name { font-size: 0.95rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+
+        .intake-back {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem; font-weight: 600;
+            cursor: pointer;
+            padding: 0.35rem;
+            margin-top: 0.25rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .intake-back:active { color: var(--text); }
+
+        /* ══════════ DARK MODE ══════════ */
+        :root[data-theme="dark"] {
+            --bg: #0b0e14;
+            --surface: #151a22;
+            --border: #222a35;
+            --border-strong: #313b4c;
+            --text: #f0f4f8;
+            --text-secondary: #8b98a5;
+            --text-muted: #5c6a7a;
+            --navy: #e2e8f0;
+            --accent: #3b6cff;
+            --accent-light: #1e2638;
+            --orange: #fb923c;
+            --orange-light: #2a1a0a;
+            --orange-soft: #422006;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.5);
+            --shadow: 0 6px 20px rgba(0,0,0,0.6);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        :root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
+        :root[data-theme="dark"] .top-app-bar { background: var(--surface); border-bottom-color: var(--border); }
+        :root[data-theme="dark"] .nav-icon-btn,
+        :root[data-theme="dark"] .theme-toggle-btn { background: #1e2638; border-color: #313b4c; color: #93c5fd; }
+        :root[data-theme="dark"] .theme-toggle-btn { color: #fbbf24; }
+        :root[data-theme="dark"] .brand-hero { background: linear-gradient(180deg, #1a130b 0%, transparent 100%); }
+        :root[data-theme="dark"] .brand-logo { color: var(--text); }
+        :root[data-theme="dark"] .welcome-bar { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .welcome-name { color: var(--text); }
+        :root[data-theme="dark"] .logout-btn { background: #3f0f0f; border-color: #7f1d1d; color: #fca5a5; }
+        :root[data-theme="dark"] .live-chip { background: #052e16; border-color: #166534; color: #86efac; }
+        :root[data-theme="dark"] .coinflip-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .coinflip-card .section-head { color: var(--text); }
+        :root[data-theme="dark"] .solo-chip { background: #422006; color: #fbbf24; }
+        :root[data-theme="dark"] .flip-btn { background: var(--accent); color: #fff; }
+        :root[data-theme="dark"] .game-card { background: var(--surface); border-color: var(--border); }
+        :root[data-theme="dark"] .game-title { color: var(--text); }
+        :root[data-theme="dark"] .game-badge { background: #1e2638; color: #93c5fd; }
+        :root[data-theme="dark"] .card-ludo   { --card-color: #93c5fd; --card-bg: #1e2638; }
+        :root[data-theme="dark"] .card-chess  { --card-color: #c4b5fd; --card-bg: #2e1a4d; }
+        :root[data-theme="dark"] .card-snake  { --card-color: #86efac; --card-bg: #052e16; }
+        :root[data-theme="dark"] .card-carrom { --card-color: #fdba74; --card-bg: #431407; }
+        :root[data-theme="dark"] .info-note { background: #161c26; border-color: #313b4c; color: #cbd5e1; }
+        :root[data-theme="dark"] .info-note i { color: #93c5fd; }
+        :root[data-theme="dark"] .info-note strong { color: #93c5fd; }
+        :root[data-theme="dark"] .login-card { background: var(--surface); }
+        :root[data-theme="dark"] .login-brand { color: var(--text); }
+        :root[data-theme="dark"] .login-card h2 { color: var(--text); }
+        :root[data-theme="dark"] .roll-input { background: #0f131a; border-color: #313b4c; color: var(--text); }
+        :root[data-theme="dark"] .roll-input:focus { background: var(--surface); border-color: var(--accent); }
+        :root[data-theme="dark"] .login-error { background: #3f0f0f; border-color: #7f1d1d; color: #fca5a5; }
+        :root[data-theme="dark"] .intake-option { background: #0f131a; border-color: #313b4c; }
+        :root[data-theme="dark"] .intake-option:hover { border-color: var(--accent); }
+        :root[data-theme="dark"] .intake-option__name { color: var(--text); }
+        :root[data-theme="dark"] .intake-back { color: #5c6a7a; }
+
+        /* ══════════ MOBILE ══════════ */
+        @media (max-width: 480px) {
+            .content { padding: 12px 12px 36px; }
+            .top-app-bar__title { font-size: 1.05rem; }
+            .nav-icon-btn, .theme-toggle-btn { width: 32px; height: 32px; font-size: 0.75rem; }
+            .app-bar-actions { gap: 6px; }
+            .brand-hero { padding: 1.2rem 0.4rem 1rem; }
+            .brand-logo { font-size: 1.7rem; }
+            .brand-logo .brand-icon { width: 40px; height: 40px; font-size: 1.15rem; border-radius: 12px; }
+            .brand-tagline { font-size: 0.64rem; }
+            .welcome-bar { padding: 0.65rem 0.8rem; }
+            .welcome-name { font-size: 0.85rem; }
+            .logout-btn { height: 28px; padding: 0 10px; font-size: 0.65rem; }
+            .section-label { font-size: 0.66rem; margin: 1.2rem 0 0.6rem; }
+            .coin-container { width: 110px; height: 110px; }
+            .coin-face { font-size: 2.2rem; }
+            .coin-result { font-size: 0.78rem; }
+            .flip-btn { font-size: 0.75rem; padding: 0.5rem 1.3rem; }
+            .game-icon { width: 44px; height: 44px; font-size: 1.15rem; border-radius: 12px; }
+            .game-title { font-size: 0.82rem; }
+            .game-desc { font-size: 0.62rem; }
+            .game-badge { font-size: 0.46rem; padding: 2px 7px; }
+            .info-note { font-size: 0.66rem; padding: 0.65rem 0.8rem; }
+            .login-card { padding: 1.5rem 1.2rem 1.3rem; }
+            .roll-input { height: 50px; font-size: 1.15rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-app-bar">
+        <h1 class="top-app-bar__title">66<span>Notes</span></h1>
+        <div class="app-bar-actions">
+            <a href="https://66notes.github.io/" target="_blank" rel="noopener" class="nav-icon-btn" aria-label="Visit 66Notes">
+                <i class="fas fa-book-open"></i>
+            </a>
+            <button class="theme-toggle-btn" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="content">
+
+        <div class="brand-hero">
+            <div class="brand-logo">
+                <span class="brand-icon"><i class="fas fa-gamepad"></i></span>
+                <span>66<span class="brand-accent">Games</span></span>
+            </div>
+            <div class="brand-tagline">Play · Compete · Win</div>
+        </div>
+
+        <div class="welcome-bar" id="welcomeBar" hidden>
+            <div class="welcome-text">
+                <span class="welcome-label" id="welcomeLabel">Welcome back,</span>
+                <strong class="welcome-name" id="welcomeName">—</strong>
+            </div>
+            <button class="logout-btn" id="logoutBtn" type="button" title="Log out" aria-label="Log out">
+                <i class="fas fa-right-from-bracket"></i> Log out
+            </button>
+        </div>
+
+        <!-- ══════════ COIN FLIP (INLINE) ══════════ -->
+        <div class="coinflip-card">
+            <div class="section-head">
+                <span><i class="fas fa-coins"></i> Coin Flip</span>
+                <span class="solo-chip">SOLO</span>
+            </div>
+            <div class="coin-stage">
+                <div class="coin-container">
+                    <div class="coin" id="coin" role="button" tabindex="0" aria-label="Flip coin">
+                        <div class="coin-face coin-heads"><span>H</span></div>
+                        <div class="coin-face coin-tails"><span>T</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="coin-result" id="coinResult">Tap the coin to flip</div>
+            <button class="flip-btn" id="flipBtn" type="button">
+                <i class="fas fa-rotate"></i> Flip Coin
+            </button>
+        </div>
+
+        <div class="section-label">
+            <span><i class="fas fa-users"></i> Multiplayer Games</span>
+            <span class="live-chip"><span class="live-dot"></span> Live</span>
+        </div>
+
+        <div class="games-grid">
+            <a href="ludo.html" class="game-card card-ludo">
+                <span class="game-badge">MULTI</span>
+                <span class="game-icon"><i class="fas fa-dice"></i></span>
+                <span class="game-title">Ludo</span>
+                <span class="game-desc">Mini 1v1 · 2 pawns to win</span>
+            </a>
+
+            <a href="chess.html" class="game-card card-chess">
+                <span class="game-badge">MULTI</span>
+                <span class="game-icon"><i class="fas fa-chess-knight"></i></span>
+                <span class="game-title">Chess</span>
+                <span class="game-desc">Classic 1v1 chess</span>
+            </a>
+
+            <a href="snakeludo.html" class="game-card card-snake">
+                <span class="game-badge">MULTI</span>
+                <span class="game-icon"><i class="fas fa-stairs"></i></span>
+                <span class="game-title">Snake Ludo</span>
+                <span class="game-desc">Snakes &amp; ladders · 50 boxes</span>
+            </a>
+
+            <a href="carrom.html" class="game-card card-carrom">
+                <span class="game-badge">MULTI</span>
+                <span class="game-icon"><i class="fas fa-bullseye"></i></span>
+                <span class="game-title">Carrom</span>
+                <span class="game-desc">Pocket the pieces</span>
+            </a>
+        </div>
+
+        <div class="info-note">
+            <i class="fas fa-circle-info"></i>
+            <span>Each multiplayer game supports <strong>Solo vs AI</strong>, <strong>1v1 Online</strong> (pick your opponent from online players), and <strong>Split-screen</strong> (pick a classmate by roll).</span>
+        </div>
+
+        <footer class="footer">
+            <span>Part of the 66Notes family · 100% silent · No sound</span>
+            <a href="https://66notes.github.io/" target="_blank" rel="noopener">
+                Visit 66Notes <i class="fas fa-up-right-from-square"></i>
+            </a>
+        </footer>
+
+    </main>
+
+    <!-- ══════════ LOGIN OVERLAY ══════════ -->
+    <div class="login-overlay" id="loginOverlay" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <div class="login-card" id="loginCard">
+            <!-- Step 1: Roll input -->
+            <div id="loginStep1" style="display: contents;">
+                <div class="login-brand">
+                    <i class="fas fa-gamepad"></i>
+                    <span>66<span class="brand-accent">Games</span></span>
+                </div>
+                <h2 id="loginTitle">Enter Your Roll</h2>
+                <p class="login-sub">3-digit roll number to access the dashboard</p>
+                <input
+                    type="text"
+                    id="rollInput"
+                    class="roll-input"
+                    inputmode="numeric"
+                    maxlength="3"
+                    placeholder="001"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                />
+                <div class="roll-hint" id="rollHint">Will check roll: <strong>—</strong></div>
+                <div class="login-error" id="loginError"></div>
+                <button class="login-btn" id="loginBtn" type="button">Continue</button>
+            </div>
+
+            <!-- Step 2: Intake question (Roll 138 only) -->
+            <div id="loginStep2" style="display: none;">
+                <div class="login-brand">
+                    <i class="fas fa-gamepad"></i>
+                    <span>66<span class="brand-accent">Games</span></span>
+                </div>
+                <h2>Are you from Intake 66?</h2>
+                <p class="login-sub">Roll 138 is shared — please pick your name</p>
+                <div class="intake-options">
+                    <button class="intake-option" type="button" data-intake="yes">
+                        <span class="intake-option__circle yes">✓</span>
+                        <span class="intake-option__body">
+                            <span class="intake-option__label">Yes · Intake 66</span>
+                            <span class="intake-option__name">Aion</span>
+                        </span>
+                    </button>
+                    <button class="intake-option" type="button" data-intake="no">
+                        <span class="intake-option__circle no">✕</span>
+                        <span class="intake-option__body">
+                            <span class="intake-option__label">No · Not Intake 66</span>
+                            <span class="intake-option__name">Maria</span>
+                        </span>
+                    </button>
+                </div>
+                <button class="intake-back" id="intakeBack" type="button">← Back to roll</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        /* ═══════════════════════════════════════════════════════════
+           STUDENT DATABASE — Intake 66
+           Roll 015 = merged (M D Emran)
+           Roll 138 = dual (Aion / Maria) — resolved via Intake 66 question
+           ═══════════════════════════════════════════════════════════ */
+        const STUDENTS = {
+            '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti',
+            '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi',
+            '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib',
+            '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok',
+            '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia',
+            '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan',
+            '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa',
+            '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla',
+            '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa',
+            '161': 'Nafis', '164': 'Sanjana', '381': 'Moon'
+        };
+
+        /* Dual-name rolls — resolved by a follow-up question */
+        const SPECIAL_ROLLS = {
+            '138': { yes: 'Aion', no: 'Maria', question: 'Are you from Intake 66?' }
+        };
+
+        const STORAGE_KEY = '66games_user';
+        const $ = id => document.getElementById(id);
+
+        /* ═══════════════════ HELPERS ═══════════════════ */
+
+        function normalizeRoll(input) {
+            const digits = String(input || '').replace(/\D/g, '').slice(0, 3);
+            if (!digits) return null;
+            return digits.padStart(3, '0');
+        }
+
+        function isValidUser(u) {
+            if (!u || !u.roll || !u.name) return false;
+            if (STUDENTS[u.roll] === u.name) return true;
+            const sp = SPECIAL_ROLLS[u.roll];
+            if (sp && (u.name === sp.yes || u.name === sp.no)) return true;
+            return false;
+        }
+
+        function getUser() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return null;
+                const u = JSON.parse(raw);
+                return isValidUser(u) ? u : null;
+            } catch { return null; }
+        }
+
+        function saveUser(user) {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(user)); } catch {}
+        }
+
+        function clearUser() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch {}
+        }
+
+        /* ═══════════════════ THEME ═══════════════════ */
+
+        (function initTheme() {
+            const btn = $('themeToggle');
+            if (!btn) return;
+            function apply(dark) {
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                btn.innerHTML = dark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+                btn.setAttribute('aria-pressed', String(dark));
+                const meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) meta.setAttribute('content', dark ? '#0b0e14' : '#ffffff');
+            }
+            let wasDark = false;
+            try { wasDark = localStorage.getItem('66games_theme') === 'dark'; } catch {}
+            apply(wasDark);
+            btn.addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') !== 'dark';
+                apply(next);
+                try { localStorage.setItem('66games_theme', next ? 'dark' : 'light'); } catch {}
+            });
+        })();
+
+        /* ═══════════════════ COIN FLIP ═══════════════════ */
+
+        (function initCoinFlip() {
+            const coin = $('coin');
+            const result = $('coinResult');
+            const btn = $('flipBtn');
+            let deg = 0, flipping = false;
+
+            function flip() {
+                if (flipping) return;
+                flipping = true;
+                const isHeads = Math.random() < 0.5;
+                const base = Math.ceil(deg / 360) * 360;
+                const spins = 3 + Math.floor(Math.random() * 2);
+                deg = base + spins * 360 + (isHeads ? 0 : 180);
+                coin.style.transform = `rotateY(${deg}deg)`;
+                result.textContent = 'Flipping…';
+                result.className = 'coin-result flipping';
+                setTimeout(() => {
+                    result.textContent = isHeads ? 'HEADS' : 'TAILS';
+                    result.className = 'coin-result ' + (isHeads ? 'heads' : 'tails');
+                    flipping = false;
+                }, 1200);
+            }
+            coin.addEventListener('click', flip);
+            btn.addEventListener('click', flip);
+            coin.addEventListener('keydown', e => {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
+            });
+        })();
+
+        /* ═══════════════════ LOGIN FLOW ═══════════════════ */
+
+        const overlay = $('loginOverlay');
+        const step1 = $('loginStep1');
+        const step2 = $('loginStep2');
+        const input = $('rollInput');
+        const hint = $('rollHint');
+        const error = $('loginError');
+        const loginBtn = $('loginBtn');
+        const welcomeBar = $('welcomeBar');
+        const welcomeLabel = $('welcomeLabel');
+        const welcomeName = $('welcomeName');
+        const logoutBtn = $('logoutBtn');
+
+        let pendingSpecialRoll = null;
+
+        function resetToStep1() {
+            step1.style.display = 'contents';
+            step2.style.display = 'none';
+            error.classList.remove('show');
+            pendingSpecialRoll = null;
+            setTimeout(() => input.focus(), 50);
+        }
+
+        function showLogin() {
+            overlay.classList.remove('hidden');
+            welcomeBar.hidden = true;
+            input.value = '';
+            error.classList.remove('show');
+            error.textContent = '';
+            updateHint('');
+            resetToStep1();
+        }
+
+        function showDashboard(user, isReturning) {
+            overlay.classList.add('hidden');
+            welcomeBar.hidden = false;
+            welcomeLabel.textContent = isReturning ? 'Welcome back,' : 'Welcome,';
+            welcomeName.textContent = user.name;
+        }
+
+        function updateHint(raw) {
+            const padded = normalizeRoll(raw);
+            hint.innerHTML = padded
+                ? `Will check roll: <strong>${padded}</strong>`
+                : 'Will check roll: <strong>—</strong>';
+        }
+
+        function showError(msg) {
+            error.textContent = msg;
+            error.classList.add('show');
+        }
+
+        function attemptLogin() {
+            const padded = normalizeRoll(input.value);
+            error.classList.remove('show');
+
+            if (!padded) {
+                showError('Please enter your 3-digit roll number.');
+                return;
+            }
+
+            // Dual-name roll → go to step 2
+            if (SPECIAL_ROLLS[padded]) {
+                pendingSpecialRoll = padded;
+                step1.style.display = 'none';
+                step2.style.display = 'contents';
+                return;
+            }
+
+            // Normal roll
+            const name = STUDENTS[padded];
+            if (!name) {
+                showError(`Roll ${padded} not found. Please check your roll number.`);
+                return;
+            }
+
+            const user = { roll: padded, name };
+            saveUser(user);
+            showDashboard(user, false);
+            input.blur();
+        }
+
+        input.addEventListener('input', e => {
+            const clean = e.target.value.replace(/\D/g, '').slice(0, 3);
+            if (e.target.value !== clean) e.target.value = clean;
+            updateHint(clean);
+            if (error.classList.contains('show')) error.classList.remove('show');
+        });
+
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); attemptLogin(); }
+        });
+
+        loginBtn.addEventListener('click', attemptLogin);
+
+        // Intake question handlers (step 2)
+        step2.querySelectorAll('[data-intake]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!pendingSpecialRoll) return;
+                const sp = SPECIAL_ROLLS[pendingSpecialRoll];
+                const name = btn.dataset.intake === 'yes' ? sp.yes : sp.no;
+                const user = { roll: pendingSpecialRoll, name };
+                saveUser(user);
+                showDashboard(user, false);
+            });
+        });
+
+        $('intakeBack').addEventListener('click', resetToStep1);
+
+        logoutBtn.addEventListener('click', () => {
+            clearUser();
+            showLogin();
+        });
+
+        /* ═══════════════════ BOOT ═══════════════════ */
+
+        const savedUser = getUser();
+        if (savedUser) {
+            showDashboard(savedUser, true);
+        } else {
+            showLogin();
+        }
+    })();
+    </script>
+</body>
+</html>
