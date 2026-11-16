@@ -13,7 +13,6 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <style>
-        /* ====== YOUR CUSTOM BOARD CSS ====== */
         :root{
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff; 
@@ -90,10 +89,6 @@
           display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
           place-items:center;padding:12%;gap:0}
 
-        .slot{width:70%;aspect-ratio:1;border-radius:50%;position:relative}
-        .base-blue .slot{background:var(--blue)}   .base-green .slot{background:var(--green)}
-        .base-yellow .slot{background:var(--yellow)} .base-red .slot{background:var(--red)}
-
         /* PATH CELLS */
         .cell{background:#fff;position:relative;border:1px solid var(--line)}
         .cell.safe::after{content:'★';position:absolute;inset:0;display:flex;
@@ -103,7 +98,7 @@
         .home-path-yellow,.start-yellow{background:var(--yellow)}
         .home-path-red,.start-red{background:var(--red)}
 
-        /* CENTER: four triangles only, no circle */
+        /* CENTER */
         .center-home{grid-area:7/7/10/10;position:relative;background:transparent}
         .center-home .triangle{position:absolute;inset:0;width:100%;height:100%}
         .t-top   {background:var(--green);clip-path:polygon(0 0,100% 0,50% 50%)}
@@ -125,12 +120,14 @@
         .pawn-p1{--pawn-color:var(--red)}
         .pawn-p2{--pawn-color:var(--blue)}
         
-        /* Base pawn styling */
+        /* Fix Base Pawn positioning */
         .pawn-base {
-            width: 60%; height: 60%;
+            position: relative;
+            inset: auto;
+            margin: 0;
+            width: 80%;
+            height: 80%;
         }
-        .pawn-base::before { border-color: rgba(0,0,0,0.3); opacity: 0.6; }
-        .pawn-base::after { opacity: 0.6; }
         
         .pawn-selectable{animation:pulse 1s infinite;cursor:pointer}
         @keyframes pulse{50%{transform:scale(1.15)}}
@@ -234,18 +231,10 @@
         <!-- BOARD HTML -->
         <div class="board-wrapper">
             <div class="board" id="board">
-              <div class="base-blue"><div class="base-inner" id="base-p2">
-                 <div class="slot"></div><div class="slot"></div>
-                 <div class="slot"></div><div class="slot"></div></div></div>
-              <div class="base-green"><div class="base-inner">
-                 <div class="slot"></div><div class="slot"></div>
-                 <div class="slot"></div><div class="slot"></div></div></div>
-              <div class="base-yellow"><div class="base-inner">
-                 <div class="slot"></div><div class="slot"></div>
-                 <div class="slot"></div><div class="slot"></div></div></div>
-              <div class="base-red"><div class="base-inner" id="base-p1">
-                 <div class="slot"></div><div class="slot"></div>
-                 <div class="slot"></div><div class="slot"></div></div></div>
+              <div class="base-blue"><div class="base-inner" id="base-p2"></div></div>
+              <div class="base-green"><div class="base-inner"></div></div>
+              <div class="base-yellow"><div class="base-inner"></div></div>
+              <div class="base-red"><div class="base-inner" id="base-p1"></div></div>
               <div class="center-home">
                  <div class="triangle t-top"></div><div class="triangle t-right"></div>
                  <div class="triangle t-bottom"></div><div class="triangle t-left"></div>
@@ -373,7 +362,7 @@
 
             statusTxt.innerHTML = 'Connecting...';
 
-            // USING THE DIRECT URL WITH PORT TO FIX SSL ISSUES
+            // Connect to Enzonic direct port
             socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['websocket', 'polling'], 
                 secure: true,
@@ -487,12 +476,7 @@
 
         function renderBoard() {
             document.querySelectorAll('.pawn').forEach(p => p.remove());
-            
-            // Clean up empty slots in base to make room for pawns
-            document.querySelectorAll('.base-inner').forEach(b => {
-                const slots = b.querySelectorAll('.slot');
-                slots.forEach(s => s.style.display = 'block'); // Show by default
-            });
+            document.querySelectorAll('.base-inner').forEach(b => b.innerHTML = '');
 
             const placePawn = (pathIndex, colorClass, pIdx) => {
                 const p = document.createElement('div');
@@ -500,19 +484,9 @@
                 p.id = `pawn-${colorClass.includes('p1') ? 'p1' : 'p2'}-${pIdx}`;
                 
                 if (pathIndex === -1) {
-                    // Place in base
                     p.classList.add('pawn-base');
                     const baseId = colorClass.includes('p1') ? 'base-p1' : 'base-p2';
                     const baseInner = document.getElementById(baseId);
-                    
-                    // Append pawn over the slot
-                    p.style.position = 'absolute';
-                    p.style.width = '60%';
-                    p.style.height = '60%';
-                    
-                    if (pIdx === 0) { p.style.top = '15%'; p.style.left = '15%'; }
-                    if (pIdx === 1) { p.style.bottom = '15%'; p.style.right = '15%'; }
-                    
                     baseInner.appendChild(p);
                     return;
                 }
