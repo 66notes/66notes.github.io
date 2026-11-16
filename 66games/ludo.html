@@ -120,16 +120,11 @@
         .start-blue { background: var(--blue) !important; }
         .start-yellow { background: var(--yellow) !important; }
         
-        /* Center */
+        /* Center (NO TROPHY, NO ROUNDED OVERLAY) */
         .center-home {
             grid-area: 7 / 7 / 10 / 10; position: relative;
             background: conic-gradient(from 45deg, var(--red) 0deg 90deg, var(--green) 90deg 180deg, var(--yellow) 180deg 270deg, var(--blue) 270deg 360deg);
-            border: 1px solid var(--board-line); display: flex; align-items: center; justify-content: center;
-        }
-        .center-home::after {
-            content: '🏆'; font-size: 1.2rem;
-            background: #ffffff; width: 60%; height: 60%; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+            border: 1px solid var(--board-line);
         }
 
         /* Pawns */
@@ -146,7 +141,7 @@
         .pawn-p2 { background: var(--blue); }
         .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.4; }
         
-        /* ══════════ PLAYER INFO & DICE ══════════ */
+        /* ══════════ PLAYER INFO & 3D DICE ══════════ */
         .player-info-row { 
             display: flex; justify-content: space-between; align-items: flex-start; 
             width: 100%; max-width: 400px; margin-top: 25px; padding: 0 10px;
@@ -157,16 +152,39 @@
         .p1-text { color: var(--red); }
         .p2-text { color: var(--blue); }
 
-        /* Black Dice Box */
-        .dice-box {
-            width: 60px; height: 60px; background: #1e293b; color: white;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.1s; user-select: none;
-        }
-        .dice-box:active { transform: scale(0.95); }
-        .dice-box.disabled { opacity: 0.3; pointer-events: none; }
+        /* 3D Dice Container */
+        .dice-container { width: 60px; height: 60px; perspective: 600px; cursor: pointer; transition: opacity 0.3s; }
+        .dice-container.disabled { opacity: 0.3; pointer-events: none; }
         
+        .dice-cube { 
+            width: 100%; height: 100%; position: relative; 
+            transform-style: preserve-3d; transition: transform 0.8s ease-out; 
+            transform: translateZ(-30px); 
+        }
+        
+        .dice-face {
+            position: absolute; width: 60px; height: 60px; background: white; border-radius: 10px;
+            border: 2px solid #e2e8f0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 6px;
+        }
+        .dot { background: #1e293b; border-radius: 50%; width: 100%; height: 100%; }
+        
+        /* Dot positioning */
+        .f1 .dot { grid-area: 2 / 2; }
+        .f2 .dot:nth-child(1) { grid-area: 1 / 1; } .f2 .dot:nth-child(2) { grid-area: 3 / 3; }
+        .f3 .dot:nth-child(1) { grid-area: 1 / 1; } .f3 .dot:nth-child(2) { grid-area: 2 / 2; } .f3 .dot:nth-child(3) { grid-area: 3 / 3; }
+        .f4 .dot:nth-child(1) { grid-area: 1 / 1; } .f4 .dot:nth-child(2) { grid-area: 1 / 3; } .f4 .dot:nth-child(3) { grid-area: 3 / 1; } .f4 .dot:nth-child(4) { grid-area: 3 / 3; }
+        .f5 .dot:nth-child(1) { grid-area: 1 / 1; } .f5 .dot:nth-child(2) { grid-area: 1 / 3; } .f5 .dot:nth-child(3) { grid-area: 2 / 2; } .f5 .dot:nth-child(4) { grid-area: 3 / 1; } .f5 .dot:nth-child(5) { grid-area: 3 / 3; }
+        .f6 .dot:nth-child(1) { grid-area: 1 / 1; } .f6 .dot:nth-child(2) { grid-area: 1 / 3; } .f6 .dot:nth-child(3) { grid-area: 2 / 1; } .f6 .dot:nth-child(4) { grid-area: 2 / 3; } .f6 .dot:nth-child(5) { grid-area: 3 / 1; } .f6 .dot:nth-child(6) { grid-area: 3 / 3; }
+
+        /* 3D Face Transforms */
+        .f1 { transform: rotateY(0deg) translateZ(30px); }
+        .f6 { transform: rotateY(180deg) translateZ(30px); }
+        .f3 { transform: rotateY(90deg) translateZ(30px); }
+        .f4 { transform: rotateY(-90deg) translateZ(30px); }
+        .f5 { transform: rotateX(90deg) translateZ(30px); }
+        .f2 { transform: rotateX(-90deg) translateZ(30px); }
+
         .status-text { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-align: center; margin-top: 15px; }
         
         /* ══════════ MODALS & DARK MODE ══════════ */
@@ -182,7 +200,8 @@
         :root[data-theme="dark"] .cell { background: #1e293b; }
         :root[data-theme="dark"] .base-inner { background: #1e293b; }
         :root[data-theme="dark"] .cell.safe { background: #0f172a; }
-        :root[data-theme="dark"] .center-home::after { background: #1e293b; }
+        :root[data-theme="dark"] .dice-face { background: #1e293b; border-color: #0f172a; }
+        :root[data-theme="dark"] .dot { background: #f8fafc; }
     </style>
 </head>
 <body>
@@ -234,16 +253,36 @@
             </div>
         </div>
 
-        <!-- Layout matching the image: Opponent on left, You on right -->
+        <!-- Layout matching the image: Player 1 Left, Player 2 Right -->
         <div class="player-info-row">
+            <!-- Player 1 (Red) -->
             <div class="player-side">
                 <span class="p-name p1-text" id="ui-p1">Opponent</span>
-                <div class="dice-box disabled" id="dice-p1">-</div>
+                <div class="dice-container disabled" id="dice-wrap-1" onclick="handleDiceClick(1)">
+                    <div class="dice-cube" id="dice-cube-1">
+                        <div class="dice-face f1"><div class="dot"></div></div>
+                        <div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    </div>
+                </div>
             </div>
             
+            <!-- Player 2 (Blue) -->
             <div class="player-side">
                 <span class="p-name p2-text" id="ui-p2">My Name</span>
-                <div class="dice-box" id="dice-p2" onclick="handleDiceClick()">-</div>
+                <div class="dice-container" id="dice-wrap-2" onclick="handleDiceClick(2)">
+                    <div class="dice-cube" id="dice-cube-2">
+                        <div class="dice-face f1"><div class="dot"></div></div>
+                        <div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                        <div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -290,13 +329,9 @@
             {r:7,c:0},{r:6,c:0}
         ];
 
-        // Red enters from Top-Right, Blue enters from Top-Left
         const RED_HOME = [{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},{r:7,c:6},{r:7,c:7}];
         const BLUE_HOME = [{r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},{r:7,c:8},{r:7,c:7}];
 
-        // P1 (Red) starts at (6,1). P2 (Blue) starts at (1,8).
-        // Wait, looking at the image: Red is Top Right. Its start is (1,8) moving left? 
-        // Let's use the standard array sequence.
         const P1_PATH = [...LOOP, ...RED_HOME]; // Red
         const P2_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...BLUE_HOME]; // Blue
         const HOME_INDEX = 58;
@@ -331,12 +366,11 @@
             showScreen('online-screen');
             const statusTxt = document.getElementById('online-status');
             
-            // If socket exists and is connected, just show the list
             if (socket && socket.connected) return;
 
             statusTxt.innerHTML = 'Connecting to server...';
 
-            // Robust connection with fallback to polling if WebSockets are blocked
+            // Fallback to polling if websockets fail
             socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['websocket', 'polling'],
                 reconnection: true,
@@ -352,7 +386,7 @@
             socket.on('connect_error', (err) => {
                 statusTxt.innerHTML = `<span style="color:red"><i class="fas fa-exclamation-triangle"></i> Connection failed.</span><br>
                 <span style="font-size:0.75rem; color:var(--text-secondary)">Make sure Enzonic is running.</span><br>
-                <button onclick="retryConnection()" class="btn btn-primary" style="margin-top:10px; width:auto; padding:6px 20px; font-size:0.8rem;">Retry</button>`;
+                <button onclick="retryConnection()" class="btn btn-primary" style="margin-top:10px; width:auto; padding:6px 20px; font-size:0.8rem;">Reconnect</button>`;
                 console.error("Socket Error:", err.message);
             });
 
@@ -376,14 +410,10 @@
             socket.on('match-started', ({ room, p1, p2 }) => {
                 roomName = room; myOnlineId = (socket.id === p1.id) ? 1 : 2;
                 
-                // If I am player 1, I am Red (p1Name). Opponent is p2Name (Blue).
-                // But visually, we always want "Me" on the right, "Opponent" on the left.
                 if (myOnlineId === 1) {
-                    p1Name = p1.name; // Me
-                    p2Name = p2.name; // Opponent
+                    p1Name = p1.name; p2Name = p2.name; 
                 } else {
-                    p1Name = p1.name; // Opponent
-                    p2Name = p2.name; // Me
+                    p1Name = p1.name; p2Name = p2.name; 
                 }
                 
                 mode = 'online';
@@ -420,8 +450,6 @@
             p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
             turn = 1; hasRolled = false; isRolling = false;
             
-            // If online and I am P2 (Blue), I always want the Red player (P1) on the left.
-            // If split screen, P1 is always on the left.
             document.getElementById('ui-p1').innerText = p1Name;
             document.getElementById('ui-p2').innerText = p2Name;
             
@@ -436,11 +464,11 @@
             
             for (let r = 0; r < 15; r++) {
                 for (let c = 0; c < 15; c++) {
-                    if (r < 6 && c < 6) continue; // Blue Base
-                    if (r < 6 && c > 8) continue; // Red Base
-                    if (r > 8 && c < 6) continue; // Yellow Base
-                    if (r > 8 && c > 8) continue; // Green Base
-                    if (r >= 6 && r <= 8 && c >= 6 && c <= 8) continue; // Center
+                    if (r < 6 && c < 6) continue;
+                    if (r < 6 && c > 8) continue;
+                    if (r > 8 && c < 6) continue;
+                    if (r > 8 && c > 8) continue;
+                    if (r >= 6 && r <= 8 && c >= 6 && c <= 8) continue;
 
                     const cell = document.createElement('div');
                     cell.className = 'cell';
@@ -452,15 +480,12 @@
                     if (isPath) {
                         cell.classList.add('path');
                         
-                        // Red Home Column & Start
                         if (c === 7 && r > 0 && r < 6) cell.classList.add('home-path-red');
                         if (r === 6 && c === 12) cell.classList.add('start-red');
                         
-                        // Blue Home Column & Start
                         if (c === 7 && r > 8 && r < 14) cell.classList.add('home-path-blue');
                         if (r === 1 && c === 8) cell.classList.add('start-blue');
                         
-                        // Safe Stars (Matching reference image spots)
                         if ((r === 8 && c === 2) || (r === 6 && c === 12) || (r === 13 && c === 6) || (r === 1 && c === 8)) {
                             cell.classList.add('safe');
                         }
@@ -509,36 +534,48 @@
         }
 
         /* --- DICE & GAME LOGIC --- */
-        function handleDiceClick() {
+        let currentX1 = 0, currentY1 = 0;
+        let currentX2 = 0, currentY2 = 0;
+
+        function handleDiceClick(player) {
+            // If AI's turn, player will be 2, but this is called internally so it's fine.
             if (isRolling || hasRolled) return;
-            if (mode === 'online' && turn !== (myOnlineId === 1 ? 1 : 2)) return;
+            
+            if (mode === 'online') {
+                if (myOnlineId === 1 && player === 2) return;
+                if (myOnlineId === 2 && player === 1) return;
+            } else {
+                if (turn === 1 && player === 2) return;
+                if (turn === 2 && player === 1) return;
+            }
             
             isRolling = true;
-            
-            // Visual rolling effect
-            const diceBox = document.getElementById('dice-p2'); // Assuming you're always P2 visually on the right
-            const targetDice = turn === 1 ? document.getElementById('dice-p1') : diceBox;
-            targetDice.innerText = '...';
-
-            let rollCount = 0;
-            const rollInterval = setInterval(() => {
-                targetDice.innerText = Math.floor(Math.random() * 6) + 1;
-                rollCount++;
-                if (rollCount > 8) {
-                    clearInterval(rollInterval);
-                    finishRoll();
-                }
-            }, 50);
-        }
-
-        function finishRoll() {
             const diceValue = Math.floor(Math.random() * 6) + 1;
-            const targetDice = turn === 1 ? document.getElementById('dice-p1') : document.getElementById('dice-p2');
-            targetDice.innerText = diceValue;
             
-            isRolling = false;
-            hasRolled = true;
-            processMove(diceValue);
+            const cubeId = player === 1 ? 'dice-cube-1' : 'dice-cube-2';
+            const cube = document.getElementById(cubeId);
+            
+            const faceMap = {
+                1: {x: 0, y: 0}, 2: {x: 90, y: 0}, 3: {x: 0, y: -90},
+                4: {x: 0, y: 90}, 5: {x: -90, y: 0}, 6: {x: 0, y: 180}
+            };
+            
+            const spins = 4 + Math.floor(Math.random() * 3);
+            if (player === 1) {
+                currentX1 = spins * 360 + faceMap[diceValue].x;
+                currentY1 = spins * 360 + faceMap[diceValue].y;
+                cube.style.transform = `rotateX(${currentX1}deg) rotateY(${currentY1}deg)`;
+            } else {
+                currentX2 = spins * 360 + faceMap[diceValue].x;
+                currentY2 = spins * 360 + faceMap[diceValue].y;
+                cube.style.transform = `rotateX(${currentX2}deg) rotateY(${currentY2}deg)`;
+            }
+
+            setTimeout(() => {
+                isRolling = false;
+                hasRolled = true;
+                processMove(diceValue);
+            }, 800);
         }
 
         function processMove(dice) {
@@ -556,7 +593,6 @@
             });
 
             if (validMoves.length === 0) {
-                // Sync opponent that we skipped
                 if (mode === 'online') socket.emit('move', { roomName, moveData: { pawns: myPawns, extraTurn: false } });
                 setTimeout(nextTurn, 600);
             } else if (validMoves.length === 1) {
@@ -602,10 +638,7 @@
             const extraTurn = (dice === 6 || hitOpponent);
 
             if (mode === 'online') {
-                socket.emit('move', { 
-                    roomName, 
-                    moveData: { pawns: myPawns, extraTurn } 
-                });
+                socket.emit('move', { roomName, moveData: { pawns: myPawns, extraTurn } });
             }
 
             if (extraTurn) {
@@ -619,15 +652,11 @@
         function nextTurn() {
             turn = turn === 1 ? 2 : 1;
             hasRolled = false;
-            
-            // Reset dice text
-            document.getElementById('dice-p1').innerText = '-';
-            document.getElementById('dice-p2').innerText = '-';
-            
             updateTurnUI();
 
             if (mode === 'ai' && turn === 2) {
-                setTimeout(handleDiceClick, 800);
+                // AI automatically rolls its dice
+                setTimeout(() => handleDiceClick(2), 800);
             }
         }
 
@@ -638,26 +667,26 @@
             const text = turn === 1 ? `${p1Name} is playing...` : `${p2Name} is playing...`;
             document.getElementById('turn-text').innerText = text;
             
-            // Enable/Disable dice boxes based on turn
-            const dp1 = document.getElementById('dice-p1');
-            const dp2 = document.getElementById('dice-p2');
+            const wrap1 = document.getElementById('dice-wrap-1');
+            const wrap2 = document.getElementById('dice-wrap-2');
 
+            // Enable/Disable dice boxes based on turn
             if (turn === 1) {
-                dp1.classList.remove('disabled');
-                dp2.classList.add('disabled');
+                wrap1.classList.remove('disabled');
+                wrap2.classList.add('disabled');
             } else {
-                dp1.classList.add('disabled');
-                dp2.classList.remove('disabled');
+                wrap1.classList.add('disabled');
+                wrap2.classList.remove('disabled');
             }
 
-            // Disable entirely if it's not your turn in online mode
+            // In online mode, completely lock out the opponent's dice
             if (mode === 'online') {
                 if (myOnlineId === 1 && turn === 2) {
-                    dp1.classList.add('disabled');
-                    dp2.classList.add('disabled');
+                    wrap1.classList.add('disabled');
+                    wrap2.classList.add('disabled');
                 } else if (myOnlineId === 2 && turn === 1) {
-                    dp1.classList.add('disabled');
-                    dp2.classList.add('disabled');
+                    wrap1.classList.add('disabled');
+                    wrap2.classList.add('disabled');
                 }
             }
         }
