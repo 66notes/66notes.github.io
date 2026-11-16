@@ -361,10 +361,11 @@
 
             statusTxt.innerHTML = 'Connecting...';
 
-            // FORCED POLLING TO BYPASS ENZONIC BLOCK
-            socket = io('https://66notes-game.enzonic.dev', {
+            // FIXED: Direct port with rejectUnauthorized false to bypass Enzonic SSL error
+            socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['polling'], 
                 secure: true,
+                rejectUnauthorized: false,
                 reconnection: true,
                 reconnectionAttempts: 5
             }); 
