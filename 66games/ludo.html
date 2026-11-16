@@ -13,15 +13,21 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <style>
+        /* 🛑 THE ANTI-ROUNDING CSS 🛑 */
+        .board-wrapper::before, .board-wrapper::after,
+        .board::before, .board::after,
+        .center-home::before, .center-home::after {
+            display: none !important;
+            content: none !important;
+            border-radius: 0 !important;
+        }
+
         :root {
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff; 
-            
-            /* Ludo King Colors */
             --red: #ff4b4b; --green: #22c55e; --yellow: #eab308; --blue: #3b82f6;
             --board-line: #cbd5e1;
-            
-            --radius: 14px; --shadow: 0 6px 20px rgba(0,0,0,0.08);
+            --shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -76,10 +82,9 @@
         /* ══════════ GAME SCREEN ══════════ */
         #game-screen { justify-content: flex-start; padding-top: 10px; }
         
-        /* Ludo Board (15x15) */
         .board-wrapper {
             width: 100%; max-width: 400px; aspect-ratio: 1;
-            background: #ffffff; border-radius: 0px; /* Strictly square */
+            background: #ffffff; border-radius: 0px;
             box-shadow: var(--shadow); padding: 2px; border: 2px solid var(--board-line);
             position: relative;
         }
@@ -90,8 +95,6 @@
         }
         
         .cell { background: #ffffff; position: relative; }
-        
-        /* Path Styling */
         .cell.path { border: 1px solid var(--board-line); }
         .cell.safe { background: #f1f5f9; }
         .cell.safe::after { content: '★'; position: absolute; font-size: 0.6rem; color: #94a3b8; top: 50%; left: 50%; transform: translate(-50%, -50%); }
@@ -104,26 +107,24 @@
         
         .base-inner {
             position: absolute; inset: 10%; background: #ffffff;
-            border-radius: 0px; /* Strictly square */
+            border-radius: 0px;
             display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15%;
             border: 2px solid var(--board-line);
         }
         
-        /* Colored Paths */
+        /* Paths */
         .home-path-red { background: var(--red); border: 1px solid var(--board-line); }
         .home-path-green { background: var(--green); border: 1px solid var(--board-line); }
         .home-path-blue { background: var(--blue); border: 1px solid var(--board-line); }
         .home-path-yellow { background: var(--yellow); border: 1px solid var(--board-line); }
         
-        /* Start zones */
         .start-red { background: var(--red) !important; }
-        .start-green { background: var(--green) !important; }
         .start-blue { background: var(--blue) !important; }
-        .start-yellow { background: var(--yellow) !important; }
         
-        /* Center - 4 Sharp Triangles (NO GRADIENTS) */
+        /* Center (Guaranteed Sharp) */
         .center-home {
             grid-area: 7 / 7 / 10 / 10; position: relative; display: flex; flex-wrap: wrap;
+            border-radius: 0 !important; background: transparent !important;
         }
         .triangle { width: 50%; height: 50%; }
         .t-top { background: var(--red); clip-path: polygon(0 0, 100% 0, 50% 50%); }
@@ -138,14 +139,11 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center; border: 2px solid white;
         }
-        .pawn::after {
-            content: ''; width: 30%; height: 30%; border-radius: 50%; background: rgba(255,255,255,0.6);
-        }
+        .pawn::after { content: ''; width: 30%; height: 30%; border-radius: 50%; background: rgba(255,255,255,0.6); }
         .pawn-p1 { background: var(--red); }
         .pawn-p2 { background: var(--blue); }
         .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.4; }
         
-        /* Selectable Pawn Animation */
         .pawn-selectable {
             animation: pulse-ring 1s infinite;
             cursor: pointer;
@@ -158,27 +156,19 @@
             100% { transform: scale(1); }
         }
 
-        /* ══════════ PLAYER INFO & 3D DICE ══════════ */
+        /* PLAYER INFO & DICE */
         .player-info-row { 
             display: flex; justify-content: space-between; align-items: flex-start; 
             width: 100%; max-width: 400px; margin-top: 15px; padding: 0 10px;
         }
         .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 5px; }
-        
         .p-name { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 5px; }
         .p1-text { color: var(--red); }
         .p2-text { color: var(--blue); }
 
-        /* 3D Dice Container */
         .dice-container { width: 60px; height: 60px; perspective: 600px; cursor: pointer; transition: opacity 0.3s; }
         .dice-container.disabled { opacity: 0.3; pointer-events: none; }
-        
-        .dice-cube { 
-            width: 100%; height: 100%; position: relative; 
-            transform-style: preserve-3d; transition: transform 0.8s ease-out; 
-            transform: translateZ(-30px); 
-        }
-        
+        .dice-cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s ease-out; transform: translateZ(-30px); }
         .dice-face {
             position: absolute; width: 60px; height: 60px; background: white; border-radius: 8px;
             border: 2px solid #e2e8f0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
@@ -186,7 +176,6 @@
         }
         .dot { background: #1e293b; border-radius: 50%; width: 100%; height: 100%; }
         
-        /* Dot positioning */
         .f1 .dot { grid-area: 2 / 2; }
         .f2 .dot:nth-child(1) { grid-area: 1 / 1; } .f2 .dot:nth-child(2) { grid-area: 3 / 3; }
         .f3 .dot:nth-child(1) { grid-area: 1 / 1; } .f3 .dot:nth-child(2) { grid-area: 2 / 2; } .f3 .dot:nth-child(3) { grid-area: 3 / 3; }
@@ -194,7 +183,6 @@
         .f5 .dot:nth-child(1) { grid-area: 1 / 1; } .f5 .dot:nth-child(2) { grid-area: 1 / 3; } .f5 .dot:nth-child(3) { grid-area: 2 / 2; } .f5 .dot:nth-child(4) { grid-area: 3 / 1; } .f5 .dot:nth-child(5) { grid-area: 3 / 3; }
         .f6 .dot:nth-child(1) { grid-area: 1 / 1; } .f6 .dot:nth-child(2) { grid-area: 1 / 3; } .f6 .dot:nth-child(3) { grid-area: 2 / 1; } .f6 .dot:nth-child(4) { grid-area: 2 / 3; } .f6 .dot:nth-child(5) { grid-area: 3 / 1; } .f6 .dot:nth-child(6) { grid-area: 3 / 3; }
 
-        /* 3D Face Transforms */
         .f1 { transform: rotateY(0deg) translateZ(30px); }
         .f6 { transform: rotateY(180deg) translateZ(30px); }
         .f3 { transform: rotateY(90deg) translateZ(30px); }
@@ -202,10 +190,8 @@
         .f5 { transform: rotateX(90deg) translateZ(30px); }
         .f2 { transform: rotateX(-90deg) translateZ(30px); }
 
-        /* ══════════ TRACKERS ══════════ */
-        .trackers-row {
-            display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-top: 15px; padding: 0 15px;
-        }
+        /* TRACKERS */
+        .trackers-row { display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-top: 15px; padding: 0 15px; }
         .tracker-box {
             background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
             padding: 6px 12px; font-size: 0.85rem; font-weight: 600; display: flex; gap: 10px; align-items: center;
@@ -218,7 +204,7 @@
 
         .status-text { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-align: center; margin-top: 15px; }
         
-        /* ══════════ WIN OVERLAY ══════════ */
+        /* WIN OVERLAY */
         .win-overlay {
             position: fixed; inset: 0; background: rgba(13,43,78,0.95); z-index: 1000;
             display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -228,7 +214,6 @@
         .win-crown { font-size: 5rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
         
-        /* ══════════ MODALS & DARK MODE ══════════ */
         .modal { position: fixed; inset: 0; background: rgba(13,43,78,0.85); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
         .modal.active { display: flex; }
         .modal-box { background: var(--surface); padding: 24px; border-radius: 20px; width: 100%; max-width: 320px; text-align: center; }
@@ -247,14 +232,12 @@
 </head>
 <body>
 
-    <!-- Top Bar -->
     <div class="top-bar">
         <a href="index.html" class="logo-small">66<span>Notes</span></a>
         <div class="brand-badge">Ludo</div>
         <div style="width: 32px;"></div>
     </div>
 
-    <!-- Setup Screen -->
     <div id="setup-screen" class="screen active">
         <h1 class="title">Select Ludo Mode</h1>
         <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
@@ -263,7 +246,6 @@
         <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
     </div>
 
-    <!-- Split Setup Screen -->
     <div id="split-screen" class="screen">
         <h1 class="title">Split-Screen Setup</h1>
         <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter Player 2's Roll Number</p>
@@ -272,7 +254,6 @@
         <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
     </div>
 
-    <!-- Online Setup Screen -->
     <div id="online-screen" class="screen">
         <h1 class="title">Online Players</h1>
         <p id="online-status" style="margin-bottom: 15px; color: var(--text-secondary); font-weight: 500;">Connecting...</p>
@@ -280,17 +261,15 @@
         <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
     </div>
 
-    <!-- Game Screen -->
     <div id="game-screen" class="screen">
         
-        <!-- 15x15 Traditional Board -->
         <div class="board-wrapper">
             <div class="board" id="board">
                 <div class="base-red"><div class="base-inner" id="base-p1"></div></div>
                 <div class="base-green"><div class="base-inner"></div></div>
                 <div class="base-blue"><div class="base-inner" id="base-p2"></div></div>
                 <div class="base-yellow"><div class="base-inner"></div></div>
-                <!-- Sharp Center Triangles -->
+                
                 <div class="center-home">
                     <div class="triangle t-top"></div>
                     <div class="triangle t-right"></div>
@@ -300,7 +279,6 @@
             </div>
         </div>
 
-        <!-- Player Dice Area -->
         <div class="player-info-row">
             <div class="player-side">
                 <span class="p-name p1-text" id="ui-p1">Opponent</span>
@@ -331,7 +309,6 @@
             </div>
         </div>
 
-        <!-- Pawn Trackers -->
         <div class="trackers-row">
             <div class="tracker-box t-red">
                 <span><i class="fas fa-chess-pawn"></i> <span id="track-p1-play">0</span>/2</span>
@@ -346,14 +323,12 @@
         <p class="status-text" id="turn-text">Waiting to start...</p>
     </div>
 
-    <!-- Win Overlay -->
     <div class="win-overlay" id="win-overlay">
         <i class="fas fa-crown win-crown"></i>
         <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
         <p style="color: #cbd5e1;">Returning to dashboard...</p>
     </div>
 
-    <!-- Waiting Modal for Online -->
     <div class="modal" id="wait-modal">
         <div class="modal-box">
             <h2 style="margin-bottom: 10px;">Waiting...</h2>
@@ -363,7 +338,6 @@
     </div>
 
     <script>
-        /* --- DATABASE --- */
         const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
         
         const currentUser = JSON.parse(localStorage.getItem('66games_user'));
@@ -373,7 +347,6 @@
         try { wasDark = localStorage.getItem('66games_theme') === 'dark'; } catch {}
         if (wasDark) document.documentElement.setAttribute('data-theme', 'dark');
 
-        /* --- GAME STATE --- */
         let mode = ''; let p1Name = currentUser.name; let p2Name = '';
         let turn = 1; let isRolling = false; let hasRolled = false; let isSelecting = false;
         
@@ -402,10 +375,8 @@
 
         let p1Pawns = [-1, -1];
         let p2Pawns = [-1, -1];
-
         let socket = null, roomName = '', myOnlineId = 1;
 
-        /* --- UI HELPERS --- */
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -423,22 +394,20 @@
             p2Name = name; mode = 'split'; initGame();
         }
 
-        /* --- ONLINE MULTIPLAYER --- */
+        /* ONLINE MULTIPLAYER */
         function showOnlineSetup() {
             showScreen('online-screen');
             const statusTxt = document.getElementById('online-status');
             
             if (socket && socket.connected) return;
 
-            statusTxt.innerHTML = 'Connecting to server...';
+            statusTxt.innerHTML = 'Connecting...';
 
-            // 🔴 IMPORTANT: Replace this URL with your Render.com URL once you create it!
-            // Example: https://ludo-server-abc.onrender.com
-            socket = io('https://fr-one.enzonic.com:26496', {
-                transports: ['websocket', 'polling'],
+            socket = io('https://66notes-game.enzonic.dev', {
+                transports: ['websocket', 'polling'], 
+                secure: true,
                 reconnection: true,
-                reconnectionAttempts: 5,
-                timeout: 10000
+                reconnectionAttempts: 3
             }); 
 
             socket.on('connect', () => {
@@ -448,7 +417,7 @@
 
             socket.on('connect_error', (err) => {
                 statusTxt.innerHTML = `<span style="color:red"><i class="fas fa-exclamation-triangle"></i> Connection failed.</span><br>
-                <span style="font-size:0.75rem; color:var(--text-secondary)">Make sure Enzonic is running.</span><br>
+                <span style="font-size:0.75rem; color:var(--text-secondary)">Ensure Enzonic is Running.</span><br>
                 <button onclick="retryConnection()" class="btn btn-primary" style="margin-top:10px; width:auto; padding:6px 20px; font-size:0.8rem;">Reconnect</button>`;
             });
 
@@ -501,7 +470,6 @@
             document.getElementById('wait-modal').classList.add('active');
         }
 
-        /* --- GAME INIT & BOARD BUILD --- */
         function initGame() {
             p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
             turn = 1; hasRolled = false; isRolling = false; isSelecting = false;
@@ -552,7 +520,6 @@
             renderBoard();
         }
 
-        /* --- RENDERING PAWNS & TRACKERS --- */
         function renderBoard() {
             document.querySelectorAll('.pawn').forEach(p => p.remove());
             document.getElementById('base-p1').innerHTML = '';
@@ -589,7 +556,6 @@
             p1Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p1', idx));
             p2Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p2', idx));
 
-            // Update Trackers
             const p1Out = p1Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
             const p1Home = p1Pawns.filter(p => p === HOME_INDEX).length;
             const p2Out = p2Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
@@ -601,7 +567,6 @@
             document.getElementById('track-p2-home').innerText = p2Home;
         }
 
-        /* --- DICE & GAME LOGIC --- */
         let currentX1 = 0, currentY1 = 0;
         let currentX2 = 0, currentY2 = 0;
 
@@ -665,13 +630,11 @@
             } else if (validMoves.length === 1) {
                 setTimeout(() => executeMove(validMoves[0], dice), 300);
             } else {
-                // AI auto-picks furthest pawn
                 if (mode === 'ai' && turn === 2) {
                     setTimeout(() => executeMove(validMoves[validMoves.length - 1], dice), 400);
                     return;
                 }
                 
-                // Human player must choose
                 isSelecting = true;
                 document.getElementById('turn-text').innerText = "Select a glowing pawn to move!";
                 
@@ -680,7 +643,6 @@
                     if(p) {
                         p.classList.add('pawn-selectable');
                         p.onclick = () => {
-                            // Remove classes
                             document.querySelectorAll('.pawn-selectable').forEach(el => {
                                 el.classList.remove('pawn-selectable');
                                 el.onclick = null;
