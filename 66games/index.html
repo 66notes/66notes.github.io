@@ -110,7 +110,6 @@
         .welcome-label { font-size: 0.62rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
         .welcome-name { font-size: 0.92rem; font-weight: 700; color: var(--navy); line-height: 1.2; word-break: break-word; }
         
-        /* Updated Logout Button */
         .logout-btn {
             flex-shrink: 0;
             height: 32px;
@@ -280,10 +279,10 @@
         .footer a { color: var(--accent); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
         .footer a i { font-size: 0.6rem; }
 
-        /* ══════════ LOGIN OVERLAY (Blur Removed) ══════════ */
+        /* ══════════ LOGIN OVERLAY (Lag-free) ══════════ */
         .login-overlay {
             position: fixed; inset: 0;
-            background: rgba(13, 43, 78, 0.85); /* Solid dark tint, no blur for performance */
+            background: rgba(13, 43, 78, 0.85); /* Solid, no blur */
             z-index: 1000;
             display: flex; align-items: center; justify-content: center;
             padding: 1rem;
@@ -338,9 +337,6 @@
         .roll-input:focus { border-color: var(--accent); background: var(--surface); }
         .roll-input::placeholder { color: var(--text-muted); font-weight: 500; letter-spacing: 0.1em; }
 
-        .roll-hint { font-size: 0.66rem; color: var(--text-muted); font-weight: 500; }
-        .roll-hint strong { color: var(--accent); font-weight: 700; letter-spacing: 0.06em; }
-
         .login-error {
             font-size: 0.7rem; font-weight: 600;
             color: #dc2626;
@@ -366,6 +362,7 @@
             transition: transform 0.15s, background var(--transition);
         }
         .login-btn:active { transform: scale(0.97); background: #1032d9; }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
         /* ══════════ INTAKE QUESTION (Roll 138) ══════════ */
         .intake-options {
@@ -625,7 +622,6 @@
                     autocapitalize="off"
                     spellcheck="false"
                 />
-                <div class="roll-hint" id="rollHint">Will check roll: <strong>—</strong></div>
                 <div class="login-error" id="loginError"></div>
                 <button class="login-btn" id="loginBtn" type="button">Continue</button>
             </div>
@@ -665,8 +661,6 @@
 
         /* ═══════════════════════════════════════════════════════════
            STUDENT DATABASE — Intake 66
-           Roll 015 = merged (M D Emran)
-           Roll 138 = dual (Aion / Maria) — resolved via Intake 66 question
            ═══════════════════════════════════════════════════════════ */
         const STUDENTS = {
             '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti',
@@ -681,7 +675,6 @@
             '161': 'Nafis', '164': 'Sanjana', '381': 'Moon'
         };
 
-        /* Dual-name rolls — resolved by a follow-up question */
         const SPECIAL_ROLLS = {
             '138': { yes: 'Aion', no: 'Maria', question: 'Are you from Intake 66?' }
         };
@@ -782,7 +775,6 @@
         const step1 = $('loginStep1');
         const step2 = $('loginStep2');
         const input = $('rollInput');
-        const hint = $('rollHint');
         const error = $('loginError');
         const loginBtn = $('loginBtn');
         const welcomeBar = $('welcomeBar');
@@ -797,6 +789,8 @@
             step2.style.display = 'none';
             error.classList.remove('show');
             pendingSpecialRoll = null;
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = 'Continue';
             setTimeout(() => input.focus(), 50);
         }
 
@@ -806,7 +800,6 @@
             input.value = '';
             error.classList.remove('show');
             error.textContent = '';
-            updateHint('');
             resetToStep1();
         }
 
@@ -817,19 +810,14 @@
             welcomeName.textContent = user.name;
         }
 
-        function updateHint(raw) {
-            const padded = normalizeRoll(raw);
-            hint.innerHTML = padded
-                ? `Will check roll: <strong>${padded}</strong>`
-                : 'Will check roll: <strong>—</strong>';
-        }
-
         function showError(msg) {
             error.textContent = msg;
             error.classList.add('show');
         }
 
         function attemptLogin() {
+            if (loginBtn.disabled) return; // Prevent double clicks
+            
             const padded = normalizeRoll(input.value);
             error.classList.remove('show');
 
@@ -838,31 +826,46 @@
                 return;
             }
 
-            // Dual-name roll → go to step 2
-            if (SPECIAL_ROLLS[padded]) {
-                pendingSpecialRoll = padded;
-                step1.style.display = 'none';
-                step2.style.display = 'contents';
-                return;
-            }
+            // Show Loading State on the button
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+            loginBtn.disabled = true;
 
-            // Normal roll
-            const name = STUDENTS[padded];
-            if (!name) {
-                showError(`Roll ${padded} not found. Please check your roll number.`);
-                return;
-            }
+            // Small delay to allow the UI to render the loading state (makes it feel smooth)
+            setTimeout(() => {
+                // Dual-name roll → go to step 2
+                if (SPECIAL_ROLLS[padded]) {
+                    pendingSpecialRoll = padded;
+                    step1.style.display = 'none';
+                    step2.style.display = 'contents';
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                    return;
+                }
 
-            const user = { roll: padded, name };
-            saveUser(user);
-            showDashboard(user, false);
-            input.blur();
+                // Normal roll
+                const name = STUDENTS[padded];
+                if (!name) {
+                    showError(`Roll ${padded} not found. Please check your roll number.`);
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
+                    return;
+                }
+
+                // Success
+                const user = { roll: padded, name };
+                saveUser(user);
+                showDashboard(user, false);
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+                input.blur();
+            }, 300); // 300ms fake delay for smooth feel
         }
 
+        // SMOOTH INPUT: Only handles sanitization, no DOM updating
         input.addEventListener('input', e => {
-            const clean = e.target.value.replace(/\D/g, '').slice(0, 3);
-            if (e.target.value !== clean) e.target.value = clean;
-            updateHint(clean);
+            let val = e.target.value.replace(/\D/g, '').slice(0, 3);
+            if (e.target.value !== val) e.target.value = val;
             if (error.classList.contains('show')) error.classList.remove('show');
         });
 
