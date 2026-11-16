@@ -77,13 +77,12 @@
         .board{width:100%;height:100%;display:grid;
           grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:0;background:#fff}
 
-        /* BASES */
-        .base-blue  {grid-area:1/1/7/7}
-        .base-green {grid-area:1/10/7/16}
-        .base-yellow{grid-area:10/1/16/7}
-        .base-red   {grid-area:10/10/16/16}
-        .base-blue{background:var(--blue)} .base-green{background:var(--green)}
-        .base-yellow{background:var(--yellow)} .base-red{background:var(--red)}
+        /* FIXED BASES */
+        .base-blue, .base-green, .base-yellow, .base-red { position: relative; overflow: hidden; }
+        .base-blue  {grid-area:1/1/7/7; background:var(--blue);}
+        .base-green {grid-area:1/10/7/16; background:var(--green);}
+        .base-yellow{grid-area:10/1/16/7; background:var(--yellow);}
+        .base-red   {grid-area:10/10/16/16; background:var(--red);}
 
         .base-inner{position:absolute;inset:14%;background:#fff;border-radius:0;
           display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
@@ -106,7 +105,7 @@
         .t-bottom{background:var(--yellow);clip-path:polygon(0 100%,100% 100%,50% 50%)}
         .t-left  {background:var(--blue); clip-path:polygon(0 0,0 100%,50% 50%)}
 
-        /* PAWN: map-pin with ring */
+        /* FIXED PAWNS */
         .pawn{position:absolute;inset:0;margin:auto;width:70%;height:70%;z-index:10;
           transition:all .3s ease-in-out;background:none;border:none;box-shadow:none}
         .pawn::before{ /* ring */
@@ -120,13 +119,13 @@
         .pawn-p1{--pawn-color:var(--red)}
         .pawn-p2{--pawn-color:var(--blue)}
         
-        /* Fix Base Pawn positioning */
+        /* Lock base pawns into the grid so they don't stack */
         .pawn-base {
-            position: relative;
-            inset: auto;
-            margin: 0;
-            width: 80%;
-            height: 80%;
+            position: relative !important;
+            inset: auto !important;
+            margin: 0 !important;
+            width: 80% !important;
+            height: 80% !important;
         }
         
         .pawn-selectable{animation:pulse 1s infinite;cursor:pointer}
@@ -362,8 +361,8 @@
 
             statusTxt.innerHTML = 'Connecting...';
 
-            // Connect to Enzonic direct port
-            socket = io('https://fr-one.enzonic.com:26496', {
+            // Connect to Enzonic Subdomain
+            socket = io('https://66notes-game.enzonic.dev', {
                 transports: ['websocket', 'polling'], 
                 secure: true,
                 reconnection: true,
