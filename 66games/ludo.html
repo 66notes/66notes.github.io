@@ -17,13 +17,11 @@
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff; 
             
-            /* Ludo Colors */
-            --red: #ef4444; --green: #22c55e; --yellow: #eab308; --blue: #3b82f6;
-            --red-dark: #b91c1c; --blue-dark: #1d4ed8;
-            --board-bg: #ffffff; --board-line: #cbd5e1;
+            /* Ludo King Colors */
+            --red: #ff4b4b; --green: #22c55e; --yellow: #eab308; --blue: #3b82f6;
+            --board-line: #cbd5e1;
             
             --radius: 14px; --shadow: 0 6px 20px rgba(0,0,0,0.08);
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,7 +63,7 @@
             width: 100%; padding: 14px; border-radius: 12px; border: 2px solid var(--border); 
             font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 10px; 
             outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); 
-            color: var(--text); transition: border-color var(--transition);
+            color: var(--text); transition: border-color 0.2s;
         }
         .input-roll:focus { border-color: var(--accent); }
         
@@ -77,20 +75,11 @@
         
         /* ══════════ GAME SCREEN ══════════ */
         #game-screen { justify-content: flex-start; padding-top: 10px; }
-        .game-header { display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-bottom: 15px; }
-        .player-card { 
-            padding: 8px 16px; border-radius: 10px; font-weight: 700; border: 2px solid transparent; 
-            background: var(--surface); box-shadow: var(--shadow); transition: 0.3s; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .player-card.active { border-color: var(--accent); transform: scale(1.05); }
-        .p1-text { color: var(--red-dark); }
-        .p2-text { color: var(--blue-dark); }
         
-        /* ══════════ LUDO BOARD (15x15) ══════════ */
+        /* Ludo Board (15x15) */
         .board-wrapper {
             width: 100%; max-width: 400px; aspect-ratio: 1;
-            background: var(--board-bg); border-radius: 12px;
+            background: #ffffff; border-radius: 8px;
             box-shadow: var(--shadow); padding: 4px; border: 2px solid var(--board-line);
             position: relative;
         }
@@ -100,37 +89,38 @@
             gap: 1px; background: var(--border); border: 1px solid var(--board-line);
         }
         
-        .cell { background: var(--board-bg); position: relative; }
+        .cell { background: #ffffff; position: relative; }
         
         /* Path Styling */
         .cell.path { border: 1px solid var(--board-line); }
         .cell.safe { background: #f1f5f9; }
-        .cell.safe::after { content: '★'; position: absolute; font-size: 0.5rem; color: #94a3b8; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .cell.safe::after { content: '★'; position: absolute; font-size: 0.6rem; color: #94a3b8; top: 50%; left: 50%; transform: translate(-50%, -50%); }
         
-        /* Ludo King Style Bases */
-        .base-red { background: var(--red); grid-area: 1 / 1 / 7 / 7; border: 2px solid var(--board-line); }
-        .base-green { background: var(--green); grid-area: 1 / 10 / 7 / 16; border: 2px solid var(--board-line); }
-        .base-blue { background: var(--blue); grid-area: 10 / 1 / 16 / 7; border: 2px solid var(--board-line); }
-        .base-yellow { background: var(--yellow); grid-area: 10 / 10 / 16 / 16; border: 2px solid var(--board-line); }
+        /* Bases */
+        .base-red { background: var(--red); grid-area: 1 / 10 / 7 / 16; border: 1px solid var(--board-line); }
+        .base-green { background: var(--green); grid-area: 10 / 10 / 16 / 16; border: 1px solid var(--board-line); }
+        .base-blue { background: var(--blue); grid-area: 1 / 1 / 7 / 7; border: 1px solid var(--board-line); }
+        .base-yellow { background: var(--yellow); grid-area: 10 / 1 / 16 / 7; border: 1px solid var(--board-line); }
         
         .base-inner {
-            position: absolute; inset: 15%; background: #ffffff;
-            border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-            padding: 10%; gap: 15%; border: 2px solid var(--board-line);
+            position: absolute; inset: 10%; background: #ffffff;
+            border-radius: 8px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15%;
+            border: 2px solid var(--board-line);
         }
         
-        /* Colored Starting Homes */
+        /* Colored Paths */
         .home-path-red { background: var(--red); border: 1px solid var(--board-line); }
         .home-path-green { background: var(--green); border: 1px solid var(--board-line); }
         .home-path-blue { background: var(--blue); border: 1px solid var(--board-line); }
         .home-path-yellow { background: var(--yellow); border: 1px solid var(--board-line); }
         
+        /* Start zones */
         .start-red { background: var(--red) !important; }
         .start-green { background: var(--green) !important; }
         .start-blue { background: var(--blue) !important; }
         .start-yellow { background: var(--yellow) !important; }
         
-        /* Center Clean Look */
+        /* Center */
         .center-home {
             grid-area: 7 / 7 / 10 / 10; position: relative;
             background: conic-gradient(from 45deg, var(--red) 0deg 90deg, var(--green) 90deg 180deg, var(--yellow) 180deg 270deg, var(--blue) 270deg 360deg);
@@ -139,7 +129,7 @@
         .center-home::after {
             content: '🏆'; font-size: 1.2rem;
             background: #ffffff; width: 60%; height: 60%; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
         }
 
         /* Pawns */
@@ -152,40 +142,33 @@
         .pawn::after {
             content: ''; width: 30%; height: 30%; border-radius: 50%; background: rgba(255,255,255,0.6);
         }
-        .pawn-p1 { background: var(--red); border-color: var(--red-dark); }
-        .pawn-p2 { background: var(--blue); border-color: var(--blue-dark); }
-        
+        .pawn-p1 { background: var(--red); }
+        .pawn-p2 { background: var(--blue); }
         .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.4; }
         
-        /* ══════════ DICE 3D ══════════ */
-        .controls { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        
-        .dice-container { width: 60px; height: 60px; perspective: 600px; cursor: pointer; }
-        .dice-cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s ease-out; transform: translateZ(-30px); }
-        
-        .dice-face {
-            position: absolute; width: 60px; height: 60px; background: white; border-radius: 10px;
-            border: 2px solid #e2e8f0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-            display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 6px;
+        /* ══════════ PLAYER INFO & DICE ══════════ */
+        .player-info-row { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            width: 100%; max-width: 400px; margin-top: 25px; padding: 0 10px;
         }
-        .dot { background: #1e293b; border-radius: 50%; width: 100%; height: 100%; }
+        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 8px; }
         
-        /* Dot positioning */
-        .f1 .dot { grid-area: 2 / 2; }
-        .f2 .dot:nth-child(1) { grid-area: 1 / 1; } .f2 .dot:nth-child(2) { grid-area: 3 / 3; }
-        .f3 .dot:nth-child(1) { grid-area: 1 / 1; } .f3 .dot:nth-child(2) { grid-area: 2 / 2; } .f3 .dot:nth-child(3) { grid-area: 3 / 3; }
-        .f4 .dot:nth-child(1) { grid-area: 1 / 1; } .f4 .dot:nth-child(2) { grid-area: 1 / 3; } .f4 .dot:nth-child(3) { grid-area: 3 / 1; } .f4 .dot:nth-child(4) { grid-area: 3 / 3; }
-        .f5 .dot:nth-child(1) { grid-area: 1 / 1; } .f5 .dot:nth-child(2) { grid-area: 1 / 3; } .f5 .dot:nth-child(3) { grid-area: 2 / 2; } .f5 .dot:nth-child(4) { grid-area: 3 / 1; } .f5 .dot:nth-child(5) { grid-area: 3 / 3; }
-        .f6 .dot:nth-child(1) { grid-area: 1 / 1; } .f6 .dot:nth-child(2) { grid-area: 1 / 3; } .f6 .dot:nth-child(3) { grid-area: 2 / 1; } .f6 .dot:nth-child(4) { grid-area: 2 / 3; } .f6 .dot:nth-child(5) { grid-area: 3 / 1; } .f6 .dot:nth-child(6) { grid-area: 3 / 3; }
+        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); }
+        .p1-text { color: var(--red); }
+        .p2-text { color: var(--blue); }
 
-        /* 3D Face Transforms */
-        .f1 { transform: rotateY(0deg) translateZ(30px); }
-        .f6 { transform: rotateY(180deg) translateZ(30px); }
-        .f3 { transform: rotateY(90deg) translateZ(30px); }
-        .f4 { transform: rotateY(-90deg) translateZ(30px); }
-        .f5 { transform: rotateX(90deg) translateZ(30px); }
-        .f2 { transform: rotateX(-90deg) translateZ(30px); }
-
+        /* Black Dice Box */
+        .dice-box {
+            width: 60px; height: 60px; background: #1e293b; color: white;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.1s; user-select: none;
+        }
+        .dice-box:active { transform: scale(0.95); }
+        .dice-box.disabled { opacity: 0.3; pointer-events: none; }
+        
+        .status-text { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-align: center; margin-top: 15px; }
+        
         /* ══════════ MODALS & DARK MODE ══════════ */
         .modal { position: fixed; inset: 0; background: rgba(13,43,78,0.85); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
         .modal.active { display: flex; }
@@ -194,10 +177,12 @@
         :root[data-theme="dark"] {
             --bg: #0b0e14; --surface: #151a22; --border: #222a35; --text: #f0f4f8;
             --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
-            --board-bg: #e2e8f0; --board-line: #94a3b8; /* Lighter board in dark mode for visibility */
+            --board-line: #334155;
         }
-        :root[data-theme="dark"] .cell.safe { background: #cbd5e1; }
-        :root[data-theme="dark"] .base-inner { background: #f8fafc; }
+        :root[data-theme="dark"] .cell { background: #1e293b; }
+        :root[data-theme="dark"] .base-inner { background: #1e293b; }
+        :root[data-theme="dark"] .cell.safe { background: #0f172a; }
+        :root[data-theme="dark"] .center-home::after { background: #1e293b; }
     </style>
 </head>
 <body>
@@ -237,12 +222,8 @@
 
     <!-- Game Screen -->
     <div id="game-screen" class="screen">
-        <div class="game-header">
-            <div class="player-card p1-text" id="ui-p1">P1</div>
-            <div class="player-card p2-text" id="ui-p2">P2</div>
-        </div>
-
-        <!-- 15x15 Traditional Ludo Board -->
+        
+        <!-- 15x15 Traditional Board -->
         <div class="board-wrapper">
             <div class="board" id="board">
                 <div class="base-red"><div class="base-inner" id="base-p1"></div></div>
@@ -253,20 +234,20 @@
             </div>
         </div>
 
-        <div class="controls">
-            <!-- 3D Dice -->
-            <div class="dice-container" id="dice" onclick="handleDiceClick()">
-                <div class="dice-cube" id="diceCube">
-                    <div class="dice-face f1"><div class="dot"></div></div>
-                    <div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
-                    <div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    <div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    <div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    <div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                </div>
+        <!-- Layout matching the image: Opponent on left, You on right -->
+        <div class="player-info-row">
+            <div class="player-side">
+                <span class="p-name p1-text" id="ui-p1">Opponent</span>
+                <div class="dice-box disabled" id="dice-p1">-</div>
             </div>
-            <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);" id="turn-text">P1's Turn</p>
+            
+            <div class="player-side">
+                <span class="p-name p2-text" id="ui-p2">My Name</span>
+                <div class="dice-box" id="dice-p2" onclick="handleDiceClick()">-</div>
+            </div>
         </div>
+        
+        <p class="status-text" id="turn-text">Waiting to start...</p>
     </div>
 
     <!-- Waiting Modal for Online -->
@@ -309,11 +290,15 @@
             {r:7,c:0},{r:6,c:0}
         ];
 
+        // Red enters from Top-Right, Blue enters from Top-Left
         const RED_HOME = [{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},{r:7,c:6},{r:7,c:7}];
         const BLUE_HOME = [{r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},{r:7,c:8},{r:7,c:7}];
 
-        const P1_PATH = [...LOOP, ...RED_HOME];
-        const P2_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...BLUE_HOME];
+        // P1 (Red) starts at (6,1). P2 (Blue) starts at (1,8).
+        // Wait, looking at the image: Red is Top Right. Its start is (1,8) moving left? 
+        // Let's use the standard array sequence.
+        const P1_PATH = [...LOOP, ...RED_HOME]; // Red
+        const P2_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...BLUE_HOME]; // Blue
         const HOME_INDEX = 58;
 
         const SAFE_SPOTS = [0, 8, 13, 21, 26, 34, 39, 47];
@@ -344,18 +329,20 @@
         /* --- ONLINE MULTIPLAYER --- */
         function showOnlineSetup() {
             showScreen('online-screen');
+            const statusTxt = document.getElementById('online-status');
             
-            if (socket && socket.connected) return; 
+            // If socket exists and is connected, just show the list
+            if (socket && socket.connected) return;
 
-            // Exact URL from your Enzonic Dashboard
+            statusTxt.innerHTML = 'Connecting to server...';
+
+            // Robust connection with fallback to polling if WebSockets are blocked
             socket = io('https://fr-one.enzonic.com:26496', {
-                secure: true,
+                transports: ['websocket', 'polling'],
+                reconnection: true,
                 reconnectionAttempts: 5,
                 timeout: 10000
             }); 
-
-            const statusTxt = document.getElementById('online-status');
-            statusTxt.innerHTML = 'Connecting to server...';
 
             socket.on('connect', () => {
                 statusTxt.innerHTML = 'Connected. Finding players...';
@@ -363,7 +350,9 @@
             });
 
             socket.on('connect_error', (err) => {
-                statusTxt.innerHTML = `<span style="color:red"><i class="fas fa-exclamation-triangle"></i> Connection failed.</span><br><span style="font-size:0.7rem; color:var(--text-secondary)">Make sure the Enzonic server is Running.</span>`;
+                statusTxt.innerHTML = `<span style="color:red"><i class="fas fa-exclamation-triangle"></i> Connection failed.</span><br>
+                <span style="font-size:0.75rem; color:var(--text-secondary)">Make sure Enzonic is running.</span><br>
+                <button onclick="retryConnection()" class="btn btn-primary" style="margin-top:10px; width:auto; padding:6px 20px; font-size:0.8rem;">Retry</button>`;
                 console.error("Socket Error:", err.message);
             });
 
@@ -372,6 +361,7 @@
                 list.innerHTML = '';
                 const others = players.filter(p => p.id !== socket.id);
                 if (!others.length) return list.innerHTML = '<div style="padding: 15px; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">No other players online.</div>';
+                
                 others.forEach(p => {
                     const div = document.createElement('div'); div.className = 'online-item';
                     div.innerHTML = `<div><strong>${p.name}</strong> <span style="font-size:0.7rem; color:var(--text-secondary);">(${p.roll})</span></div><button class="btn btn-primary btn-sm" onclick="challengePlayer('${p.id}')">Challenge</button>`;
@@ -385,7 +375,18 @@
 
             socket.on('match-started', ({ room, p1, p2 }) => {
                 roomName = room; myOnlineId = (socket.id === p1.id) ? 1 : 2;
-                p1Name = p1.name; p2Name = p2.name; mode = 'online';
+                
+                // If I am player 1, I am Red (p1Name). Opponent is p2Name (Blue).
+                // But visually, we always want "Me" on the right, "Opponent" on the left.
+                if (myOnlineId === 1) {
+                    p1Name = p1.name; // Me
+                    p2Name = p2.name; // Opponent
+                } else {
+                    p1Name = p1.name; // Opponent
+                    p2Name = p2.name; // Me
+                }
+                
+                mode = 'online';
                 document.getElementById('wait-modal').classList.remove('active');
                 initGame();
             });
@@ -403,6 +404,12 @@
             });
         }
 
+        function retryConnection() {
+            if(socket) socket.disconnect();
+            socket = null;
+            showOnlineSetup();
+        }
+
         function challengePlayer(targetId) {
             socket.emit('challenge', { targetId });
             document.getElementById('wait-modal').classList.add('active');
@@ -412,8 +419,12 @@
         function initGame() {
             p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
             turn = 1; hasRolled = false; isRolling = false;
+            
+            // If online and I am P2 (Blue), I always want the Red player (P1) on the left.
+            // If split screen, P1 is always on the left.
             document.getElementById('ui-p1').innerText = p1Name;
             document.getElementById('ui-p2').innerText = p2Name;
+            
             showScreen('game-screen');
             buildGrid();
             updateTurnUI();
@@ -425,11 +436,11 @@
             
             for (let r = 0; r < 15; r++) {
                 for (let c = 0; c < 15; c++) {
-                    if (r < 6 && c < 6) continue;
-                    if (r < 6 && c > 8) continue;
-                    if (r > 8 && c < 6) continue;
-                    if (r > 8 && c > 8) continue;
-                    if (r >= 6 && r <= 8 && c >= 6 && c <= 8) continue;
+                    if (r < 6 && c < 6) continue; // Blue Base
+                    if (r < 6 && c > 8) continue; // Red Base
+                    if (r > 8 && c < 6) continue; // Yellow Base
+                    if (r > 8 && c > 8) continue; // Green Base
+                    if (r >= 6 && r <= 8 && c >= 6 && c <= 8) continue; // Center
 
                     const cell = document.createElement('div');
                     cell.className = 'cell';
@@ -441,17 +452,15 @@
                     if (isPath) {
                         cell.classList.add('path');
                         
-                        // Colored Paths
+                        // Red Home Column & Start
                         if (c === 7 && r > 0 && r < 6) cell.classList.add('home-path-red');
+                        if (r === 6 && c === 12) cell.classList.add('start-red');
+                        
+                        // Blue Home Column & Start
                         if (c === 7 && r > 8 && r < 14) cell.classList.add('home-path-blue');
-                        if (r === 7 && c > 0 && c < 6) cell.classList.add('home-path-red'); // Ludo King style: red enters from left
-                        if (r === 7 && c > 8 && c < 14) cell.classList.add('home-path-blue'); // blue enters from right
+                        if (r === 1 && c === 8) cell.classList.add('start-blue');
                         
-                        // Start zones
-                        if (r === 6 && c === 1) cell.classList.add('start-red');
-                        if (r === 8 && c === 13) cell.classList.add('start-blue');
-                        
-                        // Safe Stars
+                        // Safe Stars (Matching reference image spots)
                         if ((r === 8 && c === 2) || (r === 6 && c === 12) || (r === 13 && c === 6) || (r === 1 && c === 8)) {
                             cell.classList.add('safe');
                         }
@@ -500,33 +509,36 @@
         }
 
         /* --- DICE & GAME LOGIC --- */
-        let currentX = 0, currentY = 0;
-
         function handleDiceClick() {
             if (isRolling || hasRolled) return;
-            if (mode === 'online' && turn !== myOnlineId) return;
+            if (mode === 'online' && turn !== (myOnlineId === 1 ? 1 : 2)) return;
             
             isRolling = true;
-            const diceValue = Math.floor(Math.random() * 6) + 1;
             
-            const cube = document.getElementById('diceCube');
-            const faceMap = {
-                1: {x: 0, y: 0}, 2: {x: 90, y: 0}, 3: {x: 0, y: -90},
-                4: {x: 0, y: 90}, 5: {x: -90, y: 0}, 6: {x: 0, y: 180}
-            };
-            
-            // Random multiplier for spins to ensure it feels different each time
-            const spins = 4 + Math.floor(Math.random() * 3);
-            currentX = spins * 360 + faceMap[diceValue].x;
-            currentY = spins * 360 + faceMap[diceValue].y;
-            
-            cube.style.transform = `rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+            // Visual rolling effect
+            const diceBox = document.getElementById('dice-p2'); // Assuming you're always P2 visually on the right
+            const targetDice = turn === 1 ? document.getElementById('dice-p1') : diceBox;
+            targetDice.innerText = '...';
 
-            setTimeout(() => {
-                isRolling = false;
-                hasRolled = true;
-                processMove(diceValue);
-            }, 800);
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                targetDice.innerText = Math.floor(Math.random() * 6) + 1;
+                rollCount++;
+                if (rollCount > 8) {
+                    clearInterval(rollInterval);
+                    finishRoll();
+                }
+            }, 50);
+        }
+
+        function finishRoll() {
+            const diceValue = Math.floor(Math.random() * 6) + 1;
+            const targetDice = turn === 1 ? document.getElementById('dice-p1') : document.getElementById('dice-p2');
+            targetDice.innerText = diceValue;
+            
+            isRolling = false;
+            hasRolled = true;
+            processMove(diceValue);
         }
 
         function processMove(dice) {
@@ -544,10 +556,8 @@
             });
 
             if (validMoves.length === 0) {
-                // No valid moves. Emit to sync opponent before skipping.
-                if (mode === 'online' && ((turn === 1 && myOnlineId === 1) || (turn === 2 && myOnlineId === 2))) {
-                    socket.emit('move', { roomName, moveData: { pawns: myPawns, extraTurn: false } });
-                }
+                // Sync opponent that we skipped
+                if (mode === 'online') socket.emit('move', { roomName, moveData: { pawns: myPawns, extraTurn: false } });
                 setTimeout(nextTurn, 600);
             } else if (validMoves.length === 1) {
                 setTimeout(() => executeMove(validMoves[0], dice), 300);
@@ -591,7 +601,7 @@
 
             const extraTurn = (dice === 6 || hitOpponent);
 
-            if (mode === 'online' && ((turn === 1 && myOnlineId === 1) || (turn === 2 && myOnlineId === 2))) {
+            if (mode === 'online') {
                 socket.emit('move', { 
                     roomName, 
                     moveData: { pawns: myPawns, extraTurn } 
@@ -609,6 +619,11 @@
         function nextTurn() {
             turn = turn === 1 ? 2 : 1;
             hasRolled = false;
+            
+            // Reset dice text
+            document.getElementById('dice-p1').innerText = '-';
+            document.getElementById('dice-p2').innerText = '-';
+            
             updateTurnUI();
 
             if (mode === 'ai' && turn === 2) {
@@ -619,13 +634,31 @@
         function updateTurnUI() {
             document.getElementById('ui-p1').classList.toggle('active', turn === 1);
             document.getElementById('ui-p2').classList.toggle('active', turn === 2);
-            document.getElementById('turn-text').innerText = `${turn === 1 ? p1Name : p2Name}'s Turn`;
             
-            const d = document.getElementById('dice');
-            if (mode === 'online' && turn !== myOnlineId) {
-                d.style.opacity = '0.5'; d.style.pointerEvents = 'none';
+            const text = turn === 1 ? `${p1Name} is playing...` : `${p2Name} is playing...`;
+            document.getElementById('turn-text').innerText = text;
+            
+            // Enable/Disable dice boxes based on turn
+            const dp1 = document.getElementById('dice-p1');
+            const dp2 = document.getElementById('dice-p2');
+
+            if (turn === 1) {
+                dp1.classList.remove('disabled');
+                dp2.classList.add('disabled');
             } else {
-                d.style.opacity = '1'; d.style.pointerEvents = 'auto';
+                dp1.classList.add('disabled');
+                dp2.classList.remove('disabled');
+            }
+
+            // Disable entirely if it's not your turn in online mode
+            if (mode === 'online') {
+                if (myOnlineId === 1 && turn === 2) {
+                    dp1.classList.add('disabled');
+                    dp2.classList.add('disabled');
+                } else if (myOnlineId === 2 && turn === 1) {
+                    dp1.classList.add('disabled');
+                    dp2.classList.add('disabled');
+                }
             }
         }
     </script>
