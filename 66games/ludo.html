@@ -79,8 +79,8 @@
         /* Ludo Board (15x15) */
         .board-wrapper {
             width: 100%; max-width: 400px; aspect-ratio: 1;
-            background: #ffffff; border-radius: 8px;
-            box-shadow: var(--shadow); padding: 4px; border: 2px solid var(--board-line);
+            background: #ffffff; border-radius: 4px;
+            box-shadow: var(--shadow); padding: 2px; border: 2px solid var(--board-line);
             position: relative;
         }
         .board { 
@@ -104,7 +104,8 @@
         
         .base-inner {
             position: absolute; inset: 10%; background: #ffffff;
-            border-radius: 8px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15%;
+            border-radius: 0px; /* Removed rounding */
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15%;
             border: 2px solid var(--board-line);
         }
         
@@ -120,7 +121,7 @@
         .start-blue { background: var(--blue) !important; }
         .start-yellow { background: var(--yellow) !important; }
         
-        /* Center (NO TROPHY, NO ROUNDED OVERLAY) */
+        /* Center (STRICTLY 4 TRIANGLES - NO ROUNDING, NO TROPHY) */
         .center-home {
             grid-area: 7 / 7 / 10 / 10; position: relative;
             background: conic-gradient(from 45deg, var(--red) 0deg 90deg, var(--green) 90deg 180deg, var(--yellow) 180deg 270deg, var(--blue) 270deg 360deg);
@@ -141,14 +142,27 @@
         .pawn-p2 { background: var(--blue); }
         .pawn-base { top: 25%; left: 25%; width: 50%; height: 50%; box-shadow: none; opacity: 0.4; }
         
+        /* Selectable Pawn Animation */
+        .pawn-selectable {
+            animation: pulse-ring 1s infinite;
+            cursor: pointer;
+            box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.8);
+            z-index: 20;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
         /* ══════════ PLAYER INFO & 3D DICE ══════════ */
         .player-info-row { 
             display: flex; justify-content: space-between; align-items: flex-start; 
-            width: 100%; max-width: 400px; margin-top: 25px; padding: 0 10px;
+            width: 100%; max-width: 400px; margin-top: 15px; padding: 0 10px;
         }
-        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 8px; }
+        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 5px; }
         
-        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); }
+        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 5px; }
         .p1-text { color: var(--red); }
         .p2-text { color: var(--blue); }
 
@@ -163,7 +177,7 @@
         }
         
         .dice-face {
-            position: absolute; width: 60px; height: 60px; background: white; border-radius: 10px;
+            position: absolute; width: 60px; height: 60px; background: white; border-radius: 8px;
             border: 2px solid #e2e8f0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
             display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 6px;
         }
@@ -185,7 +199,31 @@
         .f5 { transform: rotateX(90deg) translateZ(30px); }
         .f2 { transform: rotateX(-90deg) translateZ(30px); }
 
+        /* ══════════ TRACKERS ══════════ */
+        .trackers-row {
+            display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-top: 15px; padding: 0 15px;
+        }
+        .tracker-box {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+            padding: 6px 12px; font-size: 0.85rem; font-weight: 600; display: flex; gap: 10px; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .tracker-box i { font-size: 1rem; }
+        .t-red i { color: var(--red); }
+        .t-blue i { color: var(--blue); }
+        .t-gold i { color: #fbbf24; }
+
         .status-text { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-align: center; margin-top: 15px; }
+        
+        /* ══════════ WIN OVERLAY ══════════ */
+        .win-overlay {
+            position: fixed; inset: 0; background: rgba(13,43,78,0.95); z-index: 1000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            color: white; text-align: center; padding: 20px;
+        }
+        .win-overlay.active { display: flex; }
+        .win-crown { font-size: 5rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
         
         /* ══════════ MODALS & DARK MODE ══════════ */
         .modal { position: fixed; inset: 0; background: rgba(13,43,78,0.85); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
@@ -253,9 +291,8 @@
             </div>
         </div>
 
-        <!-- Layout matching the image: Player 1 Left, Player 2 Right -->
+        <!-- Player Dice Area -->
         <div class="player-info-row">
-            <!-- Player 1 (Red) -->
             <div class="player-side">
                 <span class="p-name p1-text" id="ui-p1">Opponent</span>
                 <div class="dice-container disabled" id="dice-wrap-1" onclick="handleDiceClick(1)">
@@ -270,7 +307,6 @@
                 </div>
             </div>
             
-            <!-- Player 2 (Blue) -->
             <div class="player-side">
                 <span class="p-name p2-text" id="ui-p2">My Name</span>
                 <div class="dice-container" id="dice-wrap-2" onclick="handleDiceClick(2)">
@@ -285,8 +321,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Pawn Trackers -->
+        <div class="trackers-row">
+            <div class="tracker-box t-red">
+                <span><i class="fas fa-chess-pawn"></i> <span id="track-p1-play">0</span>/2</span>
+                <span class="t-gold"><i class="fas fa-crown"></i> <span id="track-p1-home">0</span>/2</span>
+            </div>
+            <div class="tracker-box t-blue">
+                <span><i class="fas fa-chess-pawn"></i> <span id="track-p2-play">0</span>/2</span>
+                <span class="t-gold"><i class="fas fa-crown"></i> <span id="track-p2-home">0</span>/2</span>
+            </div>
+        </div>
         
         <p class="status-text" id="turn-text">Waiting to start...</p>
+    </div>
+
+    <!-- Win Overlay -->
+    <div class="win-overlay" id="win-overlay">
+        <i class="fas fa-crown win-crown"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
+        <p style="color: #cbd5e1;">Returning to dashboard...</p>
     </div>
 
     <!-- Waiting Modal for Online -->
@@ -311,9 +366,8 @@
 
         /* --- GAME STATE --- */
         let mode = ''; let p1Name = currentUser.name; let p2Name = '';
-        let turn = 1; let isRolling = false; let hasRolled = false;
+        let turn = 1; let isRolling = false; let hasRolled = false; let isSelecting = false;
         
-        // Standard Ludo Loop (52 cells)
         const LOOP = [
             {r:6,c:1},{r:6,c:2},{r:6,c:3},{r:6,c:4},{r:6,c:5},
             {r:5,c:6},{r:4,c:6},{r:3,c:6},{r:2,c:6},{r:1,c:6},{r:0,c:6},
@@ -332,10 +386,9 @@
         const RED_HOME = [{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},{r:7,c:6},{r:7,c:7}];
         const BLUE_HOME = [{r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},{r:7,c:8},{r:7,c:7}];
 
-        const P1_PATH = [...LOOP, ...RED_HOME]; // Red
-        const P2_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...BLUE_HOME]; // Blue
+        const P1_PATH = [...LOOP, ...RED_HOME]; 
+        const P2_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...BLUE_HOME];
         const HOME_INDEX = 58;
-
         const SAFE_SPOTS = [0, 8, 13, 21, 26, 34, 39, 47];
 
         let p1Pawns = [-1, -1];
@@ -370,7 +423,6 @@
 
             statusTxt.innerHTML = 'Connecting to server...';
 
-            // Fallback to polling if websockets fail
             socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['websocket', 'polling'],
                 reconnection: true,
@@ -387,7 +439,6 @@
                 statusTxt.innerHTML = `<span style="color:red"><i class="fas fa-exclamation-triangle"></i> Connection failed.</span><br>
                 <span style="font-size:0.75rem; color:var(--text-secondary)">Make sure Enzonic is running.</span><br>
                 <button onclick="retryConnection()" class="btn btn-primary" style="margin-top:10px; width:auto; padding:6px 20px; font-size:0.8rem;">Reconnect</button>`;
-                console.error("Socket Error:", err.message);
             });
 
             socket.on('online-list', (players) => {
@@ -409,13 +460,7 @@
 
             socket.on('match-started', ({ room, p1, p2 }) => {
                 roomName = room; myOnlineId = (socket.id === p1.id) ? 1 : 2;
-                
-                if (myOnlineId === 1) {
-                    p1Name = p1.name; p2Name = p2.name; 
-                } else {
-                    p1Name = p1.name; p2Name = p2.name; 
-                }
-                
+                p1Name = p1.name; p2Name = p2.name;
                 mode = 'online';
                 document.getElementById('wait-modal').classList.remove('active');
                 initGame();
@@ -448,7 +493,7 @@
         /* --- GAME INIT & BOARD BUILD --- */
         function initGame() {
             p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
-            turn = 1; hasRolled = false; isRolling = false;
+            turn = 1; hasRolled = false; isRolling = false; isSelecting = false;
             
             document.getElementById('ui-p1').innerText = p1Name;
             document.getElementById('ui-p2').innerText = p2Name;
@@ -496,7 +541,7 @@
             renderBoard();
         }
 
-        /* --- RENDERING PAWNS --- */
+        /* --- RENDERING PAWNS & TRACKERS --- */
         function renderBoard() {
             document.querySelectorAll('.pawn').forEach(p => p.remove());
             document.getElementById('base-p1').innerHTML = '';
@@ -505,6 +550,7 @@
             const placePawn = (pathIndex, colorClass, pIdx) => {
                 const p = document.createElement('div');
                 p.className = `pawn ${colorClass}`;
+                p.id = `pawn-${colorClass.includes('p1') ? 'p1' : 'p2'}-${pIdx}`;
                 
                 if (pathIndex === -1) {
                     p.classList.add('pawn-base');
@@ -531,6 +577,17 @@
 
             p1Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p1', idx));
             p2Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p2', idx));
+
+            // Update Trackers
+            const p1Out = p1Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
+            const p1Home = p1Pawns.filter(p => p === HOME_INDEX).length;
+            const p2Out = p2Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
+            const p2Home = p2Pawns.filter(p => p === HOME_INDEX).length;
+
+            document.getElementById('track-p1-play').innerText = p1Out;
+            document.getElementById('track-p1-home').innerText = p1Home;
+            document.getElementById('track-p2-play').innerText = p2Out;
+            document.getElementById('track-p2-home').innerText = p2Home;
         }
 
         /* --- DICE & GAME LOGIC --- */
@@ -538,8 +595,7 @@
         let currentX2 = 0, currentY2 = 0;
 
         function handleDiceClick(player) {
-            // If AI's turn, player will be 2, but this is called internally so it's fine.
-            if (isRolling || hasRolled) return;
+            if (isRolling || hasRolled || isSelecting) return;
             
             if (mode === 'online') {
                 if (myOnlineId === 1 && player === 2) return;
@@ -598,7 +654,31 @@
             } else if (validMoves.length === 1) {
                 setTimeout(() => executeMove(validMoves[0], dice), 300);
             } else {
-                setTimeout(() => executeMove(validMoves[validMoves.length - 1], dice), 300);
+                // AI auto-picks furthest pawn
+                if (mode === 'ai' && turn === 2) {
+                    setTimeout(() => executeMove(validMoves[validMoves.length - 1], dice), 400);
+                    return;
+                }
+                
+                // Human player must choose
+                isSelecting = true;
+                document.getElementById('turn-text').innerText = "Select a glowing pawn to move!";
+                
+                validMoves.forEach(idx => {
+                    const p = document.getElementById(`pawn-${turn === 1 ? 'p1' : 'p2'}-${idx}`);
+                    if(p) {
+                        p.classList.add('pawn-selectable');
+                        p.onclick = () => {
+                            // Remove classes
+                            document.querySelectorAll('.pawn-selectable').forEach(el => {
+                                el.classList.remove('pawn-selectable');
+                                el.onclick = null;
+                            });
+                            isSelecting = false;
+                            executeMove(idx, dice);
+                        };
+                    }
+                });
             }
         }
 
@@ -628,10 +708,7 @@
             renderBoard();
 
             if (myPawns[0] === HOME_INDEX && myPawns[1] === HOME_INDEX) {
-                setTimeout(() => {
-                    alert(`🏆 ${turn === 1 ? p1Name : p2Name} WINS!`);
-                    window.location.href = 'index.html';
-                }, 500);
+                triggerWin(turn === 1 ? p1Name : p2Name);
                 return;
             }
 
@@ -652,10 +729,10 @@
         function nextTurn() {
             turn = turn === 1 ? 2 : 1;
             hasRolled = false;
+            isSelecting = false;
             updateTurnUI();
 
             if (mode === 'ai' && turn === 2) {
-                // AI automatically rolls its dice
                 setTimeout(() => handleDiceClick(2), 800);
             }
         }
@@ -670,7 +747,6 @@
             const wrap1 = document.getElementById('dice-wrap-1');
             const wrap2 = document.getElementById('dice-wrap-2');
 
-            // Enable/Disable dice boxes based on turn
             if (turn === 1) {
                 wrap1.classList.remove('disabled');
                 wrap2.classList.add('disabled');
@@ -679,7 +755,6 @@
                 wrap2.classList.remove('disabled');
             }
 
-            // In online mode, completely lock out the opponent's dice
             if (mode === 'online') {
                 if (myOnlineId === 1 && turn === 2) {
                     wrap1.classList.add('disabled');
@@ -689,6 +764,15 @@
                     wrap2.classList.add('disabled');
                 }
             }
+        }
+
+        function triggerWin(winnerName) {
+            document.getElementById('win-text').innerText = `${winnerName} Won the Match!`;
+            document.getElementById('win-overlay').classList.add('active');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3500);
         }
     </script>
 </body>
