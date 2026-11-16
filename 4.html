@@ -742,8 +742,8 @@
 
         // AI Reminder Custom Overrides (Date specific)
         const CUSTOM_AI_OVERRIDES = {
-            '2026-11-18': { title: 'ECO CT Exam', label: 'EXAM', detail: 'ECO CT Exam · Room 4905' },
             '2026-11-22': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
+            '2026-11-25': { title: 'ECO CT Exam (Tentative)', label: 'EXAM', detail: 'ECO CT Exam · Room 4905' },
             '2026-11-29': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
             '2026-12-06': { title: 'Mathematics Class (No MGT)', label: 'CLASS', detail: 'QUA 1101 · Room 4905' },
             '2026-12-09': { title: 'ECO Class (No MGT)', label: 'CLASS', detail: 'ECO 1101 · Room 4905' }
@@ -778,16 +778,6 @@
                 color: '#991b1b',
                 items: ['Supplementary Mid-Term Examination'],
                 note: 'Check schedule with faculty.'
-            },
-            { 
-                title: 'ECO CT Exam', 
-                day: '18', month: 'Nov', 
-                startDate: '2026-11-18T00:00:00+06:00',
-                tags: ['Exam', 'Wednesday'],
-                expiresAt: '2026-11-18T09:45:00+06:00',
-                color: '#991b1b',
-                items: ['ECO 1101 CT Exam', 'During class time (8:15 AM - 9:45 AM)', 'Syllabus: Chapter 4, Chapter 5'],
-                note: 'Contact faculty for syllabus.'
             },
             { 
                 title: 'MGT Presentation (Groups 1-4)', 
@@ -840,6 +830,34 @@
                 note: 'No MGT class on Dec 6 and Dec 9.'
             },
             { 
+                title: 'ECO CT Exam', 
+                day: '25', month: 'Nov', 
+                startDate: '2026-11-25T00:00:00+06:00',
+                tags: ['Exam', 'Wednesday'],
+                expiresAt: '2026-11-25T16:15:00+06:00',
+                color: '#991b1b',
+                items: [
+                    'Syllabus: Chapter 4, Chapter 5',
+                    '(Happening of exam isnt 100% guaranteed)',
+                    '(but With agreement of 4,5th chap but question ektu hard hobe)',
+                    'Also 25th nov or presentation or assignment dite pare ba je kono kicu hote pare it dependa so No guarantee of anything)'
+                ],
+                note: 'Contact faculty for confirmation.'
+            },
+            { 
+                title: 'Math CT', 
+                day: '30', month: 'Nov', 
+                startDate: '2026-11-30T00:00:00+06:00',
+                tags: ['CT', 'Monday'],
+                expiresAt: '2026-11-30T23:59:59+06:00',
+                color: '#991b1b',
+                items: [
+                    '1. Coordinate Geometry (1-8) Type Math',
+                    '2. Arithmetic Progression (1-10) Type Math'
+                ],
+                note: 'Check with faculty.'
+            },
+            { 
                 title: 'New Semester Pre-Registration Spring 2027', 
                 startDay: '22', startMonth: 'Nov', endDay: '29', endMonth: 'Nov', 
                 startDate: '2026-11-22T00:00:00+06:00',
@@ -859,13 +877,13 @@
                 note: 'Pay before the deadline to avoid late fees.'
             },
             { 
-                title: 'ECO Assignment', 
+                title: 'ECO Assignment (Ch. 4,5,6)', 
                 day: '?', month: '', 
                 startDate: '2026-11-15T00:00:00+06:00',
                 tags: ['Assignment', 'TBA'],
                 expiresAt: '2026-12-11T00:00:00+06:00',
                 color: '#166534',
-                items: ['Assignment is always on Review Questions ALL of them that are provided and will be provided after mid and before final.'],
+                items: ['Review Questions of Ch. 4, 5, 6', '(Ch. 7 is removed)'],
                 note: 'Deadline unknown. Check with faculty.'
             },
             { 
