@@ -13,7 +13,7 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <style>
-        /* 🛑 YOUR NEW UI CSS 🛑 */
+        /* ====== YOUR CUSTOM BOARD CSS ====== */
         :root{
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff; 
@@ -71,7 +71,7 @@
         .online-item:last-child { border-bottom: none; }
         .btn-sm { padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; width: auto; margin: 0; }
 
-        /* 🎮 GAME BOARD CSS 🎮 */
+        /* GAME BOARD */
         #game-screen { justify-content: flex-start; padding-top: 10px; }
         .board-wrapper{width:100%;max-width:400px;aspect-ratio:1;background:#fff;
           border:2px solid var(--line);border-radius:0;padding:0;position:relative; box-shadow: var(--shadow);}
@@ -231,7 +231,7 @@
 
     <div id="game-screen" class="screen">
         
-        <!-- YOUR NEW BOARD HTML -->
+        <!-- BOARD HTML -->
         <div class="board-wrapper">
             <div class="board" id="board">
               <div class="base-blue"><div class="base-inner" id="base-p2">
@@ -373,8 +373,8 @@
 
             statusTxt.innerHTML = 'Connecting...';
 
-            // Your new Enzonic Subdomain
-            socket = io('https://66notes-game.enzonic.dev', {
+            // USING THE DIRECT URL WITH PORT TO FIX SSL ISSUES
+            socket = io('https://fr-one.enzonic.com:26496', {
                 transports: ['websocket', 'polling'], 
                 secure: true,
                 reconnection: true,
@@ -470,15 +470,12 @@
                     cell.id = `cell-${r}-${c}`;
                     cell.style.gridArea = `${r+1} / ${c+1}`;
 
-                    // Blue Starts at {6,1} and enters home at {7,1-6}
                     if (r === 6 && c === 1) cell.classList.add('start-blue');
                     if (r === 7 && c > 0 && c < 7) cell.classList.add('home-path-blue');
                     
-                    // Red Starts at {8,13} and enters home at {7,9-14}
                     if (r === 8 && c === 13) cell.classList.add('start-red');
                     if (r === 7 && c > 7 && c < 14) cell.classList.add('home-path-red');
                     
-                    // Safe Spots
                     if ((r === 8 && c === 2) || (r === 6 && c === 12) || (r === 13 && c === 6) || (r === 1 && c === 8)) {
                         cell.classList.add('safe');
                     }
@@ -507,14 +504,12 @@
                     p.classList.add('pawn-base');
                     const baseId = colorClass.includes('p1') ? 'base-p1' : 'base-p2';
                     const baseInner = document.getElementById(baseId);
-                    const slots = baseInner.querySelectorAll('.slot');
                     
                     // Append pawn over the slot
                     p.style.position = 'absolute';
                     p.style.width = '60%';
                     p.style.height = '60%';
                     
-                    // Simple offset based on index
                     if (pIdx === 0) { p.style.top = '15%'; p.style.left = '15%'; }
                     if (pIdx === 1) { p.style.bottom = '15%'; p.style.right = '15%'; }
                     
