@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Chess · 66Games</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        :root{
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
+            --accent: #123cf3; --accent-light: #eef2ff; 
+            --light-square: #ebecd0; --dark-square: #739552;
+            --highlight: rgba(255, 255, 0, 0.5);
+            --valid-move: rgba(0, 255, 0, 0.4);
+            --shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); 
+            min-height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; 
+            user-select: none; -webkit-user-select: none;
+            display: flex; flex-direction: column;
+        }
+        
+        /* TOP BAR */
+        .top-bar { 
+            height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border);
+            z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .logo-small { font-size: 1.15rem; font-weight: 700; color: var(--navy); text-decoration: none; }
+        .logo-small span { color: var(--accent); }
+        .brand-badge { 
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; 
+            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; 
+        }
+        
+        /* SCREENS */
+        .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .screen.active { display: flex; }
+        .title { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 20px; }
+        
+        .btn { 
+            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: none; 
+            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; display: flex; align-items: center; 
+            justify-content: center; gap: 10px; margin-bottom: 12px; 
+        }
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(18,60,243,0.3); }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-outline { background: var(--surface); border: 2px solid var(--accent); color: var(--accent); }
+        .input-roll { 
+            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border); 
+            font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 10px; 
+            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text); 
+        }
+
+        /* GAME SCREEN */
+        #game-screen { display: none; flex-direction: column; justify-content: flex-start; padding: 10px; position: relative; height: 100vh; overflow: hidden; }
+        #game-screen.active { display: flex; }
+
+        /* TURN BANNER */
+        .turn-banner {
+            position: absolute; top: -80px; left: 0; right: 0; 
+            background: linear-gradient(90deg, #8b5cf6, #6d28d9); color: white;
+            padding: 12px; font-weight: 800; font-size: 1.1rem; text-align: center;
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 50;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+        }
+        .turn-banner.show { top: 0; }
+
+        /* PLAYER INFO */
+        .player-info-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            width: 100%; max-width: 400px; margin: 10px auto; padding: 0 10px;
+            transition: flex-direction 0.3s ease; z-index: 10;
+        }
+        .player-info-row.swapped { flex-direction: row-reverse; }
+        
+        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 2px; }
+        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); }
+        .p1-text { color: #1e293b; }
+        .p2-text { color: #64748b; }
+
+        /* BOARD */
+        .board-container {
+            width: 100%; max-width: 400px; aspect-ratio: 1;
+            margin: 0 auto; position: relative; border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 4px solid #475569;
+            overflow: hidden;
+        }
+        .board { 
+            width: 100%; height: 100%; display: grid; 
+            grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
+        }
+        
+        .cell { 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 2.5rem; cursor: pointer; position: relative;
+        }
+        .cell.light { background: var(--light-square); }
+        .cell.dark { background: var(--dark-square); }
+        
+        .cell.selected { background: var(--highlight) !important; }
+        .cell.valid-move::after {
+            content: ''; position: absolute; width: 25%; height: 25%;
+            background: var(--valid-move); border-radius: 50%;
+        }
+        .cell.valid-capture::after {
+            content: ''; position: absolute; width: 80%; height: 80%;
+            border: 4px solid var(--valid-move); border-radius: 50%;
+        }
+
+        .piece { position: relative; z-index: 2; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .piece-w { color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .piece-b { color: #1e293b; text-shadow: 0 1px 3px rgba(255,255,255,0.4); }
+
+        /* CONTROLS */
+        .controls { display: flex; justify-content: center; margin-top: auto; padding-bottom: 10px; }
+        .btn-icon { 
+            padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border); background: var(--surface); color: var(--text);
+            font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-icon:active { transform: scale(0.95); }
+
+        /* WIN OVERLAY */
+        .win-overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; color: white; text-align: center; padding: 20px; }
+        .win-overlay.active { display: flex; }
+        .win-crown { font-size: 6rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html" class="logo-small">66<span>Notes</span></a>
+        <div class="brand-badge">Chess</div>
+        <div style="width: 32px;"></div>
+    </div>
+
+    <div id="setup-screen" class="screen active">
+        <h1 class="title" style="color: #6d28d9;">Select Chess Mode</h1>
+        <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
+        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
+        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
+    </div>
+
+    <div id="split-screen" class="screen">
+        <h1 class="title">Split-Screen Setup</h1>
+        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter Player 2's Roll Number</p>
+        <input type="number" id="p2-roll" class="input-roll" placeholder="e.g. 015" />
+        <button class="btn btn-primary" onclick="startSplit()">Start Game</button>
+        <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
+    </div>
+
+    <div id="game-screen" class="screen">
+        
+        <div class="turn-banner" id="turn-banner">Player's Turn!</div>
+
+        <div class="player-info-row" id="player-ui-row">
+            <div class="player-side">
+                <span class="p-name p1-text" id="ui-p1">Opponent</span>
+            </div>
+            <div class="player-side">
+                <span class="p-name p2-text" id="ui-p2">My Name</span>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <div class="board" id="board"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-icon" onclick="toggleSides()">
+                <i class="fas fa-arrow-right-arrow-left"></i> Switch Sides
+            </button>
+        </div>
+
+    </div>
+
+    <div class="win-overlay" id="win-overlay">
+        <i class="fas fa-crown win-crown"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
+        <p style="color: #cbd5e1;">Returning to dashboard...</p>
+    </div>
+
+    <script>
+        const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
+        
+        const currentUser = JSON.parse(localStorage.getItem('66games_user'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let mode = ''; let p1Name = currentUser.name; let p2Name = '';
+        let sidesSwapped = false;
+
+        // Chess Game State
+        let board = [];
+        let selectedSquare = null; // {r, c}
+        let validMoves = [];
+        let turn = 'w'; // 'w' = White, 'b' = Black
+        let isGameOver = false;
+
+        const pieces = {
+            'w': { 'k': '♔', 'q': '♕', 'r': '♖', 'b': '♗', 'n': '♘', 'p': '♙' },
+            'b': { 'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟' }
+        };
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function startMode(m) {
+            mode = m; p2Name = (m === 'ai') ? 'Computer' : p2Name; initGame();
+        }
+
+        function startSplit() {
+            const roll = document.getElementById('p2-roll').value.padStart(3, '0');
+            let name = STUDENTS[roll];
+            if (roll === '138') name = 'Aion/Maria'; 
+            if (!name) return alert('Roll not found!');
+            p2Name = name; mode = 'split'; initGame();
+        }
+
+        function toggleSides() {
+            sidesSwapped = !sidesSwapped;
+            const uiRow = document.getElementById('player-ui-row');
+            if (sidesSwapped) uiRow.classList.add('swapped');
+            else uiRow.classList.remove('swapped');
+        }
+
+        function initGame() {
+            document.getElementById('ui-p1').innerText = p1Name;
+            document.getElementById('ui-p2').innerText = p2Name;
+            document.getElementById('player-ui-row').classList.remove('swapped');
+            
+            setupBoard();
+            showScreen('game-screen');
+            turn = 'w';
+            renderBoard();
+            updateTurnUI();
+        }
+
+        function setupBoard() {
+            board = Array(8).fill(null).map(() => Array(8).fill(null));
+            
+            const backRank = ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'];
+            
+            // Black (Top)
+            for (let c = 0; c < 8; c++) {
+                board[0][c] = { type: backRank[c], color: 'b' };
+                board[1][c] = { type: 'p', color: 'b' };
+            }
+            
+            // White (Bottom)
+            for (let c = 0; c < 8; c++) {
+                board[6][c] = { type: 'p', color: 'w' };
+                board[7][c] = { type: backRank[c], color: 'w' };
+            }
+        }
+
+        function renderBoard() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const cell = document.createElement('div');
+                    const isLight = (r + c) % 2 === 0;
+                    cell.className = `cell ${isLight ? 'light' : 'dark'}`;
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+
+                    // Highlight selected
+                    if (selectedSquare && selectedSquare.r === r && selectedSquare.c === c) {
+                        cell.classList.add('selected');
+                    }
+
+                    // Highlight valid moves
+                    const isValidMove = validMoves.find(m => m.r === r && m.c === c);
+                    if (isValidMove) {
+                        if (board[r][c]) cell.classList.add('valid-capture');
+                        else cell.classList.add('valid-move');
+                    }
+
+                    const piece = board[r][c];
+                    if (piece) {
+                        const pieceEl = document.createElement('span');
+                        pieceEl.className = `piece piece-${piece.color}`;
+                        pieceEl.innerText = pieces[piece.color][piece.type];
+                        cell.appendChild(pieceEl);
+                    }
+
+                    cell.onclick = () => handleCellClick(r, c);
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        function handleCellClick(r, c) {
+            if (isGameOver) return;
+            if (mode === 'ai' && turn === 'b') return; // AI's turn
+
+            const clickedPiece = board[r][c];
+
+            // If clicking a valid move
+            if (selectedSquare && validMoves.some(m => m.r === r && m.c === c)) {
+                executeMove(selectedSquare.r, selectedSquare.c, r, c);
+                return;
+            }
+
+            // If clicking own piece
+            if (clickedPiece && clickedPiece.color === turn) {
+                selectedSquare = { r, c };
+                validMoves = getValidMoves(r, c, turn);
+            } else {
+                // Deselect
+                selectedSquare = null;
+                validMoves = [];
+            }
+            
+            renderBoard();
+        }
+
+        function executeMove(fromR, fromC, toR, toC) {
+            const piece = board[fromR][fromC];
+            const target = board[toR][toC];
+
+            // Move piece
+            board[toR][toC] = piece;
+            board[fromR][fromC] = null;
+
+            // Pawn Promotion (Auto to Queen)
+            if (piece.type === 'p' && (toR === 0 || toR === 7)) {
+                board[toR][toC] = { type: 'q', color: piece.color };
+            }
+
+            selectedSquare = null;
+            validMoves = [];
+            renderBoard();
+
+            // Check Win
+            if (target && target.type === 'k') {
+                triggerWin(piece.color === 'w' ? p2Name : p1Name);
+                return;
+            }
+
+            turn = turn === 'w' ? 'b' : 'w';
+            updateTurnUI();
+
+            if (mode === 'ai' && turn === 'b') {
+                setTimeout(aiMove, 500);
+            }
+        }
+
+        function getValidMoves(r, c, color) {
+            const piece = board[r][c];
+            if (!piece) return [];
+            let moves = [];
+
+            const addMove = (row, col) => {
+                if (row < 0 || row > 7 || col < 0 || col > 7) return false;
+                const target = board[row][col];
+                if (target && target.color === color) return false;
+                moves.push({ r: row, c: col });
+                return !target; // Can continue if empty
+            };
+
+            if (piece.type === 'p') {
+                const dir = color === 'w' ? -1 : 1;
+                // Forward 1
+                if (r + dir >= 0 && r + dir <= 7 && !board[r + dir][c]) {
+                    moves.push({ r: r + dir, c: c });
+                    // Forward 2 (initial)
+                    if ((color === 'w' && r === 6) || (color === 'b' && r === 1)) {
+                        if (!board[r + dir * 2][c]) moves.push({ r: r + dir * 2, c: c });
+                    }
+                }
+                // Captures
+                for (let dc of [-1, 1]) {
+                    if (c + dc >= 0 && c + dc <= 7 && r + dir >= 0 && r + dir <= 7) {
+                        const target = board[r + dir][c + dc];
+                        if (target && target.color !== color) {
+                            moves.push({ r: r + dir, c: c + dc });
+                        }
+                    }
+                }
+            } else if (piece.type === 'n') {
+                const jumps = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+                jumps.forEach(([dr, dc]) => {
+                    if (r+dr >= 0 && r+dr <= 7 && c+dc >= 0 && c+dc <= 7) {
+                        const target = board[r+dr][c+dc];
+                        if (!target || target.color !== color) moves.push({ r: r+dr, c: c+dc });
+                    }
+                });
+            } else if (piece.type === 'k') {
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        if (dr !== 0 || dc !== 0) addMove(r+dr, c+dc);
+                    }
+                }
+            } else {
+                // Sliding pieces: Rook, Bishop, Queen
+                const directions = [];
+                if (piece.type === 'r' || piece.type === 'q') directions.push([-1,0],[1,0],[0,-1],[0,1]);
+                if (piece.type === 'b' || piece.type === 'q') directions.push([-1,-1],[-1,1],[1,-1],[1,1]);
+                
+                directions.forEach(([dr, dc]) => {
+                    let nr = r + dr, nc = c + dc;
+                    while (addMove(nr, nc)) {
+                        nr += dr; nc += dc;
+                    }
+                });
+            }
+
+            return moves;
+        }
+
+        function aiMove() {
+            if (isGameOver) return;
+            
+            let allMoves = [];
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (board[r][c] && board[r][c].color === 'b') {
+                        const moves = getValidMoves(r, c, 'b');
+                        moves.forEach(m => {
+                            allMoves.push({ fromR: r, fromC: c, toR: m.r, toC: m.c, target: board[m.r][m.c] });
+                        });
+                    }
+                }
+            }
+
+            if (allMoves.length === 0) return; // No moves left
+
+            // Prioritize captures
+            let bestMoves = allMoves.filter(m => m.target !== null);
+            let chosen;
+            if (bestMoves.length > 0) {
+                chosen = bestMoves[Math.floor(Math.random() * bestMoves.length)];
+            } else {
+                chosen = allMoves[Math.floor(Math.random() * allMoves.length)];
+            }
+
+            executeMove(chosen.fromR, chosen.fromC, chosen.toR, chosen.toC);
+        }
+
+        function updateTurnUI() {
+            const name = turn === 'w' ? p2Name : p1Name;
+            const banner = document.getElementById('turn-banner');
+            banner.innerHTML = `♟️ ${name}'s Turn`;
+            banner.classList.add('show');
+            setTimeout(() => banner.classList.remove('show'), 2000);
+        }
+
+        function triggerWin(winnerName) {
+            isGameOver = true;
+            document.getElementById('win-text').innerText = `${winnerName} Wins!`;
+            document.getElementById('win-overlay').classList.add('active');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
