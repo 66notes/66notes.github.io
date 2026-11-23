@@ -136,6 +136,15 @@
         .event-detail-btn { flex-shrink: 0; padding: 4px 12px; border-radius: 20px; background: #eff6ff; border: 1px solid #dbeafe; color: var(--accent); font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease, transform 0.1s ease; font-family: 'Poppins', sans-serif; white-space: nowrap; }
         .event-detail-btn:active { background: #dbeafe; transform: scale(0.96); }
         
+        .event-block { position: relative; }
+        .ev-badge { position: absolute; top: 6px; right: 8px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 6px; border-radius: 20px; font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.4; z-index: 1; }
+        .ev-badge i { width: 7px; height: 7px; border-radius: 50%; display: block; }
+        .ev-badge.running { background: #dcfce7; color: #166534; }
+        .ev-badge.running i { background: #22c55e; animation: pulse-green 1.8s infinite; }
+        .ev-badge.next { background: var(--accent-light); color: var(--accent); }
+        .ev-badge.next i { background: var(--accent); }
+        .event-block.has-status { padding-top: 24px; }
+        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
         .event-meta { font-size: 0.62rem; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
         .event-items { display: flex; flex-direction: column; gap: 2px; font-size: 0.68rem; color: #374151; padding-left: 2px; line-height: 1.4; }
         .event-note { font-size: 0.62rem; font-weight: 500; color: #7c2d12; background: #fef3c7; padding: 6px 10px; border-radius: 6px; display: inline-block; margin-top: 6px; }
@@ -363,7 +372,9 @@
         :root[data-theme="dark"] .event-tag.time { background: #1e3a8a; color: #bfdbfe; }
         :root[data-theme="dark"] .event-tag.day { background: #4c1d95; color: #ddd6fe; }
         :root[data-theme="dark"] .event-tag.holiday { background: #7f1d1d; color: #fecaca; }
-        :root[data-theme="dark"] .event-tag.range { background: #78350f; color: #fde68a; }
+        :root[data-theme="dark"] .ev-badge.running { background: #14532d; color: #bbf7d0; }
+        :root[data-theme="dark"] .ev-badge.next { background: #1e2638; color: #93c5fd; }
+                :root[data-theme="dark"] .event-tag.range { background: #78350f; color: #fde68a; }
         :root[data-theme="dark"] .event-detail-btn { background: #1e2638; border-color: #313b4c; color: #93c5fd; }
         :root[data-theme="dark"] .event-detail-btn:active { background: #2a3446; }
         :root[data-theme="dark"] .event-meta { color: #8b98a5; }
@@ -588,9 +599,9 @@
                         <span class="small-card-icon"><i class="fas fa-wifi"></i></span>
                         <span class="small-card-title">WiFi Pass</span>
                     </a>
-                    <a href="https://www.facebook.com/people/66Notes/61594792364808/" target="_blank" class="small-card" rel="noopener">
-                        <span class="small-card-icon"><i class="fab fa-facebook-f"></i></span>
-                        <span class="small-card-title">66notes FB</span>
+                    <a href="https://66notes.github.io/66games" target="_blank" class="small-card" rel="noopener">
+                        <span class="small-card-icon"><i class="fas fa-gamepad"></i></span>
+                        <span class="small-card-title">66 Games</span>
                     </a>
                 </div>
             </div>
@@ -809,7 +820,7 @@
                 note: 'Make up for missed classes.'
             },
             { 
-                title: 'MGT Assignment (Slide Print)', 
+                title: 'MGT Assignment (Slide Print)', runFrom: '2026-11-29T00:00:00+06:00', 
                 day: '22', month: 'Nov', 
                 dynamicDay: { after: '2026-11-23T00:00:00+06:00', newDay: '29', newMonth: 'Nov' },
                 startDate: '2026-11-22T00:00:00+06:00',
@@ -839,8 +850,7 @@
                 items: [
                     'Syllabus: Chapter 4, Chapter 5',
                     '(Happening of exam isnt 100% guaranteed)',
-                    '(but With agreement of 4,5th chap but question ektu hard hobe)',
-                    'Also 25th nov or presentation or assignment dite pare ba je kono kicu hote pare it dependa so No guarantee of anything)'
+                    '(but With agreement of 4,5th chap but question ektu hard hobe)'
                 ],
                 note: 'Contact faculty for confirmation.'
             },
@@ -858,52 +868,53 @@
                 note: 'Check with faculty.'
             },
             { 
-                title: 'New Semester Pre-Registration Spring 2027', 
-                startDay: '22', startMonth: 'Nov', endDay: '29', endMonth: 'Nov', 
-                startDate: '2026-11-22T00:00:00+06:00',
-                tags: ['Notice', '22-29 Nov'],
-                expiresAt: '2026-11-29T23:59:59+06:00',
+                title: 'New Semester Pre-Registration Spring 2027', process: true, 
+                startDay: '25', startMonth: 'Nov', endDay: '02', endMonth: 'Dec', 
+                startDate: '2026-11-25T10:00:00+06:00',
+                tags: ['Notice', '10:00 AM', '25 Nov - 2 Dec'],
+                expiresAt: '2026-12-02T23:59:59+06:00',
                 color: '#991b1b',
-                items: ['Pre-Registration for Spring 2027'],
+                items: ['Pre-Registration for Spring 2027', 'Starts at 10:00 AM on 25 Nov', 'Deadline: 2 Dec'],
                 note: 'Complete your pre-registration.'
             },
+                        { 
+                title: 'ECO Presentation + Assignment', 
+                day: '02', month: 'Dec', 
+                startDate: '2026-12-02T00:00:00+06:00',
+                tags: ['Group 1', 'Wednesday'],
+                expiresAt: '2026-12-02T23:59:59+06:00',
+                color: '#166534',
+                items: ['Group 1 presentation', 'Presentation topics: Chapter 4, 5 and 6', 'Bring both assignments: the Mid assignment and the Final assignment'],
+                note: 'Both assignments are due on the presentation day.'
+            },
+            { 
+                title: 'ECO Presentation + Assignment', 
+                day: '07', month: 'Dec', 
+                startDate: '2026-12-07T00:00:00+06:00',
+                tags: ['Group 2', 'Monday'],
+                expiresAt: '2026-12-07T23:59:59+06:00',
+                color: '#166534',
+                items: ['Group 2 presentation', 'Presentation topics: Chapter 4, 5 and 6', 'Bring both assignments: the Mid assignment and the Final assignment'],
+                note: 'Both assignments are due on the presentation day.'
+            },
+            { 
+                title: 'Math Assignment', 
+                day: '06', month: 'Dec', 
+                startDate: '2026-12-06T00:00:00+06:00',
+                tags: ['Assignment', 'Sunday'],
+                expiresAt: '2026-12-06T23:59:59+06:00',
+                color: '#166534',
+                items: ['Coordinate Geometry Problem (9-14)'],
+                note: 'Due on 6 Dec.'
+            },
             { 
                 title: 'Payment of tuition fees', 
-                startDay: '25', startMonth: 'Nov', endDay: '10', endMonth: 'Dec', 
-                startDate: '2026-11-25T00:00:00+06:00',
-                tags: ['Fees', '25 Nov - 10 Dec'],
-                expiresAt: '2026-12-10T23:59:59+06:00',
-                items: ['Final Installment (without late fee)'],
-                note: 'Pay before the deadline to avoid late fees.'
-            },
-            { 
-                title: 'ECO Assignment (Ch. 4,5,6)', 
-                day: '?', month: '', 
-                startDate: '2026-11-15T00:00:00+06:00',
-                tags: ['Assignment', 'TBA'],
-                expiresAt: '2026-12-11T00:00:00+06:00',
-                color: '#166534',
-                items: ['Review Questions of Ch. 4, 5, 6', '(Ch. 7 is removed)'],
-                note: 'Deadline unknown. Check with faculty.'
-            },
-            { 
-                title: 'ECO Presentation', 
-                day: '?', month: '', 
-                startDate: '2026-11-15T00:00:00+06:00',
-                tags: ['Presentation', 'TBA'],
-                expiresAt: '2026-12-11T00:00:00+06:00',
-                color: '#166534',
-                items: ['Deadline unknown.'],
-                note: 'Check with faculty.'
-            },
-            { 
-                title: 'Payment of tuition fees', 
-                startDay: '11', startMonth: 'Dec', endDay: '15', endMonth: 'Dec', 
-                startDate: '2026-12-11T00:00:00+06:00',
-                tags: ['Fees', '11-15 Dec'],
+                day: '15', month: 'Dec', 
+                startDate: '2026-12-15T00:00:00+06:00',
+                tags: ['Deadline', 'Tuesday'],
                 expiresAt: '2026-12-15T23:59:59+06:00',
-                items: ['Final Installment (with late fee Tk. 1,000) / [Make your 0 balance]'],
-                note: 'Late fee applied.'
+                items: ['Final Installment deadline: 15 Dec', '[Make your 0 balance]'],
+                note: 'Pay before 16 Dec (Victory Day holiday).'
             },
             { 
                 title: 'Last day of classes before Final Examination', 
@@ -965,6 +976,13 @@
                 return `${ev.startDay}–${ev.endDay} ${ev.startMonth}`;
             }
             return `${ev.day} ${ev.month}`;
+        }
+
+        const isUnknown = ev => ev.day === '?';
+        const runStart = ev => Date.parse(ev.runFrom || ev.startDate);
+        function isRunning(ev, now = Date.now()) {
+            if (isUnknown(ev) || !ev.startDate) return false;
+            return now >= runStart(ev) && (!ev.expiresAt || now <= Date.parse(ev.expiresAt));
         }
 
         function rotate(els, ms) {
@@ -1349,7 +1367,7 @@
             openModal();
         }
 
-        function buildBlock(ev) {
+        function buildBlock(ev, status) {
             const block = document.createElement('div');
             block.className = 'event-block';
             
@@ -1367,7 +1385,7 @@
                 displayMonth = isStarted ? ev.endMonth : ev.startMonth;
             }
             
-            const tagsHtml = ev.tags 
+            const tagsHtml = (ev.tags && ev.tags.length)
                 ? `<div class="event-tags">${ev.tags.map((t, i) => `<span class="event-tag ${i === 0 ? 'time' : 'day'}">${t}</span>`).join('')}</div>`
                 : '';
 
@@ -1390,6 +1408,10 @@
                     <button class="event-detail-btn" type="button">See Detail</button>
                 </div>`;
                 
+            if (status) {
+                block.classList.add('has-status');
+                block.insertAdjacentHTML('afterbegin', `<span class="ev-badge ${status}"><i></i>${status === 'running' ? 'Running' : 'Next'}</span>`);
+            }
             block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
             return block;
         }
@@ -1397,16 +1419,20 @@
         let shownKey = null;
         function renderEvents() {
             const now = Date.now();
-            // Sort events chronologically by startDate (or expiresAt if no startDate)
+            // Order: running now -> unknown date -> everything else (chronological)
+            const rank = ev => isRunning(ev, now) ? 0 : (isUnknown(ev) ? 1 : 2);
+            const ts = ev => ev.startDate ? runStart(ev) : (ev.expiresAt ? Date.parse(ev.expiresAt) : 0);
             const visible = EVENTS
                 .filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt))
-                .sort((a, b) => {
-                    const tsA = a.startDate ? Date.parse(a.startDate) : (a.expiresAt ? Date.parse(a.expiresAt) : 0);
-                    const tsB = b.startDate ? Date.parse(b.startDate) : (b.expiresAt ? Date.parse(b.expiresAt) : 0);
-                    return tsA - tsB;
-                });
-                
-            const key = visible.map(ev => ev.title).join('|');
+                .sort((a, b) => rank(a) - rank(b) || ts(a) - ts(b));
+
+            // "Next": up to 3 non-running, dated, non-process events starting within the coming 7 days
+            const nextSet = new Set(visible
+                .filter(ev => !isUnknown(ev) && !ev.process && !isRunning(ev, now) && runStart(ev) > now && runStart(ev) <= now + 7 * 86400000)
+                .slice(0, 3));
+            const statusOf = ev => isRunning(ev, now) ? 'running' : (nextSet.has(ev) ? 'next' : null);
+
+            const key = visible.map(ev => ev.title + '@' + getEventDateString(ev) + '#' + statusOf(ev)).join('|');
             if (key === shownKey) return;
             shownKey = key;
             const list = $('eventsList');
@@ -1416,7 +1442,7 @@
                 return;
             }
             const frag = document.createDocumentFragment();
-            visible.forEach(ev => frag.appendChild(buildBlock(ev)));
+            visible.forEach(ev => frag.appendChild(buildBlock(ev, statusOf(ev))));
             list.appendChild(frag);
         }
 
