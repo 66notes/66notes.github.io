@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#ffffff" />
     <title>66Games · Play</title>
-    <meta name="description" content="66Games dashboard — Ludo, Chess, Snake Ludo, Carrom, UNO & Mini Games. Log in with your roll to play." />
-    <link rel="canonical" href="https://66notes.github.io/games/" />
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -186,7 +184,7 @@
         /* ══════════ MODALS (No Blur) ══════════ */
         .modal-overlay {
             position: fixed; inset: 0;
-            background: rgba(13, 43, 78, 0.75); /* Solid dark overlay, no blur */
+            background: rgba(13, 43, 78, 0.85);
             z-index: 1000;
             display: none; align-items: center; justify-content: center;
             padding: 1rem;
@@ -216,39 +214,43 @@
         .ttt-x { color: var(--accent); }
         .ttt-o { color: #ef4444; }
         
-        /* Bottle Flip */
-        .bottle-stage {
-            height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-            position: relative; overflow: hidden; margin-bottom: 1rem; background: var(--bg); border-radius: 12px;
+        /* ══════════ SPIN THE BOTTLE ══════════ */
+        .spin-stage {
+            width: 200px; height: 200px; border-radius: 50%;
+            background: var(--bg); border: 4px dashed var(--border-strong);
+            margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;
+            position: relative;
         }
-        .bottle {
-            width: 30px; height: 80px; background: #3b82f6; border-radius: 5px 5px 10px 10px;
-            position: relative; transition: transform 1s ease-in-out;
+        .spin-bottle-container {
+            width: 40px; height: 120px; position: relative;
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 1);
+            transform-origin: center center;
         }
-        .bottle::before {
-            content: ''; position: absolute; top: -15px; left: 9px; width: 12px; height: 15px;
-            background: #3b82f6; border-radius: 2px;
+        .bottle-body {
+            position: absolute; bottom: 0; width: 40px; height: 80px;
+            background: #22c55e; border-radius: 10px; border: 2px solid #166534;
+            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px;
         }
-        .bottle.cap { background: #1e293b; }
-        .bottle.cap::before { background: #1e293b; }
-        
-        .bottle-anim { animation: flip 1s ease-in-out forwards; }
-        @keyframes flip {
-            0% { transform: rotate(0deg) translateY(0); }
-            50% { transform: rotate(180deg) translateY(-100px); }
-            100% { transform: rotate(360deg) translateY(0); }
+        .bottle-neck {
+            position: absolute; top: 20px; left: 12px; width: 16px; height: 25px;
+            background: #22c55e; border: 2px solid #166534; border-bottom: none;
         }
-        .bottle-fail { animation: flipFail 1s ease-in-out forwards; }
-        @keyframes flipFail {
-            0% { transform: rotate(0deg) translateY(0); }
-            50% { transform: rotate(180deg) translateY(-100px); }
-            100% { transform: rotate(90deg) translateY(50px); }
+        .bottle-cap {
+            position: absolute; top: 0; left: 10px; width: 20px; height: 20px;
+            background: #ef4444; border-radius: 4px; border: 2px solid #b91c1c;
+        }
+        .bottle-pointer {
+            position: absolute; top: -15px; left: 10px;
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid #ef4444;
         }
 
         /* ══════════ COIN FLIP (INLINE) ══════════ */
         .coinflip-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
-            padding: 1rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
         }
         .coin-container { width: 100px; height: 100px; position: relative; perspective: 1000px; }
         .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transform: rotateY(0deg); transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.3, 1); cursor: pointer; }
@@ -340,9 +342,9 @@
                 <div class="mini-icon">❌</div>
                 <div class="mini-title">Tic-Tac-Toe</div>
             </div>
-            <div class="mini-card" onclick="openBottleFlip()">
+            <div class="mini-card" onclick="openSpinBottle()">
                 <div class="mini-icon">🍾</div>
-                <div class="mini-title">Bottle Flip</div>
+                <div class="mini-title">Spin Bottle</div>
             </div>
         </div>
 
@@ -359,7 +361,6 @@
                 <span class="game-desc">Classic 1v1</span>
             </a>
 
-            <!-- NEW UNO CARD -->
             <a href="uno.html" class="game-card card-uno">
                 <span class="game-badge">MULTI</span>
                 <span class="game-icon"><i class="fas fa-layer-group"></i></span>
@@ -432,18 +433,25 @@
         </div>
     </div>
 
-    <!-- ══════════ BOTTLE FLIP MODAL ══════════ -->
+    <!-- ══════════ SPIN THE BOTTLE MODAL ══════════ -->
     <div class="modal-overlay" id="modal-bottle">
         <div class="modal-box">
             <div class="modal-header">
-                <div class="modal-title">Bottle Flip</div>
+                <div class="modal-title">Spin the Bottle</div>
                 <button class="close-btn" onclick="closeModal('modal-bottle')"><i class="fas fa-times"></i></button>
             </div>
-            <div class="bottle-stage" id="bottle-stage">
-                <div class="bottle" id="bottle"></div>
+            
+            <div class="spin-stage">
+                <div class="spin-bottle-container" id="spin-bottle">
+                    <div class="bottle-pointer"></div>
+                    <div class="bottle-cap"></div>
+                    <div class="bottle-neck"></div>
+                    <div class="bottle-body"></div>
+                </div>
             </div>
-            <div id="bottle-result" style="font-weight: 700; margin-bottom: 1rem;">Tap to Flip!</div>
-            <button class="btn btn-primary" onclick="doBottleFlip()" id="flipBottleBtn">Flip Bottle</button>
+            
+            <div id="bottle-result" style="font-weight: 700; margin-bottom: 1rem; min-height: 1.5rem; color: var(--navy);">Tap to Spin!</div>
+            <button class="btn btn-primary" onclick="doSpinBottle()" id="spin-btn">Spin</button>
             <button class="btn btn-outline" onclick="closeModal('modal-bottle')">Back to Home</button>
         </div>
     </div>
@@ -451,7 +459,6 @@
     <!-- ══════════ LOGIN OVERLAY ══════════ -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-card" id="loginCard">
-            <!-- Step 1 -->
             <div id="loginStep1">
                 <div class="login-brand"><i class="fas fa-gamepad"></i> 66<span class="brand-accent">Games</span></div>
                 <h2>Enter Your Roll</h2>
@@ -460,7 +467,6 @@
                 <div class="login-error" id="loginError"></div>
                 <button class="login-btn" id="loginBtn">Continue</button>
             </div>
-            <!-- Step 2 -->
             <div id="loginStep2" style="display: none;">
                 <div class="login-brand"><i class="fas fa-gamepad"></i> 66<span class="brand-accent">Games</span></div>
                 <h2>Are you from Intake 66?</h2>
@@ -555,38 +561,50 @@
             setTimeout(() => { $('coinResult').textContent = isHeads ? 'HEADS' : 'TAILS'; }, 1200);
         }
 
-        /* --- BOTTLE FLIP --- */
-        let isFlipping = false;
-        function openBottleFlip() { 
+        /* --- SPIN THE BOTTLE --- */
+        let isSpinning = false;
+        let currentRotation = 0;
+        
+        function openSpinBottle() { 
             openModal('modal-bottle'); 
             resetBottle();
         }
         
         function resetBottle() {
-            const b = $('bottle');
-            b.className = 'bottle';
-            b.style.transform = 'rotate(0deg) translateY(0)';
-            $('bottle-result').textContent = 'Tap to Flip!';
+            const b = $('spin-bottle');
+            b.style.transition = 'none';
+            b.style.transform = 'rotate(0deg)';
+            $('bottle-result').textContent = 'Tap to Spin!';
+            isSpinning = false;
         }
 
-        function doBottleFlip() {
-            if (isFlipping) return;
-            isFlipping = true;
-            const b = $('bottle');
-            const success = Math.random() > 0.5;
+        function doSpinBottle() {
+            if (isSpinning) return;
+            isSpinning = true;
+            const b = $('spin-bottle');
             
-            b.className = 'bottle ' + (success ? 'bottle-anim' : 'bottle-fail');
-            $('bottle-result').textContent = 'Flipping...';
+            // Random spin between 5 and 10 full rotations + a random angle
+            const randomDeg = (Math.floor(Math.random() * 5) + 5) * 360 + Math.floor(Math.random() * 360);
+            currentRotation += randomDeg;
+            
+            b.style.transition = 'transform 3s cubic-bezier(0.17, 0.67, 0.12, 1)';
+            b.style.transform = `rotate(${currentRotation}deg)`;
+            
+            $('bottle-result').textContent = 'Spinning...';
             
             setTimeout(() => {
-                $('bottle-result').textContent = success ? 'Landed it! 🎉' : 'Failed! 💀';
-                if (success) {
-                    b.style.animation = 'none';
-                    b.style.transform = 'rotate(0deg) translateY(0)';
-                    b.classList.add('cap'); // Change color on win
-                }
-                isFlipping = false;
-            }, 1000);
+                isSpinning = false;
+                // Calculate where it points (Top, Right, Bottom, Left)
+                const finalAngle = (currentRotation % 360 + 360) % 360;
+                let direction = '';
+                
+                if (finalAngle >= 315 || finalAngle < 45) direction = '⬆️ Top (Player 1)';
+                else if (finalAngle >= 45 && finalAngle < 135) direction = '➡️ Right (Player 2)';
+                else if (finalAngle >= 135 && finalAngle < 225) direction = '⬇️ Bottom (Player 3)';
+                else direction = '⬅️ Left (Player 4)';
+                
+                $('bottle-result').innerHTML = `Points to: <span style="color:var(--accent);">${direction}</span>`;
+            }, 3000);
         }
 
         /* --- TIC TAC TOE --- */
