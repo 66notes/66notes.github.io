@@ -13,11 +13,11 @@
 
     <style>
         :root {
-            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #dbe3ee;
             --text: #1e2a3e; --text-secondary: #6b7280; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff;
             --uno-red: #ef4444; --uno-blue: #3b82f6; --uno-green: #22c55e; --uno-yellow: #eab308; --uno-black: #1e293b;
-            --ch: clamp(70px, 24vh, 104px);
+            --ch: 100px; --chc: 90px; --chd: 80px;
             --cw: calc(var(--ch) * 0.66);
         }
         :root[data-theme="dark"] {
@@ -36,7 +36,7 @@
             -webkit-tap-highlight-color: transparent; touch-action: manipulation; overscroll-behavior: none;
             display: flex; flex-direction: column;
         }
-        /* Inputs MUST stay selectable, otherwise mobile browsers lag / refuse to focus them */
+        /* Inputs must stay selectable, otherwise mobile browsers lag / refuse to focus them */
         input { -webkit-user-select: text; user-select: text; }
 
         /* ───────── Setup screens ───────── */
@@ -46,14 +46,10 @@
         }
         .logo-small { font-size: 1.15rem; font-weight: 700; color: var(--navy); text-decoration: none; }
         .logo-small span { color: var(--accent); }
-        .brand-badge {
-            background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;
-            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 900;
-            letter-spacing: 1px; transform: rotate(-5deg);
-        }
+        .brand-badge { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; }
         .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow-y: auto; }
         .screen.active { display: flex; }
-        .title { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 18px; }
+        .title { font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 18px; }
         .sub { margin-bottom: 14px; color: var(--text-secondary); font-size: 0.9rem; }
 
         .btn {
@@ -61,7 +57,7 @@
             font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;
         }
-        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(18,60,243,0.3); }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(18,60,243,0.25); }
         .btn-primary:active { transform: scale(0.97); }
         .btn-outline { background: var(--surface); border: 2px solid var(--accent); color: var(--accent); }
         .btn-ghost { background: transparent; color: var(--text-secondary); }
@@ -69,115 +65,144 @@
         .input-roll {
             width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border-strong);
             font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 10px;
-            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text);
-            letter-spacing: 0.3em;
+            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text); letter-spacing: 0.3em;
         }
         .input-roll:focus { border-color: var(--accent); }
         .form-error { max-width: 300px; width: 100%; font-size: 0.8rem; font-weight: 600; color: #dc2626; background: #fef2f2; border-radius: 8px; padding: 8px; margin-bottom: 10px; }
         .intake-row { display: flex; gap: 10px; width: 100%; max-width: 300px; margin-bottom: 12px; }
         .intake-row .btn { margin: 0; }
+        .step { width: 100%; display: flex; flex-direction: column; align-items: center; }
+
+        .lay-row { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin-bottom: 12px; }
+        .lay-opt {
+            display: flex; align-items: center; gap: 14px; text-align: left; padding: 12px 14px; border-radius: 14px;
+            background: var(--surface); border: 2px solid var(--border-strong); cursor: pointer; font-family: 'Poppins', sans-serif; color: var(--text);
+        }
+        .lay-opt:active { border-color: var(--accent); transform: scale(0.98); }
+        .lay-opt b { display: block; font-size: 0.95rem; color: var(--navy); }
+        .lay-opt small { display: block; font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3; }
+        .lay-ico { flex-shrink: 0; width: 38px; height: 62px; border: 2px solid var(--accent); border-radius: 8px; position: relative; }
+        .lay-ico i { position: absolute; background: var(--accent); border-radius: 3px; }
+        .lay-ico.tb i:nth-child(1) { left: 5px; right: 5px; top: 5px; height: 9px; }
+        .lay-ico.tb i:nth-child(2) { left: 5px; right: 5px; bottom: 5px; height: 9px; }
+        .lay-ico.lr i:nth-child(1) { top: 5px; bottom: 5px; left: 4px; width: 9px; }
+        .lay-ico.lr i:nth-child(2) { top: 5px; bottom: 5px; right: 4px; width: 9px; }
 
         /* ───────── Game screen ───────── */
         #game-screen { position: fixed; inset: 0; z-index: 5; display: none; flex-direction: column; background: var(--bg); }
         #game-screen.active { display: flex; }
 
-        .g-top {
-            flex-shrink: 0; height: 46px; display: flex; align-items: center; gap: 10px;
-            padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--border);
-        }
+        .g-top { flex-shrink: 0; height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--border); }
         .pause-btn {
             height: 36px; padding: 0 16px; border-radius: 18px; border: none; cursor: pointer;
-            background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff;
-            font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.05em;
-            display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 3px 10px rgba(234,88,12,0.35);
+            background: var(--accent); color: #fff; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.8rem;
+            letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 8px;
         }
         .pause-btn:active { transform: scale(0.94); }
-        .pause-btn i { font-size: 1rem; }
         .timer { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
-        .timer-bar { flex: 1; height: 12px; border-radius: 6px; background: var(--border-strong); overflow: hidden; }
-        .timer-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #22c55e, #eab308); border-radius: 6px; }
+        .timer-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--border-strong); overflow: hidden; }
+        .timer-bar i { display: block; height: 100%; width: 100%; background: var(--accent); border-radius: 4px; }
+        .timer-num { font-size: 1.25rem; font-weight: 800; color: var(--navy); min-width: 30px; text-align: center; font-variant-numeric: tabular-nums; }
         .timer.low .timer-bar i { background: #ef4444; }
-        .timer-num { font-size: 1.4rem; font-weight: 900; color: var(--navy); min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
-        .timer.low .timer-num { color: #ef4444; animation: tick 0.5s infinite alternate; }
-        @keyframes tick { from { transform: scale(1); } to { transform: scale(1.25); } }
+        .timer.low .timer-num { color: #ef4444; }
         .deck-info { font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); min-width: 44px; text-align: right; }
 
-        .board { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr auto 1fr; }
+        /* board + layouts */
+        .board { flex: 1; min-height: 0; display: grid; }
+        .b-solo, .b-tb { grid-template-columns: 1fr; }
+        .b-tb { grid-template-rows: 1fr 116px 1fr; }
+        .b-solo.p { grid-template-rows: 82px 136px 1fr; }
+        .b-solo.l { grid-template-rows: 72px 108px 1fr; }
+        .b-lr { grid-template-rows: 1fr; grid-template-columns: 1fr 56px 1fr; }
+        .b-lr.l { grid-template-columns: 1fr clamp(150px, 22vw, 200px) 1fr; }
 
-        /* panels (one per player seat) */
-        .panel { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 8px; gap: 6px; }
+        .panel { position: relative; overflow: hidden; min-width: 0; min-height: 0; }
+        .panel-in { position: absolute; display: flex; flex-direction: column; gap: 6px; padding: 8px; transform-origin: center center; }
+
         .name-bar {
-            display: flex; align-items: center; justify-content: space-between; gap: 8px;
-            padding: 6px 12px; border-radius: 14px; background: var(--surface);
-            border: 2px solid var(--pc); transition: box-shadow 0.2s, background 0.2s;
+            display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 12px;
+            background: var(--surface); border: 1.5px solid var(--border-strong); color: var(--navy);
+            transition: background 0.25s, border-color 0.25s, color 0.25s;
         }
-        .name-bar .pname {
-            font-size: clamp(0.95rem, 3.4vh, 1.3rem); font-weight: 900; color: var(--pc);
-            line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -0.3px;
-        }
-        .name-bar .pcount { font-size: 0.72rem; font-weight: 800; color: var(--text-secondary); white-space: nowrap; }
-        .panel.active .name-bar { background: var(--pc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--pc) 25%, transparent); }
-        .panel.active .name-bar .pname, .panel.active .name-bar .pcount { color: #fff; }
-        .panel.active .name-bar .pname::before { content: '👑 '; }
+        .pname { flex: 1; min-width: 0; font-size: clamp(0.95rem, 3vh, 1.25rem); font-weight: 800; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pturn { display: none; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; opacity: 0.85; white-space: nowrap; }
+        .ptimer { font-size: 0.85rem; font-weight: 800; min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+        .pcount { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); white-space: nowrap; }
+        .panel.active .name-bar { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .panel.active .pturn { display: inline; }
+        .panel.active .pcount { color: rgba(255,255,255,0.8); }
+        .panel.active .ptimer.low { color: #fecaca; }
 
-        .panel-mid { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 1; min-height: 0; padding: 0 4px; }
-        #panel-R .panel-mid { flex-direction: row-reverse; }
-        .draw-pile { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-        .draw-pile.off { opacity: 0.4; pointer-events: none; }
+        .p-body {
+            flex: 1; min-height: 0; display: grid; align-items: center; gap: 6px;
+            grid-template-columns: auto 1fr auto; grid-template-rows: auto 1fr;
+            grid-template-areas: "draw . side" "hand hand hand";
+        }
+        .b-lr.p .p-body { grid-template-rows: 1fr; grid-template-areas: "draw hand side"; }
+        .draw-pile { grid-area: draw; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; --ch: var(--chd); --cw: calc(var(--chd) * 0.66); }
+        .draw-pile.off { opacity: 0.35; pointer-events: none; }
         .draw-pile:active .card { transform: scale(0.94); }
-        .draw-pile span { font-size: 0.65rem; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.08em; }
+        .draw-pile span { font-size: 0.62rem; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.1em; }
+        .p-side { grid-area: side; display: flex; align-items: center; gap: 10px; }
+        .pcard { display: none; --ch: var(--chd); --cw: calc(var(--chd) * 0.66); }
+        .b-lr.p .pcard { display: block; }
         .hide-btn {
-            width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer;
-            background: var(--accent-light); color: var(--accent); font-size: 1.3rem;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer;
+            background: var(--surface); color: var(--accent); font-size: 1.15rem; display: flex; align-items: center; justify-content: center;
         }
         .hide-btn:active { transform: scale(0.9); }
         .hide-btn:disabled { opacity: 0.3; pointer-events: none; }
-        .hide-btn.is-hidden { background: #ef4444; color: #fff; }
+        .hide-btn.is-hidden { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-        .hand-wrap { position: relative; flex-shrink: 0; }
-        .hand {
-            display: flex; gap: 6px; align-items: flex-end; overflow-x: auto; overflow-y: hidden;
-            padding: 14px 8px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-            min-height: calc(var(--ch) + 22px);
-        }
-        .hand::-webkit-scrollbar { display: none; }
+        .panel.ai .p-body { display: none; }
+        .ai-mini { display: none; align-items: center; gap: 3px; padding: 0 4px; height: 26px; }
+        .panel.ai .ai-mini { display: flex; }
+        .mb { width: 15px; height: 22px; border-radius: 3px; background: var(--navy); border: 1.5px solid var(--surface); box-shadow: 0 0 0 1px var(--border-strong); flex-shrink: 0; }
+        .b-solo .p-side, .b-solo .draw-pile, .b-solo .hide-btn { display: none; }
+        .b-solo .p-body { grid-template-areas: "hand hand hand"; grid-template-rows: 1fr; }
+
+        /* circular carousel */
+        .hand-wrap { grid-area: hand; position: relative; width: 100%; height: calc(var(--ch) + 40px); }
+        .carousel { position: relative; width: 100%; height: 100%; overflow: hidden; touch-action: none; cursor: grab; }
+        .carousel .card { position: absolute; left: 50%; top: 18px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1), opacity 0.3s; will-change: transform; }
+        .carousel.moving .card { transition: none; }
+        .carousel .card.playable { border-color: var(--accent); box-shadow: 0 6px 14px rgba(18,60,243,0.35); }
+        .carousel .card.dim { filter: brightness(0.7) saturate(0.7); }
+        .carousel .card.shake { animation: shake 0.3s; }
+        @keyframes shake { 25% { left: calc(50% - 6px); } 75% { left: calc(50% + 6px); } }
         .hand-label {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none;
-            background: rgba(13,43,78,0.82); color: #fff; font-size: 0.72rem; font-weight: 700;
-            padding: 6px 12px; border-radius: 20px; white-space: nowrap;
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 500;
+            background: rgba(13,43,78,0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 6px 12px; border-radius: 20px; white-space: nowrap;
         }
 
-        /* center column */
-        .center { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 6px; width: clamp(130px, 22vw, 200px); }
-        .table-card { padding: 6px; border-radius: 14px; box-shadow: 0 0 0 4px var(--cur, transparent), 0 0 22px var(--cur, transparent); transition: box-shadow 0.3s; }
+        /* center */
+        .center { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 6px 10px; min-width: 0; }
+        .b-lr.p .center { flex-direction: column; padding: 0; border-left: 1.5px dashed var(--border-strong); border-right: 1.5px dashed var(--border-strong); }
+        .b-lr.p .center .table-card, .b-lr.p .center .turn-plate { display: none; }
+        .b-lr.l .center { flex-direction: column; justify-content: space-between; padding: 8px 6px; }
+        .table-card { padding: 5px; border-radius: 12px; box-shadow: 0 0 0 3px var(--cur, transparent); transition: box-shadow 0.3s; --ch: var(--chc); --cw: calc(var(--chc) * 0.66); }
+        #c-draw { display: none; --ch: var(--chc); --cw: calc(var(--chc) * 0.66); }
+        .b-solo #c-draw { display: flex; }
+        .b-solo .switch-btn { display: none; }
         .switch-btn {
-            width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer;
-            background: var(--surface); color: var(--navy); font-size: 1.1rem;
-            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer; flex-shrink: 0;
+            background: var(--surface); color: var(--accent); font-size: 1.05rem; display: flex; align-items: center; justify-content: center;
         }
-        .switch-btn:active { transform: rotate(180deg) scale(0.9); }
+        .switch-btn:active { transform: scale(0.9); }
         .turn-plate {
-            width: 100%; text-align: center; padding: 8px 6px; border-radius: 16px; color: #fff;
-            background: linear-gradient(135deg, var(--pc, #ef4444), #1e293b);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25); position: relative; overflow: hidden;
+            flex: 1; max-width: 220px; min-width: 0; padding: 8px 12px; border-radius: 12px; text-align: left;
+            background: var(--surface); border: 1.5px solid var(--border-strong); border-left: 5px solid var(--accent);
         }
-        .turn-plate::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
-            transform: translateX(-100%); animation: shine 2.4s infinite;
-        }
-        @keyframes shine { to { transform: translateX(100%); } }
-        .turn-plate small { display: block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.18em; opacity: 0.85; }
-        .turn-plate strong { display: block; font-size: clamp(1rem, 3.6vh, 1.4rem); font-weight: 900; line-height: 1.15; word-break: break-word; }
-        .turn-plate em { display: block; font-style: normal; font-size: 0.68rem; font-weight: 700; margin-top: 2px; min-height: 1em; color: #fde68a; }
+        .b-lr.l .turn-plate { flex: none; width: 100%; }
+        .turn-plate small { display: block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.16em; color: var(--text-secondary); }
+        .turn-plate strong { display: block; font-size: clamp(1rem, 3.4vh, 1.35rem); font-weight: 800; line-height: 1.15; color: var(--accent); word-break: break-word; }
+        .turn-plate em { display: block; font-style: normal; font-size: 0.68rem; font-weight: 600; color: var(--text-secondary); min-height: 1em; }
 
         /* UNO cards */
         .card {
             width: var(--cw); height: var(--ch); border-radius: 9px; border: 3px solid #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;
-            font-size: calc(var(--cw) * 0.42); font-weight: 900; color: #fff; position: relative; overflow: hidden;
-            flex-shrink: 0; transition: transform 0.15s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--cw) * 0.42); font-weight: 900; color: #fff; position: relative; overflow: hidden; flex-shrink: 0; transition: transform 0.15s;
         }
         .card::before { content: ''; position: absolute; width: 120%; height: 60%; background: #fff; border-radius: 50%; transform: rotate(-20deg); }
         .card .card-text { position: relative; z-index: 2; color: inherit; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
@@ -188,58 +213,46 @@
         .c-wild { background: var(--uno-black); color: #fff; }
         .c-wild::before { display: none; }
         .c-wild .card-text { font-size: calc(var(--cw) * 0.24); text-shadow: none; }
-        .card-back { background: repeating-linear-gradient(45deg, #1e293b, #1e293b 10px, #ef4444 10px, #ef4444 20px); }
-        .card-back::before { width: 44%; height: 30%; border-radius: 50%; transform: none; }
-        .card-back::after { content: 'UNO'; position: absolute; z-index: 2; font-size: calc(var(--cw) * 0.2); font-weight: 900; color: #ef4444; }
-        .hand .card.playable { transform: translateY(-10px); border-color: #fbbf24; box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
-        .hand .card.dim { opacity: 0.55; }
-        .hand .card.shake { animation: shake 0.3s; }
-        @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .card-back { background: var(--navy); }
+        .card-back::before { width: 70%; height: 38%; border-radius: 50%; transform: rotate(-20deg); background: var(--accent); }
+        .card-back::after { content: 'UNO'; position: absolute; z-index: 2; font-size: calc(var(--cw) * 0.2); font-weight: 900; color: #fff; transform: rotate(-20deg); }
 
         /* flash + toast */
         .flash { position: absolute; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0; }
-        .flash.go { animation: flashIn 1.4s ease-out; }
-        .flash-in { text-align: center; color: #fff; padding: 14px 34px; border-radius: 26px; background: linear-gradient(135deg, var(--c), #1e293b); box-shadow: 0 14px 40px rgba(0,0,0,0.4); max-width: 90vw; }
-        .flash-in small { display: block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.22em; opacity: 0.9; }
-        .flash-in b { display: block; font-size: clamp(1.6rem, 8vh, 3rem); font-weight: 900; line-height: 1.1; }
-        .flash-in em { display: block; font-style: normal; font-weight: 700; color: #fde68a; font-size: 0.85rem; }
-        @keyframes flashIn { 0% { opacity: 0; transform: scale(0.6); } 18% { opacity: 1; transform: scale(1.08); } 30% { transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(1.05); } }
-        .toast {
-            position: absolute; left: 50%; top: 54px; transform: translateX(-50%) translateY(-20px); z-index: 45;
-            background: #0d2b4e; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
-            opacity: 0; transition: 0.25s; pointer-events: none; white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis;
+        .flash.go { animation: flashIn 1.3s ease-out; }
+        .flash-in {
+            text-align: center; padding: 12px 30px; border-radius: 18px; background: var(--surface); color: var(--navy);
+            border: 2px solid var(--accent); box-shadow: 0 10px 30px rgba(18,60,243,0.22); max-width: 80vw; transform: rotate(var(--rot, 0deg));
         }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .flash-in small { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; color: var(--text-secondary); }
+        .flash-in b { display: block; font-size: clamp(1.5rem, 7vh, 2.6rem); font-weight: 800; line-height: 1.1; color: var(--accent); }
+        .flash-in em { display: block; font-style: normal; font-weight: 600; color: var(--text-secondary); font-size: 0.8rem; }
+        @keyframes flashIn { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
+        .toast {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); z-index: 45;
+            background: var(--navy); color: var(--bg); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; max-width: 90vw;
+        }
+        .toast.show { opacity: 1; }
 
         /* overlays */
-        .overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.92); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; text-align: center; color: #fff; }
+        .overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; text-align: center; color: #fff; }
         .overlay.active { display: flex; }
-        .overlay-box { background: var(--surface); color: var(--text); padding: 24px 20px; border-radius: 24px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 96vh; overflow-y: auto; }
-        .overlay-box.flip { transform: rotate(180deg); }
-        .overlay-box h2 { font-size: 1.3rem; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
-        .overlay-box .vs { font-size: 0.95rem; font-weight: 800; margin-bottom: 14px; color: var(--text-secondary); }
+        .overlay-box { background: var(--surface); color: var(--text); padding: 22px 20px; border-radius: 22px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 96vh; overflow-y: auto; }
+        .overlay-box h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+        .overlay-box .vs { font-size: 0.95rem; font-weight: 700; margin-bottom: 14px; color: var(--accent); }
+        .overlay-box .lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; color: var(--text-secondary); margin: 4px 0 8px; }
+        .seg { display: flex; gap: 8px; margin-bottom: 14px; }
+        .seg button { flex: 1; padding: 10px 6px; border-radius: 10px; border: 2px solid var(--border-strong); background: var(--surface); color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+        .seg button.on { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
         .color-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
         .color-btn { height: 56px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .color-btn:active { transform: scale(0.95); }
-        .win-crown { font-size: 4.5rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 10px; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-14px); } }
-        .win-name { font-size: clamp(2rem, 10vh, 3.4rem); font-weight: 900; line-height: 1.1; color: #fff; }
-        .win-line { font-size: 1.2rem; font-weight: 800; margin: 8px 0 18px; color: #cbd5e1; }
-        .win-line b { color: #fbbf24; }
+        .win-crown { font-size: 3.2rem; color: #fff; opacity: 0.9; margin-bottom: 12px; }
+        .win-name { font-size: clamp(2rem, 10vh, 3.4rem); font-weight: 800; line-height: 1.1; color: #fff; }
+        .win-line { font-size: 1.15rem; font-weight: 700; margin: 8px 0 20px; color: #bfdbfe; }
+        .win-line b { color: #fff; }
         .win-actions { width: 100%; max-width: 300px; }
-
-        /* ───────── Portrait: seats become top / bottom (top one faces the other player) ───────── */
-        @media (orientation: portrait) {
-            .board { grid-template-columns: 1fr; grid-template-rows: 1fr auto 1fr; }
-            #panel-L { transform: rotate(180deg); }
-            .center { flex-direction: row; width: 100%; padding: 6px 12px; }
-            .center .turn-plate { flex: 1; }
-            .center .table-card .card { --ch: 84px; }
-        }
-        @media (orientation: landscape) and (max-height: 420px) {
-            .panel { padding: 5px; gap: 4px; }
-            .hide-btn { width: 44px; height: 44px; font-size: 1.1rem; }
-        }
     </style>
 </head>
 <body>
@@ -252,29 +265,41 @@
     </div>
 
     <div id="setup-screen" class="screen active">
-        <h1 class="title" style="color: #ef4444;">Select UNO Mode</h1>
-        <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
+        <h1 class="title">Select UNO Mode</h1>
+        <button class="btn btn-primary" onclick="startSolo()"><i class="fas fa-robot"></i> Solo vs AI</button>
         <button class="btn btn-outline" onclick="openSplit()"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
         <button class="btn btn-ghost" onclick="window.location.href='index.html'" style="margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
     </div>
 
     <div id="split-screen" class="screen">
         <h1 class="title">Split-Screen Setup</h1>
-        <!-- Plain form: nothing runs while typing. Lookup happens only when Continue is pressed. -->
+        <!-- Plain form: nothing runs while typing. The lookup only happens when Continue is pressed. -->
         <form id="split-form" autocomplete="off" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-            <div id="split-step1" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div class="step" id="split-step1">
                 <p class="sub">Enter Player 2's roll number</p>
                 <input type="text" id="p2-roll" class="input-roll" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="015" autocomplete="off" />
                 <div class="form-error" id="split-err" hidden></div>
                 <button type="submit" class="btn btn-primary">Continue</button>
             </div>
-            <div id="split-step2" hidden style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div class="step" id="split-step2" hidden>
                 <p class="sub">Roll 138 is shared. Who is Player 2?</p>
                 <div class="intake-row">
                     <button type="button" class="btn btn-primary" onclick="pickIntake('Aion')">Aion</button>
                     <button type="button" class="btn btn-outline" onclick="pickIntake('Maria')">Maria</button>
                 </div>
-                <div class="form-error" id="split-err2" hidden></div>
+            </div>
+            <div class="step" id="split-step3" hidden>
+                <p class="sub"><b id="split-vs"></b><br>How are you playing?</p>
+                <div class="lay-row">
+                    <button type="button" class="lay-opt" onclick="chooseLayout('tb')">
+                        <span class="lay-ico tb"><i></i><i></i></span>
+                        <span><b>Top &amp; Bottom</b><small>Players sit at opposite ends of the phone</small></span>
+                    </button>
+                    <button type="button" class="lay-opt" onclick="chooseLayout('lr')">
+                        <span class="lay-ico lr"><i></i><i></i></span>
+                        <span><b>Left &amp; Right</b><small>Phone upright in the middle, one player on each side</small></span>
+                    </button>
+                </div>
             </div>
             <button type="button" class="btn btn-ghost" onclick="showScreen('setup-screen')">Cancel</button>
         </form>
@@ -291,10 +316,11 @@
             <div class="deck-info"><i class="fas fa-layer-group"></i> <span id="deck-count">0</span></div>
         </div>
 
-        <div class="board">
-            <section class="panel" id="panel-L"></section>
+        <div class="board" id="board">
+            <section class="panel" id="panel-A"></section>
 
-            <div class="center">
+            <div class="center" id="center">
+                <div class="draw-pile" id="c-draw" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
                 <div class="table-card" id="discard"></div>
                 <button class="switch-btn" onclick="swapSides()" aria-label="Switch sides"><i class="fas fa-arrow-right-arrow-left"></i></button>
                 <div class="turn-plate" id="turn-plate">
@@ -304,7 +330,7 @@
                 </div>
             </div>
 
-            <section class="panel" id="panel-R"></section>
+            <section class="panel" id="panel-B"></section>
         </div>
 
         <div class="flash" id="flash"></div>
@@ -327,8 +353,15 @@
     <!-- Pause -->
     <div class="overlay" id="pause-overlay" style="z-index:110;">
         <div class="overlay-box">
-            <h2>⏸ Game Paused</h2>
+            <h2>Game Paused</h2>
             <div class="vs" id="pause-vs"></div>
+            <div id="pause-layout" hidden>
+                <div class="lbl">SCREEN LAYOUT</div>
+                <div class="seg">
+                    <button id="seg-tb" onclick="setLayout('tb')">Top / Bottom</button>
+                    <button id="seg-lr" onclick="setLayout('lr')">Left / Right</button>
+                </div>
+            </div>
             <button class="btn btn-primary" style="max-width:none;" onclick="resumeGame()"><i class="fas fa-play"></i> Resume</button>
             <button class="btn btn-outline" style="max-width:none;" onclick="rematch()"><i class="fas fa-rotate-right"></i> Restart</button>
             <button class="btn btn-danger" style="max-width:none; margin-bottom:0;" onclick="leaveGame()"><i class="fas fa-right-from-bracket"></i> Leave Game</button>
@@ -353,6 +386,7 @@
         const HEX = { red: '#ef4444', blue: '#3b82f6', green: '#22c55e', yellow: '#eab308' };
         const $ = id => document.getElementById(id);
         const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
         try { if (localStorage.getItem('66games_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
 
@@ -363,59 +397,63 @@
         const me = currentUser || { roll: '', name: 'Player' };
 
         /* ───────── State ───────── */
-        let mode = '';
-        let players = [];                 // [{name, color, hand:[]}]  index 0 = logged-in user, 1 = opponent
-        let seat = { L: 1, R: 0 };        // which player sits on which side
+        let mode = '';                     // 'ai' | 'split'
+        let layout = 'solo';               // 'solo' | 'tb' (top/bottom) | 'lr' (left/right)
+        let players = [];                  // [{name, hand:[]}]  index 0 = logged-in user
+        let seat = { A: 1, B: 0 };         // A = top / left seat, B = bottom / right seat
         let deck = [], discard = [], currentColor = 'red';
         let turnIdx = 0, turnNote = '';
         let revealed = false, drewThisTurn = false;
         let busy = false, paused = false, over = false, pickerOpen = false, pending = null;
-        let remaining = TURN_MS, lastTick = performance.now(), gameOn = false, gen = 0;
+        let remaining = TURN_MS, lastTick = performance.now(), gameOn = false, gen = 0, panelsBuilt = false;
         const isAI = i => mode === 'ai' && i === 1;
+        const needsReveal = () => mode === 'split';
+        const sideOf = pi => seat.A === pi ? 'A' : 'B';
+        const isPortrait = () => window.matchMedia('(orientation: portrait)').matches;
 
         /* ───────── Setup flow ───────── */
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             $(id).classList.add('active');
         }
+        function splitStep(n) { for (let i = 1; i <= 3; i++) $('split-step' + i).hidden = i !== n; }
+        function splitError(msg) { const e = $('split-err'); e.textContent = msg; e.hidden = !msg; }
+        let pendingP2 = '';
         function openSplit() {
-            $('p2-roll').value = '';
-            $('split-step1').hidden = false; $('split-step2').hidden = true;
-            $('split-err').hidden = true; $('split-err2').hidden = true;
-            showScreen('split-screen');
-        }
-        function splitError(msg) {
-            const el = $('split-step2').hidden ? $('split-err') : $('split-err2');
-            el.textContent = msg; el.hidden = false;
+            $('p2-roll').value = ''; splitError(''); splitStep(1); showScreen('split-screen');
         }
         $('split-form').addEventListener('submit', e => {
             e.preventDefault();
-            if ($('split-step2').hidden) {
-                const raw = $('p2-roll').value.trim();
-                if (!raw) return splitError('Enter a roll number');
-                const roll = raw.padStart(3, '0');
-                if (roll === '138') { $('split-step1').hidden = true; $('split-step2').hidden = false; return; }
-                const name = STUDENTS[roll];
-                if (!name) return splitError('Roll not found!');
-                if (roll === me.roll) return splitError("That's you! Pick another player.");
-                beginSplit(name);
-            }
+            if ($('split-step1').hidden) return;
+            const raw = $('p2-roll').value.trim();
+            if (!raw) return splitError('Enter a roll number');
+            const roll = raw.padStart(3, '0');
+            if (roll === '138') { splitError(''); return splitStep(2); }
+            const name = STUDENTS[roll];
+            if (!name) return splitError('Roll not found!');
+            if (roll === me.roll) return splitError("That's you! Pick another player.");
+            askLayout(name);
         });
         function pickIntake(name) {
-            if (me.roll === '138' && name === me.name) return splitError("That's you! Pick the other one.");
-            beginSplit(name);
+            if (me.roll === '138' && name === me.name) { splitStep(1); return splitError("That's you! Pick another player."); }
+            askLayout(name);
         }
-        function beginSplit(p2) {
-            mode = 'split';
-            players = [mk(me.name, '#ef4444'), mk(p2, '#3b82f6')];
+        function askLayout(p2) {
+            pendingP2 = p2; splitError('');
+            $('split-vs').textContent = `${me.name} — ${p2}`;
+            splitStep(3);
+        }
+        function chooseLayout(l) {
+            mode = 'split'; layout = l;
+            players = [mk(me.name), mk(pendingP2)];
             initGame();
         }
-        function startMode(m) {
-            mode = m;
-            players = [mk(me.name, '#ef4444'), mk('Computer', '#3b82f6')];
+        function startSolo() {
+            mode = 'ai'; layout = 'solo';
+            players = [mk(me.name), mk('Computer')];
             initGame();
         }
-        function mk(name, color) { return { name, color, hand: [] }; }
+        function mk(name) { return { name, hand: [] }; }
 
         /* ───────── Deck ───────── */
         function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -430,7 +468,7 @@
             return shuffle(d);
         }
         function takeCard() {
-            if (!deck.length && discard.length > 1) {           // reshuffle the discard pile when the deck runs out
+            if (!deck.length && discard.length > 1) {          // reshuffle the discard pile when the deck runs out
                 const top = discard.pop();
                 deck = shuffle(discard); discard = [top];
             }
@@ -446,17 +484,18 @@
         function initGame() {
             gen++;
             deck = createDeck(); discard = [];
-            players.forEach(p => p.hand = deck.splice(0, 7));
+            players.forEach((p, i) => { p.hand = deck.splice(0, 7); car[i].pos = 0; car[i].vel = 0; });
             let first = deck.pop();
             while (first.type !== 'number') { deck.unshift(first); first = deck.pop(); }   // start card is always a plain number
             discard.push(first); currentColor = first.color;
-            seat = { L: 1, R: 0 };
+            seat = { A: 1, B: 0 };
             over = false; paused = false; pickerOpen = false; pending = null; gameOn = true;
             ['win-overlay', 'pause-overlay', 'color-overlay'].forEach(id => $(id).classList.remove('active'));
             $('main-top').style.display = 'none';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             $('game-screen').classList.add('active');
-            buildPanels();
+            if (!panelsBuilt) buildPanels();
+            layoutBoard();
             startTurn(Math.random() < 0.5 ? 0 : 1);
         }
         function rematch() { if (!players.length) return; initGame(); }
@@ -489,14 +528,14 @@
             if (card.type === 'action' && top.type === 'action' && card.value === top.value) return true;
             return false;
         }
-        const canAct = pi => !paused && !busy && !over && !pickerOpen && turnIdx === pi && (isAI(pi) || revealed);
+        const canAct = pi => !paused && !busy && !over && !pickerOpen && turnIdx === pi && (isAI(pi) || !needsReveal() || revealed);
 
         function playCard(pi, ci) {
             if (!canAct(pi)) return;
             const card = players[pi].hand[ci];
             if (!card) return;
             if (!isPlayable(card)) {
-                const el = document.querySelector(`#panel-${sideOf(pi)} .hand .card[data-i="${ci}"]`);
+                const el = card._el;
                 if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
                 return;
             }
@@ -506,7 +545,7 @@
                 if (isAI(pi)) return resolveCard(pi, card, aiPickColor(pi));
                 pending = { pi, card }; pickerOpen = true;
                 $('color-title').textContent = `${players[pi].name}, choose a color`;
-                $('color-box').classList.toggle('flip', isPortrait() && sideOf(pi) === 'L');
+                $('color-box').style.transform = `rotate(${seatAng(pi)}deg)`;
                 renderAll();
                 $('color-overlay').classList.add('active');
                 return;
@@ -540,7 +579,7 @@
 
         function drawCard() {
             if (paused || busy || over || pickerOpen || isAI(turnIdx) || !gameOn) return;
-            if (drewThisTurn) return toast('You already drew this turn');
+            if (drewThisTurn) return toast('Already drew this turn');
             busy = true; drewThisTurn = true;
             const got = giveCard(turnIdx, 1);
             renderAll();
@@ -553,7 +592,7 @@
         }
         function autoDraw() {                             // timer hit zero
             busy = true;
-            toast(`⏱ ${players[turnIdx].name} ran out of time — auto draw!`);
+            toast(`⏱ ${players[turnIdx].name} ran out of time — auto draw`);
             if (!drewThisTurn) giveCard(turnIdx, 1);
             renderAll();
             later(nextTurn, 1100);
@@ -588,10 +627,45 @@
             renderAll();
         }
 
-        /* ───────── Seats ───────── */
-        const sideOf = pi => seat.L === pi ? 'L' : 'R';
-        const isPortrait = () => window.matchMedia('(orientation: portrait)').matches;
-        function swapSides() { [seat.L, seat.R] = [seat.R, seat.L]; renderAll(); }
+        /* ───────── Seats & layout ───────── */
+        function swapSides() { [seat.A, seat.B] = [seat.B, seat.A]; renderAll(); }
+        function setLayout(l) {
+            if (mode !== 'split') return;
+            layout = l; layoutBoard(); renderAll(); markSeg();
+        }
+        function markSeg() { $('seg-tb').classList.toggle('on', layout === 'tb'); $('seg-lr').classList.toggle('on', layout === 'lr'); }
+        const seatAng = pi => parseFloat($('panel-' + sideOf(pi)).dataset.ang) || 0;
+
+        /* Rotate each player's half toward them and size the cards */
+        function layoutBoard() {
+            if (!gameOn) return;
+            const portrait = isPortrait();
+            $('board').className = `board b-${layout} ${portrait ? 'p' : 'l'}`;
+            let innH = 0;
+            ['A', 'B'].forEach(s => {
+                const pan = $('panel-' + s), inn = pan.firstElementChild;
+                let ang = 0;
+                if (layout === 'tb') ang = s === 'A' ? 180 : 0;
+                if (layout === 'lr' && portrait) ang = s === 'A' ? 90 : -90;
+                pan.dataset.ang = ang;
+                const pw = pan.clientWidth, ph = pan.clientHeight;
+                let w = pw, h = ph;
+                if (Math.abs(ang) === 90) { w = ph; h = pw; }
+                inn.style.width = w + 'px'; inn.style.height = h + 'px';
+                inn.style.left = ((pw - w) / 2) + 'px'; inn.style.top = ((ph - h) / 2) + 'px';
+                inn.style.transform = `rotate(${ang}deg)`;
+                if (s === 'B') innH = h;
+            });
+            let ch, chc;
+            if (layout === 'solo') { ch = clamp(innH - 96, 74, 150); chc = portrait ? 100 : 76; }
+            else if (layout === 'lr' && portrait) { ch = clamp(innH - 96, 54, 100); chc = ch; }
+            else { ch = clamp((innH - 120) / 1.85, 54, 104); chc = Math.min(Math.round(ch * 0.95), portrait ? 92 : 100); }
+            const g = $('game-screen');
+            g.style.setProperty('--ch', Math.round(ch) + 'px');
+            g.style.setProperty('--chc', Math.round(chc) + 'px');
+            g.style.setProperty('--chd', Math.round(ch * 0.85) + 'px');
+        }
+        window.addEventListener('resize', () => { if (gameOn) { layoutBoard(); renderAll(); } });
 
         /* ───────── Timer ───────── */
         setInterval(() => {
@@ -603,121 +677,237 @@
             renderTimer();
         }, 100);
         function renderTimer() {
-            const s = Math.ceil(remaining / 1000);
+            const s = Math.ceil(remaining / 1000), low = remaining <= 3000;
             $('timer-num').textContent = s;
             $('timer-fill').style.width = (remaining / TURN_MS * 100) + '%';
-            $('timer').classList.toggle('low', remaining <= 3000);
+            $('timer').classList.toggle('low', low);
+            ['A', 'B'].forEach(side => {
+                const t = $('panel-' + side).querySelector('.ptimer');
+                if (!t) return;
+                const mine = seat[side] === turnIdx && !isAI(seat[side]) && !over;
+                t.textContent = mine ? s + 's' : '';
+                t.classList.toggle('low', low);
+            });
         }
 
         /* ───────── Pause ───────── */
         function pauseGame() {
             if (!gameOn || over || paused) return;
             paused = true;
-            $('pause-vs').innerHTML = `${esc(players[0].name)} — ${esc(players[1].name)}`;
+            $('pause-vs').textContent = `${players[0].name} — ${players[1].name}`;
+            $('pause-layout').hidden = mode !== 'split'; markSeg();
             $('pause-overlay').classList.add('active');
+            renderAll();
         }
-        function resumeGame() { paused = false; lastTick = performance.now(); $('pause-overlay').classList.remove('active'); }
+        function resumeGame() { paused = false; lastTick = performance.now(); $('pause-overlay').classList.remove('active'); renderAll(); }
         document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
 
         /* ───────── Win ───────── */
         function win(pi) {
-            over = true;
+            over = true; renderAll();
             const w = players[pi].name, l = players[1 - pi].name;
             $('win-name').textContent = w;
             $('win-line').innerHTML = `<b>${esc(w)}</b> — ${esc(l)}`;
             later(() => $('win-overlay').classList.add('active'), 700);
         }
 
+        /* ───────── Circular carousel ───────── */
+        const car = [{ pos: 0, vel: 0, raf: 0 }, { pos: 0, vel: 0, raf: 0 }];
+
+        function layoutCar(side, pi) {
+            const box = $('panel-' + side).querySelector('.carousel');
+            const c = car[pi], kids = [...box.children], n = kids.length;
+            if (!n) return;
+            const W = box.clientWidth, cw = kids[0].offsetWidth || 60;
+            const spMin = cw * 0.62, cap = Math.floor((W - cw) / spMin) + 1;
+            const stat = n <= cap;                         // few cards: just a centred fan, no scrolling
+            c.stat = stat; c.n = n;
+            c.sp = stat ? Math.min(cw * 0.9, (W - cw) / Math.max(n - 1, 1)) : spMin;
+            if (stat) c.pos = (n - 1) / 2;
+            else c.pos = ((c.pos % n) + n) % n;
+            const half = W / 2;
+            kids.forEach(el => {
+                const i = +el.dataset.i;
+                let off = i - c.pos;
+                if (!stat) off = ((off + n / 2) % n + n) % n - n / 2;
+                const a = Math.abs(off), x = off * c.sp;
+                let y = Math.min(off * off * 2.4, 28);
+                if (el.classList.contains('playable')) y -= 10;
+                const rot = clamp(off * 4, -14, 14), sc = Math.max(0.8, 1 - a * 0.05);
+                let op = 1;
+                if (!stat) op = clamp(1 - (Math.abs(x) - (half - cw * 0.55)) / (cw * 0.5), 0, 1);
+                el.style.transform = `translateX(calc(-50% + ${x.toFixed(1)}px)) translateY(${y.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`;
+                el.style.opacity = op;
+                el.style.zIndex = Math.round(200 - a * 10);
+                el.style.pointerEvents = op < 0.05 ? 'none' : '';
+            });
+        }
+
+        function startInertia(pi) {
+            const c = car[pi];
+            cancelAnimationFrame(c.raf);
+            let t0 = performance.now();
+            const step = now => {
+                const side = sideOf(pi), box = $('panel-' + side).querySelector('.carousel');
+                const dt = Math.min(now - t0, 40); t0 = now;
+                if (Math.abs(c.vel) > 0.0007) { c.pos += c.vel * dt; c.vel *= Math.exp(-dt / 240); }
+                else {
+                    const target = Math.round(c.pos);
+                    c.pos += (target - c.pos) * Math.min(1, dt / 80);
+                    if (Math.abs(target - c.pos) < 0.002) { c.pos = target; layoutCar(side, pi); box.classList.remove('moving'); return; }
+                }
+                layoutCar(side, pi);
+                c.raf = requestAnimationFrame(step);
+            };
+            c.raf = requestAnimationFrame(step);
+        }
+
+        function bindCarousel(side) {
+            const box = $('panel-' + side).querySelector('.carousel');
+            let d = null;
+            const local = (dx, dy) => {                    // screen movement -> movement along the player's own left/right
+                const a = (parseFloat($('panel-' + side).dataset.ang) || 0) * Math.PI / 180;
+                return dx * Math.cos(a) + dy * Math.sin(a);
+            };
+            box.addEventListener('pointerdown', e => {
+                const pi = seat[side], c = car[pi];
+                cancelAnimationFrame(c.raf); c.vel = 0;
+                d = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: c.pos, moved: false, lx: 0, lt: performance.now(), lp: c.pos };
+                try { box.setPointerCapture(e.pointerId); } catch (err) {}
+            });
+            box.addEventListener('pointermove', e => {
+                if (!d || e.pointerId !== d.id) return;
+                const pi = seat[side], c = car[pi];
+                const lx = local(e.clientX - d.x, e.clientY - d.y);
+                if (!d.moved && Math.hypot(e.clientX - d.x, e.clientY - d.y) > 9) { d.moved = true; box.classList.add('moving'); }
+                if (!d.moved || c.stat) return;
+                c.pos = d.pos - lx / c.sp;
+                const now = performance.now(), dt = now - d.lt;
+                if (dt > 0) { const v = (c.pos - d.lp) / dt; c.vel = c.vel * 0.6 + v * 0.4; d.lt = now; d.lp = c.pos; }
+                layoutCar(side, pi);
+            });
+            const end = (e, cancelled) => {
+                if (!d || e.pointerId !== d.id) return;
+                const pi = seat[side], c = car[pi], wasMoved = d.moved; d = null;
+                if (!wasMoved && !cancelled) {             // a tap plays the card under the finger
+                    const t = document.elementFromPoint(e.clientX, e.clientY);
+                    const ce = t && t.closest && t.closest('.card');
+                    if (ce && box.contains(ce)) playCard(pi, +ce.dataset.i);
+                    return;
+                }
+                if (c.stat) { box.classList.remove('moving'); return; }
+                if (performance.now() - (e.timeStamp ? performance.now() : 0) > 0) {}
+                startInertia(pi);
+            };
+            box.addEventListener('pointerup', e => end(e, false));
+            box.addEventListener('pointercancel', e => end(e, true));
+        }
+
         /* ───────── Rendering ───────── */
         function buildPanels() {
-            ['L', 'R'].forEach(side => {
-                $('panel-' + side).innerHTML = `
-                    <div class="name-bar"><span class="pname"></span><span class="pcount"></span></div>
-                    <div class="panel-mid">
-                        <div class="draw-pile" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
-                        <button class="hide-btn" onclick="toggleReveal('${side}')" aria-label="Hide or show cards"><i class="fas fa-eye-slash"></i></button>
-                    </div>
-                    <div class="hand-wrap"><div class="hand"></div><div class="hand-label" hidden></div></div>`;
+            ['A', 'B'].forEach(s => {
+                $('panel-' + s).innerHTML = `
+                    <div class="panel-in">
+                        <div class="name-bar"><span class="pname"></span><span class="pturn">YOUR TURN</span><span class="ptimer"></span><span class="pcount"></span></div>
+                        <div class="ai-mini"></div>
+                        <div class="p-body">
+                            <div class="draw-pile" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
+                            <div class="hand-wrap"><div class="carousel"></div><div class="hand-label" hidden></div></div>
+                            <div class="p-side"><div class="pcard"></div><button class="hide-btn" onclick="toggleReveal('${s}')" aria-label="Hide or show cards"><i class="fas fa-eye"></i></button></div>
+                        </div>
+                    </div>`;
+                bindCarousel(s);
             });
+            panelsBuilt = true;
         }
 
         function cardEl(card, asColor) {
             const el = document.createElement('div');
-            const col = card.color === 'wild' && asColor ? asColor : card.color;
-            el.className = `card c-${col}`;
-            let v = card.value;
-            if (card.value === 'Skip') v = 'Ø'; else if (card.value === 'Reverse') v = '⇄'; else if (card.value === 'Draw2') v = '+2';
-            else if (card.value === 'Draw4') v = '+4'; else if (card.value === 'Wild') v = 'WILD';
-            el.innerHTML = `<span class="card-text">${v}</span>`;
+            fillCard(el, card, true, asColor);
             return el;
+        }
+        function fillCard(el, card, faceUp, asColor) {
+            if (!faceUp) { el.className = 'card card-back'; el.innerHTML = ''; return; }
+            const col = card.color === 'wild' && asColor ? asColor : card.color;
+            let v = card.value;
+            if (v === 'Skip') v = 'Ø'; else if (v === 'Reverse') v = '⇄'; else if (v === 'Draw2') v = '+2';
+            else if (v === 'Draw4') v = '+4'; else if (v === 'Wild') v = 'WILD';
+            el.className = `card c-${col}`;
+            el.innerHTML = `<span class="card-text">${v}</span>`;
         }
 
         function renderAll() {
-            if (!players.length) return;
-            // center
+            if (!players.length || !gameOn) return;
             const top = discard[discard.length - 1];
             const d = $('discard'); d.innerHTML = '';
             d.appendChild(cardEl(top, currentColor));
             d.style.setProperty('--cur', HEX[currentColor]);
             $('deck-count').textContent = deck.length;
 
-            const tp = players[turnIdx];
-            $('turn-plate').style.setProperty('--pc', tp.color);
-            $('turn-name').textContent = tp.name;
+            $('turn-name').textContent = players[turnIdx].name;
             $('turn-note').textContent = turnNote;
-            renderTimer();
+            $('c-draw').classList.toggle('off', isAI(turnIdx) || over);
 
-            ['L', 'R'].forEach(renderPanel);
+            ['A', 'B'].forEach(renderPanel);
+            renderTimer();
         }
 
         function renderPanel(side) {
             const pi = seat[side], p = players[pi], el = $('panel-' + side);
             const mine = pi === turnIdx, ai = isAI(pi);
-            el.style.setProperty('--pc', p.color);
-            el.classList.toggle('active', mine);
+            el.classList.toggle('active', mine && !over);
+            el.classList.toggle('ai', ai);
             el.querySelector('.pname').textContent = p.name;
-            el.querySelector('.pcount').textContent = p.hand.length + ' 🃏';
+            el.querySelector('.pcount').textContent = p.hand.length + (p.hand.length === 1 ? ' card' : ' cards');
 
-            const faceUp = mine && revealed && !ai && !paused;
-            const handEl = el.querySelector('.hand');
-            const keep = handEl.scrollLeft;
-            handEl.innerHTML = '';
+            if (ai) {                                      // opponent in solo mode: just a tiny row of card backs
+                el.querySelector('.ai-mini').innerHTML = '<i class="mb"></i>'.repeat(Math.min(p.hand.length, 16));
+                return;
+            }
+            const faceUp = needsReveal() ? (mine && revealed && !paused) : true;
+            const active = mine && !over && (!needsReveal() || revealed) && !paused;
+
+            // reconcile hand elements (cards keep their DOM node so they glide into place)
+            const box = el.querySelector('.carousel'), keep = new Set();
             p.hand.forEach((card, i) => {
-                let c;
-                if (faceUp) {
-                    c = cardEl(card);
-                    const ok = isPlayable(card);
-                    c.classList.add(ok ? 'playable' : 'dim');
-                    c.onclick = () => playCard(pi, i);
-                } else {
-                    c = document.createElement('div'); c.className = 'card card-back';
-                }
+                let c = card._el;
+                if (!c) { c = card._el = document.createElement('div'); c._face = null; }
+                if (c._face !== faceUp) { fillCard(c, card, faceUp); c._face = faceUp; }
                 c.dataset.i = i;
-                handEl.appendChild(c);
+                const ok = faceUp && active && isPlayable(card);
+                c.classList.toggle('playable', ok);
+                c.classList.toggle('dim', faceUp && active && !ok);
+                if (c.parentNode !== box) box.appendChild(c);
+                keep.add(c);
             });
-            handEl.scrollLeft = keep;
+            [...box.children].forEach(ch => { if (!keep.has(ch)) ch.remove(); });
+            layoutCar(side, pi);
 
             const label = el.querySelector('.hand-label');
-            if (mine && !revealed && !ai && !over) { label.hidden = false; label.textContent = '🙈 Hidden — tap 👁 to show'; }
+            if (needsReveal() && mine && !revealed && !over) { label.hidden = false; label.textContent = 'Hidden — tap the eye to show'; }
             else label.hidden = true;
 
             const hb = el.querySelector('.hide-btn');
-            hb.disabled = !mine || ai;
+            hb.disabled = !mine || over;
             hb.classList.toggle('is-hidden', mine && !revealed);
             hb.innerHTML = `<i class="fas ${mine && revealed ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+            el.querySelector('.draw-pile').classList.toggle('off', !mine || over);
 
-            el.querySelector('.draw-pile').classList.toggle('off', !mine || ai);
+            const pc = el.querySelector('.pcard');
+            pc.innerHTML = ''; pc.appendChild(cardEl(discard[discard.length - 1], currentColor));
         }
 
         /* ───────── Messages ───────── */
         function flashTurn() {
             const p = players[turnIdx], f = $('flash');
-            f.innerHTML = `<div class="flash-in" style="--c:${p.color}"><small>👑 YOUR TURN</small><b>${esc(p.name)}</b>${turnNote ? `<em>${esc(turnNote)}</em>` : ''}</div>`;
+            f.innerHTML = `<div class="flash-in" style="--rot:${seatAng(turnIdx)}deg"><small>YOUR TURN</small><b>${esc(p.name)}</b>${turnNote ? `<em>${esc(turnNote)}</em>` : ''}</div>`;
             f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
         }
         let toastT;
         function toast(msg) {
-            const t = $('toast'); t.textContent = msg; t.classList.add('show');
+            const t = $('toast'); t.textContent = msg;
+            t.style.setProperty('--rot', seatAng(turnIdx) + 'deg');
+            t.classList.add('show');
             clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800);
         }
     </script>
