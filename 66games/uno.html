@@ -5,175 +5,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
     <meta name="theme-color" content="#ffffff" />
     <title>UNO · 66Games</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
-        :root{
-            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
-            --accent: #123cf3; --accent-light: #eef2ff; 
+        :root {
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --navy: #0d2b4e;
+            --accent: #123cf3; --accent-light: #eef2ff;
             --uno-red: #ef4444; --uno-blue: #3b82f6; --uno-green: #22c55e; --uno-yellow: #eab308; --uno-black: #1e293b;
-            --shadow: 0 4px 12px rgba(0,0,0,0.15);
+            --ch: clamp(70px, 24vh, 104px);
+            --cw: calc(var(--ch) * 0.66);
         }
-        
+        :root[data-theme="dark"] {
+            --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
+            --text: #f0f4f8; --text-secondary: #8b98a5; --navy: #e2e8f0;
+            --accent: #3b6cff; --accent-light: #1e2638;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); 
-            min-height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; 
-            user-select: none; -webkit-user-select: none;
+        [hidden] { display: none !important; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text);
+            overflow: hidden; -webkit-font-smoothing: antialiased;
+            -webkit-user-select: none; user-select: none;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation; overscroll-behavior: none;
             display: flex; flex-direction: column;
         }
-        
-        /* TOP BAR */
-        .top-bar { 
-            height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; 
+        /* Inputs MUST stay selectable, otherwise mobile browsers lag / refuse to focus them */
+        input { -webkit-user-select: text; user-select: text; }
+
+        /* ───────── Setup screens ───────── */
+        .top-bar {
+            height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
             padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border);
-            z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
         .logo-small { font-size: 1.15rem; font-weight: 700; color: var(--navy); text-decoration: none; }
         .logo-small span { color: var(--accent); }
-        .brand-badge { 
-            background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; 
-            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; 
+        .brand-badge {
+            background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff;
+            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 900;
             letter-spacing: 1px; transform: rotate(-5deg);
         }
-        
-        /* SCREENS */
-        .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow-y: auto; }
         .screen.active { display: flex; }
-        .title { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 20px; }
-        
-        .btn { 
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: none; 
-            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; 
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; 
-            justify-content: center; gap: 10px; margin-bottom: 12px; 
+        .title { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 18px; }
+        .sub { margin-bottom: 14px; color: var(--text-secondary); font-size: 0.9rem; }
+
+        .btn {
+            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: none;
+            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;
         }
-        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(18,60,243,0.3); }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(18,60,243,0.3); }
         .btn-primary:active { transform: scale(0.97); }
         .btn-outline { background: var(--surface); border: 2px solid var(--accent); color: var(--accent); }
-        .input-roll { 
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border); 
-            font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 10px; 
-            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text); 
+        .btn-ghost { background: transparent; color: var(--text-secondary); }
+        .btn-danger { background: #fef2f2; color: #dc2626; border: 2px solid #fecaca; }
+        .input-roll {
+            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border-strong);
+            font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 10px;
+            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text);
+            letter-spacing: 0.3em;
         }
+        .input-roll:focus { border-color: var(--accent); }
+        .form-error { max-width: 300px; width: 100%; font-size: 0.8rem; font-weight: 600; color: #dc2626; background: #fef2f2; border-radius: 8px; padding: 8px; margin-bottom: 10px; }
+        .intake-row { display: flex; gap: 10px; width: 100%; max-width: 300px; margin-bottom: 12px; }
+        .intake-row .btn { margin: 0; }
 
-        /* GAME SCREEN */
-        #game-screen { display: none; flex-direction: column; justify-content: space-between; padding: 0; position: relative; }
+        /* ───────── Game screen ───────── */
+        #game-screen { position: fixed; inset: 0; z-index: 5; display: none; flex-direction: column; background: var(--bg); }
         #game-screen.active { display: flex; }
 
-        /* TURN BANNER */
-        .turn-banner {
-            position: absolute; top: -80px; left: 0; right: 0; 
-            background: linear-gradient(90deg, #f59e0b, #ef4444); color: white;
-            padding: 12px; font-weight: 800; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 50;
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+        .g-top {
+            flex-shrink: 0; height: 46px; display: flex; align-items: center; gap: 10px;
+            padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--border);
         }
-        .turn-banner.show { top: 0; }
+        .pause-btn {
+            height: 36px; padding: 0 16px; border-radius: 18px; border: none; cursor: pointer;
+            background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff;
+            font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.05em;
+            display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 3px 10px rgba(234,88,12,0.35);
+        }
+        .pause-btn:active { transform: scale(0.94); }
+        .pause-btn i { font-size: 1rem; }
+        .timer { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .timer-bar { flex: 1; height: 12px; border-radius: 6px; background: var(--border-strong); overflow: hidden; }
+        .timer-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #22c55e, #eab308); border-radius: 6px; }
+        .timer.low .timer-bar i { background: #ef4444; }
+        .timer-num { font-size: 1.4rem; font-weight: 900; color: var(--navy); min-width: 34px; text-align: center; font-variant-numeric: tabular-nums; }
+        .timer.low .timer-num { color: #ef4444; animation: tick 0.5s infinite alternate; }
+        @keyframes tick { from { transform: scale(1); } to { transform: scale(1.25); } }
+        .deck-info { font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); min-width: 44px; text-align: right; }
 
-        /* TABLE AREA */
-        .table-area {
-            flex: 1; display: flex; align-items: center; justify-content: center; 
-            gap: 20px; padding: 20px; position: relative;
-        }
-        .table-area.swapped { flex-direction: row-reverse; }
-        
-        .deck-pile { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
-        .deck-pile.disabled { opacity: 0.5; pointer-events: none; }
-        .deck-card { 
-            width: 60px; height: 90px; border-radius: 8px; background: #1e293b; 
-            border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            display: flex; align-items: center; justify-content: center; color: white; font-weight: 900;
-        }
-        .deck-label { font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); }
+        .board { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr auto 1fr; }
 
-        /* CENTER PILES */
-        .center-piles { display: flex; gap: 15px; align-items: center; }
-        
-        .discard-pile {
-            width: 70px; height: 105px; border-radius: 10px; position: relative;
-            display: flex; align-items: center; justify-content: center;
+        /* panels (one per player seat) */
+        .panel { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 8px; gap: 6px; }
+        .name-bar {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            padding: 6px 12px; border-radius: 14px; background: var(--surface);
+            border: 2px solid var(--pc); transition: box-shadow 0.2s, background 0.2s;
+        }
+        .name-bar .pname {
+            font-size: clamp(0.95rem, 3.4vh, 1.3rem); font-weight: 900; color: var(--pc);
+            line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: -0.3px;
+        }
+        .name-bar .pcount { font-size: 0.72rem; font-weight: 800; color: var(--text-secondary); white-space: nowrap; }
+        .panel.active .name-bar { background: var(--pc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--pc) 25%, transparent); }
+        .panel.active .name-bar .pname, .panel.active .name-bar .pcount { color: #fff; }
+        .panel.active .name-bar .pname::before { content: '👑 '; }
+
+        .panel-mid { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 1; min-height: 0; padding: 0 4px; }
+        #panel-R .panel-mid { flex-direction: row-reverse; }
+        .draw-pile { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+        .draw-pile.off { opacity: 0.4; pointer-events: none; }
+        .draw-pile:active .card { transform: scale(0.94); }
+        .draw-pile span { font-size: 0.65rem; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.08em; }
+        .hide-btn {
+            width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer;
+            background: var(--accent-light); color: var(--accent); font-size: 1.3rem;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        .hide-btn:active { transform: scale(0.9); }
+        .hide-btn:disabled { opacity: 0.3; pointer-events: none; }
+        .hide-btn.is-hidden { background: #ef4444; color: #fff; }
+
+        .hand-wrap { position: relative; flex-shrink: 0; }
+        .hand {
+            display: flex; gap: 6px; align-items: flex-end; overflow-x: auto; overflow-y: hidden;
+            padding: 14px 8px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+            min-height: calc(var(--ch) + 22px);
+        }
+        .hand::-webkit-scrollbar { display: none; }
+        .hand-label {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none;
+            background: rgba(13,43,78,0.82); color: #fff; font-size: 0.72rem; font-weight: 700;
+            padding: 6px 12px; border-radius: 20px; white-space: nowrap;
         }
 
-        /* UNO CARDS */
+        /* center column */
+        .center { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 6px; width: clamp(130px, 22vw, 200px); }
+        .table-card { padding: 6px; border-radius: 14px; box-shadow: 0 0 0 4px var(--cur, transparent), 0 0 22px var(--cur, transparent); transition: box-shadow 0.3s; }
+        .switch-btn {
+            width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer;
+            background: var(--surface); color: var(--navy); font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .switch-btn:active { transform: rotate(180deg) scale(0.9); }
+        .turn-plate {
+            width: 100%; text-align: center; padding: 8px 6px; border-radius: 16px; color: #fff;
+            background: linear-gradient(135deg, var(--pc, #ef4444), #1e293b);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25); position: relative; overflow: hidden;
+        }
+        .turn-plate::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+            transform: translateX(-100%); animation: shine 2.4s infinite;
+        }
+        @keyframes shine { to { transform: translateX(100%); } }
+        .turn-plate small { display: block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.18em; opacity: 0.85; }
+        .turn-plate strong { display: block; font-size: clamp(1rem, 3.6vh, 1.4rem); font-weight: 900; line-height: 1.15; word-break: break-word; }
+        .turn-plate em { display: block; font-style: normal; font-size: 0.68rem; font-weight: 700; margin-top: 2px; min-height: 1em; color: #fde68a; }
+
+        /* UNO cards */
         .card {
-            width: 60px; height: 90px; border-radius: 8px; border: 3px solid #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; font-weight: 900; color: #fff; position: relative; overflow: hidden;
-            flex-shrink: 0; transition: transform 0.2s, margin 0.2s;
+            width: var(--cw); height: var(--ch); border-radius: 9px; border: 3px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--cw) * 0.42); font-weight: 900; color: #fff; position: relative; overflow: hidden;
+            flex-shrink: 0; transition: transform 0.15s;
         }
-        .card::before { /* White oval in center */
-            content: ''; position: absolute; width: 120%; height: 60%; background: #fff;
-            border-radius: 50%; transform: rotate(-20deg);
-        }
+        .card::before { content: ''; position: absolute; width: 120%; height: 60%; background: #fff; border-radius: 50%; transform: rotate(-20deg); }
         .card .card-text { position: relative; z-index: 2; color: inherit; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
-        
         .c-red { background: var(--uno-red); color: var(--uno-red); }
         .c-blue { background: var(--uno-blue); color: var(--uno-blue); }
         .c-green { background: var(--uno-green); color: var(--uno-green); }
         .c-yellow { background: var(--uno-yellow); color: var(--uno-yellow); }
         .c-wild { background: var(--uno-black); color: #fff; }
         .c-wild::before { display: none; }
-        .c-wild .card-text { font-size: 1rem; text-shadow: none; }
+        .c-wild .card-text { font-size: calc(var(--cw) * 0.24); text-shadow: none; }
+        .card-back { background: repeating-linear-gradient(45deg, #1e293b, #1e293b 10px, #ef4444 10px, #ef4444 20px); }
+        .card-back::before { width: 44%; height: 30%; border-radius: 50%; transform: none; }
+        .card-back::after { content: 'UNO'; position: absolute; z-index: 2; font-size: calc(var(--cw) * 0.2); font-weight: 900; color: #ef4444; }
+        .hand .card.playable { transform: translateY(-10px); border-color: #fbbf24; box-shadow: 0 8px 16px rgba(0,0,0,0.3); }
+        .hand .card.dim { opacity: 0.55; }
+        .hand .card.shake { animation: shake 0.3s; }
+        @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        .card-back {
-            background: repeating-linear-gradient(45deg, #1e293b, #1e293b 10px, #ef4444 10px, #ef4444 20px);
+        /* flash + toast */
+        .flash { position: absolute; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0; }
+        .flash.go { animation: flashIn 1.4s ease-out; }
+        .flash-in { text-align: center; color: #fff; padding: 14px 34px; border-radius: 26px; background: linear-gradient(135deg, var(--c), #1e293b); box-shadow: 0 14px 40px rgba(0,0,0,0.4); max-width: 90vw; }
+        .flash-in small { display: block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.22em; opacity: 0.9; }
+        .flash-in b { display: block; font-size: clamp(1.6rem, 8vh, 3rem); font-weight: 900; line-height: 1.1; }
+        .flash-in em { display: block; font-style: normal; font-weight: 700; color: #fde68a; font-size: 0.85rem; }
+        @keyframes flashIn { 0% { opacity: 0; transform: scale(0.6); } 18% { opacity: 1; transform: scale(1.08); } 30% { transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(1.05); } }
+        .toast {
+            position: absolute; left: 50%; top: 54px; transform: translateX(-50%) translateY(-20px); z-index: 45;
+            background: #0d2b4e; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            opacity: 0; transition: 0.25s; pointer-events: none; white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis;
         }
-        .card-back::before { background: #fff; width: 40%; height: 40%; border-radius: 50%; transform: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* HANDS */
-        .hand-container { width: 100%; padding: 10px 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .hand-container::-webkit-scrollbar { display: none; }
-        .hand { display: flex; gap: 5px; padding: 0 15px; align-items: center; min-height: 100px; }
-        .hand .card:active { transform: translateY(-10px); }
-        .hand .card.playable { transform: translateY(-10px); box-shadow: 0 8px 16px rgba(0,0,0,0.3); border-color: #fbbf24; }
-        
-        .opponent-hand { display: flex; justify-content: center; }
-        .opponent-hand .card { margin-left: -30px; }
-        .opponent-hand .card:first-child { margin-left: 0; }
-
-        /* CONTROLS */
-        .controls { display: flex; justify-content: space-between; padding: 10px 20px 20px; background: var(--surface); border-top: 1px solid var(--border); }
-        .btn-icon { 
-            width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--accent-light); color: var(--accent);
-            font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s;
-        }
-        .btn-icon:active { transform: scale(0.9); }
-        .btn-icon.hidden-mode { background: #ef4444; color: white; }
-
-        /* OVERLAYS */
-        .overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; text-align: center; color: white; }
+        /* overlays */
+        .overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.92); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; text-align: center; color: #fff; }
         .overlay.active { display: flex; }
-        .overlay-box { background: var(--surface); color: var(--text); padding: 30px 20px; border-radius: 24px; width: 100%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        
-        /* COLOR PICKER */
-        .color-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .color-btn { height: 60px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .overlay-box { background: var(--surface); color: var(--text); padding: 24px 20px; border-radius: 24px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 96vh; overflow-y: auto; }
+        .overlay-box.flip { transform: rotate(180deg); }
+        .overlay-box h2 { font-size: 1.3rem; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+        .overlay-box .vs { font-size: 0.95rem; font-weight: 800; margin-bottom: 14px; color: var(--text-secondary); }
+        .color-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .color-btn { height: 56px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .color-btn:active { transform: scale(0.95); }
+        .win-crown { font-size: 4.5rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 10px; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-14px); } }
+        .win-name { font-size: clamp(2rem, 10vh, 3.4rem); font-weight: 900; line-height: 1.1; color: #fff; }
+        .win-line { font-size: 1.2rem; font-weight: 800; margin: 8px 0 18px; color: #cbd5e1; }
+        .win-line b { color: #fbbf24; }
+        .win-actions { width: 100%; max-width: 300px; }
 
-        /* WIN OVERLAY */
-        .win-overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; color: white; text-align: center; padding: 20px; }
-        .win-overlay.active { display: flex; }
-        .win-crown { font-size: 6rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-
-        /* HIDE CARDS OVERLAY */
-        .hide-overlay { position: fixed; inset: 0; background: var(--surface); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 90; }
-        .hide-overlay.active { display: flex; }
-        .hide-icon { font-size: 5rem; color: var(--accent); margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
+        /* ───────── Portrait: seats become top / bottom (top one faces the other player) ───────── */
+        @media (orientation: portrait) {
+            .board { grid-template-columns: 1fr; grid-template-rows: 1fr auto 1fr; }
+            #panel-L { transform: rotate(180deg); }
+            .center { flex-direction: row; width: 100%; padding: 6px 12px; }
+            .center .turn-plate { flex: 1; }
+            .center .table-card .card { --ch: 84px; }
+        }
+        @media (orientation: landscape) and (max-height: 420px) {
+            .panel { padding: 5px; gap: 4px; }
+            .hide-btn { width: 44px; height: 44px; font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
+    <!-- ═════════ SETUP ═════════ -->
+    <div class="top-bar" id="main-top">
         <a href="index.html" class="logo-small">66<span>Notes</span></a>
         <div class="brand-badge">UNO</div>
         <div style="width: 32px;"></div>
@@ -182,66 +254,67 @@
     <div id="setup-screen" class="screen active">
         <h1 class="title" style="color: #ef4444;">Select UNO Mode</h1>
         <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
-        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
-        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
+        <button class="btn btn-outline" onclick="openSplit()"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
+        <button class="btn btn-ghost" onclick="window.location.href='index.html'" style="margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
     </div>
 
     <div id="split-screen" class="screen">
         <h1 class="title">Split-Screen Setup</h1>
-        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter Player 2's Roll Number</p>
-        <input type="number" id="p2-roll" class="input-roll" placeholder="e.g. 015" />
-        <button class="btn btn-primary" onclick="startSplit()">Start Game</button>
-        <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
+        <!-- Plain form: nothing runs while typing. Lookup happens only when Continue is pressed. -->
+        <form id="split-form" autocomplete="off" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+            <div id="split-step1" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <p class="sub">Enter Player 2's roll number</p>
+                <input type="text" id="p2-roll" class="input-roll" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="015" autocomplete="off" />
+                <div class="form-error" id="split-err" hidden></div>
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </div>
+            <div id="split-step2" hidden style="width:100%; display:flex; flex-direction:column; align-items:center;">
+                <p class="sub">Roll 138 is shared. Who is Player 2?</p>
+                <div class="intake-row">
+                    <button type="button" class="btn btn-primary" onclick="pickIntake('Aion')">Aion</button>
+                    <button type="button" class="btn btn-outline" onclick="pickIntake('Maria')">Maria</button>
+                </div>
+                <div class="form-error" id="split-err2" hidden></div>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="showScreen('setup-screen')">Cancel</button>
+        </form>
     </div>
 
-    <div id="game-screen" class="screen">
-        
-        <div class="turn-banner" id="turn-banner">Player's Turn!</div>
-
-        <!-- Opponent Area (Top) -->
-        <div style="padding: 15px; text-align: center;">
-            <div class="p-name p1-text" id="ui-p1" style="font-weight: 700; color: var(--uno-red); margin-bottom: 5px;">Opponent</div>
-            <div class="opponent-hand" id="opponent-hand">
-                <!-- Opponent cards (face down) -->
+    <!-- ═════════ GAME ═════════ -->
+    <div id="game-screen">
+        <div class="g-top">
+            <button class="pause-btn" onclick="pauseGame()"><i class="fas fa-pause"></i> PAUSE</button>
+            <div class="timer" id="timer">
+                <div class="timer-bar"><i id="timer-fill"></i></div>
+                <div class="timer-num" id="timer-num">10</div>
             </div>
+            <div class="deck-info"><i class="fas fa-layer-group"></i> <span id="deck-count">0</span></div>
         </div>
 
-        <!-- Center Table -->
-        <div class="table-area" id="table-area">
-            <div class="center-piles">
-                <div class="deck-pile" id="draw-pile" onclick="drawCard(1)">
-                    <div class="deck-card card-back"></div>
-                    <span class="deck-label">DRAW</span>
-                </div>
-                <div class="discard-pile" id="discard-pile">
-                    <!-- Top card of discard -->
-                </div>
-            </div>
-        </div>
+        <div class="board">
+            <section class="panel" id="panel-L"></section>
 
-        <!-- Player Area (Bottom) -->
-        <div>
-            <div style="text-align: center; margin-bottom: 5px;">
-                <span class="p-name p2-text" id="ui-p2" style="font-weight: 700; color: var(--uno-blue);">My Name</span>
-            </div>
-            <div class="hand-container">
-                <div class="hand" id="player-hand">
-                    <!-- Player cards -->
+            <div class="center">
+                <div class="table-card" id="discard"></div>
+                <button class="switch-btn" onclick="swapSides()" aria-label="Switch sides"><i class="fas fa-arrow-right-arrow-left"></i></button>
+                <div class="turn-plate" id="turn-plate">
+                    <small>TURN</small>
+                    <strong id="turn-name">—</strong>
+                    <em id="turn-note"></em>
                 </div>
             </div>
+
+            <section class="panel" id="panel-R"></section>
         </div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <button class="btn-icon" onclick="toggleSides()" title="Switch Sides"><i class="fas fa-arrow-right-arrow-left"></i></button>
-            <button class="btn-icon" id="hide-btn" onclick="hideCards()" title="Hide Cards"><i class="fas fa-hand-paper"></i></button>
-        </div>
+        <div class="flash" id="flash"></div>
+        <div class="toast" id="toast"></div>
     </div>
 
-    <!-- Color Picker Overlay for Wild Cards -->
+    <!-- Wild colour picker -->
     <div class="overlay" id="color-overlay">
-        <div class="overlay-box">
-            <h2 style="margin-bottom: 10px;">Choose a Color</h2>
+        <div class="overlay-box" id="color-box">
+            <h2 id="color-title">Choose a Color</h2>
             <div class="color-picker">
                 <button class="color-btn" style="background: var(--uno-red);" onclick="selectColor('red')"></button>
                 <button class="color-btn" style="background: var(--uno-blue);" onclick="selectColor('blue')"></button>
@@ -251,359 +324,401 @@
         </div>
     </div>
 
-    <!-- Hide Cards Overlay -->
-    <div class="hide-overlay" id="hide-overlay">
-        <i class="fas fa-hand-paper hide-icon"></i>
-        <h2 style="margin-bottom: 10px;">Cards Hidden</h2>
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">Pass the device to the next player.</p>
-        <button class="btn btn-primary" onclick="showCards()">I am Ready</button>
+    <!-- Pause -->
+    <div class="overlay" id="pause-overlay" style="z-index:110;">
+        <div class="overlay-box">
+            <h2>⏸ Game Paused</h2>
+            <div class="vs" id="pause-vs"></div>
+            <button class="btn btn-primary" style="max-width:none;" onclick="resumeGame()"><i class="fas fa-play"></i> Resume</button>
+            <button class="btn btn-outline" style="max-width:none;" onclick="rematch()"><i class="fas fa-rotate-right"></i> Restart</button>
+            <button class="btn btn-danger" style="max-width:none; margin-bottom:0;" onclick="leaveGame()"><i class="fas fa-right-from-bracket"></i> Leave Game</button>
+        </div>
     </div>
 
-    <!-- Win Overlay -->
-    <div class="win-overlay" id="win-overlay">
+    <!-- Win -->
+    <div class="overlay" id="win-overlay" style="z-index:120; flex-direction:column; background: rgba(13,43,78,0.96);">
         <i class="fas fa-crown win-crown"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
-        <p style="color: #cbd5e1;">Returning to dashboard...</p>
+        <div class="win-name" id="win-name">—</div>
+        <div class="win-line" id="win-line"></div>
+        <div class="win-actions">
+            <button class="btn btn-primary" style="max-width:none;" onclick="rematch()"><i class="fas fa-rotate-right"></i> Play Again</button>
+            <button class="btn btn-outline" style="max-width:none;" onclick="leaveGame()"><i class="fas fa-house"></i> Back to Hub</button>
+        </div>
     </div>
 
     <script>
         const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
-        
-        const currentUser = JSON.parse(localStorage.getItem('66games_user'));
-        if (!currentUser) window.location.href = 'index.html';
 
-        let mode = ''; let p1Name = currentUser.name; let p2Name = '';
-        let sidesSwapped = false;
+        const TURN_MS = 10000;
+        const HEX = { red: '#ef4444', blue: '#3b82f6', green: '#22c55e', yellow: '#eab308' };
+        const $ = id => document.getElementById(id);
+        const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-        // UNO State
-        let deck = [];
-        let playerHand = [];
-        let oppHand = [];
-        let discardPile = [];
-        let currentColor = '';
-        let turn = 1; // 1 = P1 (Opponent/Top), 2 = P2 (Player/Bottom)
-        let isAnimating = false;
-        let pendingWildCard = null;
+        try { if (localStorage.getItem('66games_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
 
+        /* Logged-in user comes from the hub (same key index.html writes) */
+        let currentUser = null;
+        try { currentUser = JSON.parse(localStorage.getItem('66games_user')); } catch (e) {}
+        if (!currentUser) location.replace('index.html');
+        const me = currentUser || { roll: '', name: 'Player' };
+
+        /* ───────── State ───────── */
+        let mode = '';
+        let players = [];                 // [{name, color, hand:[]}]  index 0 = logged-in user, 1 = opponent
+        let seat = { L: 1, R: 0 };        // which player sits on which side
+        let deck = [], discard = [], currentColor = 'red';
+        let turnIdx = 0, turnNote = '';
+        let revealed = false, drewThisTurn = false;
+        let busy = false, paused = false, over = false, pickerOpen = false, pending = null;
+        let remaining = TURN_MS, lastTick = performance.now(), gameOn = false, gen = 0;
+        const isAI = i => mode === 'ai' && i === 1;
+
+        /* ───────── Setup flow ───────── */
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            $(id).classList.add('active');
         }
-
+        function openSplit() {
+            $('p2-roll').value = '';
+            $('split-step1').hidden = false; $('split-step2').hidden = true;
+            $('split-err').hidden = true; $('split-err2').hidden = true;
+            showScreen('split-screen');
+        }
+        function splitError(msg) {
+            const el = $('split-step2').hidden ? $('split-err') : $('split-err2');
+            el.textContent = msg; el.hidden = false;
+        }
+        $('split-form').addEventListener('submit', e => {
+            e.preventDefault();
+            if ($('split-step2').hidden) {
+                const raw = $('p2-roll').value.trim();
+                if (!raw) return splitError('Enter a roll number');
+                const roll = raw.padStart(3, '0');
+                if (roll === '138') { $('split-step1').hidden = true; $('split-step2').hidden = false; return; }
+                const name = STUDENTS[roll];
+                if (!name) return splitError('Roll not found!');
+                if (roll === me.roll) return splitError("That's you! Pick another player.");
+                beginSplit(name);
+            }
+        });
+        function pickIntake(name) {
+            if (me.roll === '138' && name === me.name) return splitError("That's you! Pick the other one.");
+            beginSplit(name);
+        }
+        function beginSplit(p2) {
+            mode = 'split';
+            players = [mk(me.name, '#ef4444'), mk(p2, '#3b82f6')];
+            initGame();
+        }
         function startMode(m) {
-            mode = m; p2Name = (m === 'ai') ? 'Computer' : p2Name; initGame();
+            mode = m;
+            players = [mk(me.name, '#ef4444'), mk('Computer', '#3b82f6')];
+            initGame();
         }
+        function mk(name, color) { return { name, color, hand: [] }; }
 
-        function startSplit() {
-            const roll = document.getElementById('p2-roll').value.padStart(3, '0');
-            let name = STUDENTS[roll];
-            if (roll === '138') name = 'Aion/Maria'; 
-            if (!name) return alert('Roll not found!');
-            p2Name = name; mode = 'split'; initGame();
-        }
-
-        function toggleSides() {
-            sidesSwapped = !sidesSwapped;
-            const tableArea = document.getElementById('table-area');
-            if (sidesSwapped) tableArea.classList.add('swapped');
-            else tableArea.classList.remove('swapped');
-        }
-
-        /* UNO GAME LOGIC */
+        /* ───────── Deck ───────── */
+        function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
         function createDeck() {
-            const colors = ['red', 'blue', 'green', 'yellow'];
-            const deck = [];
-            
-            // Number cards (0-9) and Action cards (Skip, Reverse, Draw2)
-            for (let color of colors) {
-                deck.push({ color, type: 'number', value: '0' });
-                for (let i = 1; i <= 9; i++) {
-                    deck.push({ color, type: 'number', value: i.toString() });
-                    deck.push({ color, type: 'number', value: i.toString() });
-                }
-                for (let action of ['Skip', 'Reverse', 'Draw2']) {
-                    deck.push({ color, type: 'action', value: action });
-                    deck.push({ color, type: 'action', value: action });
-                }
+            const d = [];
+            for (const color of ['red', 'blue', 'green', 'yellow']) {
+                d.push({ color, type: 'number', value: '0' });
+                for (let i = 1; i <= 9; i++) { d.push({ color, type: 'number', value: '' + i }); d.push({ color, type: 'number', value: '' + i }); }
+                for (const a of ['Skip', 'Reverse', 'Draw2']) { d.push({ color, type: 'action', value: a }); d.push({ color, type: 'action', value: a }); }
             }
-            
-            // Wild cards
-            for (let i = 0; i < 4; i++) {
-                deck.push({ color: 'wild', type: 'wild', value: 'Wild' });
-                deck.push({ color: 'wild', type: 'wild', value: 'Draw4' });
+            for (let i = 0; i < 4; i++) { d.push({ color: 'wild', type: 'wild', value: 'Wild' }); d.push({ color: 'wild', type: 'wild', value: 'Draw4' }); }
+            return shuffle(d);
+        }
+        function takeCard() {
+            if (!deck.length && discard.length > 1) {           // reshuffle the discard pile when the deck runs out
+                const top = discard.pop();
+                deck = shuffle(discard); discard = [top];
             }
-            
-            // Shuffle
-            for (let i = deck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
-            }
-            return deck;
+            return deck.pop() || null;
+        }
+        function giveCard(pi, n) {
+            const got = [];
+            for (let i = 0; i < n; i++) { const c = takeCard(); if (c) { players[pi].hand.push(c); got.push(c); } }
+            return got;
         }
 
+        /* ───────── Game start ───────── */
         function initGame() {
-            deck = createDeck();
-            playerHand = deck.splice(0, 7);
-            oppHand = deck.splice(0, 7);
-            discardPile = [];
-            
-            // Draw first card (can't be wild)
-            let firstCard = deck.pop();
-            while (firstCard.color === 'wild') {
-                deck.unshift(firstCard);
-                firstCard = deck.pop();
-            }
-            discardPile.push(firstCard);
-            currentColor = firstCard.color;
-            
-            turn = 1;
-            isAnimating = false;
-            sidesSwapped = false;
-            document.getElementById('table-area').classList.remove('swapped');
-            
-            document.getElementById('ui-p1').innerText = p1Name;
-            document.getElementById('ui-p2').innerText = p2Name;
-            
-            showScreen('game-screen');
-            renderGame();
-            triggerTurnBanner();
-            
-            if (turn === 1 && mode === 'ai') {
-                setTimeout(aiTurn, 1500);
-            }
+            gen++;
+            deck = createDeck(); discard = [];
+            players.forEach(p => p.hand = deck.splice(0, 7));
+            let first = deck.pop();
+            while (first.type !== 'number') { deck.unshift(first); first = deck.pop(); }   // start card is always a plain number
+            discard.push(first); currentColor = first.color;
+            seat = { L: 1, R: 0 };
+            over = false; paused = false; pickerOpen = false; pending = null; gameOn = true;
+            ['win-overlay', 'pause-overlay', 'color-overlay'].forEach(id => $(id).classList.remove('active'));
+            $('main-top').style.display = 'none';
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            $('game-screen').classList.add('active');
+            buildPanels();
+            startTurn(Math.random() < 0.5 ? 0 : 1);
+        }
+        function rematch() { if (!players.length) return; initGame(); }
+        function leaveGame() { location.href = 'index.html'; }
+
+        /* run a callback later, but never while paused and never after a restart */
+        function later(fn, ms) {
+            const g = gen;
+            setTimeout(function wait() {
+                if (g !== gen) return;
+                if (paused || pickerOpen) return setTimeout(wait, 300);
+                fn();
+            }, ms);
         }
 
-        function renderGame() {
-            // Render discard pile
-            const topCard = discardPile[discardPile.length - 1];
-            const discardEl = document.getElementById('discard-pile');
-            discardEl.innerHTML = '';
-            discardEl.appendChild(createCardElement(topCard, false));
-
-            // Render Opponent Hand (face down)
-            const oppHandEl = document.getElementById('opponent-hand');
-            oppHandEl.innerHTML = '';
-            oppHand.forEach(() => {
-                const cardEl = document.createElement('div');
-                cardEl.className = 'card card-back';
-                oppHandEl.appendChild(cardEl);
-            });
-
-            // Render Player Hand (face up)
-            const playerHandEl = document.getElementById('player-hand');
-            playerHandEl.innerHTML = '';
-            playerHand.forEach((card, index) => {
-                const cardEl = createCardElement(card, true);
-                cardEl.dataset.index = index;
-                
-                // Highlight playable cards
-                if (turn === 2 && isPlayable(card)) {
-                    cardEl.classList.add('playable');
-                }
-                
-                cardEl.onclick = () => playCard(index);
-                playerHandEl.appendChild(cardEl);
-            });
-
-            // Show if it's AI's turn
-            if (turn === 1 && mode === 'ai') {
-                document.getElementById('draw-pile').classList.add('disabled');
-            } else {
-                document.getElementById('draw-pile').classList.remove('disabled');
-            }
+        /* ───────── Turns ───────── */
+        function startTurn(idx, note) {
+            turnIdx = idx; turnNote = note || '';
+            revealed = false; drewThisTurn = false; busy = false; remaining = TURN_MS;
+            renderAll(); flashTurn();
+            if (isAI(idx)) later(aiTurn, 1500 + Math.random() * 600);
         }
-
-        function createCardElement(card, isHandCard) {
-            const el = document.createElement('div');
-            el.className = `card c-${card.color}`;
-            
-            let displayVal = card.value;
-            if (card.type === 'action') {
-                if (card.value === 'Skip') displayVal = 'Ø';
-                if (card.value === 'Reverse') displayVal = '⇄';
-                if (card.value === 'Draw2') displayVal = '+2';
-            } else if (card.type === 'wild') {
-                if (card.value === 'Draw4') displayVal = '+4';
-                else displayVal = 'WILD';
-            }
-
-            el.innerHTML = `<span class="card-text">${displayVal}</span>`;
-            return el;
-        }
+        const nextTurn = () => startTurn(1 - turnIdx);
 
         function isPlayable(card) {
             if (card.color === 'wild') return true;
-            const topCard = discardPile[discardPile.length - 1];
+            const top = discard[discard.length - 1];
             if (card.color === currentColor) return true;
-            if (card.type === 'number' && topCard.type === 'number' && card.value === topCard.value) return true;
-            if (card.type === 'action' && topCard.type === 'action' && card.value === topCard.value) return true;
+            if (card.type === 'number' && top.type === 'number' && card.value === top.value) return true;
+            if (card.type === 'action' && top.type === 'action' && card.value === top.value) return true;
             return false;
         }
+        const canAct = pi => !paused && !busy && !over && !pickerOpen && turnIdx === pi && (isAI(pi) || revealed);
 
-        function playCard(index) {
-            if (turn !== 2 || isAnimating) return;
-            const card = playerHand[index];
-            
+        function playCard(pi, ci) {
+            if (!canAct(pi)) return;
+            const card = players[pi].hand[ci];
+            if (!card) return;
             if (!isPlayable(card)) {
-                // Flash red or something to show invalid
-                return; 
-            }
-
-            isAnimating = true;
-            playerHand.splice(index, 1);
-            
-            // Handle Wild Cards
-            if (card.color === 'wild') {
-                pendingWildCard = card;
-                document.getElementById('color-overlay').classList.add('active');
+                const el = document.querySelector(`#panel-${sideOf(pi)} .hand .card[data-i="${ci}"]`);
+                if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
                 return;
             }
-
-            applyCardEffect(card);
+            players[pi].hand.splice(ci, 1);
+            busy = true;
+            if (card.color === 'wild') {
+                if (isAI(pi)) return resolveCard(pi, card, aiPickColor(pi));
+                pending = { pi, card }; pickerOpen = true;
+                $('color-title').textContent = `${players[pi].name}, choose a color`;
+                $('color-box').classList.toggle('flip', isPortrait() && sideOf(pi) === 'L');
+                renderAll();
+                $('color-overlay').classList.add('active');
+                return;
+            }
+            resolveCard(pi, card, card.color);
         }
-
         function selectColor(color) {
-            document.getElementById('color-overlay').classList.remove('active');
-            currentColor = color;
-            applyCardEffect(pendingWildCard);
-            pendingWildCard = null;
+            if (!pending) return;
+            $('color-overlay').classList.remove('active');
+            const { pi, card } = pending; pending = null; pickerOpen = false;
+            resolveCard(pi, card, color);
         }
+        function resolveCard(pi, card, color) {
+            discard.push(card); currentColor = color;
+            renderAll();
+            if (!players[pi].hand.length) return win(pi);
 
-        function applyCardEffect(card) {
-            discardPile.push(card);
-            if (card.color !== 'wild') currentColor = card.color;
-
-            renderGame();
-
-            // Check Win
-            if (playerHand.length === 0) return triggerWin(p2Name);
-            if (oppHand.length === 0) return triggerWin(p1Name);
-
-            // Handle Actions
-            let skipTurn = false;
-            let drawAmount = 0;
-
+            const opp = 1 - pi, oppName = players[opp].name;
+            let again = false, note = '';
             if (card.type === 'action') {
-                if (card.value === 'Skip' || card.value === 'Reverse') skipTurn = true;
-                if (card.value === 'Draw2') { drawAmount = 2; skipTurn = true; }
-            } else if (card.type === 'wild' && card.value === 'Draw4') {
-                drawAmount = 4; skipTurn = true;
+                again = true;
+                if (card.value === 'Skip') note = `${oppName} is skipped!`;
+                if (card.value === 'Reverse') note = 'Reverse!';
+                if (card.value === 'Draw2') { giveCard(opp, 2); note = `${oppName} draws 2!`; }
+            } else if (card.value === 'Draw4') {
+                giveCard(opp, 4); again = true; note = `${oppName} draws 4!`;
             }
+            renderAll();
+            later(() => startTurn(again ? pi : opp, again ? note + ' Play again.' : ''), 900);
+        }
 
-            if (drawAmount > 0) {
-                if (turn === 1) {
-                    playerHand.push(...deck.splice(0, drawAmount));
-                } else {
-                    oppHand.push(...deck.splice(0, drawAmount));
-                }
-                renderGame();
-            }
-
-            if (skipTurn) {
-                // In 2 player, skip = extra turn. So turn remains the same.
-                isAnimating = false;
-                triggerTurnBanner();
-                if (turn === 1 && mode === 'ai') setTimeout(aiTurn, 1500);
+        function drawCard() {
+            if (paused || busy || over || pickerOpen || isAI(turnIdx) || !gameOn) return;
+            if (drewThisTurn) return toast('You already drew this turn');
+            busy = true; drewThisTurn = true;
+            const got = giveCard(turnIdx, 1);
+            renderAll();
+            toast(`${players[turnIdx].name} drew a card`);
+            if (got[0] && isPlayable(got[0])) {          // playable draw: keep the turn, fresh 10 seconds
+                busy = false; remaining = TURN_MS; renderAll();
             } else {
-                nextTurn();
+                later(nextTurn, 900);
             }
         }
-
-        function drawCard(player) {
-            if (isAnimating) return;
-            if (player === 1 && turn === 2) return;
-            if (player === 2 && turn === 1) return;
-
-            isAnimating = true;
-            if (player === 2) {
-                playerHand.push(deck.pop());
-                renderGame();
-                // Check if drawn card is playable, if not, pass turn
-                const drawnCard = playerHand[playerHand.length - 1];
-                if (!isPlayable(drawnCard)) {
-                    setTimeout(() => { isAnimating = false; nextTurn(); }, 800);
-                } else {
-                    isAnimating = false; // Let them play it
-                }
-            }
+        function autoDraw() {                             // timer hit zero
+            busy = true;
+            toast(`⏱ ${players[turnIdx].name} ran out of time — auto draw!`);
+            if (!drewThisTurn) giveCard(turnIdx, 1);
+            renderAll();
+            later(nextTurn, 1100);
         }
 
-        function nextTurn() {
-            turn = turn === 1 ? 2 : 1;
-            isAnimating = false;
-            renderGame();
-            triggerTurnBanner();
-
-            if (turn === 1 && mode === 'ai') {
-                setTimeout(aiTurn, 1500);
-            }
+        /* ───────── AI ───────── */
+        function aiPickColor(pi) {
+            const count = { red: 0, blue: 0, green: 0, yellow: 0 };
+            players[pi].hand.forEach(c => { if (count[c.color] !== undefined) count[c.color]++; });
+            const best = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
+            return count[best] ? best : ['red', 'blue', 'green', 'yellow'][Math.floor(Math.random() * 4)];
         }
-
-        function triggerTurnBanner() {
-            const banner = document.getElementById('turn-banner');
-            const name = turn === 1 ? p1Name : p2Name;
-            banner.innerHTML = `👑 It's ${name}'s Turn!`;
-            banner.classList.add('show');
-            
-            setTimeout(() => {
-                banner.classList.remove('show');
-            }, 2000);
-        }
-
-        /* AI LOGIC */
         function aiTurn() {
-            if (turn !== 1) return;
-            
-            // Find playable card
-            let playableIndex = -1;
-            for (let i = 0; i < oppHand.length; i++) {
-                if (isPlayable(oppHand[i])) {
-                    playableIndex = i;
-                    // Prefer non-wild cards to save them
-                    if (oppHand[i].color !== 'wild') break;
+            if (over || !isAI(turnIdx)) return;
+            const hand = players[1].hand;
+            let idx = hand.findIndex(c => c.color !== 'wild' && isPlayable(c));
+            if (idx < 0) idx = hand.findIndex(c => isPlayable(c));
+            if (idx >= 0) return playCard(1, idx);
+            busy = true;
+            const got = giveCard(1, 1);
+            toast(`${players[1].name} draws a card`);
+            renderAll();
+            if (got[0] && isPlayable(got[0])) later(() => { busy = false; playCard(1, players[1].hand.length - 1); }, 900);
+            else later(nextTurn, 900);
+        }
+
+        /* ───────── Hide / reveal ───────── */
+        function toggleReveal(side) {
+            const pi = seat[side];
+            if (pi !== turnIdx || isAI(pi) || paused || over) return;
+            revealed = !revealed;
+            renderAll();
+        }
+
+        /* ───────── Seats ───────── */
+        const sideOf = pi => seat.L === pi ? 'L' : 'R';
+        const isPortrait = () => window.matchMedia('(orientation: portrait)').matches;
+        function swapSides() { [seat.L, seat.R] = [seat.R, seat.L]; renderAll(); }
+
+        /* ───────── Timer ───────── */
+        setInterval(() => {
+            const now = performance.now(), dt = now - lastTick; lastTick = now;
+            if (!gameOn || paused || over || pickerOpen || busy) return;
+            remaining -= dt;
+            if (isAI(turnIdx)) { if (remaining < 0) remaining = 0; renderTimer(); return; }
+            if (remaining <= 0) { remaining = 0; renderTimer(); autoDraw(); return; }
+            renderTimer();
+        }, 100);
+        function renderTimer() {
+            const s = Math.ceil(remaining / 1000);
+            $('timer-num').textContent = s;
+            $('timer-fill').style.width = (remaining / TURN_MS * 100) + '%';
+            $('timer').classList.toggle('low', remaining <= 3000);
+        }
+
+        /* ───────── Pause ───────── */
+        function pauseGame() {
+            if (!gameOn || over || paused) return;
+            paused = true;
+            $('pause-vs').innerHTML = `${esc(players[0].name)} — ${esc(players[1].name)}`;
+            $('pause-overlay').classList.add('active');
+        }
+        function resumeGame() { paused = false; lastTick = performance.now(); $('pause-overlay').classList.remove('active'); }
+        document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
+
+        /* ───────── Win ───────── */
+        function win(pi) {
+            over = true;
+            const w = players[pi].name, l = players[1 - pi].name;
+            $('win-name').textContent = w;
+            $('win-line').innerHTML = `<b>${esc(w)}</b> — ${esc(l)}`;
+            later(() => $('win-overlay').classList.add('active'), 700);
+        }
+
+        /* ───────── Rendering ───────── */
+        function buildPanels() {
+            ['L', 'R'].forEach(side => {
+                $('panel-' + side).innerHTML = `
+                    <div class="name-bar"><span class="pname"></span><span class="pcount"></span></div>
+                    <div class="panel-mid">
+                        <div class="draw-pile" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
+                        <button class="hide-btn" onclick="toggleReveal('${side}')" aria-label="Hide or show cards"><i class="fas fa-eye-slash"></i></button>
+                    </div>
+                    <div class="hand-wrap"><div class="hand"></div><div class="hand-label" hidden></div></div>`;
+            });
+        }
+
+        function cardEl(card, asColor) {
+            const el = document.createElement('div');
+            const col = card.color === 'wild' && asColor ? asColor : card.color;
+            el.className = `card c-${col}`;
+            let v = card.value;
+            if (card.value === 'Skip') v = 'Ø'; else if (card.value === 'Reverse') v = '⇄'; else if (card.value === 'Draw2') v = '+2';
+            else if (card.value === 'Draw4') v = '+4'; else if (card.value === 'Wild') v = 'WILD';
+            el.innerHTML = `<span class="card-text">${v}</span>`;
+            return el;
+        }
+
+        function renderAll() {
+            if (!players.length) return;
+            // center
+            const top = discard[discard.length - 1];
+            const d = $('discard'); d.innerHTML = '';
+            d.appendChild(cardEl(top, currentColor));
+            d.style.setProperty('--cur', HEX[currentColor]);
+            $('deck-count').textContent = deck.length;
+
+            const tp = players[turnIdx];
+            $('turn-plate').style.setProperty('--pc', tp.color);
+            $('turn-name').textContent = tp.name;
+            $('turn-note').textContent = turnNote;
+            renderTimer();
+
+            ['L', 'R'].forEach(renderPanel);
+        }
+
+        function renderPanel(side) {
+            const pi = seat[side], p = players[pi], el = $('panel-' + side);
+            const mine = pi === turnIdx, ai = isAI(pi);
+            el.style.setProperty('--pc', p.color);
+            el.classList.toggle('active', mine);
+            el.querySelector('.pname').textContent = p.name;
+            el.querySelector('.pcount').textContent = p.hand.length + ' 🃏';
+
+            const faceUp = mine && revealed && !ai && !paused;
+            const handEl = el.querySelector('.hand');
+            const keep = handEl.scrollLeft;
+            handEl.innerHTML = '';
+            p.hand.forEach((card, i) => {
+                let c;
+                if (faceUp) {
+                    c = cardEl(card);
+                    const ok = isPlayable(card);
+                    c.classList.add(ok ? 'playable' : 'dim');
+                    c.onclick = () => playCard(pi, i);
+                } else {
+                    c = document.createElement('div'); c.className = 'card card-back';
                 }
-            }
+                c.dataset.i = i;
+                handEl.appendChild(c);
+            });
+            handEl.scrollLeft = keep;
 
-            if (playableIndex !== -1) {
-                const card = oppHand.splice(playableIndex, 1)[0];
-                
-                if (card.color === 'wild') {
-                    // AI picks random color
-                    const colors = ['red', 'blue', 'green', 'yellow'];
-                    currentColor = colors[Math.floor(Math.random() * colors.length)];
-                }
-                
-                applyCardEffect(card);
-            } else {
-                // Draw a card
-                oppHand.push(deck.pop());
-                renderGame();
-                setTimeout(() => {
-                    isAnimating = false;
-                    nextTurn();
-                }, 1000);
-            }
+            const label = el.querySelector('.hand-label');
+            if (mine && !revealed && !ai && !over) { label.hidden = false; label.textContent = '🙈 Hidden — tap 👁 to show'; }
+            else label.hidden = true;
+
+            const hb = el.querySelector('.hide-btn');
+            hb.disabled = !mine || ai;
+            hb.classList.toggle('is-hidden', mine && !revealed);
+            hb.innerHTML = `<i class="fas ${mine && revealed ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+
+            el.querySelector('.draw-pile').classList.toggle('off', !mine || ai);
         }
 
-        /* HIDE CARDS MECHANIC */
-        function hideCards() {
-            if (turn !== 2) return; // Only hide if it's P2's turn
-            document.getElementById('hide-overlay').classList.add('active');
-            document.getElementById('hide-btn').classList.add('hidden-mode');
+        /* ───────── Messages ───────── */
+        function flashTurn() {
+            const p = players[turnIdx], f = $('flash');
+            f.innerHTML = `<div class="flash-in" style="--c:${p.color}"><small>👑 YOUR TURN</small><b>${esc(p.name)}</b>${turnNote ? `<em>${esc(turnNote)}</em>` : ''}</div>`;
+            f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
         }
-
-        function showCards() {
-            document.getElementById('hide-overlay').classList.remove('active');
-            document.getElementById('hide-btn').classList.remove('hidden-mode');
-        }
-
-        function triggerWin(winnerName) {
-            document.getElementById('win-text').innerText = `${winnerName} Wins!`;
-            document.getElementById('win-overlay').classList.add('active');
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 4000);
+        let toastT;
+        function toast(msg) {
+            const t = $('toast'); t.textContent = msg; t.classList.add('show');
+            clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800);
         }
     </script>
 </body>
