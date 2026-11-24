@@ -1,915 +1,807 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>UNO · 66Games</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#ffffff" />
+<title>UNO · 66Games</title>
+<style>
+/* Low-end friendly: system fonts only, no external CSS/fonts/icon packs, no blur, no heavy shadows */
+:root{
+  --bg:#eef2fb;--surface:#fff;--border:#eef2f6;--border-strong:#d9dfe8;
+  --text:#1e2a3e;--text2:#6b7280;--navy:#0d2b4e;--accent:#123cf3;--accent-light:#eef2ff;
+  --red:#ef4444;--blue:#3b82f6;--green:#22c55e;--yellow:#eab308;--black:#1e293b;
+}
+:root[data-theme="dark"]{
+  --bg:#0b0e14;--surface:#151a22;--border:#222a35;--border-strong:#313b4c;
+  --text:#f0f4f8;--text2:#8b98a5;--navy:#e2e8f0;--accent:#3b6cff;--accent-light:#1e2638;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);
+  overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;overscroll-behavior:none;display:flex;flex-direction:column}
+button{font-family:inherit}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+/* ───────── Setup ───────── */
+.top-bar{height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.logo-small{font-size:1.1rem;font-weight:700;color:var(--navy);text-decoration:none}
+.logo-small span{color:var(--accent)}
+.brand-badge{background:var(--accent);color:#fff;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:800;letter-spacing:1px;transform:rotate(-5deg)}
+.screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;overflow-y:auto}
+.screen.active{display:flex}
+.title{font-size:1.7rem;font-weight:800;color:var(--navy);margin-bottom:16px}
+.sub{margin-bottom:10px;color:var(--text2);font-size:.9rem}
+.btn{width:100%;max-width:300px;padding:13px;border-radius:12px;border:none;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:active{transform:scale(.97)}
+.btn-outline{background:var(--surface);border:2px solid var(--accent);color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--text2)}
+.btn-danger{background:#fef2f2;color:#dc2626;border:2px solid #fecaca}
+.seg{display:flex;gap:6px;width:100%;max-width:300px;margin:6px 0 16px;background:var(--border);padding:4px;border-radius:12px}
+.seg button{flex:1;padding:9px 4px;border:none;border-radius:9px;background:transparent;color:var(--text2);font-weight:700;font-size:.82rem;cursor:pointer}
+.seg button.on{background:var(--surface);color:var(--accent)}
+.form-error{max-width:300px;width:100%;font-size:.8rem;font-weight:600;color:#dc2626;background:#fef2f2;border-radius:8px;padding:8px;margin-bottom:8px}
+.intake-row{display:flex;gap:10px;width:100%;max-width:300px;margin-bottom:10px}
+.intake-row .btn{margin:0}
 
-    <style>
-        :root {
-            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #dbe3ee;
-            --text: #1e2a3e; --text-secondary: #6b7280; --navy: #0d2b4e;
-            --accent: #123cf3; --accent-light: #eef2ff;
-            --uno-red: #ef4444; --uno-blue: #3b82f6; --uno-green: #22c55e; --uno-yellow: #eab308; --uno-black: #1e293b;
-            --ch: 100px; --chc: 90px; --chd: 80px;
-            --cw: calc(var(--ch) * 0.66);
-        }
-        :root[data-theme="dark"] {
-            --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
-            --text: #f0f4f8; --text-secondary: #8b98a5; --navy: #e2e8f0;
-            --accent: #3b6cff; --accent-light: #1e2638;
-        }
+/* numeric keypad (replaces the system keyboard) */
+.roll-display{display:flex;gap:10px;margin-bottom:10px}
+.roll-display b{width:56px;height:66px;border-radius:12px;border:2px solid var(--border-strong);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:1.9rem;font-weight:800;color:var(--navy)}
+.roll-display b.cur{border-color:var(--accent)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:280px;margin-bottom:10px}
+.key{height:clamp(44px,7.5vh,56px);border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);color:var(--navy);font-size:1.3rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.key:active{background:var(--accent-light);transform:scale(.95)}
+.key.ok{background:var(--accent);color:#fff;border-color:var(--accent);font-size:1rem}
+.key.del{color:#dc2626}
+.keypad.busy .key{opacity:.5;pointer-events:none}
+.spin{width:20px;height:20px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot .6s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        [hidden] { display: none !important; }
-        html, body { height: 100%; }
-        body {
-            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text);
-            overflow: hidden; -webkit-font-smoothing: antialiased;
-            -webkit-user-select: none; user-select: none;
-            -webkit-tap-highlight-color: transparent; touch-action: manipulation; overscroll-behavior: none;
-            display: flex; flex-direction: column;
-        }
-        /* Inputs must stay selectable, otherwise mobile browsers lag / refuse to focus them */
-        input { -webkit-user-select: text; user-select: text; }
+/* ───────── Game ───────── */
+#game-screen{position:fixed;inset:0;z-index:5;display:none;flex-direction:column;background:var(--bg)}
+#game-screen.active{display:flex}
+.g-top{flex-shrink:0;height:46px;display:flex;align-items:center;gap:8px;padding:0 8px;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:0 2px 6px rgba(13,43,78,.08);position:relative;z-index:6}
+.ic{display:inline-block;vertical-align:-4px;flex-shrink:0}
+.pause-btn,.lay-btn{height:34px;border-radius:17px;border:none;cursor:pointer;color:#fff;font-weight:800;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.pause-btn{padding:0 14px;background:var(--navy);color:var(--surface)}
+.lay-btn{width:34px;background:var(--accent-light);color:var(--accent);font-size:1rem}
+.pause-btn:active,.lay-btn:active{transform:scale(.93)}
+.timer{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;color:var(--navy)}
+.timer .ic{width:26px;height:26px}
+.timer.low{color:#ef4444}
+.timer.low .ic{animation:tick .5s infinite alternate}
+@keyframes tick{to{transform:scale(1.2)}}
+.timer.low .timer-num{font-size:1.7rem;font-weight:900;color:inherit;min-width:36px;text-align:left;font-variant-numeric:tabular-nums}
+.deck-info{font-size:.75rem;font-weight:700;color:var(--text2);min-width:34px;text-align:right}
 
-        /* ───────── Setup screens ───────── */
-        .top-bar {
-            height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
-            padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border);
-        }
-        .logo-small { font-size: 1.15rem; font-weight: 700; color: var(--navy); text-decoration: none; }
-        .logo-small span { color: var(--accent); }
-        .brand-badge { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; }
-        .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; overflow-y: auto; }
-        .screen.active { display: flex; }
-        .title { font-size: 1.8rem; font-weight: 800; color: var(--navy); margin-bottom: 18px; }
-        .sub { margin-bottom: 14px; color: var(--text-secondary); font-size: 0.9rem; }
+.board{flex:1;min-height:0;position:relative;display:grid;background:var(--bg);--cw:clamp(52px,min(21vw,9.5vh),88px);--mh:clamp(84px,17vh,150px);--dh:clamp(58px,11vh,100px)}
 
-        .btn {
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: none;
-            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;
-        }
-        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(18,60,243,0.25); }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-outline { background: var(--surface); border: 2px solid var(--accent); color: var(--accent); }
-        .btn-ghost { background: transparent; color: var(--text-secondary); }
-        .btn-danger { background: #fef2f2; color: #dc2626; border: 2px solid #fecaca; }
-        .input-roll {
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border-strong);
-            font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 10px;
-            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text); letter-spacing: 0.3em;
-        }
-        .input-roll:focus { border-color: var(--accent); }
-        .form-error { max-width: 300px; width: 100%; font-size: 0.8rem; font-weight: 600; color: #dc2626; background: #fef2f2; border-radius: 8px; padding: 8px; margin-bottom: 10px; }
-        .intake-row { display: flex; gap: 10px; width: 100%; max-width: 300px; margin-bottom: 12px; }
-        .intake-row .btn { margin: 0; }
-        .step { width: 100%; display: flex; flex-direction: column; align-items: center; }
+/* shared card look */
+.card{--w:var(--cw);width:var(--w);height:calc(var(--w)*1.5);border-radius:10px;border:3px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.28);
+  display:flex;align-items:center;justify-content:center;font-size:calc(var(--w)*.42);font-weight:900;color:#fff;position:relative;overflow:hidden;flex-shrink:0}
+.card::before{content:'';position:absolute;width:120%;height:60%;background:#fff;border-radius:50%;transform:rotate(-20deg)}
+.card .ct{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;text-shadow:1px 1px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000}
+.c-red{background:#e5342f;color:#e5342f}.c-blue{background:#2f6fed;color:#2f6fed}
+.c-green{background:#1fa65a;color:#1fa65a}.c-yellow{background:#f2b705;color:#f2b705}
+.c-wild{background:#111827;color:#111827}
+.c-wild .ct{font-size:calc(var(--w)*.2);text-shadow:none;font-weight:900;letter-spacing:.02em;color:#111827}
+.c-wild::after{--d:calc(var(--w)*.1);content:'';position:absolute;left:calc(50% - var(--d));bottom:7%;width:var(--d);height:var(--d);background:#ef4444;box-shadow:var(--d) 0 #3b82f6,0 var(--d) #22c55e,var(--d) var(--d) #eab308}
+.card-back{background:#123cf3;box-shadow:inset 0 0 0 3px #0b1220,0 3px 6px rgba(0,0,0,.28)}
+.card-back::before{width:56%;height:36%;border-radius:50%;transform:none;background:#fff}
+.card-back::after{content:'UNO';position:absolute;z-index:2;font-size:calc(var(--w)*.2);font-weight:900;color:#0b1220}
 
-        .lay-row { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin-bottom: 12px; }
-        .lay-opt {
-            display: flex; align-items: center; gap: 14px; text-align: left; padding: 12px 14px; border-radius: 14px;
-            background: var(--surface); border: 2px solid var(--border-strong); cursor: pointer; font-family: 'Poppins', sans-serif; color: var(--text);
-        }
-        .lay-opt:active { border-color: var(--accent); transform: scale(0.98); }
-        .lay-opt b { display: block; font-size: 0.95rem; color: var(--navy); }
-        .lay-opt small { display: block; font-size: 0.7rem; color: var(--text-secondary); line-height: 1.3; }
-        .lay-ico { flex-shrink: 0; width: 38px; height: 62px; border: 2px solid var(--accent); border-radius: 8px; position: relative; }
-        .lay-ico i { position: absolute; background: var(--accent); border-radius: 3px; }
-        .lay-ico.tb i:nth-child(1) { left: 5px; right: 5px; top: 5px; height: 9px; }
-        .lay-ico.tb i:nth-child(2) { left: 5px; right: 5px; bottom: 5px; height: 9px; }
-        .lay-ico.lr i:nth-child(1) { top: 5px; bottom: 5px; left: 4px; width: 9px; }
-        .lay-ico.lr i:nth-child(2) { top: 5px; bottom: 5px; right: 4px; width: 9px; }
+/* main zone */
+.main-zone{position:relative;z-index:2;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px}
+.table-card{padding:5px;border-radius:16px;box-shadow:0 0 0 4px var(--cur,transparent)}
+.table-card .card{--w:calc(var(--mh)/1.5)}
+.turn-plate{display:flex;align-items:center;gap:8px;padding:6px 16px;border-radius:18px;color:#fff;background:var(--pc,#123cf3);max-width:92%}
+.turn-plate strong{display:flex;align-items:center;gap:6px;font-size:clamp(.9rem,2.8vh,1.2rem);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.turn-plate em{font-style:normal;font-size:.7rem;font-weight:700;color:#fde68a}
+.switch-btn{position:absolute;right:8px;top:50%;margin-top:-26px;width:54px;height:52px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.04em;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.switch-btn:active{transform:scale(.92)}
 
-        /* ───────── Game screen ───────── */
-        #game-screen { position: fixed; inset: 0; z-index: 5; display: none; flex-direction: column; background: var(--bg); }
-        #game-screen.active { display: flex; }
+/* panels */
+.name-bar{display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 12px;border-radius:14px;background:var(--surface);border:2px solid var(--pc);max-width:100%}
+.crown{display:none;color:#fde68a}
+.pname{font-size:clamp(.9rem,3vh,1.2rem);font-weight:800;color:var(--pc);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcount{font-size:.7rem;font-weight:700;color:var(--text2);white-space:nowrap}
+.panel.active .name-bar{background:var(--pc)}
+.panel.active .pname,.panel.active .pcount{color:#fff}
+.p-top{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+.draw-pile{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.draw-pile .card{--w:calc(var(--dh)/1.5)}
+.draw-pile:active .card{transform:scale(.94)}
+.draw-pile span{font-size:.62rem;font-weight:800;color:var(--text2);letter-spacing:.08em}
+.draw-pile.off{opacity:.4;pointer-events:none}
 
-        .g-top { flex-shrink: 0; height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--border); }
-        .pause-btn {
-            height: 36px; padding: 0 16px; border-radius: 18px; border: none; cursor: pointer;
-            background: var(--accent); color: #fff; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 0.8rem;
-            letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .pause-btn:active { transform: scale(0.94); }
-        .timer { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
-        .timer-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--border-strong); overflow: hidden; }
-        .timer-bar i { display: block; height: 100%; width: 100%; background: var(--accent); border-radius: 4px; }
-        .timer-num { font-size: 1.25rem; font-weight: 800; color: var(--navy); min-width: 30px; text-align: center; font-variant-numeric: tabular-nums; }
-        .timer.low .timer-bar i { background: #ef4444; }
-        .timer.low .timer-num { color: #ef4444; }
-        .deck-info { font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); min-width: 44px; text-align: right; }
+.p-hand{position:relative;min-height:0;overflow:hidden;background:var(--surface)}
+.p-hand:not(.idle){background:color-mix(in srgb,var(--pc) 7%,var(--surface))}
+.p-hand.idle{opacity:.55}
+.car{position:absolute;inset:0;perspective:640px;touch-action:pan-y;cursor:grab}
+.car .card{position:absolute;left:50%;top:50%;margin-left:calc(var(--w)/-2);margin-top:calc(var(--w)*-0.75);
+  --sp:calc(var(--cw)*.5);--s:1;
+  transform:translateX(calc(var(--o)*var(--sp))) translateY(calc(var(--a)*var(--a)*5px)) translateZ(calc(var(--a)*-50px)) rotateY(calc(var(--o)*-34deg)) rotateZ(calc(var(--o)*4deg)) scale(var(--s));
+  transition:transform .25s ease,opacity .25s,filter .25s;will-change:transform;z-index:var(--z)}
+.car .card.front{--s:1.3}
+.car .card.far{opacity:0;pointer-events:none}
+.car .card.dim{filter:grayscale(.9) brightness(1.15)}
+.car .card.front.go{border-color:#fbbf24;box-shadow:0 0 0 3px #fbbf24,0 4px 8px rgba(0,0,0,.3)}
+.car .card.shake{animation:shake .3s}
+@keyframes shake{25%{translate:-6px 0}75%{translate:6px 0}}
+.hand-label{display:flex;align-items:center;gap:6px;position:absolute;left:50%;top:10px;transform:translateX(-50%);pointer-events:none;background:rgba(13,43,78,.85);color:#fff;font-size:.7rem;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap;z-index:15}
 
-        /* board + layouts */
-        .board { flex: 1; min-height: 0; display: grid; }
-        .b-solo, .b-tb { grid-template-columns: 1fr; }
-        .b-tb { grid-template-rows: 1fr 116px 1fr; }
-        .b-solo.p { grid-template-rows: 82px 136px 1fr; }
-        .b-solo.l { grid-template-rows: 72px 108px 1fr; }
-        .b-lr { grid-template-rows: 1fr; grid-template-columns: 1fr 56px 1fr; }
-        .b-lr.l { grid-template-columns: 1fr clamp(150px, 22vw, 200px) 1fr; }
+.hide-btn{position:absolute;bottom:8px;z-index:20;height:44px;min-width:92px;padding:0 14px;border-radius:22px;border:2px solid var(--accent);cursor:pointer;background:var(--surface);color:var(--accent);display:flex;align-items:center;justify-content:center;gap:6px;font-size:.78rem;font-weight:800;letter-spacing:.04em}
+.hide-btn:active{transform:scale(.9)}
+.hide-btn:disabled{opacity:.3;pointer-events:none}
+.hide-btn.is-hidden{background:var(--accent);color:#fff}
+.hide-btn.pulse{animation:pulse .7s infinite alternate}
+@keyframes pulse{to{transform:scale(1.15)}}
+.hint{position:absolute;bottom:56px;z-index:21;display:none;flex-direction:column;align-items:center;color:var(--accent);font-weight:800;font-size:.68rem;pointer-events:none;animation:bn .6s infinite alternate}
+.hint.show{display:flex}
+.hint b{font-size:1.5rem;line-height:1}
+@keyframes bn{to{transform:translateY(8px)}}
 
-        .panel { position: relative; overflow: hidden; min-width: 0; min-height: 0; }
-        .panel-in { position: absolute; display: flex; flex-direction: column; gap: 6px; padding: 8px; transform-origin: center center; }
+/* ── side by side (user's sketch) ── */
+.board.side{grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr}
+.board.side::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border-strong);z-index:1}
+.board.side .main-zone{grid-column:1/-1;grid-row:1;border-bottom:1px solid var(--border-strong)}
+.board.side .panel{display:contents}
+.board.side .p-top{grid-row:2;flex-direction:column;padding:8px 6px 6px}
+.board.side .p-hand{grid-row:3;border-top:1px solid var(--border-strong)}
+.board.side #panel-L .p-top,.board.side #panel-L .p-hand{grid-column:1}
+.board.side #panel-R .p-top,.board.side #panel-R .p-hand{grid-column:2}
+.board.side #panel-L .hide-btn{left:8px}.board.side #panel-L .hint{left:8px;width:92px}
+.board.side #panel-R .hide-btn{right:8px}.board.side #panel-R .hint{right:8px;width:92px}
 
-        .name-bar {
-            display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 12px;
-            background: var(--surface); border: 1.5px solid var(--border-strong); color: var(--navy);
-            transition: background 0.25s, border-color 0.25s, color 0.25s;
-        }
-        .pname { flex: 1; min-width: 0; font-size: clamp(0.95rem, 3vh, 1.25rem); font-weight: 800; line-height: 1.15; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .pturn { display: none; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; opacity: 0.85; white-space: nowrap; }
-        .ptimer { font-size: 0.85rem; font-weight: 800; min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
-        .pcount { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); white-space: nowrap; }
-        .panel.active .name-bar { background: var(--accent); border-color: var(--accent); color: #fff; }
-        .panel.active .pturn { display: inline; }
-        .panel.active .pcount { color: rgba(255,255,255,0.8); }
-        .panel.active .ptimer.low { color: #fecaca; }
+/* ── top & bottom ── */
+.board.tb{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr}
+.board.tb #panel-L{grid-row:1;transform:rotate(180deg)}
+.board.tb .main-zone{grid-row:2;flex-direction:row;gap:12px;padding-right:70px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.board.tb #panel-R{grid-row:3}
+.board.tb .panel{display:flex;flex-direction:column;min-height:0;padding:4px 8px;gap:2px}
+.board.tb .p-top{justify-content:space-between;flex-direction:row-reverse;padding:0 4px}
+.board.tb .p-hand{flex:1}
+.board.tb .draw-pile{flex-direction:row}
+.board.tb .hide-btn{right:6px}.board.tb .hint{right:6px;width:92px}
+.board.tb{--cw:clamp(46px,min(16vw,8vh),80px);--mh:clamp(70px,13vh,110px);--dh:clamp(46px,8vh,76px)}
 
-        .p-body {
-            flex: 1; min-height: 0; display: grid; align-items: center; gap: 6px;
-            grid-template-columns: auto 1fr auto; grid-template-rows: auto 1fr;
-            grid-template-areas: "draw . side" "hand hand hand";
-        }
-        .b-lr.p .p-body { grid-template-rows: 1fr; grid-template-areas: "draw hand side"; }
-        .draw-pile { grid-area: draw; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; --ch: var(--chd); --cw: calc(var(--chd) * 0.66); }
-        .draw-pile.off { opacity: 0.35; pointer-events: none; }
-        .draw-pile:active .card { transform: scale(0.94); }
-        .draw-pile span { font-size: 0.62rem; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.1em; }
-        .p-side { grid-area: side; display: flex; align-items: center; gap: 10px; }
-        .pcard { display: none; --ch: var(--chd); --cw: calc(var(--chd) * 0.66); }
-        .b-lr.p .pcard { display: block; }
-        .hide-btn {
-            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer;
-            background: var(--surface); color: var(--accent); font-size: 1.15rem; display: flex; align-items: center; justify-content: center;
-        }
-        .hide-btn:active { transform: scale(0.9); }
-        .hide-btn:disabled { opacity: 0.3; pointer-events: none; }
-        .hide-btn.is-hidden { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* flash + toast */
+.flash{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0}
+.flash.go{animation:flashIn 1.2s ease-out}
+.flash-in{text-align:center;color:#fff;padding:14px 34px;border-radius:26px;background:var(--c);max-width:90vw}
+.flash-in small{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.7rem;font-weight:800;letter-spacing:.2em}
+.flash-in b{display:block;font-size:clamp(1.5rem,7vh,2.6rem);font-weight:900;line-height:1.1}
+.flash-in em{display:block;font-style:normal;font-weight:700;color:#fde68a;font-size:.85rem}
+@keyframes flashIn{0%{opacity:0;transform:scale(.7)}20%{opacity:1;transform:scale(1.05)}35%{transform:scale(1)}80%{opacity:1}100%{opacity:0}}
+.toast{position:absolute;left:50%;top:54px;transform:translateX(-50%);z-index:45;background:#0d2b4e;color:#fff;padding:7px 16px;border-radius:20px;font-size:.8rem;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1}
 
-        .panel.ai .p-body { display: none; }
-        .ai-mini { display: none; align-items: center; gap: 3px; padding: 0 4px; height: 26px; }
-        .panel.ai .ai-mini { display: flex; }
-        .mb { width: 15px; height: 22px; border-radius: 3px; background: var(--navy); border: 1.5px solid var(--surface); box-shadow: 0 0 0 1px var(--border-strong); flex-shrink: 0; }
-        .b-solo .p-side, .b-solo .draw-pile, .b-solo .hide-btn { display: none; }
-        .b-solo .p-body { grid-template-areas: "hand hand hand"; grid-template-rows: 1fr; }
-
-        /* circular carousel */
-        .hand-wrap { grid-area: hand; position: relative; width: 100%; height: calc(var(--ch) + 40px); }
-        .carousel { position: relative; width: 100%; height: 100%; overflow: hidden; touch-action: none; cursor: grab; }
-        .carousel .card { position: absolute; left: 50%; top: 18px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1), opacity 0.3s; will-change: transform; }
-        .carousel.moving .card { transition: none; }
-        .carousel .card.playable { border-color: var(--accent); box-shadow: 0 6px 14px rgba(18,60,243,0.35); }
-        .carousel .card.dim { filter: brightness(0.7) saturate(0.7); }
-        .carousel .card.shake { animation: shake 0.3s; }
-        @keyframes shake { 25% { left: calc(50% - 6px); } 75% { left: calc(50% + 6px); } }
-        .hand-label {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 500;
-            background: rgba(13,43,78,0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 6px 12px; border-radius: 20px; white-space: nowrap;
-        }
-
-        /* center */
-        .center { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 6px 10px; min-width: 0; }
-        .b-lr.p .center { flex-direction: column; padding: 0; border-left: 1.5px dashed var(--border-strong); border-right: 1.5px dashed var(--border-strong); }
-        .b-lr.p .center .table-card, .b-lr.p .center .turn-plate { display: none; }
-        .b-lr.l .center { flex-direction: column; justify-content: space-between; padding: 8px 6px; }
-        .table-card { padding: 5px; border-radius: 12px; box-shadow: 0 0 0 3px var(--cur, transparent); transition: box-shadow 0.3s; --ch: var(--chc); --cw: calc(var(--chc) * 0.66); }
-        #c-draw { display: none; --ch: var(--chc); --cw: calc(var(--chc) * 0.66); }
-        .b-solo #c-draw { display: flex; }
-        .b-solo .switch-btn { display: none; }
-        .switch-btn {
-            width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border-strong); cursor: pointer; flex-shrink: 0;
-            background: var(--surface); color: var(--accent); font-size: 1.05rem; display: flex; align-items: center; justify-content: center;
-        }
-        .switch-btn:active { transform: scale(0.9); }
-        .turn-plate {
-            flex: 1; max-width: 220px; min-width: 0; padding: 8px 12px; border-radius: 12px; text-align: left;
-            background: var(--surface); border: 1.5px solid var(--border-strong); border-left: 5px solid var(--accent);
-        }
-        .b-lr.l .turn-plate { flex: none; width: 100%; }
-        .turn-plate small { display: block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.16em; color: var(--text-secondary); }
-        .turn-plate strong { display: block; font-size: clamp(1rem, 3.4vh, 1.35rem); font-weight: 800; line-height: 1.15; color: var(--accent); word-break: break-word; }
-        .turn-plate em { display: block; font-style: normal; font-size: 0.68rem; font-weight: 600; color: var(--text-secondary); min-height: 1em; }
-
-        /* UNO cards */
-        .card {
-            width: var(--cw); height: var(--ch); border-radius: 9px; border: 3px solid #fff;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: center;
-            font-size: calc(var(--cw) * 0.42); font-weight: 900; color: #fff; position: relative; overflow: hidden; flex-shrink: 0; transition: transform 0.15s;
-        }
-        .card::before { content: ''; position: absolute; width: 120%; height: 60%; background: #fff; border-radius: 50%; transform: rotate(-20deg); }
-        .card .card-text { position: relative; z-index: 2; color: inherit; text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; }
-        .c-red { background: var(--uno-red); color: var(--uno-red); }
-        .c-blue { background: var(--uno-blue); color: var(--uno-blue); }
-        .c-green { background: var(--uno-green); color: var(--uno-green); }
-        .c-yellow { background: var(--uno-yellow); color: var(--uno-yellow); }
-        .c-wild { background: var(--uno-black); color: #fff; }
-        .c-wild::before { display: none; }
-        .c-wild .card-text { font-size: calc(var(--cw) * 0.24); text-shadow: none; }
-        .card-back { background: var(--navy); }
-        .card-back::before { width: 70%; height: 38%; border-radius: 50%; transform: rotate(-20deg); background: var(--accent); }
-        .card-back::after { content: 'UNO'; position: absolute; z-index: 2; font-size: calc(var(--cw) * 0.2); font-weight: 900; color: #fff; transform: rotate(-20deg); }
-
-        /* flash + toast */
-        .flash { position: absolute; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0; }
-        .flash.go { animation: flashIn 1.3s ease-out; }
-        .flash-in {
-            text-align: center; padding: 12px 30px; border-radius: 18px; background: var(--surface); color: var(--navy);
-            border: 2px solid var(--accent); box-shadow: 0 10px 30px rgba(18,60,243,0.22); max-width: 80vw; transform: rotate(var(--rot, 0deg));
-        }
-        .flash-in small { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; color: var(--text-secondary); }
-        .flash-in b { display: block; font-size: clamp(1.5rem, 7vh, 2.6rem); font-weight: 800; line-height: 1.1; color: var(--accent); }
-        .flash-in em { display: block; font-style: normal; font-weight: 600; color: var(--text-secondary); font-size: 0.8rem; }
-        @keyframes flashIn { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
-        .toast {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); z-index: 45;
-            background: var(--navy); color: var(--bg); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
-            opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; max-width: 90vw;
-        }
-        .toast.show { opacity: 1; }
-
-        /* overlays */
-        .overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; text-align: center; color: #fff; }
-        .overlay.active { display: flex; }
-        .overlay-box { background: var(--surface); color: var(--text); padding: 22px 20px; border-radius: 22px; width: 100%; max-width: 340px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 96vh; overflow-y: auto; }
-        .overlay-box h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
-        .overlay-box .vs { font-size: 0.95rem; font-weight: 700; margin-bottom: 14px; color: var(--accent); }
-        .overlay-box .lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; color: var(--text-secondary); margin: 4px 0 8px; }
-        .seg { display: flex; gap: 8px; margin-bottom: 14px; }
-        .seg button { flex: 1; padding: 10px 6px; border-radius: 10px; border: 2px solid var(--border-strong); background: var(--surface); color: var(--navy); font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
-        .seg button.on { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
-        .color-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-        .color-btn { height: 56px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .color-btn:active { transform: scale(0.95); }
-        .win-crown { font-size: 3.2rem; color: #fff; opacity: 0.9; margin-bottom: 12px; }
-        .win-name { font-size: clamp(2rem, 10vh, 3.4rem); font-weight: 800; line-height: 1.1; color: #fff; }
-        .win-line { font-size: 1.15rem; font-weight: 700; margin: 8px 0 20px; color: #bfdbfe; }
-        .win-line b { color: #fff; }
-        .win-actions { width: 100%; max-width: 300px; }
-    </style>
+/* overlays */
+.overlay{position:fixed;inset:0;background:rgba(13,43,78,.94);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;text-align:center;color:#fff}
+.overlay.active{display:flex}
+.overlay-box{background:var(--surface);color:var(--text);padding:22px 20px;border-radius:22px;width:100%;max-width:340px;max-height:96vh;overflow-y:auto}
+.overlay-box.flip{transform:rotate(180deg)}
+.overlay-box h2{font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.overlay-box .vs{font-size:.95rem;font-weight:700;margin-bottom:14px;color:var(--text2)}
+.color-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.color-btn{height:56px;border-radius:12px;border:none;cursor:pointer}
+.color-btn:active{transform:scale(.95)}
+.win-crown{color:#fbbf24;margin-bottom:8px}
+.win-name{font-size:clamp(2rem,10vh,3.4rem);font-weight:900;line-height:1.1;color:#fff}
+.win-line{font-size:1.15rem;font-weight:700;margin:8px 0 18px;color:#cbd5e1}
+.win-line b{color:#fbbf24}
+.win-actions{width:100%;max-width:300px}
+.fly{position:fixed;margin:0;z-index:70;transform-origin:0 0;pointer-events:none;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+</style>
 </head>
 <body>
 
-    <!-- ═════════ SETUP ═════════ -->
-    <div class="top-bar" id="main-top">
-        <a href="index.html" class="logo-small">66<span>Notes</span></a>
-        <div class="brand-badge">UNO</div>
-        <div style="width: 32px;"></div>
+<!-- ═════════ SETUP ═════════ -->
+<div class="top-bar" id="main-top">
+  <a href="index.html" class="logo-small">66<span>Notes</span></a>
+  <div class="brand-badge">UNO</div>
+  <div style="width:32px"></div>
+</div>
+
+<div id="setup-screen" class="screen active">
+  <h1 class="title" style="color:#ef4444">Select UNO mode</h1>
+  <button class="btn btn-primary" onclick="startMode('ai')"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M9 13h.01M15 13h.01M9 17h6"/></svg> Solo vs AI</button>
+  <button class="btn btn-outline" onclick="openSplit()"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg> 1v1 Split-screen</button>
+  <p class="sub" style="margin-top:8px">Screen layout</p>
+  <div class="seg" id="layout-seg">
+    <button data-l="side" class="on" onclick="setLayoutPref('side')">Side by side</button>
+    <button data-l="tb" onclick="setLayoutPref('tb')">Top &amp; bottom</button>
+  </div>
+  <button class="btn btn-ghost" onclick="location.href='index.html'"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Back to Hub</button>
+</div>
+
+<div id="split-screen" class="screen">
+  <h1 class="title" style="margin-bottom:10px">Split-screen setup</h1>
+  <div id="split-step1" style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <p class="sub">Enter Player 2's roll number</p>
+    <div class="roll-display" id="roll-display"><b></b><b></b><b></b></div>
+    <div class="form-error" id="split-err" hidden></div>
+    <div class="keypad" id="keypad"></div>
+  </div>
+  <div id="split-step2" hidden style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <p class="sub">Roll 138 is shared. Who is Player 2?</p>
+    <div class="intake-row">
+      <button type="button" class="btn btn-primary" onclick="pickIntake('Aion')">Aion</button>
+      <button type="button" class="btn btn-outline" onclick="pickIntake('Maria')">Maria</button>
     </div>
+    <div class="form-error" id="split-err2" hidden></div>
+  </div>
+  <button type="button" class="btn btn-ghost" onclick="showScreen('setup-screen')">Cancel</button>
+</div>
 
-    <div id="setup-screen" class="screen active">
-        <h1 class="title">Select UNO Mode</h1>
-        <button class="btn btn-primary" onclick="startSolo()"><i class="fas fa-robot"></i> Solo vs AI</button>
-        <button class="btn btn-outline" onclick="openSplit()"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
-        <button class="btn btn-ghost" onclick="window.location.href='index.html'" style="margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
+<!-- ═════════ GAME ═════════ -->
+<div id="game-screen">
+  <div class="g-top">
+    <button class="pause-btn" onclick="pauseGame()"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14M16 5v14"/></svg> PAUSE</button>
+    <div class="timer" id="timer">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="8"/><path d="M12 9.5v4l2.5 2M9.5 2.5h5M12 2.5v3"/></svg>
+      <div class="timer-num" id="timer-num">15</div>
     </div>
+    <button class="lay-btn" onclick="toggleLayout()" aria-label="Change layout" id="lay-btn"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 3v18M3 12h18"/></svg></button>
+    <div class="deck-info"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="13" height="17" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h9"/></svg> <span id="deck-count">0</span></div>
+  </div>
 
-    <div id="split-screen" class="screen">
-        <h1 class="title">Split-Screen Setup</h1>
-        <!-- Plain form: nothing runs while typing. The lookup only happens when Continue is pressed. -->
-        <form id="split-form" autocomplete="off" style="width:100%; display:flex; flex-direction:column; align-items:center;">
-            <div class="step" id="split-step1">
-                <p class="sub">Enter Player 2's roll number</p>
-                <input type="text" id="p2-roll" class="input-roll" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="015" autocomplete="off" />
-                <div class="form-error" id="split-err" hidden></div>
-                <button type="submit" class="btn btn-primary">Continue</button>
-            </div>
-            <div class="step" id="split-step2" hidden>
-                <p class="sub">Roll 138 is shared. Who is Player 2?</p>
-                <div class="intake-row">
-                    <button type="button" class="btn btn-primary" onclick="pickIntake('Aion')">Aion</button>
-                    <button type="button" class="btn btn-outline" onclick="pickIntake('Maria')">Maria</button>
-                </div>
-            </div>
-            <div class="step" id="split-step3" hidden>
-                <p class="sub"><b id="split-vs"></b><br>How are you playing?</p>
-                <div class="lay-row">
-                    <button type="button" class="lay-opt" onclick="chooseLayout('tb')">
-                        <span class="lay-ico tb"><i></i><i></i></span>
-                        <span><b>Top &amp; Bottom</b><small>Players sit at opposite ends of the phone</small></span>
-                    </button>
-                    <button type="button" class="lay-opt" onclick="chooseLayout('lr')">
-                        <span class="lay-ico lr"><i></i><i></i></span>
-                        <span><b>Left &amp; Right</b><small>Phone upright in the middle, one player on each side</small></span>
-                    </button>
-                </div>
-            </div>
-            <button type="button" class="btn btn-ghost" onclick="showScreen('setup-screen')">Cancel</button>
-        </form>
+  <div class="board side" id="board">
+    <section class="panel" id="panel-L"></section>
+    <div class="main-zone">
+      <div class="table-card" id="discard"></div>
+      <div class="turn-plate" id="turn-plate"><strong id="turn-name">—</strong><em id="turn-note"></em></div>
+      <button class="switch-btn" onclick="swapSides()" aria-label="Switch sides"><svg class="ic" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h13M16 3l4 4-4 4M17 17H4M8 13l-4 4 4 4"/></svg><span>SWITCH</span></button>
     </div>
+    <section class="panel" id="panel-R"></section>
+  </div>
 
-    <!-- ═════════ GAME ═════════ -->
-    <div id="game-screen">
-        <div class="g-top">
-            <button class="pause-btn" onclick="pauseGame()"><i class="fas fa-pause"></i> PAUSE</button>
-            <div class="timer" id="timer">
-                <div class="timer-bar"><i id="timer-fill"></i></div>
-                <div class="timer-num" id="timer-num">10</div>
-            </div>
-            <div class="deck-info"><i class="fas fa-layer-group"></i> <span id="deck-count">0</span></div>
-        </div>
+  <div class="flash" id="flash"></div>
+  <div class="toast" id="toast"></div>
+</div>
 
-        <div class="board" id="board">
-            <section class="panel" id="panel-A"></section>
-
-            <div class="center" id="center">
-                <div class="draw-pile" id="c-draw" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
-                <div class="table-card" id="discard"></div>
-                <button class="switch-btn" onclick="swapSides()" aria-label="Switch sides"><i class="fas fa-arrow-right-arrow-left"></i></button>
-                <div class="turn-plate" id="turn-plate">
-                    <small>TURN</small>
-                    <strong id="turn-name">—</strong>
-                    <em id="turn-note"></em>
-                </div>
-            </div>
-
-            <section class="panel" id="panel-B"></section>
-        </div>
-
-        <div class="flash" id="flash"></div>
-        <div class="toast" id="toast"></div>
+<div class="overlay" id="color-overlay">
+  <div class="overlay-box" id="color-box">
+    <h2 id="color-title">Choose a color</h2>
+    <div class="color-picker">
+      <button class="color-btn" style="background:var(--red)" onclick="selectColor('red')"></button>
+      <button class="color-btn" style="background:var(--blue)" onclick="selectColor('blue')"></button>
+      <button class="color-btn" style="background:var(--green)" onclick="selectColor('green')"></button>
+      <button class="color-btn" style="background:var(--yellow)" onclick="selectColor('yellow')"></button>
     </div>
+  </div>
+</div>
 
-    <!-- Wild colour picker -->
-    <div class="overlay" id="color-overlay">
-        <div class="overlay-box" id="color-box">
-            <h2 id="color-title">Choose a Color</h2>
-            <div class="color-picker">
-                <button class="color-btn" style="background: var(--uno-red);" onclick="selectColor('red')"></button>
-                <button class="color-btn" style="background: var(--uno-blue);" onclick="selectColor('blue')"></button>
-                <button class="color-btn" style="background: var(--uno-green);" onclick="selectColor('green')"></button>
-                <button class="color-btn" style="background: var(--uno-yellow);" onclick="selectColor('yellow')"></button>
-            </div>
-        </div>
-    </div>
+<div class="overlay" id="pause-overlay" style="z-index:110">
+  <div class="overlay-box">
+    <h2>Game paused</h2>
+    <div class="vs" id="pause-vs"></div>
+    <button class="btn btn-primary" style="max-width:none" onclick="resumeGame()"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg> Resume</button>
+    <button class="btn btn-outline" style="max-width:none" onclick="rematch()"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg> Restart</button>
+    <button class="btn btn-danger" style="max-width:none;margin-bottom:0" onclick="leaveGame()">Leave game</button>
+  </div>
+</div>
 
-    <!-- Pause -->
-    <div class="overlay" id="pause-overlay" style="z-index:110;">
-        <div class="overlay-box">
-            <h2>Game Paused</h2>
-            <div class="vs" id="pause-vs"></div>
-            <div id="pause-layout" hidden>
-                <div class="lbl">SCREEN LAYOUT</div>
-                <div class="seg">
-                    <button id="seg-tb" onclick="setLayout('tb')">Top / Bottom</button>
-                    <button id="seg-lr" onclick="setLayout('lr')">Left / Right</button>
-                </div>
-            </div>
-            <button class="btn btn-primary" style="max-width:none;" onclick="resumeGame()"><i class="fas fa-play"></i> Resume</button>
-            <button class="btn btn-outline" style="max-width:none;" onclick="rematch()"><i class="fas fa-rotate-right"></i> Restart</button>
-            <button class="btn btn-danger" style="max-width:none; margin-bottom:0;" onclick="leaveGame()"><i class="fas fa-right-from-bracket"></i> Leave Game</button>
-        </div>
-    </div>
+<div class="overlay" id="win-overlay" style="z-index:120;flex-direction:column">
+  <div class="win-crown"><svg class="ic" viewBox="0 0 24 24" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg></div>
+  <div class="win-name" id="win-name">—</div>
+  <div class="win-line" id="win-line"></div>
+  <div class="win-actions">
+    <button class="btn btn-primary" style="max-width:none" onclick="rematch()"><svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg> Play again</button>
+    <button class="btn btn-outline" style="max-width:none" onclick="leaveGame()">Back to Hub</button>
+  </div>
+</div>
 
-    <!-- Win -->
-    <div class="overlay" id="win-overlay" style="z-index:120; flex-direction:column; background: rgba(13,43,78,0.96);">
-        <i class="fas fa-crown win-crown"></i>
-        <div class="win-name" id="win-name">—</div>
-        <div class="win-line" id="win-line"></div>
-        <div class="win-actions">
-            <button class="btn btn-primary" style="max-width:none;" onclick="rematch()"><i class="fas fa-rotate-right"></i> Play Again</button>
-            <button class="btn btn-outline" style="max-width:none;" onclick="leaveGame()"><i class="fas fa-house"></i> Back to Hub</button>
-        </div>
-    </div>
+<script>
+const STUDENTS={'002':'Orin','004':'Saikat','005':'ASHIK','007':'Preonti','009':'Nazmul','010':'Sumaiya Siya','015':'M D Emran','017':'Boishakhi','019':'Aysha','022':'Iftikh','023':'Ryan','024':'Shakib','026':'Fahim','027':'Shajid','028':'Nafi','029':'Polok','030':'Adnan','031':'Sumaiya','032':'Mahde','033':'Foujia','035':'Risal','036':'Tonmoy','039':'Alif','040':'Sohan','041':'Shuvo','052':'Prapti','064':'Rifa','117':'Rafa','125':'Nusrat','129':'ABIR','137':'Mahin','140':'Meghla','145':'Samir','146':'Teetun','147':'Faiyaz','153':'Wafa','161':'Nafis','164':'Sanjana','381':'Moon'};
 
-    <script>
-        const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
+const TURN_MS=15000, HINT_AFTER_MS=5000;
+const HEX={red:'#ef4444',blue:'#3b82f6',green:'#22c55e',yellow:'#eab308'};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC=(p,s=18,sw=2)=>`<svg class="ic" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const CROWN=IC('<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/>',16),CARDS=IC('<rect x="7" y="3" width="13" height="17" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h9"/>',14);
+const SYM={Skip:'<circle cx="12" cy="12" r="8"/><path d="M6.5 6.5l11 11"/>',Reverse:'<path d="M4 8h14l-3-3M20 16H6l3 3"/>'};
+const symSvg=k=>`<svg viewBox="0 0 24 24" width="1.1em" height="1.1em" fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#000" stroke-width="5.5">${SYM[k]}</g><g stroke="currentColor" stroke-width="3">${SYM[k]}</g></svg>`;
+const EYE20=null;
+const EYE='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.1 9.1 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22"/></svg>';
 
-        const TURN_MS = 10000;
-        const HEX = { red: '#ef4444', blue: '#3b82f6', green: '#22c55e', yellow: '#eab308' };
-        const $ = id => document.getElementById(id);
-        const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+try{if(localStorage.getItem('66games_theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}
+let currentUser=null;
+try{currentUser=JSON.parse(localStorage.getItem('66games_user'))}catch(e){}
+if(!currentUser)location.replace('index.html');
+const me=currentUser||{roll:'',name:'Player'};
 
-        try { if (localStorage.getItem('66games_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+/* ───────── State ───────── */
+let mode='',layout='side';
+try{layout=localStorage.getItem('66games_uno_layout')||'side'}catch(e){}
+if(layout!=='side'&&layout!=='tb')layout='side';
+let players=[],seat={L:1,R:0},deck=[],discard=[],currentColor='red';
+let turnIdx=0,turnNote='',revealed=false,drewThisTurn=false;
+let busy=false,paused=false,over=false,pickerOpen=false,pending=null;
+let remaining=TURN_MS,lastTick=performance.now(),gameOn=false,gen=0;
+const hi=[0,0];                       // front-card index of each player's carousel
+const isAI=i=>mode==='ai'&&i===1;
 
-        /* Logged-in user comes from the hub (same key index.html writes) */
-        let currentUser = null;
-        try { currentUser = JSON.parse(localStorage.getItem('66games_user')); } catch (e) {}
-        if (!currentUser) location.replace('index.html');
-        const me = currentUser || { roll: '', name: 'Player' };
+/* ───────── Layout preference ───────── */
+function setLayoutPref(l){
+  layout=l;try{localStorage.setItem('66games_uno_layout',l)}catch(e){}
+  document.querySelectorAll('#layout-seg button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+}
+setLayoutPref(layout);
+function toggleLayout(){setLayoutPref(layout==='side'?'tb':'side');buildPanels();renderAll()}
 
-        /* ───────── State ───────── */
-        let mode = '';                     // 'ai' | 'split'
-        let layout = 'solo';               // 'solo' | 'tb' (top/bottom) | 'lr' (left/right)
-        let players = [];                  // [{name, hand:[]}]  index 0 = logged-in user
-        let seat = { A: 1, B: 0 };         // A = top / left seat, B = bottom / right seat
-        let deck = [], discard = [], currentColor = 'red';
-        let turnIdx = 0, turnNote = '';
-        let revealed = false, drewThisTurn = false;
-        let busy = false, paused = false, over = false, pickerOpen = false, pending = null;
-        let remaining = TURN_MS, lastTick = performance.now(), gameOn = false, gen = 0, panelsBuilt = false;
-        const isAI = i => mode === 'ai' && i === 1;
-        const needsReveal = () => mode === 'split';
-        const sideOf = pi => seat.A === pi ? 'A' : 'B';
-        const isPortrait = () => window.matchMedia('(orientation: portrait)').matches;
+/* ───────── Setup flow ───────── */
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
 
-        /* ───────── Setup flow ───────── */
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            $(id).classList.add('active');
-        }
-        function splitStep(n) { for (let i = 1; i <= 3; i++) $('split-step' + i).hidden = i !== n; }
-        function splitError(msg) { const e = $('split-err'); e.textContent = msg; e.hidden = !msg; }
-        let pendingP2 = '';
-        function openSplit() {
-            $('p2-roll').value = ''; splitError(''); splitStep(1); showScreen('split-screen');
-        }
-        $('split-form').addEventListener('submit', e => {
-            e.preventDefault();
-            if ($('split-step1').hidden) return;
-            const raw = $('p2-roll').value.trim();
-            if (!raw) return splitError('Enter a roll number');
-            const roll = raw.padStart(3, '0');
-            if (roll === '138') { splitError(''); return splitStep(2); }
-            const name = STUDENTS[roll];
-            if (!name) return splitError('Roll not found!');
-            if (roll === me.roll) return splitError("That's you! Pick another player.");
-            askLayout(name);
-        });
-        function pickIntake(name) {
-            if (me.roll === '138' && name === me.name) { splitStep(1); return splitError("That's you! Pick another player."); }
-            askLayout(name);
-        }
-        function askLayout(p2) {
-            pendingP2 = p2; splitError('');
-            $('split-vs').textContent = `${me.name} — ${p2}`;
-            splitStep(3);
-        }
-        function chooseLayout(l) {
-            mode = 'split'; layout = l;
-            players = [mk(me.name), mk(pendingP2)];
-            initGame();
-        }
-        function startSolo() {
-            mode = 'ai'; layout = 'solo';
-            players = [mk(me.name), mk('Computer')];
-            initGame();
-        }
-        function mk(name) { return { name, hand: [] }; }
+/* numeric keypad: nothing is checked while typing; lookup runs only on OK / Enter */
+let rollVal='',checking=false;
+(function buildKeypad(){
+  const kp=$('keypad');
+  const BKSP='<svg class="ic" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:0"><path d="M21 5H9l-6 7 6 7h12zM13 9l4 6M17 9l-4 6"/></svg>';
+  const keys=['1','2','3','4','5','6','7','8','9','del','0','OK'];
+  kp.innerHTML=keys.map(k=>`<button type="button" class="key${k==='OK'?' ok':k==='del'?' del':''}" data-k="${k}">${k==='del'?BKSP:k}</button>`).join('');
+  kp.addEventListener('click',e=>{const b=e.target.closest('.key');if(b)pressKey(b.dataset.k)});
+})();
+function drawRoll(){
+  const cells=$('roll-display').children;
+  for(let i=0;i<3;i++){cells[i].textContent=rollVal[i]||'';cells[i].classList.toggle('cur',i===Math.min(rollVal.length,2))}
+}
+function pressKey(k){
+  if(checking)return;
+  $('split-err').hidden=true;
+  if(k==='del')rollVal=rollVal.slice(0,-1);
+  else if(k==='OK')return submitRoll();
+  else if(rollVal.length<3)rollVal+=k;
+  drawRoll();
+}
+document.addEventListener('keydown',e=>{
+  if(!$('split-screen').classList.contains('active')||!$('split-step2').hidden)return;
+  if(/^[0-9]$/.test(e.key))pressKey(e.key);
+  else if(e.key==='Backspace')pressKey('del');
+  else if(e.key==='Enter')pressKey('OK');
+});
+function openSplit(){
+  rollVal='';checking=false;drawRoll();
+  $('split-step1').hidden=false;$('split-step2').hidden=true;
+  $('split-err').hidden=true;$('split-err2').hidden=true;
+  $('keypad').classList.remove('busy');$('keypad').lastChild.textContent='OK';
+  showScreen('split-screen');
+}
+function splitError(msg){const el=$('split-step2').hidden?$('split-err'):$('split-err2');el.textContent=msg;el.hidden=false}
+function submitRoll(){
+  if(!rollVal)return splitError('Enter a roll number');
+  checking=true;
+  const kp=$('keypad');kp.classList.add('busy');
+  const okBtn=kp.lastChild;okBtn.innerHTML='<span class="spin"></span>';
+  setTimeout(()=>{                                   // short loading animation, then the single lookup
+    checking=false;kp.classList.remove('busy');okBtn.textContent='OK';
+    const roll=rollVal.padStart(3,'0');
+    if(roll==='138'){$('split-step1').hidden=true;$('split-step2').hidden=false;return}
+    const name=STUDENTS[roll];
+    if(!name)return splitError('Roll not found!');
+    if(roll===me.roll)return splitError("That's you! Pick another player.");
+    beginSplit(name);
+  },550);
+}
+function pickIntake(name){
+  if(me.roll==='138'&&name===me.name)return splitError("That's you! Pick the other one.");
+  beginSplit(name);
+}
+const dark=()=>document.documentElement.getAttribute('data-theme')==='dark';
+const PC=()=>[dark()?'#3b6cff':'#123cf3',dark()?'#94a3b8':'#0b1220'];
+function beginSplit(p2){mode='split';players=[mk(me.name,PC()[0]),mk(p2,PC()[1])];initGame()}
+function startMode(m){mode=m;players=[mk(me.name,PC()[0]),mk('Computer',PC()[1])];initGame()}
+function mk(name,color){return{name,color,hand:[]}}
 
-        /* ───────── Deck ───────── */
-        function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-        function createDeck() {
-            const d = [];
-            for (const color of ['red', 'blue', 'green', 'yellow']) {
-                d.push({ color, type: 'number', value: '0' });
-                for (let i = 1; i <= 9; i++) { d.push({ color, type: 'number', value: '' + i }); d.push({ color, type: 'number', value: '' + i }); }
-                for (const a of ['Skip', 'Reverse', 'Draw2']) { d.push({ color, type: 'action', value: a }); d.push({ color, type: 'action', value: a }); }
-            }
-            for (let i = 0; i < 4; i++) { d.push({ color: 'wild', type: 'wild', value: 'Wild' }); d.push({ color: 'wild', type: 'wild', value: 'Draw4' }); }
-            return shuffle(d);
-        }
-        function takeCard() {
-            if (!deck.length && discard.length > 1) {          // reshuffle the discard pile when the deck runs out
-                const top = discard.pop();
-                deck = shuffle(discard); discard = [top];
-            }
-            return deck.pop() || null;
-        }
-        function giveCard(pi, n) {
-            const got = [];
-            for (let i = 0; i < n; i++) { const c = takeCard(); if (c) { players[pi].hand.push(c); got.push(c); } }
-            return got;
-        }
+/* ───────── Deck ───────── */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function createDeck(){
+  const d=[];
+  for(const color of['red','blue','green','yellow']){
+    d.push({color,type:'number',value:'0'});
+    for(let i=1;i<=9;i++){d.push({color,type:'number',value:''+i});d.push({color,type:'number',value:''+i})}
+    for(const a of['Skip','Reverse','Draw2']){d.push({color,type:'action',value:a});d.push({color,type:'action',value:a})}
+  }
+  for(let i=0;i<4;i++){d.push({color:'wild',type:'wild',value:'Wild'});d.push({color:'wild',type:'wild',value:'Draw4'})}
+  return shuffle(d);
+}
+function takeCard(){
+  if(!deck.length&&discard.length>1){const top=discard.pop();deck=shuffle(discard);discard=[top]}
+  return deck.pop()||null;
+}
+function giveCard(pi,n){
+  const got=[];
+  for(let i=0;i<n;i++){const c=takeCard();if(c){players[pi].hand.push(c);got.push(c)}}
+  if(got.length)hi[pi]=players[pi].hand.length-1;   // newest card comes to the front
+  return got;
+}
 
-        /* ───────── Game start ───────── */
-        function initGame() {
-            gen++;
-            deck = createDeck(); discard = [];
-            players.forEach((p, i) => { p.hand = deck.splice(0, 7); car[i].pos = 0; car[i].vel = 0; });
-            let first = deck.pop();
-            while (first.type !== 'number') { deck.unshift(first); first = deck.pop(); }   // start card is always a plain number
-            discard.push(first); currentColor = first.color;
-            seat = { A: 1, B: 0 };
-            over = false; paused = false; pickerOpen = false; pending = null; gameOn = true;
-            ['win-overlay', 'pause-overlay', 'color-overlay'].forEach(id => $(id).classList.remove('active'));
-            $('main-top').style.display = 'none';
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            $('game-screen').classList.add('active');
-            if (!panelsBuilt) buildPanels();
-            layoutBoard();
-            startTurn(Math.random() < 0.5 ? 0 : 1);
-        }
-        function rematch() { if (!players.length) return; initGame(); }
-        function leaveGame() { location.href = 'index.html'; }
+/* ───────── Game start ───────── */
+function initGame(){
+  gen++;
+  deck=createDeck();discard=[];
+  players.forEach(p=>p.hand=deck.splice(0,7));
+  let first=deck.pop();
+  while(first.type!=='number'){deck.unshift(first);first=deck.pop()}
+  discard.push(first);currentColor=first.color;
+  seat={L:1,R:0};hi[0]=hi[1]=0;
+  over=false;paused=false;pickerOpen=false;pending=null;gameOn=true;
+  ['win-overlay','pause-overlay','color-overlay'].forEach(id=>$(id).classList.remove('active'));
+  $('main-top').style.display='none';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $('game-screen').classList.add('active');
+  buildPanels();
+  startTurn(Math.random()<.5?0:1);
+}
+function rematch(){if(!players.length)return;initGame()}
+function leaveGame(){location.href='index.html'}
+function later(fn,ms){
+  const g=gen;
+  setTimeout(function wait(){
+    if(g!==gen)return;
+    if(paused||pickerOpen)return setTimeout(wait,300);
+    fn();
+  },ms);
+}
 
-        /* run a callback later, but never while paused and never after a restart */
-        function later(fn, ms) {
-            const g = gen;
-            setTimeout(function wait() {
-                if (g !== gen) return;
-                if (paused || pickerOpen) return setTimeout(wait, 300);
-                fn();
-            }, ms);
-        }
+/* ───────── Turns ───────── */
+function startTurn(idx,note){
+  turnIdx=idx;turnNote=note||'';
+  revealed=false;drewThisTurn=false;busy=false;remaining=TURN_MS;
+  renderAll();flashTurn();
+  if(isAI(idx))later(aiTurn,1500+Math.random()*600);
+}
+const nextTurn=()=>startTurn(1-turnIdx);
+function isPlayable(card){
+  if(card.color==='wild')return true;
+  const top=discard[discard.length-1];
+  if(card.color===currentColor)return true;
+  if(card.type==='number'&&top.type==='number'&&card.value===top.value)return true;
+  if(card.type==='action'&&top.type==='action'&&card.value===top.value)return true;
+  return false;
+}
+const canAct=pi=>!paused&&!busy&&!over&&!pickerOpen&&turnIdx===pi&&(isAI(pi)||revealed);
 
-        /* ───────── Turns ───────── */
-        function startTurn(idx, note) {
-            turnIdx = idx; turnNote = note || '';
-            revealed = false; drewThisTurn = false; busy = false; remaining = TURN_MS;
-            renderAll(); flashTurn();
-            if (isAI(idx)) later(aiTurn, 1500 + Math.random() * 600);
-        }
-        const nextTurn = () => startTurn(1 - turnIdx);
+function playCard(pi,ci){
+  if(!canAct(pi))return;
+  const card=players[pi].hand[ci];
+  if(!card)return;
+  if(!isPlayable(card)){
+    const el=carNodes(sideOf(pi))[ci];
+    if(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+    return;
+  }
+  flyFrom=rectOf(carNodes(sideOf(pi))[ci]);
+  players[pi].hand.splice(ci,1);
+  hi[pi]=Math.max(0,Math.min(hi[pi],players[pi].hand.length-1));
+  busy=true;
+  if(card.color==='wild'){
+    if(isAI(pi))return resolveCard(pi,card,aiPickColor(pi));
+    pending={pi,card};pickerOpen=true;
+    $('color-title').textContent=`${players[pi].name}, choose a color`;
+    $('color-box').classList.toggle('flip',layout==='tb'&&sideOf(pi)==='L');
+    renderAll();
+    $('color-overlay').classList.add('active');
+    return;
+  }
+  resolveCard(pi,card,card.color);
+}
+function selectColor(color){
+  if(!pending)return;
+  $('color-overlay').classList.remove('active');
+  const{pi,card}=pending;pending=null;pickerOpen=false;
+  resolveCard(pi,card,color);
+}
+function resolveCard(pi,card,color){
+  discard.push(card);currentColor=color;
+  renderAll();animPlay(card);
+  if(!players[pi].hand.length)return win(pi);
+  const opp=1-pi,oppName=players[opp].name;
+  let again=false,note='';
+  if(card.type==='action'){
+    again=true;
+    if(card.value==='Skip')note=`${oppName} is skipped!`;
+    if(card.value==='Reverse')note='Reverse!';
+    if(card.value==='Draw2'){giveCard(opp,2);note=`${oppName} draws 2!`}
+  }else if(card.value==='Draw4'){giveCard(opp,4);again=true;note=`${oppName} draws 4!`}
+  renderAll();
+  later(()=>startTurn(again?pi:opp,again?note+' Play again.':''),900);
+}
+function drawCard(side){
+  if(side&&seat[side]!==turnIdx)return;
+  if(paused||busy||over||pickerOpen||isAI(turnIdx)||!gameOn)return;
+  if(drewThisTurn)return toast('You already drew this turn');
+  busy=true;drewThisTurn=true;
+  const got=giveCard(turnIdx,1);
+  renderAll();if(got.length)animDraw(turnIdx);
+  toast(`${players[turnIdx].name} drew a card`);
+  if(got[0]&&isPlayable(got[0])){busy=false;remaining=TURN_MS;renderAll()}   // playable draw: keep the turn, fresh 15 s
+  else later(nextTurn,900);
+}
+function autoDraw(){
+  busy=true;
+  toast(`${players[turnIdx].name} ran out of time — auto draw!`);
+  const gotA=drewThisTurn?[]:giveCard(turnIdx,1);
+  renderAll();if(gotA.length)animDraw(turnIdx);
+  later(nextTurn,1100);
+}
 
-        function isPlayable(card) {
-            if (card.color === 'wild') return true;
-            const top = discard[discard.length - 1];
-            if (card.color === currentColor) return true;
-            if (card.type === 'number' && top.type === 'number' && card.value === top.value) return true;
-            if (card.type === 'action' && top.type === 'action' && card.value === top.value) return true;
-            return false;
-        }
-        const canAct = pi => !paused && !busy && !over && !pickerOpen && turnIdx === pi && (isAI(pi) || !needsReveal() || revealed);
+/* ───────── AI ───────── */
+function aiPickColor(pi){
+  const count={red:0,blue:0,green:0,yellow:0};
+  players[pi].hand.forEach(c=>{if(count[c.color]!==undefined)count[c.color]++});
+  const best=Object.keys(count).sort((a,b)=>count[b]-count[a])[0];
+  return count[best]?best:['red','blue','green','yellow'][Math.floor(Math.random()*4)];
+}
+function aiTurn(){
+  if(over||!isAI(turnIdx))return;
+  const hand=players[1].hand;
+  let idx=hand.findIndex(c=>c.color!=='wild'&&isPlayable(c));
+  if(idx<0)idx=hand.findIndex(c=>isPlayable(c));
+  if(idx>=0)return playCard(1,idx);
+  busy=true;
+  const got=giveCard(1,1);
+  toast(`${players[1].name} draws a card`);
+  renderAll();if(got.length)animDraw(1);
+  if(got[0]&&isPlayable(got[0]))later(()=>{busy=false;playCard(1,players[1].hand.length-1)},900);
+  else later(nextTurn,900);
+}
 
-        function playCard(pi, ci) {
-            if (!canAct(pi)) return;
-            const card = players[pi].hand[ci];
-            if (!card) return;
-            if (!isPlayable(card)) {
-                const el = card._el;
-                if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
-                return;
-            }
-            players[pi].hand.splice(ci, 1);
-            busy = true;
-            if (card.color === 'wild') {
-                if (isAI(pi)) return resolveCard(pi, card, aiPickColor(pi));
-                pending = { pi, card }; pickerOpen = true;
-                $('color-title').textContent = `${players[pi].name}, choose a color`;
-                $('color-box').style.transform = `rotate(${seatAng(pi)}deg)`;
-                renderAll();
-                $('color-overlay').classList.add('active');
-                return;
-            }
-            resolveCard(pi, card, card.color);
-        }
-        function selectColor(color) {
-            if (!pending) return;
-            $('color-overlay').classList.remove('active');
-            const { pi, card } = pending; pending = null; pickerOpen = false;
-            resolveCard(pi, card, color);
-        }
-        function resolveCard(pi, card, color) {
-            discard.push(card); currentColor = color;
-            renderAll();
-            if (!players[pi].hand.length) return win(pi);
+/* ───────── Slide animations (a flat clone flies; no layout work) ───────── */
+const rectOf=el=>el&&el.getBoundingClientRect();
+let flyFrom=null;
+function fly(fr,to,html,cls,done){
+  if(!fr||!to||!fr.width){done&&done();return}
+  const f=document.createElement('div');
+  f.className='card fly '+cls;f.innerHTML=html;
+  f.style.cssText=`--w:${fr.width}px;left:${fr.left}px;top:${fr.top}px`;
+  $('game-screen').appendChild(f);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    f.style.transform=`translate(${to.left-fr.left}px,${to.top-fr.top}px) scale(${to.width/fr.width})`;
+  }));
+  setTimeout(()=>{f.remove();done&&done()},430);
+}
+function animDraw(pi){                              // draw pile -> player's hand
+  const side=sideOf(pi),panel=$('panel-'+side),nodes=panel._nodes||[],node=nodes[nodes.length-1];
+  const pile=panel.querySelector('.draw-pile .card');
+  if(!node||!pile)return;
+  node.style.visibility='hidden';
+  fly(rectOf(pile),rectOf(node),'','card-back',()=>{node.style.visibility=''});
+}
+function animPlay(card){                            // hand -> main card
+  const fr=flyFrom;flyFrom=null;
+  const tgt=$('discard').querySelector('.card');
+  if(!fr||!tgt)return;
+  tgt.style.visibility='hidden';
+  fly(fr,rectOf(tgt),cardInner(card),'c-'+card.color,()=>{tgt.style.visibility=''});
+}
 
-            const opp = 1 - pi, oppName = players[opp].name;
-            let again = false, note = '';
-            if (card.type === 'action') {
-                again = true;
-                if (card.value === 'Skip') note = `${oppName} is skipped!`;
-                if (card.value === 'Reverse') note = 'Reverse!';
-                if (card.value === 'Draw2') { giveCard(opp, 2); note = `${oppName} draws 2!`; }
-            } else if (card.value === 'Draw4') {
-                giveCard(opp, 4); again = true; note = `${oppName} draws 4!`;
-            }
-            renderAll();
-            later(() => startTurn(again ? pi : opp, again ? note + ' Play again.' : ''), 900);
-        }
+/* ───────── Hide / reveal ───────── */
+function toggleReveal(side){
+  const pi=seat[side];
+  if(pi!==turnIdx||isAI(pi)||paused||over)return;
+  revealed=!revealed;
+  renderAll();
+}
 
-        function drawCard() {
-            if (paused || busy || over || pickerOpen || isAI(turnIdx) || !gameOn) return;
-            if (drewThisTurn) return toast('Already drew this turn');
-            busy = true; drewThisTurn = true;
-            const got = giveCard(turnIdx, 1);
-            renderAll();
-            toast(`${players[turnIdx].name} drew a card`);
-            if (got[0] && isPlayable(got[0])) {          // playable draw: keep the turn, fresh 10 seconds
-                busy = false; remaining = TURN_MS; renderAll();
-            } else {
-                later(nextTurn, 900);
-            }
-        }
-        function autoDraw() {                             // timer hit zero
-            busy = true;
-            toast(`⏱ ${players[turnIdx].name} ran out of time — auto draw`);
-            if (!drewThisTurn) giveCard(turnIdx, 1);
-            renderAll();
-            later(nextTurn, 1100);
-        }
+/* ───────── Seats ───────── */
+const sideOf=pi=>seat.L===pi?'L':'R';
+function swapSides(){[seat.L,seat.R]=[seat.R,seat.L];renderAll()}
 
-        /* ───────── AI ───────── */
-        function aiPickColor(pi) {
-            const count = { red: 0, blue: 0, green: 0, yellow: 0 };
-            players[pi].hand.forEach(c => { if (count[c.color] !== undefined) count[c.color]++; });
-            const best = Object.keys(count).sort((a, b) => count[b] - count[a])[0];
-            return count[best] ? best : ['red', 'blue', 'green', 'yellow'][Math.floor(Math.random() * 4)];
-        }
-        function aiTurn() {
-            if (over || !isAI(turnIdx)) return;
-            const hand = players[1].hand;
-            let idx = hand.findIndex(c => c.color !== 'wild' && isPlayable(c));
-            if (idx < 0) idx = hand.findIndex(c => isPlayable(c));
-            if (idx >= 0) return playCard(1, idx);
-            busy = true;
-            const got = giveCard(1, 1);
-            toast(`${players[1].name} draws a card`);
-            renderAll();
-            if (got[0] && isPlayable(got[0])) later(() => { busy = false; playCard(1, players[1].hand.length - 1); }, 900);
-            else later(nextTurn, 900);
-        }
+/* ───────── Timer (cheap: runs 5×/s and only touches DOM when a value changes) ───────── */
+let lastSec=-1,lastLow=null,hintOn=null;
+setInterval(()=>{
+  const now=performance.now(),dt=now-lastTick;lastTick=now;
+  if(!gameOn||paused||over||pickerOpen||busy)return;
+  remaining-=dt;
+  if(!isAI(turnIdx)&&remaining<=0){remaining=0;renderTimer();autoDraw();return}
+  if(remaining<0)remaining=0;
+  renderTimer();
+  updateHint();
+},200);
+function renderTimer(){
+  const s=Math.ceil(remaining/1000);
+    if(s!==lastSec){lastSec=s;$('timer-num').textContent=s}
+  const low=remaining<=3000;
+  if(low!==lastLow){lastLow=low;$('timer').classList.toggle('low',low)}
+}
+/* after 5 s with the cards still hidden: bouncing arrow + pulsing eye */
+function updateHint(){
+  const want=gameOn&&!over&&!paused&&!revealed&&!isAI(turnIdx)&&!busy&&(TURN_MS-remaining)>=HINT_AFTER_MS;
+  const side=sideOf(turnIdx),key=want?side:null;
+  if(key===hintOn)return;
+  hintOn=key;
+  ['L','R'].forEach(s=>{
+    const on=want&&s===side,p=$('panel-'+s);
+    p.querySelector('.hint').classList.toggle('show',on);
+    p.querySelector('.hide-btn').classList.toggle('pulse',on);
+  });
+}
 
-        /* ───────── Hide / reveal ───────── */
-        function toggleReveal(side) {
-            const pi = seat[side];
-            if (pi !== turnIdx || isAI(pi) || paused || over) return;
-            revealed = !revealed;
-            renderAll();
-        }
+/* ───────── Pause ───────── */
+function pauseGame(){
+  if(!gameOn||over||paused)return;
+  paused=true;
+  $('pause-vs').innerHTML=`${esc(players[0].name)} — ${esc(players[1].name)}`;
+  $('pause-overlay').classList.add('active');
+  renderAll();
+}
+function resumeGame(){paused=false;lastTick=performance.now();$('pause-overlay').classList.remove('active');renderAll()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame()});
 
-        /* ───────── Seats & layout ───────── */
-        function swapSides() { [seat.A, seat.B] = [seat.B, seat.A]; renderAll(); }
-        function setLayout(l) {
-            if (mode !== 'split') return;
-            layout = l; layoutBoard(); renderAll(); markSeg();
-        }
-        function markSeg() { $('seg-tb').classList.toggle('on', layout === 'tb'); $('seg-lr').classList.toggle('on', layout === 'lr'); }
-        const seatAng = pi => parseFloat($('panel-' + sideOf(pi)).dataset.ang) || 0;
+/* ───────── Win ───────── */
+function win(pi){
+  over=true;
+  const w=players[pi].name,l=players[1-pi].name;
+  $('win-name').textContent=w;
+  $('win-line').innerHTML=`<b>${esc(w)}</b> — ${esc(l)}`;
+  later(()=>$('win-overlay').classList.add('active'),700);
+}
 
-        /* Rotate each player's half toward them and size the cards */
-        function layoutBoard() {
-            if (!gameOn) return;
-            const portrait = isPortrait();
-            $('board').className = `board b-${layout} ${portrait ? 'p' : 'l'}`;
-            let innH = 0;
-            ['A', 'B'].forEach(s => {
-                const pan = $('panel-' + s), inn = pan.firstElementChild;
-                let ang = 0;
-                if (layout === 'tb') ang = s === 'A' ? 180 : 0;
-                if (layout === 'lr' && portrait) ang = s === 'A' ? 90 : -90;
-                pan.dataset.ang = ang;
-                const pw = pan.clientWidth, ph = pan.clientHeight;
-                let w = pw, h = ph;
-                if (Math.abs(ang) === 90) { w = ph; h = pw; }
-                inn.style.width = w + 'px'; inn.style.height = h + 'px';
-                inn.style.left = ((pw - w) / 2) + 'px'; inn.style.top = ((ph - h) / 2) + 'px';
-                inn.style.transform = `rotate(${ang}deg)`;
-                if (s === 'B') innH = h;
-            });
-            let ch, chc;
-            if (layout === 'solo') { ch = clamp(innH - 96, 74, 150); chc = portrait ? 100 : 76; }
-            else if (layout === 'lr' && portrait) { ch = clamp(innH - 96, 54, 100); chc = ch; }
-            else { ch = clamp((innH - 120) / 1.85, 54, 104); chc = Math.min(Math.round(ch * 0.95), portrait ? 92 : 100); }
-            const g = $('game-screen');
-            g.style.setProperty('--ch', Math.round(ch) + 'px');
-            g.style.setProperty('--chc', Math.round(chc) + 'px');
-            g.style.setProperty('--chd', Math.round(ch * 0.85) + 'px');
-        }
-        window.addEventListener('resize', () => { if (gameOn) { layoutBoard(); renderAll(); } });
+/* ───────── Rendering ───────── */
+function buildPanels(){
+  $('board').className='board '+layout;
+  ['L','R'].forEach(side=>{
+    const el=$('panel-'+side);
+    el.innerHTML=`
+      <div class="p-top">
+        <div class="draw-pile"><div class="card card-back"></div><span>DRAW</span></div>
+        <div class="name-bar"><span class="crown">${CROWN}</span><span class="pname"></span><span class="pcount"></span></div>
+      </div>
+      <div class="p-hand">
+        <div class="car"></div>
+        <div class="hand-label" hidden></div>
+        <div class="hint"><span>REVEAL</span>${IC('<path d="M12 4v14M6 12l6 7 6-7"/>',26,3)}</div>
+        <button class="hide-btn" aria-label="Hide or show cards"></button>
+      </div>`;
+    el._sig=null;el._nodes=[];
+    el.querySelector('.draw-pile').onclick=()=>drawCard(side);
+    el.querySelector('.hide-btn').onclick=()=>toggleReveal(side);
+    attachSwipe(side);
+  });
+  hintOn=null;
+}
 
-        /* ───────── Timer ───────── */
-        setInterval(() => {
-            const now = performance.now(), dt = now - lastTick; lastTick = now;
-            if (!gameOn || paused || over || pickerOpen || busy) return;
-            remaining -= dt;
-            if (isAI(turnIdx)) { if (remaining < 0) remaining = 0; renderTimer(); return; }
-            if (remaining <= 0) { remaining = 0; renderTimer(); autoDraw(); return; }
-            renderTimer();
-        }, 100);
-        function renderTimer() {
-            const s = Math.ceil(remaining / 1000), low = remaining <= 3000;
-            $('timer-num').textContent = s;
-            $('timer-fill').style.width = (remaining / TURN_MS * 100) + '%';
-            $('timer').classList.toggle('low', low);
-            ['A', 'B'].forEach(side => {
-                const t = $('panel-' + side).querySelector('.ptimer');
-                if (!t) return;
-                const mine = seat[side] === turnIdx && !isAI(seat[side]) && !over;
-                t.textContent = mine ? s + 's' : '';
-                t.classList.toggle('low', low);
-            });
-        }
+/* ── 3D swipe hand ── */
+const carNodes=side=>$('panel-'+side)._nodes||[];
+function attachSwipe(side){
+  const car=$('panel-'+side).querySelector('.car');
+  let sx=0,down=false,moved=false;
+  const flip=()=>layout==='tb'&&side==='L'?-1:1;       // top panel is upside down
+  const faceUp=()=>{const pi=seat[side];return pi===turnIdx&&revealed&&!isAI(pi)&&!paused};
+  car.addEventListener('pointerdown',e=>{down=true;moved=false;sx=e.clientX;try{car.setPointerCapture(e.pointerId)}catch(_){}});
+  car.addEventListener('pointermove',e=>{
+    if(!down||!faceUp())return;
+    const pi=seat[side],n=players[pi].hand.length;
+    const step=parseFloat(getComputedStyle($('board')).getPropertyValue('--cw'))||60;
+    const th=Math.max(22,step*.42);
+    let dx=(e.clientX-sx)*flip();
+    while(Math.abs(dx)>=th){
+      const d=dx<0?1:-1;
+      hi[pi]=Math.max(0,Math.min(n-1,hi[pi]+d));
+      dx-=d*-th;sx=e.clientX;moved=true;
+      if(hi[pi]===0||hi[pi]===n-1)break;
+    }
+    if(moved)layoutHand(side);
+  });
+  const end=e=>{
+    if(!down)return;down=false;
+    if(moved||!faceUp())return;
+    const pi=seat[side];
+    const t=document.elementFromPoint(e.clientX,e.clientY),el=t&&t.closest&&t.closest('.car .card');
+    if(!el||!car.contains(el))return;
+    const i=+el.dataset.i;
+    if(i===hi[pi])playCard(pi,i);                       // only the front card can be played
+    else{hi[pi]=i;layoutHand(side)}                    // tap a side card: bring it to the front
+  };
+  car.addEventListener('pointerup',end);
+  car.addEventListener('pointercancel',()=>{down=false});
+}
 
-        /* ───────── Pause ───────── */
-        function pauseGame() {
-            if (!gameOn || over || paused) return;
-            paused = true;
-            $('pause-vs').textContent = `${players[0].name} — ${players[1].name}`;
-            $('pause-layout').hidden = mode !== 'split'; markSeg();
-            $('pause-overlay').classList.add('active');
-            renderAll();
-        }
-        function resumeGame() { paused = false; lastTick = performance.now(); $('pause-overlay').classList.remove('active'); renderAll(); }
-        document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
+function cardInner(card){
+  let v=card.value;
+  if(v==='Skip'||v==='Reverse')return `<span class="ct">${symSvg(v)}</span>`;
+  if(v==='Draw2')v='+2';else if(v==='Draw4')v='+4';else if(v==='Wild')v='WILD';
+  return `<span class="ct">${v}</span>`;
+}
+function cardEl(card,asColor){
+  const el=document.createElement('div');
+  const col=card.color==='wild'&&asColor?asColor:card.color;
+  el.className=`card c-${col}`;
+  el.innerHTML=cardInner(card);
+  return el;
+}
 
-        /* ───────── Win ───────── */
-        function win(pi) {
-            over = true; renderAll();
-            const w = players[pi].name, l = players[1 - pi].name;
-            $('win-name').textContent = w;
-            $('win-line').innerHTML = `<b>${esc(w)}</b> — ${esc(l)}`;
-            later(() => $('win-overlay').classList.add('active'), 700);
-        }
+function syncHand(side){
+  const pi=seat[side],p=players[pi],panel=$('panel-'+side),car=panel.querySelector('.car');
+  const sig=pi+':'+p.hand.map(c=>c.color+c.value).join(',');
+  if(panel._sig!==sig){                                   // rebuild nodes only when the hand really changed
+    panel._sig=sig;car.innerHTML='';
+    panel._nodes=p.hand.map((c,i)=>{const n=document.createElement('div');n.dataset.i=i;car.appendChild(n);return n});
+    panel._face=null;
+  }
+  const mine=pi===turnIdx,face=mine&&revealed&&!isAI(pi)&&!paused;
+  if(panel._face!==face||panel._rev!==currentColor+discard.length){
+    panel._face=face;panel._rev=currentColor+discard.length;
+    p.hand.forEach((c,i)=>{
+      const n=panel._nodes[i];
+      if(face){
+        n.className='card c-'+c.color;n.innerHTML=cardInner(c);
+        n.dataset.ok=isPlayable(c)?'1':'';
+      }else{n.className='card card-back';n.innerHTML='';n.dataset.ok=''}
+    });
+  }
+  layoutHand(side);
+}
+function layoutHand(side){
+  const pi=seat[side],panel=$('panel-'+side),nodes=panel._nodes||[];
+  const n=nodes.length;
+  hi[pi]=Math.max(0,Math.min(hi[pi],Math.max(0,n-1)));
+  const face=panel._face;
+  nodes.forEach((nd,i)=>{
+    const o=i-hi[pi],a=Math.abs(o);
+    nd.style.setProperty('--o',o);nd.style.setProperty('--a',a);nd.style.zIndex=20-a;
+    const base=nd.className.replace(/\b(front|far|dim|go|shake)\b/g,'').replace(/\s+/g,' ').trim();
+    let cls=base;
+    if(a>3)cls+=' far';
+    if(o===0)cls+=' front';
+    if(face){if(!nd.dataset.ok)cls+=' dim';else if(o===0)cls+=' go'}
+    if(nd.className!==cls)nd.className=cls;
+  });
+}
 
-        /* ───────── Circular carousel ───────── */
-        const car = [{ pos: 0, vel: 0, raf: 0 }, { pos: 0, vel: 0, raf: 0 }];
+function renderAll(){
+  if(!players.length)return;
+  const top=discard[discard.length-1];
+  const d=$('discard'),dk=top.color+top.value+currentColor+discard.length;
+  if(d._k!==dk){d._k=dk;d.innerHTML='';d.appendChild(cardEl(top,currentColor))}
+  d.style.setProperty('--cur',HEX[currentColor]);
+  $('deck-count').textContent=deck.length;
+  const tp=players[turnIdx];
+  $('turn-plate').style.setProperty('--pc',tp.color);
+  $('turn-name').innerHTML=CROWN+'<span>'+esc(tp.name)+'</span>';
+  $('turn-note').textContent=turnNote;
+  renderTimer();
+  ['L','R'].forEach(renderPanel);
+  document.querySelectorAll('.hint.show,.hide-btn.pulse').forEach(e=>e.classList.remove('show','pulse'));
+  hintOn=null;updateHint();
+}
+function renderPanel(side){
+  const pi=seat[side],p=players[pi],el=$('panel-'+side);
+  const mine=pi===turnIdx,ai=isAI(pi);
+  el.style.setProperty('--pc',p.color);
+  el.classList.toggle('active',mine);
+  el.querySelector('.pname').textContent=p.name;
+  el.querySelector('.pcount').innerHTML=p.hand.length+' '+CARDS;
+  el.querySelector('.p-hand').classList.toggle('idle',!mine);
+  syncHand(side);
 
-        function layoutCar(side, pi) {
-            const box = $('panel-' + side).querySelector('.carousel');
-            const c = car[pi], kids = [...box.children], n = kids.length;
-            if (!n) return;
-            const W = box.clientWidth, cw = kids[0].offsetWidth || 60;
-            const spMin = cw * 0.62, cap = Math.floor((W - cw) / spMin) + 1;
-            const stat = n <= cap;                         // few cards: just a centred fan, no scrolling
-            c.stat = stat; c.n = n;
-            c.sp = stat ? Math.min(cw * 0.9, (W - cw) / Math.max(n - 1, 1)) : spMin;
-            if (stat) c.pos = (n - 1) / 2;
-            else c.pos = ((c.pos % n) + n) % n;
-            const half = W / 2;
-            kids.forEach(el => {
-                const i = +el.dataset.i;
-                let off = i - c.pos;
-                if (!stat) off = ((off + n / 2) % n + n) % n - n / 2;
-                const a = Math.abs(off), x = off * c.sp;
-                let y = Math.min(off * off * 2.4, 28);
-                if (el.classList.contains('playable')) y -= 10;
-                const rot = clamp(off * 4, -14, 14), sc = Math.max(0.8, 1 - a * 0.05);
-                let op = 1;
-                if (!stat) op = clamp(1 - (Math.abs(x) - (half - cw * 0.55)) / (cw * 0.5), 0, 1);
-                el.style.transform = `translateX(calc(-50% + ${x.toFixed(1)}px)) translateY(${y.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`;
-                el.style.opacity = op;
-                el.style.zIndex = Math.round(200 - a * 10);
-                el.style.pointerEvents = op < 0.05 ? 'none' : '';
-            });
-        }
+  const label=el.querySelector('.hand-label');
+  if(mine&&!revealed&&!ai&&!over){label.hidden=false;label.innerHTML=EYE_OFF.replace(/width="24" height="24"/,'width="15" height="15"')+'<span>Hidden — tap the eye</span>'}else label.hidden=true;
 
-        function startInertia(pi) {
-            const c = car[pi];
-            cancelAnimationFrame(c.raf);
-            let t0 = performance.now();
-            const step = now => {
-                const side = sideOf(pi), box = $('panel-' + side).querySelector('.carousel');
-                const dt = Math.min(now - t0, 40); t0 = now;
-                if (Math.abs(c.vel) > 0.0007) { c.pos += c.vel * dt; c.vel *= Math.exp(-dt / 240); }
-                else {
-                    const target = Math.round(c.pos);
-                    c.pos += (target - c.pos) * Math.min(1, dt / 80);
-                    if (Math.abs(target - c.pos) < 0.002) { c.pos = target; layoutCar(side, pi); box.classList.remove('moving'); return; }
-                }
-                layoutCar(side, pi);
-                c.raf = requestAnimationFrame(step);
-            };
-            c.raf = requestAnimationFrame(step);
-        }
+  const hb=el.querySelector('.hide-btn');
+  hb.disabled=!mine||ai;
+  hb.classList.toggle('is-hidden',mine&&!revealed&&!ai);
+  const showOff=mine&&revealed;
+  if(hb._off!==showOff){hb._off=showOff;hb.innerHTML=(showOff?EYE_OFF:EYE).replace('width="24" height="24"','width="20" height="20"')+'<span>'+(showOff?'HIDE':'SHOW')+'</span>'}
+  el.querySelector('.draw-pile').classList.toggle('off',!mine||ai);
+}
 
-        function bindCarousel(side) {
-            const box = $('panel-' + side).querySelector('.carousel');
-            let d = null;
-            const local = (dx, dy) => {                    // screen movement -> movement along the player's own left/right
-                const a = (parseFloat($('panel-' + side).dataset.ang) || 0) * Math.PI / 180;
-                return dx * Math.cos(a) + dy * Math.sin(a);
-            };
-            box.addEventListener('pointerdown', e => {
-                const pi = seat[side], c = car[pi];
-                cancelAnimationFrame(c.raf); c.vel = 0;
-                d = { id: e.pointerId, x: e.clientX, y: e.clientY, pos: c.pos, moved: false, lx: 0, lt: performance.now(), lp: c.pos };
-                try { box.setPointerCapture(e.pointerId); } catch (err) {}
-            });
-            box.addEventListener('pointermove', e => {
-                if (!d || e.pointerId !== d.id) return;
-                const pi = seat[side], c = car[pi];
-                const lx = local(e.clientX - d.x, e.clientY - d.y);
-                if (!d.moved && Math.hypot(e.clientX - d.x, e.clientY - d.y) > 9) { d.moved = true; box.classList.add('moving'); }
-                if (!d.moved || c.stat) return;
-                c.pos = d.pos - lx / c.sp;
-                const now = performance.now(), dt = now - d.lt;
-                if (dt > 0) { const v = (c.pos - d.lp) / dt; c.vel = c.vel * 0.6 + v * 0.4; d.lt = now; d.lp = c.pos; }
-                layoutCar(side, pi);
-            });
-            const end = (e, cancelled) => {
-                if (!d || e.pointerId !== d.id) return;
-                const pi = seat[side], c = car[pi], wasMoved = d.moved; d = null;
-                if (!wasMoved && !cancelled) {             // a tap plays the card under the finger
-                    const t = document.elementFromPoint(e.clientX, e.clientY);
-                    const ce = t && t.closest && t.closest('.card');
-                    if (ce && box.contains(ce)) playCard(pi, +ce.dataset.i);
-                    return;
-                }
-                if (c.stat) { box.classList.remove('moving'); return; }
-                if (performance.now() - (e.timeStamp ? performance.now() : 0) > 0) {}
-                startInertia(pi);
-            };
-            box.addEventListener('pointerup', e => end(e, false));
-            box.addEventListener('pointercancel', e => end(e, true));
-        }
-
-        /* ───────── Rendering ───────── */
-        function buildPanels() {
-            ['A', 'B'].forEach(s => {
-                $('panel-' + s).innerHTML = `
-                    <div class="panel-in">
-                        <div class="name-bar"><span class="pname"></span><span class="pturn">YOUR TURN</span><span class="ptimer"></span><span class="pcount"></span></div>
-                        <div class="ai-mini"></div>
-                        <div class="p-body">
-                            <div class="draw-pile" onclick="drawCard()"><div class="card card-back"></div><span>DRAW</span></div>
-                            <div class="hand-wrap"><div class="carousel"></div><div class="hand-label" hidden></div></div>
-                            <div class="p-side"><div class="pcard"></div><button class="hide-btn" onclick="toggleReveal('${s}')" aria-label="Hide or show cards"><i class="fas fa-eye"></i></button></div>
-                        </div>
-                    </div>`;
-                bindCarousel(s);
-            });
-            panelsBuilt = true;
-        }
-
-        function cardEl(card, asColor) {
-            const el = document.createElement('div');
-            fillCard(el, card, true, asColor);
-            return el;
-        }
-        function fillCard(el, card, faceUp, asColor) {
-            if (!faceUp) { el.className = 'card card-back'; el.innerHTML = ''; return; }
-            const col = card.color === 'wild' && asColor ? asColor : card.color;
-            let v = card.value;
-            if (v === 'Skip') v = 'Ø'; else if (v === 'Reverse') v = '⇄'; else if (v === 'Draw2') v = '+2';
-            else if (v === 'Draw4') v = '+4'; else if (v === 'Wild') v = 'WILD';
-            el.className = `card c-${col}`;
-            el.innerHTML = `<span class="card-text">${v}</span>`;
-        }
-
-        function renderAll() {
-            if (!players.length || !gameOn) return;
-            const top = discard[discard.length - 1];
-            const d = $('discard'); d.innerHTML = '';
-            d.appendChild(cardEl(top, currentColor));
-            d.style.setProperty('--cur', HEX[currentColor]);
-            $('deck-count').textContent = deck.length;
-
-            $('turn-name').textContent = players[turnIdx].name;
-            $('turn-note').textContent = turnNote;
-            $('c-draw').classList.toggle('off', isAI(turnIdx) || over);
-
-            ['A', 'B'].forEach(renderPanel);
-            renderTimer();
-        }
-
-        function renderPanel(side) {
-            const pi = seat[side], p = players[pi], el = $('panel-' + side);
-            const mine = pi === turnIdx, ai = isAI(pi);
-            el.classList.toggle('active', mine && !over);
-            el.classList.toggle('ai', ai);
-            el.querySelector('.pname').textContent = p.name;
-            el.querySelector('.pcount').textContent = p.hand.length + (p.hand.length === 1 ? ' card' : ' cards');
-
-            if (ai) {                                      // opponent in solo mode: just a tiny row of card backs
-                el.querySelector('.ai-mini').innerHTML = '<i class="mb"></i>'.repeat(Math.min(p.hand.length, 16));
-                return;
-            }
-            const faceUp = needsReveal() ? (mine && revealed && !paused) : true;
-            const active = mine && !over && (!needsReveal() || revealed) && !paused;
-
-            // reconcile hand elements (cards keep their DOM node so they glide into place)
-            const box = el.querySelector('.carousel'), keep = new Set();
-            p.hand.forEach((card, i) => {
-                let c = card._el;
-                if (!c) { c = card._el = document.createElement('div'); c._face = null; }
-                if (c._face !== faceUp) { fillCard(c, card, faceUp); c._face = faceUp; }
-                c.dataset.i = i;
-                const ok = faceUp && active && isPlayable(card);
-                c.classList.toggle('playable', ok);
-                c.classList.toggle('dim', faceUp && active && !ok);
-                if (c.parentNode !== box) box.appendChild(c);
-                keep.add(c);
-            });
-            [...box.children].forEach(ch => { if (!keep.has(ch)) ch.remove(); });
-            layoutCar(side, pi);
-
-            const label = el.querySelector('.hand-label');
-            if (needsReveal() && mine && !revealed && !over) { label.hidden = false; label.textContent = 'Hidden — tap the eye to show'; }
-            else label.hidden = true;
-
-            const hb = el.querySelector('.hide-btn');
-            hb.disabled = !mine || over;
-            hb.classList.toggle('is-hidden', mine && !revealed);
-            hb.innerHTML = `<i class="fas ${mine && revealed ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
-            el.querySelector('.draw-pile').classList.toggle('off', !mine || over);
-
-            const pc = el.querySelector('.pcard');
-            pc.innerHTML = ''; pc.appendChild(cardEl(discard[discard.length - 1], currentColor));
-        }
-
-        /* ───────── Messages ───────── */
-        function flashTurn() {
-            const p = players[turnIdx], f = $('flash');
-            f.innerHTML = `<div class="flash-in" style="--rot:${seatAng(turnIdx)}deg"><small>YOUR TURN</small><b>${esc(p.name)}</b>${turnNote ? `<em>${esc(turnNote)}</em>` : ''}</div>`;
-            f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
-        }
-        let toastT;
-        function toast(msg) {
-            const t = $('toast'); t.textContent = msg;
-            t.style.setProperty('--rot', seatAng(turnIdx) + 'deg');
-            t.classList.add('show');
-            clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1800);
-        }
-    </script>
+/* ───────── Messages ───────── */
+function flashTurn(){
+  const p=players[turnIdx],f=$('flash');
+  f.innerHTML=`<div class="flash-in" style="--c:${p.color}"><small>${CROWN} YOUR TURN</small><b>${esc(p.name)}</b>${turnNote?`<em>${esc(turnNote)}</em>`:''}</div>`;
+  f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+}
+let toastT;
+function toast(msg){
+  const t=$('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800);
+}
+</script>
 </body>
 </html>
