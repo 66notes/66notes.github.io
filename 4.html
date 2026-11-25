@@ -106,6 +106,7 @@
         .message-line { position: absolute; width: 100%; text-align: center; opacity: 0; transform: translateX(12px); transition: opacity 0.5s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1); pointer-events: none; padding: 0 0.2rem; }
         .message-line.active { opacity: 1; transform: translateX(0); position: relative; pointer-events: auto; }
         .message-line strong { font-weight: 700; color: var(--navy); }
+        .message-line i { font-size: 0.85em; }
         .clock-display { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.3px; font-variant-numeric: tabular-nums; margin-top: 0.1rem; }
         .next-class-bar { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; background: #f8fafc; border-radius: 12px; padding: 0.4rem 0.7rem; border: 1px solid var(--border); font-weight: 500; justify-content: center; flex-wrap: wrap; min-height: 38px; margin-top: 0.4rem; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; flex-shrink: 0; }
@@ -746,215 +747,231 @@
         ];
 
         const EXAM_SCHEDULE = [
-            { course: 'Supple Mid Exam', day: '09', month: 'Nov', dow: 'Monday', time: 'TBA', room: 'TBA', start: '2026-11-09T00:00:00+06:00', end: '2026-11-12T23:59:59+06:00' }
+            { course: 'Supple Mid Exam', day: '09', month: 'Nov', dow: 'Monday', time: 'TBA', room: 'TBA' }
         ];
 
-        const SKIP_DATES = ['2026-11-01', '2026-12-16'];
-
-        // AI Reminder Custom Overrides (Date specific)
-        const CUSTOM_AI_OVERRIDES = {
-            '2026-11-22': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
-            '2026-11-25': { title: 'ECO CT Exam (Tentative)', label: 'EXAM', detail: 'ECO CT Exam · Room 4905' },
-            '2026-11-29': { title: 'MGT Presentation', label: 'PRESENTATION', detail: 'MGT Presentation · Room 4905' },
-            '2026-12-06': { title: 'Mathematics Class (No MGT)', label: 'CLASS', detail: 'QUA 1101 · Room 4905' },
-            '2026-12-09': { title: 'ECO Class (No MGT)', label: 'CLASS', detail: 'ECO 1101 · Room 4905' }
+        /* ── Date based exceptions ── */
+        // No classes at all on these dates
+        const NO_CLASS_DATES = ['2026-12-16'];
+        // Only these courses are cancelled — the rest of the day's classes run normally
+        const CANCELLED = {
+            '2026-12-06': ['MGT 1101'],
+            '2026-12-09': ['MGT 1101']
         };
+        const SEMESTER_END = '2026-12-15';   // last day of classes
+        const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
+
+        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
+
+        /* ═══════════════ EVENTS ═══════════════ */
+        /* `course` = expiry is the end of that course's class on that date */
 
         const EVENTS = [
-            { 
-                title: 'Classes Start', 
-                day: '02', month: 'Nov', 
+            {
+                title: 'Classes Start',
+                day: '02', month: 'Nov',
                 startDate: '2026-11-02T00:00:00+06:00',
-                tags: ['Class', 'Monday'],
                 expiresAt: '2026-11-02T23:59:59+06:00',
-                items: ['Current running routine will be followed.'],
+                tags: ['Class', 'Monday'],
+                items: ['Regular routine will be followed.'],
                 note: 'Welcome back!'
             },
-            { 
-                title: 'SUPPLE EXAM REGISTRATION LAST DATE', 
-                day: '03', month: 'Nov', 
+            {
+                title: 'Supple Exam Registration — Last Date',
+                day: '03', month: 'Nov',
                 startDate: '2026-11-03T00:00:00+06:00',
-                tags: ['Deadline', 'Tuesday'],
                 expiresAt: '2026-11-03T23:59:59+06:00',
+                tags: ['Deadline', 'Tuesday'],
                 color: '#991b1b',
                 items: ['Fee: Tk. 1000/- per course'],
                 note: 'Submit online application.'
             },
-            { 
-                title: 'Supple MID EXAM', 
-                startDay: '09', startMonth: 'Nov', endDay: '12', endMonth: 'Nov', 
+            {
+                title: 'Supple MID Exam',
+                startDay: '09', startMonth: 'Nov', endDay: '12', endMonth: 'Nov',
                 startDate: '2026-11-09T00:00:00+06:00',
-                tags: ['Exams', '09-12 Nov'],
                 expiresAt: '2026-11-12T23:59:59+06:00',
+                tags: ['Exams', '09–12 Nov'],
                 color: '#991b1b',
                 items: ['Supplementary Mid-Term Examination'],
                 note: 'Check schedule with faculty.'
             },
-            { 
-                title: 'MGT Presentation (Groups 1-4)', 
-                day: '22', month: 'Nov', 
+            {
+                title: 'MGT Presentation (Groups 1–4)',
+                day: '22', month: 'Nov',
                 startDate: '2026-11-22T00:00:00+06:00',
+                course: 'MGT 1101',
                 tags: ['Presentation', 'Sunday'],
-                expiresAt: '2026-11-22T16:15:00+06:00',
                 color: '#166534',
                 items: ['The Visionaries', 'Team Believers', 'Team Phoenix', 'INSIGHT CIRCLE'],
                 note: 'During class time.'
             },
-            { 
-                title: 'MGT Presentation (Groups 5-7)', 
-                day: '29', month: 'Nov', 
-                startDate: '2026-11-29T00:00:00+06:00',
-                tags: ['Presentation', 'Sunday'],
-                expiresAt: '2026-11-29T16:15:00+06:00',
-                color: '#166534',
-                items: ['The Business Titans', 'BLUEPRINTS', 'Marginal Analysts'],
-                note: 'During class time.'
-            },
-            { 
-                title: 'MGT Make Up Class', 
-                day: '23', month: 'Nov', 
+            {
+                title: 'MGT Make Up Class',
+                day: '23', month: 'Nov',
                 startDate: '2026-11-23T00:00:00+06:00',
+                expiresAt: '2026-11-23T11:15:00+06:00',
                 tags: ['Make Up', 'Monday'],
-                expiresAt: '2026-11-23T23:59:59+06:00',
-                items: ['Room 201', 'Time: 9:45 AM - 11:15 AM'],
+                items: ['Room 201', 'Time: 9:45 AM – 11:15 AM'],
                 note: 'Make up for missed classes.'
             },
-            { 
-                title: 'MGT Assignment (Slide Print)', runFrom: '2026-11-29T00:00:00+06:00', 
-                day: '22', month: 'Nov', 
-                dynamicDay: { after: '2026-11-23T00:00:00+06:00', newDay: '29', newMonth: 'Nov' },
-                startDate: '2026-11-22T00:00:00+06:00',
-                tags: ['Assignment', 'Sunday'],
-                expiresAt: '2026-11-29T23:59:59+06:00',
-                color: '#166534',
-                items: ['Just print the pptx slide and give the hard copy on the presentation day.'],
-                note: 'Deadline is on the presentation day.'
-            },
-            { 
-                title: 'No MGT Class', 
-                day: '06', month: 'Dec', 
-                dynamicDay: { after: '2026-12-07T00:00:00+06:00', newDay: '09', newMonth: 'Dec' },
-                startDate: '2026-12-06T00:00:00+06:00',
-                tags: ['Notice', 'Dec 6/9'],
-                expiresAt: '2026-12-09T23:59:59+06:00',
-                items: ['This is why Make Up class is done, or will happen.'],
-                note: 'No MGT class on Dec 6 and Dec 9.'
-            },
-            { 
-                title: 'ECO CT Exam', 
-                day: '25', month: 'Nov', 
+            {
+                title: 'ECO CT Exam',
+                day: '25', month: 'Nov',
                 startDate: '2026-11-25T00:00:00+06:00',
+                course: 'ECO 1101',
                 tags: ['Exam', 'Wednesday'],
-                expiresAt: '2026-11-25T16:15:00+06:00',
                 color: '#991b1b',
                 items: [
-                    'Syllabus: Chapter 4, Chapter 5',
-                    '(Happening of exam isnt 100% guaranteed)',
-                    '(but With agreement of 4,5th chap but question ektu hard hobe)'
+                    'Syllabus: Chapter 4 and Chapter 5',
+                    'Exam is not 100% confirmed',
+                    'Questions may be a bit hard'
                 ],
                 note: 'Contact faculty for confirmation.'
             },
-            { 
-                title: 'Math CT', 
-                day: '30', month: 'Nov', 
+            {
+                title: 'New Semester Pre-Registration (Spring 2027)',
+                startDay: '25', startMonth: 'Nov', endDay: '02', endMonth: 'Dec',
+                startDate: '2026-11-25T10:00:00+06:00',
+                expiresAt: '2026-12-02T23:59:59+06:00',
+                process: true,
+                tags: ['Notice', '10:00 AM', '25 Nov – 2 Dec'],
+                color: '#991b1b',
+                items: ['Pre-registration for Spring 2027', 'Starts at 10:00 AM on 25 Nov', 'Deadline: 2 Dec'],
+                note: 'Complete your pre-registration.'
+            },
+            {
+                title: 'MGT Presentation + Assignment (Groups 5–7)',
+                day: '29', month: 'Nov',
+                startDate: '2026-11-29T00:00:00+06:00',
+                course: 'MGT 1101',
+                tags: ['Presentation', 'Assignment', 'Sunday'],
+                color: '#166534',
+                items: [
+                    'The Business Titans',
+                    'BLUEPRINTS',
+                    'Marginal Analysts',
+                    'Print the PPTX slides and submit the hard copy on the presentation day'
+                ],
+                note: 'Presentation and assignment submission on the same day.'
+            },
+            {
+                title: 'Math CT',
+                day: '30', month: 'Nov',
                 startDate: '2026-11-30T00:00:00+06:00',
+                course: 'QUA 1101',
                 tags: ['CT', 'Monday'],
-                expiresAt: '2026-11-30T23:59:59+06:00',
                 color: '#991b1b',
                 items: [
-                    '1. Coordinate Geometry (1-8) Type Math',
-                    '2. Arithmetic Progression (1-10) Type Math'
+                    'Coordinate Geometry (1–8) type math',
+                    'Arithmetic Progression (1–10) type math'
                 ],
                 note: 'Check with faculty.'
             },
-            { 
-                title: 'New Semester Pre-Registration Spring 2027', process: true, 
-                startDay: '25', startMonth: 'Nov', endDay: '02', endMonth: 'Dec', 
-                startDate: '2026-11-25T10:00:00+06:00',
-                tags: ['Notice', '10:00 AM', '25 Nov - 2 Dec'],
-                expiresAt: '2026-12-02T23:59:59+06:00',
-                color: '#991b1b',
-                items: ['Pre-Registration for Spring 2027', 'Starts at 10:00 AM on 25 Nov', 'Deadline: 2 Dec'],
-                note: 'Complete your pre-registration.'
+            {
+                title: 'ECO Presentation + Assignment (Groups 1–4)',
+                day: '30', month: 'Nov',
+                startDate: '2026-11-30T00:00:00+06:00',
+                course: 'ECO 1101',
+                tags: ['Presentation', 'Assignment', 'Monday'],
+                color: '#166534',
+                items: [
+                    'Group 1–4 presentations',
+                    'Topics: Chapters 4, 5 and 6',
+                    'Submit both the mid assignment and the final assignment'
+                ],
+                note: 'Both assignments are due on the presentation day.'
             },
-                        { 
-                title: 'ECO Presentation + Assignment', 
-                day: '02', month: 'Dec', 
+            {
+                title: 'ECO Presentation + Assignment (Groups 5–8)',
+                day: '02', month: 'Dec',
                 startDate: '2026-12-02T00:00:00+06:00',
-                tags: ['Group 1', 'Wednesday'],
-                expiresAt: '2026-12-02T23:59:59+06:00',
+                course: 'ECO 1101',
+                tags: ['Presentation', 'Assignment', 'Wednesday'],
                 color: '#166534',
-                items: ['Group 1 presentation', 'Presentation topics: Chapter 4, 5 and 6', 'Bring both assignments: the Mid assignment and the Final assignment'],
+                items: [
+                    'Group 5–8 presentations',
+                    'Topics: Chapters 4, 5 and 6',
+                    'Submit both the mid assignment and the final assignment'
+                ],
                 note: 'Both assignments are due on the presentation day.'
             },
-            { 
-                title: 'ECO Presentation + Assignment', 
-                day: '07', month: 'Dec', 
-                startDate: '2026-12-07T00:00:00+06:00',
-                tags: ['Group 2', 'Monday'],
-                expiresAt: '2026-12-07T23:59:59+06:00',
-                color: '#166534',
-                items: ['Group 2 presentation', 'Presentation topics: Chapter 4, 5 and 6', 'Bring both assignments: the Mid assignment and the Final assignment'],
-                note: 'Both assignments are due on the presentation day.'
-            },
-            { 
-                title: 'Math Assignment', 
-                day: '06', month: 'Dec', 
+            {
+                title: 'Math Assignment',
+                day: '06', month: 'Dec',
                 startDate: '2026-12-06T00:00:00+06:00',
+                course: 'QUA 1101',
                 tags: ['Assignment', 'Sunday'],
-                expiresAt: '2026-12-06T23:59:59+06:00',
                 color: '#166534',
-                items: ['Coordinate Geometry Problem (9-14)'],
-                note: 'Due on 6 Dec.'
+                items: ['Coordinate Geometry problems (9–14)'],
+                note: 'Submit on 6 Dec.'
             },
-            { 
-                title: 'Payment of tuition fees', 
-                day: '15', month: 'Dec', 
+            {
+                title: 'No MGT Class',
+                day: '06', month: 'Dec',
+                startDate: '2026-12-06T00:00:00+06:00',
+                course: 'MGT 1101',
+                tags: ['Notice', 'Sunday'],
+                items: ['MGT 1101 will not be held.', 'Other classes will run as usual.'],
+                note: 'MGT class cancelled.'
+            },
+            {
+                title: 'No MGT Class',
+                day: '09', month: 'Dec',
+                startDate: '2026-12-09T00:00:00+06:00',
+                course: 'MGT 1101',
+                tags: ['Notice', 'Wednesday'],
+                items: ['MGT 1101 will not be held.', 'Other classes will run as usual.'],
+                note: 'MGT class cancelled.'
+            },
+            {
+                title: 'Tuition Fee Payment',
+                day: '15', month: 'Dec',
                 startDate: '2026-12-15T00:00:00+06:00',
-                tags: ['Deadline', 'Tuesday'],
                 expiresAt: '2026-12-15T23:59:59+06:00',
-                items: ['Final Installment deadline: 15 Dec', '[Make your 0 balance]'],
+                tags: ['Deadline', 'Tuesday'],
+                items: ['Final installment deadline: 15 Dec', 'Clear your balance to 0'],
                 note: 'Pay before 16 Dec (Victory Day holiday).'
             },
-            { 
-                title: 'Last day of classes before Final Examination', 
-                day: '15', month: 'Dec', 
+            {
+                title: 'Last Day of Classes',
+                day: '15', month: 'Dec',
                 startDate: '2026-12-15T00:00:00+06:00',
-                tags: ['Notice', 'Tuesday'],
                 expiresAt: '2026-12-15T23:59:59+06:00',
-                items: ['Last day of classes'],
+                tags: ['Notice', 'Tuesday'],
+                items: ['Last day of classes before the final examination.'],
                 note: 'Prepare for finals.'
             },
-            { 
-                title: 'Victory Day Holiday', 
-                day: '16', month: 'Dec', 
+            {
+                title: 'Victory Day Holiday',
+                day: '16', month: 'Dec',
                 startDate: '2026-12-16T00:00:00+06:00',
-                tags: ['Holiday', 'Wednesday'],
                 expiresAt: '2026-12-16T23:59:59+06:00',
+                tags: ['Holiday', 'Wednesday'],
                 color: '#166534',
-                items: ['Victory Day Holiday'],
+                items: ['No classes — Victory Day.'],
                 note: 'Enjoy the holiday.'
             },
-            { 
-                title: 'Final Examination', 
-                startDay: '17', startMonth: 'Dec', endDay: '24', endMonth: 'Dec', 
+            {
+                title: 'Final Examination',
+                startDay: '17', startMonth: 'Dec', endDay: '24', endMonth: 'Dec',
                 startDate: '2026-12-17T00:00:00+06:00',
-                tags: ['Exams', '17-24 Dec'],
                 expiresAt: '2026-12-24T23:59:59+06:00',
+                tags: ['Exams', '17–24 Dec'],
                 color: '#991b1b',
-                items: ['Final Examination for all courses'],
+                items: ['Final examination for all courses'],
                 note: 'Good luck!'
             }
         ];
 
-        const SEMESTER_START = Date.parse('2026-09-06T00:00:00+06:00');
-        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const TITLES = { 'page-home': '66<span>Notes</span>', 'page-pdfs': 'All Resources', 'page-routine': 'Routine &amp; Codes', 'page-faculty': 'Faculty' };
-
         /* ═══════════════ HELPERS ═══════════════ */
 
+        function dhakaDate(offset) {
+            return new Date(Date.now() + 6 * 3600000 + (offset || 0) * 86400000);
+        }
         function dhakaNow() {
-            const d = new Date(Date.now() + 6 * 3600000);
+            const d = dhakaDate(0);
             const h = d.getUTCHours(), m = d.getUTCMinutes();
             return { day: d.getUTCDay(), h, m, min: h * 60 + m };
         }
@@ -962,27 +979,53 @@
         const to12 = (h, m) => (h % 12 || 12) + ':' + pad(m);
         const to12p = (h, m) => pad(h % 12 || 12) + ':' + pad(m);
 
-        function getDhakaDateStr(offset = 0) {
-            const d = new Date(Date.now() + 6 * 3600000 + offset * 86400000);
-            return d.toISOString().split('T')[0];
+        function getDhakaDateStr(offset) {
+            return dhakaDate(offset).toISOString().split('T')[0];
+        }
+        function dowOf(dateStr) {
+            return new Date(dateStr + 'T00:00:00Z').getUTCDay();
+        }
+
+        /* End time (ms) of a course's class on a specific date, or null */
+        function classEndTs(dateStr, course) {
+            const c = CLASSES.find(x => x.day === dowOf(dateStr) && x.course === course);
+            if (!c) return null;
+            return Date.parse(dateStr + 'T' + pad(c.eh) + ':' + pad(c.em) + ':00+06:00');
+        }
+
+        /* An event expires at the END OF ITS CLASS on that day */
+        function evExpiry(ev) {
+            if (ev.expiresAt) return Date.parse(ev.expiresAt);
+            if (ev.course && ev.startDate) {
+                const ds = ev.startDate.slice(0, 10);
+                const end = classEndTs(ds, ev.course);
+                return end !== null ? end : Date.parse(ds + 'T23:59:59+06:00');
+            }
+            return Infinity;
+        }
+
+        const runStart = ev => Date.parse(ev.runFrom || ev.startDate);
+        const isUnknown = ev => ev.day === '?';
+
+        function isRunning(ev, now) {
+            now = now || Date.now();
+            if (isUnknown(ev) || !ev.startDate) return false;
+            return now >= runStart(ev) && now <= evExpiry(ev);
         }
 
         function getEventDateString(ev) {
             if (ev.day === '?') return 'Date TBA';
-            if (ev.dynamicDay && Date.now() >= Date.parse(ev.dynamicDay.after)) {
-                return `${ev.dynamicDay.newDay} ${ev.dynamicDay.newMonth}`;
-            }
-            if (ev.startDay && ev.endDay) {
-                return `${ev.startDay}–${ev.endDay} ${ev.startMonth}`;
-            }
-            return `${ev.day} ${ev.month}`;
+            if (ev.startDay && ev.endDay) return ev.startDay + '–' + ev.endDay + ' ' + ev.startMonth;
+            return ev.day + ' ' + ev.month;
         }
 
-        const isUnknown = ev => ev.day === '?';
-        const runStart = ev => Date.parse(ev.runFrom || ev.startDate);
-        function isRunning(ev, now = Date.now()) {
-            if (isUnknown(ev) || !ev.startDate) return false;
-            return now >= runStart(ev) && (!ev.expiresAt || now <= Date.parse(ev.expiresAt));
+        function cancelledOn(dateStr, course) {
+            const list = CANCELLED[dateStr];
+            return !!(list && list.indexOf(course) !== -1);
+        }
+        function classesOn(dateStr) {
+            const dow = dowOf(dateStr);
+            return CLASSES.filter(c => c.day === dow && !cancelledOn(dateStr, c.course));
         }
 
         function rotate(els, ms) {
@@ -997,7 +1040,6 @@
             }, ms);
         }
 
-        // Improved Copy Function for Local HTML
         function copyText(text) {
             if (navigator.clipboard && window.isSecureContext) {
                 return navigator.clipboard.writeText(text);
@@ -1034,15 +1076,13 @@
 
         let currentOpenEvent = null;
 
-        $('btn-copy-event').addEventListener('click', function() {
+        $('btn-copy-event').addEventListener('click', function () {
             if (!currentOpenEvent) return;
             const ev = currentOpenEvent;
-            const dateStr = getEventDateString(ev);
-            
-            let text = `Event: ${ev.title}\nDate: ${dateStr}\n\n`;
-            if (ev.items) text += ev.items.map(i => `• ${i}`).join('\n') + '\n';
-            if (ev.note) text += `\nNote: ${ev.note}`;
-            
+            let text = 'Event: ' + ev.title + '\nDate: ' + getEventDateString(ev) + '\n\n';
+            if (ev.items) text += ev.items.map(i => '• ' + i).join('\n') + '\n';
+            if (ev.note) text += '\nNote: ' + ev.note;
+
             const btn = this;
             const orig = btn.innerHTML;
             copyText(text).then(() => {
@@ -1054,29 +1094,22 @@
             });
         });
 
-        $('btn-add-calendar').addEventListener('click', function() {
+        $('btn-add-calendar').addEventListener('click', function () {
             if (!currentOpenEvent) return;
             const ev = currentOpenEvent;
-            
+
             let activeDay = ev.day;
             let activeMonth = ev.month;
-            if (ev.dynamicDay && Date.now() >= Date.parse(ev.dynamicDay.after)) {
-                activeDay = ev.dynamicDay.newDay;
-                activeMonth = ev.dynamicDay.newMonth;
-            } else if (ev.startDay && ev.endDay) {
+            if (ev.startDay && ev.endDay) {
                 activeDay = ev.startDay;
                 activeMonth = ev.startMonth;
             }
-            
-            const monthMap = { 'Jan':'01','Feb':'02','Mar':'03','Apr':'04','May':'05','Jun':'06','Jul':'07','Aug':'08','Sep':'09','Oct':'10','Nov':'11','Dec':'12' };
+
+            const monthMap = { 'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12' };
             const m = monthMap[activeMonth] || '01';
-            const d = activeDay.padStart(2, '0');
-            
-            let startHour = '09';
-            let startMin = '00';
-            let endHour = '10';
-            let endMin = '00';
-            
+            const d = String(activeDay).padStart(2, '0');
+
+            let startHour = '09', startMin = '00', endHour = '10', endMin = '00';
             const textToSearch = ev.title + ' ' + (ev.note || '') + ' ' + (ev.items ? ev.items.join(' ') : '');
             const timeMatch = textToSearch.match(/(\d+):(\d+)/);
             if (timeMatch) {
@@ -1085,25 +1118,25 @@
                 endHour = (parseInt(startHour) + 1).toString().padStart(2, '0');
                 endMin = startMin;
             }
-            
-            const dtStart = `2026${m}${d}T${startHour}${startMin}00`;
-            const dtEnd = `2026${m}${d}T${endHour}${endMin}00`;
+
+            const dtStart = '2026' + m + d + 'T' + startHour + startMin + '00';
+            const dtEnd = '2026' + m + d + 'T' + endHour + endMin + '00';
             const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-            
+
             let desc = (ev.items || []).join('\\n');
             if (ev.note) desc += '\\n' + ev.note;
-            
+
             const icsContent = [
                 'BEGIN:VCALENDAR',
                 'VERSION:2.0',
                 'PRODID:-//66notes//Event//EN',
                 'BEGIN:VEVENT',
-                `UID:${Date.now()}@66notes.github.io`,
-                `DTSTAMP:${dtStamp}`,
-                `DTSTART:${dtStart}`,
-                `DTEND:${dtEnd}`,
-                `SUMMARY:${ev.title}`,
-                `DESCRIPTION:${desc}`,
+                'UID:' + Date.now() + '@66notes.github.io',
+                'DTSTAMP:' + dtStamp,
+                'DTSTART:' + dtStart,
+                'DTEND:' + dtEnd,
+                'SUMMARY:' + ev.title,
+                'DESCRIPTION:' + desc,
                 'BEGIN:VALARM',
                 'TRIGGER:-P3D',
                 'ACTION:DISPLAY',
@@ -1120,10 +1153,10 @@
 
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            
+
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${ev.title.replace(/\s+/g, '_')}.ics`;
+            a.download = ev.title.replace(/\s+/g, '_') + '.ics';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1168,17 +1201,17 @@
             });
         })();
 
-        /* ═══════════════ ANNOUNCEMENTS ═══════════════ */
+        /* ═══════════════ ANNOUNCEMENT (only 1 line) ═══════════════ */
 
         let annTimer = null;
         function buildAnnouncements(lines) {
             const bar = $('announcementBar');
             const box = $('announcementText');
             if (!bar || !box) return;
+            clearInterval(annTimer);
             if (!lines.length) {
                 bar.classList.add('hidden');
                 box.innerHTML = '';
-                clearInterval(annTimer);
                 return;
             }
             box.innerHTML = '';
@@ -1189,78 +1222,121 @@
                 box.appendChild(s);
             });
             bar.classList.remove('hidden');
-            clearInterval(annTimer);
             annTimer = rotate(box.children, 4500);
         }
 
         (function initAnnouncements() {
             const now = Date.now();
-            const lines = EVENTS
-                .filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt))
-                .sort((a, b) => {
-                    const tsA = a.startDate ? Date.parse(a.startDate) : (a.expiresAt ? Date.parse(a.expiresAt) : 0);
-                    const tsB = b.startDate ? Date.parse(b.startDate) : (b.expiresAt ? Date.parse(b.expiresAt) : 0);
-                    return tsA - tsB;
-                })
-                .slice(0, 3)
-                .map(ev => `[${getEventDateString(ev)}] ${ev.title}`);
-            buildAnnouncements(lines);
+            const regStart = Date.parse('2026-11-25T00:00:00+06:00');
+            const regEnd = Date.parse('2026-12-02T23:59:59+06:00');
+            let line = '';
+
+            if (now >= regStart && now <= regEnd) {
+                line = 'New semester registration is running — check annex';
+            } else {
+                const next = EVENTS
+                    .filter(ev => ev.startDate && Date.parse(ev.startDate) > now)
+                    .sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate))[0];
+                if (next) line = '[' + getEventDateString(next) + '] ' + next.title;
+            }
+
+            buildAnnouncements(line ? [line] : []);
         })();
 
-        /* ═══════════════ CLASS STATUS & AI LOGIC ═══════════════ */
+        /* ═══════════════ CLASS STATUS (routine based) ═══════════════ */
 
         function findStatus(t) {
-            const run = CLASSES.find(c => c.day === t.day && t.min >= c.s && t.min < c.e);
-            if (run) return { kind: 'run', c: run };
-            for (let off = 0; off <= 7; off++) {
-                const day = (t.day + off) % 7;
-                const c = CLASSES.find(c => c.day === day && (off > 0 || c.s > t.min));
-                if (c) {
-                    const dateStr = getDhakaDateStr(off);
-                    if (SKIP_DATES.includes(dateStr)) {
-                        continue;
-                    }
-                    return { kind: off === 0 ? 'today' : 'next', c };
-                }
+            const todayStr = getDhakaDateStr(0);
+
+            if (NO_CLASS_DATES.indexOf(todayStr) === -1) {
+                const running = classesOn(todayStr).find(c => t.min >= c.s && t.min < c.e);
+                if (running) return { kind: 'run', c: running };
+            }
+
+            for (let off = 0; off <= 14; off++) {
+                const ds = getDhakaDateStr(off);
+                if (ds > SEMESTER_END) return null;
+                if (NO_CLASS_DATES.indexOf(ds) !== -1) continue;
+
+                const list = classesOn(ds)
+                    .filter(c => off > 0 || c.s > t.min)
+                    .sort((a, b) => a.s - b.s);
+
+                if (list.length) return { kind: off === 0 ? 'today' : 'next', c: list[0] };
             }
             return null;
         }
 
-        function getClassStatus(t) {
-            if (Date.now() < SEMESTER_START) {
-                return { slides: ['📅 Classes start on <strong>6 September</strong>', 'Check the routine below!'], label: 'UPCOMING', running: false, detail: 'Classes start on 6th Sep' };
-            }
-            const st = findStatus(t);
-            if (!st) return { slides: ['📚 No classes scheduled', 'Enjoy your free time!'], label: 'IDLE', running: false, detail: 'No class scheduled.' };
-
-            const c = st.c;
-            const when = st.kind === 'next' ? DAYS[c.day] : 'Today';
-            const time = to12(c.sh, c.sm) + '–' + to12(c.eh, c.em);
-            const detail = `<span class="nc-day">${when}</span> · <span class="nc-course">${c.course}</span> · <span class="nc-time">${time}</span> · <span class="nc-room">${c.room}</span>`;
-
-            if (st.kind === 'run') {
-                return { slides: [`▶️ <strong>${c.course}</strong> is running`, 'Ends at ' + to12(c.eh, c.em)], label: 'RUNNING', running: true, detail };
-            }
+        function noClassesSlides() {
             return {
-                slides: ['📅 Next: ' + when, `<strong>${c.course}</strong> at ${to12(c.sh, c.sm)}`, 'Room ' + c.room],
-                label: st.kind === 'today' ? 'TODAY' : 'NEXT', running: false, detail
+                slides: [
+                    '<i class="fas fa-circle-info" style="margin-right:7px"></i>No classes anymore',
+                    'Keep an eye on the <strong>BUBT site</strong> for the exam routine'
+                ],
+                label: 'EXAMS',
+                running: false,
+                detail: 'Final exams: 17–24 Dec'
             };
         }
 
         function getStatus(t) {
-            const dateStr = getDhakaDateStr(0);
-            
-            if (CUSTOM_AI_OVERRIDES[dateStr]) {
-                const override = CUSTOM_AI_OVERRIDES[dateStr];
+            const now = Date.now();
+            const todayStr = getDhakaDateStr(0);
+
+            if (now < SEMESTER_START) {
                 return {
-                    slides: [`📌 <strong>${override.title}</strong>`, `📅 ${override.detail}`],
-                    label: override.label,
-                    running: false,
-                    detail: override.detail
+                    slides: [
+                        '<i class="fas fa-calendar-day" style="margin-right:7px"></i>Classes start on <strong>6 September</strong>',
+                        'Check the routine below'
+                    ],
+                    label: 'UPCOMING', running: false, detail: 'Classes start on 6 Sep'
                 };
             }
-            
-            return getClassStatus(t);
+
+            if (todayStr === '2026-12-16') {
+                return {
+                    slides: ['<i class="fas fa-flag" style="margin-right:7px"></i><strong>Victory Day</strong> — no classes today'],
+                    label: 'HOLIDAY', running: false, detail: 'Victory Day holiday'
+                };
+            }
+
+            if (todayStr > '2026-12-16') return noClassesSlides();
+
+            const st = findStatus(t);
+
+            if (!st) {
+                if (todayStr >= SEMESTER_END) return noClassesSlides();
+                return {
+                    slides: ['<i class="fas fa-circle-info" style="margin-right:7px"></i>No classes scheduled', 'Enjoy your free time'],
+                    label: 'IDLE', running: false, detail: 'No class scheduled.'
+                };
+            }
+
+            const c = st.c;
+            const when = st.kind === 'next' ? DAYS[c.day] : 'Today';
+            const time = to12(c.sh, c.sm) + '–' + to12(c.eh, c.em);
+            const detail = '<span class="nc-day">' + when + '</span> · <span class="nc-course">' + c.course +
+                           '</span> · <span class="nc-time">' + time + '</span> · <span class="nc-room">' + c.room + '</span>';
+
+            if (st.kind === 'run') {
+                return {
+                    slides: [
+                        '<i class="fas fa-play" style="margin-right:7px"></i><strong>' + c.course + '</strong> is running',
+                        'Ends at ' + to12(c.eh, c.em)
+                    ],
+                    label: 'RUNNING', running: true, detail: detail
+                };
+            }
+
+            return {
+                slides: [
+                    '<i class="fas fa-calendar-day" style="margin-right:7px"></i>Next: ' + when,
+                    '<strong>' + c.course + '</strong> at ' + to12(c.sh, c.sm) + ' · Room ' + c.room
+                ],
+                label: st.kind === 'today' ? 'TODAY' : 'NEXT',
+                running: false,
+                detail: detail
+            };
         }
 
         let slideKey = '', slideTimer = null;
@@ -1269,7 +1345,7 @@
             if (key === slideKey) return;
             slideKey = key;
             const box = $('messageBox');
-            box.innerHTML = slides.map(h => `<div class="message-line">${h}</div>`).join('');
+            box.innerHTML = slides.map(h => '<div class="message-line">' + h + '</div>').join('');
             clearInterval(slideTimer);
             slideTimer = rotate(box.children, 4000);
         }
@@ -1281,54 +1357,54 @@
             if (!root) return;
 
             const examRows = EXAM_SCHEDULE.map(e =>
-                `<tr>
-                    <td><strong>${e.day} ${e.month}</strong><span class="dow">${e.dow}</span></td>
-                    <td>${e.time}</td>
-                    <td>${e.course}</td>
-                    <td>${e.room}</td>
-                </tr>`
+                '<tr>' +
+                    '<td><strong>' + e.day + ' ' + e.month + '</strong><span class="dow">' + e.dow + '</span></td>' +
+                    '<td>' + e.time + '</td>' +
+                    '<td>' + e.course + '</td>' +
+                    '<td>' + e.room + '</td>' +
+                '</tr>'
             ).join('');
 
             const byDay = {};
             CLASSES.forEach(c => (byDay[c.day] = byDay[c.day] || []).push(c));
             const classRows = Object.keys(byDay).map(d => byDay[d].map((c, i) =>
                 '<tr>' +
-                (i === 0 ? `<td rowspan="${byDay[d].length}"><strong>${DAYS[d].slice(0, 3).toUpperCase()}</strong></td>` : '') +
-                `<td>${to12p(c.sh, c.sm)} – ${to12p(c.eh, c.em)}</td><td>${c.room}</td><td>${c.course}</td><td>${c.fac}</td></tr>`
+                (i === 0 ? '<td rowspan="' + byDay[d].length + '"><strong>' + DAYS[d].slice(0, 3).toUpperCase() + '</strong></td>' : '') +
+                '<td>' + to12p(c.sh, c.sm) + ' – ' + to12p(c.eh, c.em) + '</td><td>' + c.room + '</td><td>' + c.course + '</td><td>' + c.fac + '</td></tr>'
             ).join('')).join('');
 
-            const codes = CODES.map(c => `
-                <div class="code-card">
-                    <span class="code-icon-dot ${c.dot}-dot"></span>
-                    <span class="code-subject">${c.subject}</span>
-                    <div class="code-value-box"><span class="code-value">${c.code}</span></div>
-                    <button class="copy-btn" type="button" data-code="${c.code}"><i class="fas fa-copy"></i> Copy</button>
-                    ${c.url ? `<a href="${c.url}" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>` : ''}
-                </div>`).join('');
+            const codes = CODES.map(c =>
+                '<div class="code-card">' +
+                    '<span class="code-icon-dot ' + c.dot + '-dot"></span>' +
+                    '<span class="code-subject">' + c.subject + '</span>' +
+                    '<div class="code-value-box"><span class="code-value">' + c.code + '</span></div>' +
+                    '<button class="copy-btn" type="button" data-code="' + c.code + '"><i class="fas fa-copy"></i> Copy</button>' +
+                    (c.url ? '<a href="' + c.url + '" target="_blank" class="join-btn" rel="noopener"><i class="fas fa-arrow-right"></i> Join</a>' : '') +
+                '</div>').join('');
 
-            root.innerHTML = `
-                <div class="section-label"><i class="fas fa-clipboard-list"></i> Exam Routine</div>
-                <div class="routine-table-wrap">
-                    <table class="routine-table">
-                        <colgroup><col style="width:20%"><col style="width:30%"><col style="width:24%"><col style="width:26%"></colgroup>
-                        <thead><tr><th>Date</th><th>Time</th><th>Course</th><th>Room</th></tr></thead>
-                        <tbody>${examRows}</tbody>
-                    </table>
-                </div>
-                <div id="classRoutineBlock">
-                    <div class="section-label"><i class="fas fa-table"></i> Class Routine</div>
-                    <div class="routine-table-wrap">
-                        <table class="routine-table">
-                            <colgroup><col style="width:14%"><col style="width:26%"><col style="width:14%"><col style="width:22%"><col style="width:24%"></colgroup>
-                            <thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>
-                            <tbody>${classRows}</tbody>
-                        </table>
-                    </div>
-                    <div class="codes-section">
-                        <div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>
-                        <div class="codes-grid">${codes}</div>
-                    </div>
-                </div>`;
+            root.innerHTML =
+                '<div class="section-label"><i class="fas fa-clipboard-list"></i> Exam Routine</div>' +
+                '<div class="routine-table-wrap">' +
+                    '<table class="routine-table">' +
+                        '<colgroup><col style="width:20%"><col style="width:30%"><col style="width:24%"><col style="width:26%"></colgroup>' +
+                        '<thead><tr><th>Date</th><th>Time</th><th>Course</th><th>Room</th></tr></thead>' +
+                        '<tbody>' + examRows + '</tbody>' +
+                    '</table>' +
+                '</div>' +
+                '<div id="classRoutineBlock">' +
+                    '<div class="section-label"><i class="fas fa-table"></i> Class Routine</div>' +
+                    '<div class="routine-table-wrap">' +
+                        '<table class="routine-table">' +
+                            '<colgroup><col style="width:14%"><col style="width:26%"><col style="width:14%"><col style="width:22%"><col style="width:24%"></colgroup>' +
+                            '<thead><tr><th>Day</th><th>Time</th><th>Room</th><th>Course</th><th>Faculty</th></tr></thead>' +
+                            '<tbody>' + classRows + '</tbody>' +
+                        '</table>' +
+                    '</div>' +
+                    '<div class="codes-section">' +
+                        '<div class="codes-label"><i class="fas fa-key"></i> Classroom Codes</div>' +
+                        '<div class="codes-grid">' + codes + '</div>' +
+                    '</div>' +
+                '</div>';
 
             root.addEventListener('click', e => {
                 const btn = e.target.closest('.copy-btn');
@@ -1346,23 +1422,22 @@
 
         function openEventDetails(ev) {
             currentOpenEvent = ev;
-            
+
             $('event-modal-title').innerHTML = '<i class="fas fa-calendar-check"></i> ' + ev.title;
 
-            let dateStr = '';
-            if (ev.day === '?') {
-                dateStr = 'Date TBA';
-            } else if (ev.startDay && ev.endDay) {
-                dateStr = `${ev.startDay} ${ev.startMonth} – ${ev.endDay} ${ev.endMonth}`;
+            let dateStr;
+            if (ev.startDay && ev.endDay) {
+                dateStr = ev.startDay + ' ' + ev.startMonth + ' – ' + ev.endDay + ' ' + ev.endMonth;
             } else {
                 dateStr = getEventDateString(ev);
             }
 
-            let html = `<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ${dateStr}</div>`;
-            
-            if (ev.items && ev.items.length) html += `<div class="event-items">${ev.items.map(i => `<div>${i}</div>`).join('')}</div>`;
-            if (ev.note) html += `<div class="event-note">${ev.note}</div>`;
-            
+            let html = '<div class="event-meta" style="font-size:0.8rem;margin-bottom:8px"><strong>Date:</strong> ' + dateStr + '</div>';
+            if (ev.items && ev.items.length) {
+                html += '<div class="event-items">' + ev.items.map(i => '<div>' + i + '</div>').join('') + '</div>';
+            }
+            if (ev.note) html += '<div class="event-note">' + ev.note + '</div>';
+
             $('event-modal-body').innerHTML = html;
             openModal();
         }
@@ -1370,47 +1445,43 @@
         function buildBlock(ev, status) {
             const block = document.createElement('div');
             block.className = 'event-block';
-            
-            const now = Date.now();
-            
+
             let displayDay = ev.day;
             let displayMonth = ev.month;
-            
-            if (ev.dynamicDay && now >= Date.parse(ev.dynamicDay.after)) {
-                displayDay = ev.dynamicDay.newDay;
-                displayMonth = ev.dynamicDay.newMonth;
-            } else if (ev.startDay && ev.endDay) {
-                const isStarted = ev.startDate && now >= Date.parse(ev.startDate);
-                displayDay = isStarted ? ev.endDay : ev.startDay;
-                displayMonth = isStarted ? ev.endMonth : ev.startMonth;
+            if (ev.startDay && ev.endDay) {
+                const started = ev.startDate && Date.now() >= Date.parse(ev.startDate);
+                displayDay = started ? ev.endDay : ev.startDay;
+                displayMonth = started ? ev.endMonth : ev.startMonth;
             }
-            
+
             const tagsHtml = (ev.tags && ev.tags.length)
-                ? `<div class="event-tags">${ev.tags.map((t, i) => `<span class="event-tag ${i === 0 ? 'time' : 'day'}">${t}</span>`).join('')}</div>`
+                ? '<div class="event-tags">' + ev.tags.map((t, i) =>
+                    '<span class="event-tag ' + (i === 0 ? 'time' : 'day') + '">' + t + '</span>').join('') + '</div>'
                 : '';
 
-            const bgStyle = ev.color ? `style="background: ${ev.color}"` : '';
-            
-            let dateContent = '';
+            const bgStyle = ev.color ? 'style="background:' + ev.color + '"' : '';
+
+            let dateContent;
             if (displayDay === '?') {
-                dateContent = `<i class="fas fa-question"></i>`;
+                dateContent = '<i class="fas fa-question"></i>';
             } else {
-                dateContent = `<span class="day">${displayDay}</span><span class="month">${displayMonth}</span>`;
+                dateContent = '<span class="day">' + displayDay + '</span><span class="month">' + displayMonth + '</span>';
             }
 
-            block.innerHTML = `
-                <div class="event-row">
-                    <div class="event-date" ${bgStyle}>${dateContent}</div>
-                    <div class="event-body">
-                        <div class="event-title">${ev.title}</div>
-                        ${tagsHtml}
-                    </div>
-                    <button class="event-detail-btn" type="button">See Detail</button>
-                </div>`;
-                
+            block.innerHTML =
+                '<div class="event-row">' +
+                    '<div class="event-date" ' + bgStyle + '>' + dateContent + '</div>' +
+                    '<div class="event-body">' +
+                        '<div class="event-title">' + ev.title + '</div>' +
+                        tagsHtml +
+                    '</div>' +
+                    '<button class="event-detail-btn" type="button">See Detail</button>' +
+                '</div>';
+
             if (status) {
                 block.classList.add('has-status');
-                block.insertAdjacentHTML('afterbegin', `<span class="ev-badge ${status}"><i></i>${status === 'running' ? 'Running' : 'Next'}</span>`);
+                block.insertAdjacentHTML('afterbegin',
+                    '<span class="ev-badge ' + status + '"><i></i>' + (status === 'running' ? 'Running' : 'Next') + '</span>');
             }
             block.querySelector('.event-detail-btn').addEventListener('click', () => openEventDetails(ev));
             return block;
@@ -1419,22 +1490,24 @@
         let shownKey = null;
         function renderEvents() {
             const now = Date.now();
-            // Order: running now -> unknown date -> everything else (chronological)
             const rank = ev => isRunning(ev, now) ? 0 : (isUnknown(ev) ? 1 : 2);
-            const ts = ev => ev.startDate ? runStart(ev) : (ev.expiresAt ? Date.parse(ev.expiresAt) : 0);
+            const ts = ev => ev.startDate ? runStart(ev) : evExpiry(ev);
+
             const visible = EVENTS
-                .filter(ev => !ev.expiresAt || now <= Date.parse(ev.expiresAt))
+                .filter(ev => now <= evExpiry(ev))
                 .sort((a, b) => rank(a) - rank(b) || ts(a) - ts(b));
 
-            // "Next": up to 3 non-running, dated, non-process events starting within the coming 7 days
             const nextSet = new Set(visible
-                .filter(ev => !isUnknown(ev) && !ev.process && !isRunning(ev, now) && runStart(ev) > now && runStart(ev) <= now + 7 * 86400000)
+                .filter(ev => !isUnknown(ev) && !ev.process && !isRunning(ev, now) &&
+                              runStart(ev) > now && runStart(ev) <= now + 7 * 86400000)
                 .slice(0, 3));
+
             const statusOf = ev => isRunning(ev, now) ? 'running' : (nextSet.has(ev) ? 'next' : null);
 
             const key = visible.map(ev => ev.title + '@' + getEventDateString(ev) + '#' + statusOf(ev)).join('|');
             if (key === shownKey) return;
             shownKey = key;
+
             const list = $('eventsList');
             list.innerHTML = '';
             if (!visible.length) {
