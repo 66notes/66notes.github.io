@@ -5,6 +5,37 @@
     "subject": "Principles of Management",
     "phone": "01914898292",
     "email": "johir@bubt.edu.bd",
-    "room": "B4/902"
+    "room": "B4/902",
+    "department": null,
+    "counseling": [
+      { "day": "Sunday", "time": "01:30 PM – 02:30 PM" },
+      { "day": "Wednesday", "time": "11:30 AM – 12:30 PM" }
+    ]
+  },
+  {
+    "name": "Taskia Akhtar (TKA)",
+    "course": "QUA 1101",
+    "subject": "Fundamentals of Mathematics",
+    "phone": "01913045537",
+    "email": "taskia@bubt.edu.bd",
+    "room": "B3/207",
+    "department": "Mathematics & Statistics",
+    "counseling": [
+      { "day": "Monday", "time": "09:45 AM – 11:15 AM" }
+    ]
+  },
+  {
+    "name": "K. M. Rahmatullah Rahat (KMR)",
+    "course": "ECO 1101",
+    "subject": "Micro Economics",
+    "phone": "01735692906",
+    "email": "rahmatullahrahat@bubt.edu.bd",
+    "room": "B-1 / 701",
+    "department": "Economics",
+    "counseling": [
+      { "day": "Tuesday", "time": "01:15 PM – 02:45 PM" },
+      { "day": "Wednesday", "time": "11:15 AM – 02:45 PM" },
+      { "day": "Thursday", "time": "01:15 PM – 04:15 PM" }
+    ]
   }
 ]
