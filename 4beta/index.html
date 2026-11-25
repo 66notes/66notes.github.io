@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON-Driven Dashboard Experiment</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f7fc; color: #1e2a3e; padding: 20px; max-width: 800px; margin: auto; }
+        .card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { font-size: 1.1rem; margin-bottom: 8px; color: #0d2b4e; }
+        .announcement { background: #fff7ed; border-left: 4px solid #f97316; padding: 12px; font-weight: 600; }
+        .reminder-slide { margin: 6px 0; font-size: 0.95rem; }
+        .event-item { border-bottom: 1px solid #eee; padding: 8px 0; }
+        .event-item:last-child { border-bottom: none; }
+        .event-title { font-weight: 700; }
+        .event-date { font-size: 0.8rem; color: #6b7280; }
+        .event-note { background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; margin-top: 6px; }
+        .routine-row, .faculty-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 0.9rem; }
+        .routine-row:last-child, .faculty-row:last-child { border-bottom: none; }
+        .error { color: #dc2626; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <h1>JSON-Driven Dashboard Experiment</h1>
+
+    <!-- 1. Announcement Bar -->
+    <div class="card announcement" id="announcementBar">
+        Loading announcement...
+    </div>
+
+    <!-- 2. AI Reminder -->
+    <div class="card">
+        <h2>AI Reminder</h2>
+        <div id="aiReminderSlides">
+            <div class="reminder-slide">Loading reminder...</div>
+        </div>
+        <div id="aiReminderDetail" style="font-size:0.8rem; color:#6b7280; margin-top:8px;">Loading detail...</div>
+    </div>
+
+    <!-- 3. Pinned Events -->
+    <div class="card">
+        <h2>Pinned Events</h2>
+        <div id="pinnedEventsList">
+            <div>Loading events...</div>
+        </div>
+    </div>
+
+    <!-- 4. Routine -->
+    <div class="card">
+        <h2>Class Routine (Sample)</h2>
+        <div id="routineList">
+            <div>Loading routine...</div>
+        </div>
+    </div>
+
+    <!-- 5. Faculty Info -->
+    <div class="card">
+        <h2>Faculty (Sample)</h2>
+        <div id="facultyList">
+            <div>Loading faculty...</div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to fetch JSON with error handling
+        async function fetchJSON(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                return await response.json();
+            } catch (error) {
+                console.error(`Failed to load ${url}:`, error);
+                return null;
+            }
+        }
+
+        // 1. Load Announcement
+        (async () => {
+            const bar = document.getElementById('announcementBar');
+            const data = await fetchJSON('announcement.json');
+            if (data && data.message) {
+                bar.textContent = data.message;
+            } else {
+                bar.textContent = 'No announcement available.';
+            }
+        })();
+
+        // 2. Load AI Reminder
+        (async () => {
+            const slidesContainer = document.getElementById('aiReminderSlides');
+            const detailContainer = document.getElementById('aiReminderDetail');
+            const data = await fetchJSON('ai-reminder.json');
+
+            if (data && data.slides) {
+                slidesContainer.innerHTML = data.slides
+                    .map(text => `<div class="reminder-slide">${text}</div>`)
+                    .join('');
+                detailContainer.textContent = data.detail || '';
+            } else {
+                slidesContainer.innerHTML = '<div class="error">Could not load reminder data.</div>';
+            }
+        })();
+
+        // 3. Load Pinned Events
+        (async () => {
+            const list = document.getElementById('pinnedEventsList');
+            const data = await fetchJSON('pinned-events.json');
+
+            if (Array.isArray(data) && data.length) {
+                list.innerHTML = data.map(event => {
+                    const itemsHtml = event.items
+                        ? `<div>${event.items.join('<br>')}</div>`
+                        : '';
+                    const noteHtml = event.note
+                        ? `<div class="event-note">${event.note}</div>`
+                        : '';
+                    return `
+                        <div class="event-item">
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-date">${event.date}</div>
+                            ${itemsHtml}
+                            ${noteHtml}
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                list.innerHTML = '<div>No pinned events.</div>';
+            }
+        })();
+
+        // 4. Load Routine
+        (async () => {
+            const list = document.getElementById('routineList');
+            const data = await fetchJSON('routine.json');
+
+            if (data && Array.isArray(data.classes)) {
+                list.innerHTML = data.classes.map(cls => `
+                    <div class="routine-row">
+                        <span>${cls.day} · ${cls.time}</span>
+                        <span><strong>${cls.course}</strong> · Room ${cls.room}</span>
+                    </div>
+                `).join('');
+            } else {
+                list.innerHTML = '<div>Could not load routine.</div>';
+            }
+        })();
+
+        // 5. Load Faculty
+        (async () => {
+            const list = document.getElementById('facultyList');
+            const data = await fetchJSON('faculty.json');
+
+            if (Array.isArray(data) && data.length) {
+                list.innerHTML = data.map(f => `
+                    <div class="faculty-row">
+                        <span><strong>${f.name}</strong> (${f.course})</span>
+                        <span>${f.phone} · ${f.email}</span>
+                    </div>
+                `).join('');
+            } else {
+                list.innerHTML = '<div>No faculty data.</div>';
+            }
+        })();
+    </script>
+
+</body>
+</html>
