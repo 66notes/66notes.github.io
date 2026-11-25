@@ -1,0 +1,6 @@
+{
+  "classes": [
+    { "day": "Sunday", "time": "14:45 – 16:15", "room": "4905", "course": "MGT 1101", "faculty": "JI" },
+    { "day": "Sunday", "time": "16:15 – 17:45", "room": "4905", "course": "QUA 1101", "faculty": "TKA" }
+  ]
+}
