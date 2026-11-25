@@ -1,14 +1,194 @@
 [
   {
+    "title": "Classes Start",
+    "day": "02", "month": "Nov",
+    "startDate": "2026-11-02T00:00:00+06:00",
+    "expiresAt": "2026-11-02T23:59:59+06:00",
+    "tags": ["Class", "Monday"],
+    "items": ["Regular routine will be followed."],
+    "note": "Welcome back!"
+  },
+  {
+    "title": "Supple Exam Registration — Last Date",
+    "day": "03", "month": "Nov",
+    "startDate": "2026-11-03T00:00:00+06:00",
+    "expiresAt": "2026-11-03T23:59:59+06:00",
+    "tags": ["Deadline", "Tuesday"],
+    "color": "#991b1b",
+    "items": ["Fee: Tk. 1000/- per course"],
+    "note": "Submit online application."
+  },
+  {
+    "title": "Supple MID Exam",
+    "startDay": "09", "startMonth": "Nov", "endDay": "12", "endMonth": "Nov",
+    "startDate": "2026-11-09T00:00:00+06:00",
+    "expiresAt": "2026-11-12T23:59:59+06:00",
+    "tags": ["Exams", "09–12 Nov"],
+    "color": "#991b1b",
+    "items": ["Supplementary Mid-Term Examination"],
+    "note": "Check schedule with faculty."
+  },
+  {
+    "title": "MGT Presentation (Groups 1–4)",
+    "day": "22", "month": "Nov",
+    "startDate": "2026-11-22T00:00:00+06:00",
+    "course": "MGT 1101",
+    "tags": ["Presentation", "Sunday"],
+    "color": "#166534",
+    "items": ["The Visionaries", "Team Believers", "Team Phoenix", "INSIGHT CIRCLE"],
+    "note": "During class time."
+  },
+  {
+    "title": "MGT Make Up Class",
+    "day": "23", "month": "Nov",
+    "startDate": "2026-11-23T00:00:00+06:00",
+    "expiresAt": "2026-11-23T11:15:00+06:00",
+    "tags": ["Make Up", "Monday"],
+    "items": ["Room 201", "Time: 9:45 AM – 11:15 AM"],
+    "note": "Make up for missed classes."
+  },
+  {
+    "title": "ECO CT Exam",
+    "day": "25", "month": "Nov",
+    "startDate": "2026-11-25T00:00:00+06:00",
+    "course": "ECO 1101",
+    "tags": ["Exam", "Wednesday"],
+    "color": "#991b1b",
+    "items": [
+      "Syllabus: Chapter 4 and Chapter 5",
+      "Exam is not 100% confirmed",
+      "Questions may be a bit hard"
+    ],
+    "note": "Contact faculty for confirmation."
+  },
+  {
+    "title": "New Semester Pre-Registration (Spring 2027)",
+    "startDay": "25", "startMonth": "Nov", "endDay": "02", "endMonth": "Dec",
+    "startDate": "2026-11-25T10:00:00+06:00",
+    "expiresAt": "2026-12-02T23:59:59+06:00",
+    "process": true,
+    "tags": ["Notice", "10:00 AM", "25 Nov – 2 Dec"],
+    "color": "#991b1b",
+    "items": ["Pre-registration for Spring 2027", "Starts at 10:00 AM on 25 Nov", "Deadline: 2 Dec"],
+    "note": "Complete your pre-registration."
+  },
+  {
+    "title": "MGT Presentation + Assignment (Groups 5–7)",
+    "day": "29", "month": "Nov",
+    "startDate": "2026-11-29T00:00:00+06:00",
+    "course": "MGT 1101",
+    "tags": ["Presentation", "Assignment", "Sunday"],
+    "color": "#166534",
+    "items": [
+      "The Business Titans",
+      "BLUEPRINTS",
+      "Marginal Analysts",
+      "Print the PPTX slides and submit the hard copy on the presentation day"
+    ],
+    "note": "Presentation and assignment submission on the same day."
+  },
+  {
     "title": "Math CT",
-    "date": "30 Nov",
+    "day": "30", "month": "Nov",
+    "startDate": "2026-11-30T00:00:00+06:00",
+    "course": "QUA 1101",
+    "tags": ["CT", "Monday"],
+    "color": "#991b1b",
     "items": ["Coordinate Geometry (1–8) type math", "Arithmetic Progression (1–10) type math"],
     "note": "Check with faculty."
   },
   {
     "title": "ECO Presentation + Assignment (Groups 1–4)",
-    "date": "30 Nov",
-    "items": ["Group 1–4 presentations", "Topics: Chapters 4, 5 and 6"],
-    "note": "Submit both assignments."
+    "day": "30", "month": "Nov",
+    "startDate": "2026-11-30T00:00:00+06:00",
+    "course": "ECO 1101",
+    "tags": ["Presentation", "Assignment", "Monday"],
+    "color": "#166534",
+    "items": [
+      "Group 1–4 presentations",
+      "Topics: Chapters 4, 5 and 6",
+      "Submit both the mid assignment and the final assignment"
+    ],
+    "note": "Both assignments are due on the presentation day."
+  },
+  {
+    "title": "ECO Presentation + Assignment (Groups 5–8)",
+    "day": "02", "month": "Dec",
+    "startDate": "2026-12-02T00:00:00+06:00",
+    "course": "ECO 1101",
+    "tags": ["Presentation", "Assignment", "Wednesday"],
+    "color": "#166534",
+    "items": [
+      "Group 5–8 presentations",
+      "Topics: Chapters 4, 5 and 6",
+      "Submit both the mid assignment and the final assignment"
+    ],
+    "note": "Both assignments are due on the presentation day."
+  },
+  {
+    "title": "Math Assignment",
+    "day": "06", "month": "Dec",
+    "startDate": "2026-12-06T00:00:00+06:00",
+    "course": "QUA 1101",
+    "tags": ["Assignment", "Sunday"],
+    "color": "#166534",
+    "items": ["Coordinate Geometry problems (9–14)"],
+    "note": "Submit on 6 Dec."
+  },
+  {
+    "title": "No MGT Class",
+    "day": "06", "month": "Dec",
+    "startDate": "2026-12-06T00:00:00+06:00",
+    "course": "MGT 1101",
+    "tags": ["Notice", "Sunday"],
+    "items": ["MGT 1101 will not be held.", "Other classes will run as usual."],
+    "note": "MGT class cancelled."
+  },
+  {
+    "title": "No MGT Class",
+    "day": "09", "month": "Dec",
+    "startDate": "2026-12-09T00:00:00+06:00",
+    "course": "MGT 1101",
+    "tags": ["Notice", "Wednesday"],
+    "items": ["MGT 1101 will not be held.", "Other classes will run as usual."],
+    "note": "MGT class cancelled."
+  },
+  {
+    "title": "Tuition Fee Payment",
+    "day": "15", "month": "Dec",
+    "startDate": "2026-12-15T00:00:00+06:00",
+    "expiresAt": "2026-12-15T23:59:59+06:00",
+    "tags": ["Deadline", "Tuesday"],
+    "items": ["Final installment deadline: 15 Dec", "Clear your balance to 0"],
+    "note": "Pay before 16 Dec (Victory Day holiday)."
+  },
+  {
+    "title": "Last Day of Classes",
+    "day": "15", "month": "Dec",
+    "startDate": "2026-12-15T00:00:00+06:00",
+    "expiresAt": "2026-12-15T23:59:59+06:00",
+    "tags": ["Notice", "Tuesday"],
+    "items": ["Last day of classes before the final examination."],
+    "note": "Prepare for finals."
+  },
+  {
+    "title": "Victory Day Holiday",
+    "day": "16", "month": "Dec",
+    "startDate": "2026-12-16T00:00:00+06:00",
+    "expiresAt": "2026-12-16T23:59:59+06:00",
+    "tags": ["Holiday", "Wednesday"],
+    "color": "#166534",
+    "items": ["No classes — Victory Day."],
+    "note": "Enjoy the holiday."
+  },
+  {
+    "title": "Final Examination",
+    "startDay": "17", "startMonth": "Dec", "endDay": "24", "endMonth": "Dec",
+    "startDate": "2026-12-17T00:00:00+06:00",
+    "expiresAt": "2026-12-24T23:59:59+06:00",
+    "tags": ["Exams", "17–24 Dec"],
+    "color": "#991b1b",
+    "items": ["Final examination for all courses"],
+    "note": "Good luck!"
   }
 ]
