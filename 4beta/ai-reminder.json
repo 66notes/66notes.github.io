@@ -1,3 +1,10 @@
 {
-  "message": "New semester registration is running — check annex"
+  "semesterStart": "2026-09-06T00:00:00+06:00",
+  "semesterEnd": "2026-12-15",
+  "examModeFrom": "2026-12-17",
+  "noClassDates": ["2026-12-16"],
+  "cancelled": {
+    "2026-12-06": ["MGT 1101"],
+    "2026-12-09": ["MGT 1101"]
+  }
 }
