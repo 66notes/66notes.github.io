@@ -1,8 +1,10 @@
 {
-  "slides": [
-    "Next class: <strong>MGT 1101</strong> at 2:45 PM",
-    "Room 4905 · Faculty: JI"
-  ],
-  "label": "NEXT",
-  "detail": "Sunday · MGT 1101 · 14:45–16:15 · 4905"
+  "semesterStart": "2026-09-06T00:00:00+06:00",
+  "semesterEnd": "2026-12-15",
+  "examModeFrom": "2026-12-17",
+  "noClassDates": ["2026-12-16"],
+  "cancelled": {
+    "2026-12-06": ["MGT 1101"],
+    "2026-12-09": ["MGT 1101"]
+  }
 }
