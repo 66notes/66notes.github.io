@@ -27,7 +27,7 @@
             --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; overflow: hidden; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; height: 100vh; height: 100dvh; line-height: 1.5; overflow: hidden; }
         
         /* ══════════ EDITOR HEADER ══════════ */
         .editor-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
@@ -40,7 +40,7 @@
         .btn-icon:active { transform: scale(0.92); }
 
         /* ══════════ DESKTOP LAYOUT ══════════ */
-        .layout { display: grid; grid-template-columns: 1fr; height: 100vh; padding-top: 60px; overflow: hidden; }
+        .layout { display: grid; grid-template-columns: 1fr; height: 100vh; height: 100dvh; padding-top: 60px; overflow: hidden; }
         @media (min-width: 900px) {
             .layout { grid-template-columns: 400px 1fr; }
         }
@@ -74,7 +74,7 @@
         /* Preview Events */
         .p-event-item { display: flex; gap: 10px; padding: 10px; background: #fafbfc; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; align-items: center; }
         [data-theme="dark"] .p-event-item { background: #0f131a; }
-        .p-event-date { width: 40px; height: 40px; background: var(--navy); color: white; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .p-event-date { width: 40px; height: 40px; background: var(--navy); color: white; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
         .p-event-date .day { font-size: 0.9rem; font-weight: 700; line-height: 1; }
         .p-event-date .month { font-size: 0.5rem; text-transform: uppercase; }
         .p-event-info { flex: 1; min-width: 0; }
@@ -95,12 +95,18 @@
         .p-fac-actions { position: absolute; top: 10px; right: 10px; }
 
         /* Sticky Bottom Nav Preview */
-        .preview-nav { position: sticky; bottom: 0; z-index: 10; height: 60px; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        .preview-nav { 
+            position: sticky; bottom: 0; z-index: 10; 
+            height: calc(60px + env(safe-area-inset-bottom, 0px)); 
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            background: var(--surface); border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-around; align-items: center; 
+        }
         .p-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 0.55rem; font-weight: 600; cursor: pointer; padding: 5px 10px; }
         .p-nav-item.active { color: var(--accent); }
         .p-nav-item i { font-size: 1.1rem; }
 
-        /* ══════════ EDITOR PANE (RIGHT SIDE / MODAL ON MOBILE) ══════════ */
+        /* ══════════ EDITOR PANE ══════════ */
         .editor-pane { 
             position: fixed; top: 60px; left: 0; right: 0; bottom: 0; 
             background: var(--bg); z-index: 500; 
@@ -151,6 +157,14 @@
         .perm-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; padding: 4px; cursor: pointer; }
         .perm-item input { cursor: pointer; }
 
+        /* Routine Wizard */
+        .routine-wizard { display: flex; flex-direction: column; gap: 15px; }
+        .routine-section { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 15px; }
+        .day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .day-btn, .time-btn { padding: 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
+        .day-btn.active, .time-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
         /* JSON Code Box */
         .json-box { background: #0f172a; border-radius: var(--radius-sm); padding: 15px; margin-top: 20px; position: relative; }
         .json-pre { color: #e2e8f0; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.5; overflow: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all; }
@@ -160,7 +174,7 @@
         .btn-cp { background: var(--accent); color: #fff; }
 
         /* Save Bar */
-        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 1000; border-top: 1px solid var(--border); }
+        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 1000; border-top: 1px solid var(--border); }
         .save-bar.active { transform: translateY(0); }
         @media (min-width: 900px) { .save-bar { left: 400px; } }
         .save-text { font-size: 0.85rem; font-weight: 600; color: var(--text); }
@@ -171,15 +185,6 @@
         /* Toast */
         .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 500; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s; z-index: 1000; pointer-events: none; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        /* Modals */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .modal-icon { font-size: 3rem; color: var(--accent); margin-bottom: 15px; }
-        .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
-        .modal-text { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
-        .modal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border-radius: 30px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -220,7 +225,7 @@
             </div>
         </div>
 
-        <!-- RIGHT: Editor Panel (Slides up on mobile) -->
+        <!-- RIGHT: Editor Panel -->
         <div class="editor-pane" id="editorPane">
             <div class="editor-scroll-area">
                 <div class="editor-box">
@@ -255,33 +260,37 @@
         </div>
     </div>
 
-    <!-- Facebook Contact Modal -->
-    <div class="modal-overlay" id="fbModal">
-        <div class="modal-box">
-            <i class="fab fa-facebook modal-icon" style="color: #1877F2;"></i>
-            <div class="modal-title">Request PDF Update</div>
-            <div class="modal-text">To add or change PDFs, please contact us on Facebook with your requirements.</div>
-            <a href="https://www.facebook.com/profile.php?id=61594792364808" target="_blank" class="modal-btn" style="background: #1877F2;">Go to Facebook</a>
-            <button class="btn-cancel" style="margin-top: 10px; width: 100%;" onclick="document.getElementById('fbModal').classList.remove('active')">Close</button>
-        </div>
-    </div>
-
     <div class="toast" id="toast">Saved successfully!</div>
 
     <script>
         // --- State ---
         let activeTab = 'home';
-        let editorMode = 'none'; // 'event', 'faculty'
+        let editorMode = 'none';
         let hasChanges = false;
         
         let events = [];
         let faculty = [];
+        let routine = { classes: [], examSchedule: [], codes: [] };
+        
         let originalEvents = [];
         let originalFaculty = [];
+        let originalRoutine = { classes: [], examSchedule: [], codes: [] };
 
         const COLORS = ['#0d2b4e', '#166534', '#991b1b', '#b45309', '#5b21b6'];
-        
-        // Debounce timers for lag reduction
+        const DAYS_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        const TIME_SLOTS = [
+            { start: '08:15', end: '09:45', label: '8:15 - 9:45' },
+            { start: '09:45', end: '11:15', label: '9:45 - 11:15' },
+            { start: '11:15', end: '12:45', label: '11:15 - 12:45' },
+            { start: '13:15', end: '14:45', label: '1:15 - 2:45' },
+            { start: '14:45', end: '16:15', label: '2:45 - 4:15' },
+            { start: '16:15', end: '17:45', label: '4:15 - 5:45' }
+        ];
+
+        let selectedDay = 0;
+        let selectedTimeIdx = null;
+
+        // Debounce timers
         let previewDebounce, jsonDebounce;
 
         // --- Initialization ---
@@ -310,6 +319,17 @@
                     originalFaculty = JSON.parse(JSON.stringify(faculty));
                 }
             } catch (e) { console.log('No faculty.json found.'); }
+
+            try {
+                const routRes = await fetch('routine.json');
+                if (routRes.ok) {
+                    routine = await routRes.json();
+                    if (!routine.classes) routine.classes = [];
+                    if (!routine.examSchedule) routine.examSchedule = [];
+                    if (!routine.codes) routine.codes = [];
+                    originalRoutine = JSON.parse(JSON.stringify(routine));
+                }
+            } catch (e) { console.log('No routine.json found.'); }
         }
 
         // --- Theme Logic ---
@@ -389,11 +409,42 @@
                     <div class="p-card">
                         <div class="p-card-header">
                             <div class="p-card-title"><i class="fas fa-folder"></i> All Resources</div>
-                            <button class="btn-edit-app" onclick="document.getElementById('fbModal').classList.add('active')"><i class="fas fa-pen"></i> Edit</button>
                         </div>
-                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">Click Edit to request changes via Facebook.</p>
+                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:10px 0 15px;">To add or change PDFs, please contact us.</p>
+                        <a href="https://www.facebook.com/people/66Notes/61594792364808/" target="_blank" class="btn-save" style="width:100%; text-decoration:none; display:block; text-align:center; background:#1877F2; margin-top:0;">
+                            <i class="fab fa-facebook"></i> Contact on Facebook
+                        </a>
                     </div>
                 `;
+            }
+            else if (activeTab === 'routine') {
+                let html = `
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-calendar"></i> Class Routine</div>
+                            <button class="btn-edit-app" onclick="openRoutineEditor()"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                        <div>
+                `;
+                
+                if (routine.classes.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No routine added yet.</p>`;
+                } else {
+                    const sortedClasses = [...routine.classes].sort((a, b) => a.day - b.day || a.start.localeCompare(b.start));
+                    sortedClasses.forEach(c => {
+                        html += `
+                            <div class="p-event-item" style="margin-bottom:8px; padding:8px;">
+                                <div class="p-event-info">
+                                    <div class="p-event-title" style="font-size:0.7rem;">${DAYS_SHORT[c.day]} • ${c.start} - ${c.end}</div>
+                                    <div class="p-event-tags" style="font-size:0.65rem; font-weight:700; color:var(--navy);">${c.course}</div>
+                                    <div class="p-event-tags">Room ${c.room} • ${c.fac}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                html += `</div></div>`;
+                content.innerHTML = html;
             }
             else if (activeTab === 'faculty') {
                 let html = `<div class="p-card"><div class="p-card-header"><div class="p-card-title"><i class="fas fa-user-tie"></i> Faculty</div></div>`;
@@ -421,20 +472,19 @@
                 `;
                 content.innerHTML = html;
             }
-            else {
-                content.innerHTML = `<div class="p-card"><p style="text-align:center; font-size:0.75rem; color:var(--text-muted);">Routine editor coming soon...</p></div>`;
-            }
         }
 
-        // Trigger updates safely (debounced to prevent lag)
+        // Trigger updates safely
         function triggerUpdates() {
             markChanged();
             clearTimeout(previewDebounce);
-            previewDebounce = setTimeout(renderPreview, 300); // Update preview after 300ms of no typing
+            previewDebounce = setTimeout(renderPreview, 300);
             
             clearTimeout(jsonDebounce);
             jsonDebounce = setTimeout(() => {
-                let data = editorMode === 'event' ? events : faculty;
+                let data = editorMode === 'event' ? events :
+                           editorMode === 'faculty' ? faculty :
+                           editorMode === 'routine' ? routine : [];
                 document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
             }, 300);
         }
@@ -442,7 +492,9 @@
         function forceRender() {
             markChanged();
             renderPreview();
-            let data = editorMode === 'event' ? events : faculty;
+            let data = editorMode === 'event' ? events :
+                       editorMode === 'faculty' ? faculty :
+                       editorMode === 'routine' ? routine : [];
             document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
         }
 
@@ -452,9 +504,8 @@
             document.getElementById('editorTitle').innerText = 'Edit Events List';
             document.getElementById('editorPane').classList.add('active');
             document.getElementById('jsonBox').style.display = 'block';
-            
-            // Instantly render current JSON
             document.getElementById('jsonPreview').innerText = JSON.stringify(events, null, 2);
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Select an event from the list, or add a new one.</p>`;
         }
 
         function addNewEvent() {
@@ -465,6 +516,7 @@
 
         function editEvent(index) {
             editorMode = 'event';
+            document.getElementById('editorTitle').innerText = 'Edit Event';
             document.getElementById('editorPane').classList.add('active');
             document.getElementById('jsonBox').style.display = 'block';
             
@@ -544,6 +596,7 @@
                         <input type="date" class="form-control" value="${ev.expiresAt ? ev.expiresAt.slice(0,10) : ''}" onchange="updateEventDate(${index}, 'expiresAt', this.value)">
                     </div>
                 </div>
+                <button class="btn-cancel" style="width:100%; margin-top:20px; background:#fee2e2; color:#991b1b;" onclick="deleteEvent(${index})"><i class="fas fa-trash"></i> Delete Event</button>
             `;
         }
 
@@ -606,7 +659,7 @@
             if(confirm('Delete this event?')) {
                 events.splice(index, 1);
                 forceRender();
-                closeEditor();
+                openEventEditor();
             }
         }
 
@@ -619,6 +672,7 @@
 
         function editFaculty(index) {
             editorMode = 'faculty';
+            document.getElementById('editorTitle').innerText = 'Edit Faculty';
             document.getElementById('editorPane').classList.add('active');
             document.getElementById('jsonBox').style.display = 'block';
             
@@ -681,12 +735,154 @@
                     <label class="form-label">Counseling hour time</label>
                     <textarea class="form-control" placeholder="Anything written will show, no format needed" oninput="updateFacultyField(${index}, 'counseling', this.value)">${fac.counseling || ''}</textarea>
                 </div>
+                <button class="btn-cancel" style="width:100%; margin-top:20px; background:#fee2e2; color:#991b1b;" onclick="deleteFaculty(${index})"><i class="fas fa-trash"></i> Delete Faculty</button>
             `;
         }
 
         function updateFacultyField(index, field, value) {
             faculty[index][field] = value;
             triggerUpdates();
+        }
+
+        function deleteFaculty(index) {
+            if(confirm('Delete this faculty?')) {
+                faculty.splice(index, 1);
+                forceRender();
+                openFacultyEditor();
+            }
+        }
+
+        function openFacultyEditor() {
+            editorMode = 'faculty';
+            document.getElementById('editorTitle').innerText = 'Edit Faculty List';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            document.getElementById('jsonPreview').innerText = JSON.stringify(faculty, null, 2);
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Select a faculty member to edit, or add a new one.</p>`;
+        }
+
+        // --- Editor Logic: Routine ---
+        function openRoutineEditor() {
+            editorMode = 'routine';
+            document.getElementById('editorTitle').innerText = 'Edit Class Routine';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            renderRoutineForm();
+        }
+
+        function renderRoutineForm() {
+            const formArea = document.getElementById('editorFormArea');
+            
+            let html = `
+                <div class="routine-wizard">
+                    <div class="routine-section">
+                        <label class="form-label">1. Select Day</label>
+                        <div class="day-grid">
+                            ${DAYS_SHORT.map((d, i) => `<button class="day-btn ${selectedDay === i ? 'active' : ''}" onclick="selectDay(${i})">${d}</button>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="routine-section">
+                        <label class="form-label">2. Select Time Slot</label>
+                        <div class="time-grid">
+                            ${TIME_SLOTS.map((t, i) => `<button class="time-btn ${selectedTimeIdx === i ? 'active' : ''}" onclick="selectTime(${i})">${t.label}</button>`).join('')}
+                        </div>
+                    </div>
+            `;
+
+            if (selectedTimeIdx !== null) {
+                html += `
+                    <div class="routine-section">
+                        <label class="form-label">3. Subject & Details</label>
+                        <select class="form-control" id="r-subject" onchange="onSubjectSelect(this.value)">
+                            <option value="">Select Subject...</option>
+                            ${faculty.map(f => `<option value="${f.course}">${f.course} - ${f.subject}</option>`).join('')}
+                        </select>
+                        
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col">
+                                <input type="text" class="form-control" id="r-fac" placeholder="Faculty (Auto)" readonly>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="r-room" placeholder="Room No.">
+                            </div>
+                        </div>
+                        
+                        <button class="btn-save" style="width:100%; margin-top:15px; padding:10px;" onclick="addClassToRoutine()">Add to Routine</button>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    <div class="routine-list" style="margin-top:20px; border-top:1px solid var(--border); padding-top:15px;">
+                        <label class="form-label">Current Routine for ${DAYS_SHORT[selectedDay]}</label>
+                        ${routine.classes.filter(c => c.day === selectedDay).map((c, idx) => `
+                            <div class="p-event-item" style="margin-bottom:5px;">
+                                <div class="p-event-info">
+                                    <div class="p-event-title">${c.start} - ${c.end} • ${c.course}</div>
+                                    <div class="p-event-tags">Room ${c.room} • ${c.fac}</div>
+                                </div>
+                                <button class="p-btn p-btn-del" onclick="deleteRoutineClass(${routine.classes.indexOf(c)})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `).join('') || '<p style="font-size:0.75rem;color:var(--text-muted)">No classes for this day.</p>'}
+                    </div>
+                </div>
+            `;
+            
+            formArea.innerHTML = html;
+            document.getElementById('jsonPreview').innerText = JSON.stringify(routine, null, 2);
+        }
+
+        function selectDay(idx) {
+            selectedDay = idx;
+            selectedTimeIdx = null;
+            renderRoutineForm();
+        }
+
+        function selectTime(idx) {
+            selectedTimeIdx = idx;
+            renderRoutineForm();
+        }
+
+        function onSubjectSelect(courseCode) {
+            const fac = faculty.find(f => f.course === courseCode);
+            if (fac) {
+                const match = fac.name.match(/\(([^)]+)\)/);
+                const initials = match ? match[1] : fac.name;
+                document.getElementById('r-fac').value = initials;
+            } else {
+                document.getElementById('r-fac').value = '';
+            }
+        }
+
+        function addClassToRoutine() {
+            const course = document.getElementById('r-subject').value;
+            const room = document.getElementById('r-room').value;
+            const fac = document.getElementById('r-fac').value;
+            
+            if (!course || !room) { alert('Please select a subject and enter a room.'); return; }
+            
+            const slot = TIME_SLOTS[selectedTimeIdx];
+            routine.classes.push({
+                day: selectedDay,
+                start: slot.start,
+                end: slot.end,
+                course: course,
+                room: room,
+                fac: fac
+            });
+            
+            selectedTimeIdx = null;
+            forceRender();
+            renderRoutineForm();
+        }
+
+        function deleteRoutineClass(globalIdx) {
+            if (confirm('Remove this class from routine?')) {
+                routine.classes.splice(globalIdx, 1);
+                forceRender();
+                renderRoutineForm();
+            }
         }
 
         // --- Save / Cancel / JSON ---
@@ -698,6 +894,7 @@
         function cancelChanges() {
             events = JSON.parse(JSON.stringify(originalEvents));
             faculty = JSON.parse(JSON.stringify(originalFaculty));
+            routine = JSON.parse(JSON.stringify(originalRoutine));
             hasChanges = false;
             document.getElementById('saveBar').classList.remove('active');
             renderPreview();
@@ -708,6 +905,7 @@
         function saveChanges() {
             originalEvents = JSON.parse(JSON.stringify(events));
             originalFaculty = JSON.parse(JSON.stringify(faculty));
+            originalRoutine = JSON.parse(JSON.stringify(routine));
             hasChanges = false;
             document.getElementById('saveBar').classList.remove('active');
             showToast('Saved locally! (Remember to copy JSON)');
@@ -728,7 +926,8 @@
 
         function downloadJSON() {
             const text = document.getElementById('jsonPreview').innerText;
-            const filename = editorMode === 'event' ? 'pinned-events.json' : 'faculty.json';
+            const filename = editorMode === 'event' ? 'pinned-events.json' :
+                             editorMode === 'faculty' ? 'faculty.json' : 'routine.json';
             const blob = new Blob([text], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
