@@ -486,9 +486,8 @@
         </div>
     </div>
 
+    <script src="students.js"></script>
     <script>
-        // --- DATABASE ---
-        const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
         
         const $ = id => document.getElementById(id);
 
@@ -508,7 +507,8 @@
         function saveUser(u) { localStorage.setItem('66games_user', JSON.stringify(u)); }
         function clearUser() { localStorage.removeItem('66games_user'); }
 
-        function attemptLogin() {
+        async function attemptLogin() {
+            await studentsReady;
             const val = $('rollInput').value.padStart(3, '0');
             if (val === '138') {
                 $('loginStep1').style.display = 'none';
