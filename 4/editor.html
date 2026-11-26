@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>66Notes Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <style>
+        :root {
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+            --navy: #0d2b4e; --accent: #123cf3; --accent-light: #eef2ff;
+            --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
+            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="dark"] {
+            --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
+            --text: #f0f4f8; --text-secondary: #8b98a5; --text-muted: #5c6a7a;
+            --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; height: 100vh; height: 100dvh; line-height: 1.5; overflow: hidden; }
+        
+        /* ══════════ EDITOR HEADER ══════════ */
+        .editor-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
+        .editor-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+        .editor-title span { color: var(--accent); }
+        .section-tag { font-size: 0.7rem; font-weight: 600; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; border: 1px solid #dbeafe; display: none; }
+        @media (min-width: 600px) { .section-tag { display: block; } }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .btn-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+        .btn-icon:active { transform: scale(0.92); }
+
+        /* ══════════ DESKTOP LAYOUT ══════════ */
+        .layout { display: grid; grid-template-columns: 1fr; height: 100vh; height: 100dvh; padding-top: 60px; overflow: hidden; }
+        @media (min-width: 900px) {
+            .layout { grid-template-columns: 400px 1fr; }
+        }
+
+        /* ══════════ APP PREVIEW (LEFT SIDE) ══════════ */
+        .preview-pane { display: flex; justify-content: center; background: var(--bg); border-right: 1px solid var(--border); height: 100%; overflow: hidden; position: relative; }
+        
+        .mobile-frame { width: 100%; height: 100%; background: var(--surface); display: flex; flex-direction: column; position: relative; }
+        @media (min-width: 900px) {
+            .preview-pane { padding: 20px; align-items: center; }
+            .mobile-frame { max-width: 380px; height: 750px; border-radius: 30px; border: 8px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+            [data-theme="dark"] .mobile-frame { border-color: #1e293b; }
+        }
+        
+        /* Sticky App Header */
+        .preview-header { position: sticky; top: 0; z-index: 10; height: 50px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .preview-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+        
+        /* Scrollable Content */
+        .preview-content { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); overscroll-behavior: contain; }
+        
+        /* Dashboard UI Elements inside preview */
+        .p-announcement { background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 8px 12px; margin-bottom: 15px; font-size: 0.75rem; color: #7c2d12; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .p-card { background: var(--surface); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .p-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; }
+        .p-card-title { font-size: 0.85rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+        
+        /* App Edit Buttons */
+        .btn-edit-app { background: var(--accent-light); color: var(--accent); border: 1px solid #dbeafe; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        
+        /* Preview Events */
+        .p-event-item { display: flex; gap: 10px; padding: 10px; background: #fafbfc; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; align-items: center; }
+        [data-theme="dark"] .p-event-item { background: #0f131a; }
+        .p-event-date { width: 40px; height: 40px; background: var(--navy); color: white; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+        .p-event-date .day { font-size: 0.9rem; font-weight: 700; line-height: 1; }
+        .p-event-date .month { font-size: 0.5rem; text-transform: uppercase; }
+        .p-event-info { flex: 1; min-width: 0; }
+        .p-event-title { font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; }
+        .p-event-tags { font-size: 0.6rem; color: var(--text-muted); }
+        
+        .p-action-row { display: flex; gap: 5px; }
+        .p-btn { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; border: none; cursor: pointer; }
+        .p-btn-edit { background: var(--accent-light); color: var(--accent); }
+        .p-btn-del { background: #fee2e2; color: #991b1b; }
+
+        /* Preview Faculty */
+        .p-fac-item { background: #f9fafb; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 10px; position: relative; }
+        [data-theme="dark"] .p-fac-item { background: #0f131a; }
+        .p-fac-name { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
+        .p-fac-sub { font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 5px; }
+        .p-fac-warn { font-size: 0.6rem; color: #b45309; background: #fef3c7; padding: 4px 8px; border-radius: 4px; margin-top: 4px; }
+        .p-fac-actions { position: absolute; top: 10px; right: 10px; }
+
+        /* Sticky Bottom Nav Preview */
+        .preview-nav { 
+            position: sticky; bottom: 0; z-index: 10; 
+            height: calc(60px + env(safe-area-inset-bottom, 0px)); 
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            background: var(--surface); border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-around; align-items: center; 
+        }
+        .p-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 0.55rem; font-weight: 600; cursor: pointer; padding: 5px 10px; }
+        .p-nav-item.active { color: var(--accent); }
+        .p-nav-item i { font-size: 1.1rem; }
+
+        /* ══════════ EDITOR PANE ══════════ */
+        .editor-pane { 
+            position: fixed; top: 60px; left: 0; right: 0; bottom: 0; 
+            background: var(--bg); z-index: 500; 
+            transform: translateY(100%); 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            display: flex; flex-direction: column;
+        }
+        .editor-pane.active { transform: translateY(0); }
+        
+        @media (min-width: 900px) {
+            .editor-pane { position: static; transform: none; background: var(--bg); border-left: none; overflow-y: auto; }
+        }
+        
+        .editor-scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
+        
+        .editor-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); max-width: 700px; margin: 0 auto; }
+        .editor-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .editor-box-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+        .btn-close-editor { background: #f3f4f6; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
+        @media (min-width: 900px) { .btn-close-editor { display: none; } }
+
+        /* Forms */
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.85rem; background: var(--bg); color: var(--text); transition: var(--transition); }
+        .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(18, 60, 243, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
+        
+        /* Toggles */
+        .toggle-group { display: flex; background: var(--bg); border-radius: var(--radius-sm); padding: 4px; border: 1px solid var(--border); }
+        .toggle-btn { flex: 1; text-align: center; padding: 6px; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); border-radius: 4px; cursor: pointer; transition: var(--transition); }
+        .toggle-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
+
+        /* Color Picker */
+        .color-options { display: flex; gap: 10px; margin-top: 5px; }
+        .color-circle { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.1s; }
+        .color-circle.active { transform: scale(1.2); border-color: var(--text); }
+        
+        /* Faculty Permissions */
+        .perm-menu { position: relative; display: inline-block; float: right; }
+        .perm-btn { background: var(--bg); border: 1px solid var(--border-strong); color: var(--text-secondary); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
+        .perm-dropdown { position: absolute; top: 100%; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; box-shadow: var(--shadow); display: none; z-index: 10; width: 160px; margin-top: 4px; }
+        .perm-dropdown.active { display: block; }
+        .perm-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; padding: 4px; cursor: pointer; }
+        .perm-item input { cursor: pointer; }
+
+        /* Routine Wizard */
+        .routine-wizard { display: flex; flex-direction: column; gap: 15px; }
+        .routine-section { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 15px; }
+        .day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .day-btn, .time-btn { padding: 10px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: var(--transition); }
+        .day-btn.active, .time-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        /* JSON Code Box */
+        .json-box { background: #0f172a; border-radius: var(--radius-sm); padding: 15px; margin-top: 20px; position: relative; }
+        .json-pre { color: #e2e8f0; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.5; overflow: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all; }
+        .json-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-json { flex: 1; padding: 8px; border-radius: 6px; border: none; font-family: inherit; font-weight: 600; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-dl { background: #334155; color: #fff; }
+        .btn-cp { background: var(--accent); color: #fff; }
+
+        /* Save Bar */
+        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 1000; border-top: 1px solid var(--border); }
+        .save-bar.active { transform: translateY(0); }
+        @media (min-width: 900px) { .save-bar { left: 400px; } }
+        .save-text { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+        .save-actions { display: flex; gap: 10px; }
+        .btn-save { background: var(--accent); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+        .btn-cancel { background: transparent; color: var(--text-secondary); border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 500; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s; z-index: 1000; pointer-events: none; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Header -->
+    <header class="editor-header">
+        <div class="editor-title">66<span>Notes</span> EDITOR</div>
+        <div class="header-actions">
+            <div class="section-tag">3rd Semester Section 4</div>
+            <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Layout Container -->
+    <div class="layout">
+        
+        <!-- LEFT: Mobile Preview -->
+        <div class="preview-pane">
+            <div class="mobile-frame">
+                <!-- Sticky App Nav -->
+                <div class="preview-header">
+                    <div class="preview-title" id="previewTitle">66Notes</div>
+                    <i class="fas fa-bell" style="color:var(--text-muted)"></i>
+                </div>
+                
+                <!-- Scrollable Content -->
+                <div class="preview-content" id="previewContent">
+                    <!-- Rendered by JS -->
+                </div>
+
+                <!-- Sticky Bottom Nav -->
+                <div class="preview-nav">
+                    <div class="p-nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i>Home</div>
+                    <div class="p-nav-item" onclick="switchTab('pdfs')"><i class="fas fa-folder"></i>PDFs</div>
+                    <div class="p-nav-item" onclick="switchTab('routine')"><i class="fas fa-calendar"></i>Routine</div>
+                    <div class="p-nav-item" onclick="switchTab('faculty')"><i class="fas fa-user-tie"></i>Faculty</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Editor Panel -->
+        <div class="editor-pane" id="editorPane">
+            <div class="editor-scroll-area">
+                <div class="editor-box">
+                    <div class="editor-box-header">
+                        <div class="editor-box-title" id="editorTitle">Select an item to edit</div>
+                        <button class="btn-close-editor" onclick="closeEditor()">Close</button>
+                    </div>
+                    
+                    <div id="editorFormArea">
+                        <p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>
+                    </div>
+                    
+                    <div class="json-box" id="jsonBox" style="display:none;">
+                        <div class="json-pre" id="jsonPreview"></div>
+                        <div class="json-actions">
+                            <button class="btn-json btn-dl" onclick="downloadJSON()"><i class="fas fa-download"></i> Download</button>
+                            <button class="btn-json btn-cp" onclick="copyJSON()"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Save Bar -->
+    <div class="save-bar" id="saveBar">
+        <div class="save-text">Unsaved changes!</div>
+        <div class="save-actions">
+            <button class="btn-cancel" onclick="cancelChanges()">Undo</button>
+            <button class="btn-save" onclick="saveChanges()">Save</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Saved successfully!</div>
+
+    <script>
+        // --- State ---
+        let activeTab = 'home';
+        let editorMode = 'none';
+        let hasChanges = false;
+        
+        let events = [];
+        let faculty = [];
+        let routine = { classes: [], examSchedule: [], codes: [] };
+        
+        let originalEvents = [];
+        let originalFaculty = [];
+        let originalRoutine = { classes: [], examSchedule: [], codes: [] };
+
+        const COLORS = ['#0d2b4e', '#166534', '#991b1b', '#b45309', '#5b21b6'];
+        const DAYS_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        const TIME_SLOTS = [
+            { start: '08:15', end: '09:45', label: '8:15 - 9:45' },
+            { start: '09:45', end: '11:15', label: '9:45 - 11:15' },
+            { start: '11:15', end: '12:45', label: '11:15 - 12:45' },
+            { start: '13:15', end: '14:45', label: '1:15 - 2:45' },
+            { start: '14:45', end: '16:15', label: '2:45 - 4:15' },
+            { start: '16:15', end: '17:45', label: '4:15 - 5:45' }
+        ];
+
+        let selectedDay = 0;
+        let selectedTimeIdx = null;
+
+        // Debounce timers
+        let previewDebounce, jsonDebounce;
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            updateThemeIcon();
+
+            await loadData();
+            switchTab('home');
+        });
+
+        async function loadData() {
+            try {
+                const evRes = await fetch('pinned-events.json');
+                if (evRes.ok) {
+                    events = await evRes.json();
+                    originalEvents = JSON.parse(JSON.stringify(events));
+                }
+            } catch (e) { console.log('No pinned-events.json found.'); }
+
+            try {
+                const facRes = await fetch('faculty.json');
+                if (facRes.ok) {
+                    faculty = await facRes.json();
+                    originalFaculty = JSON.parse(JSON.stringify(faculty));
+                }
+            } catch (e) { console.log('No faculty.json found.'); }
+
+            try {
+                const routRes = await fetch('routine.json');
+                if (routRes.ok) {
+                    routine = await routRes.json();
+                    if (!routine.classes) routine.classes = [];
+                    if (!routine.examSchedule) routine.examSchedule = [];
+                    if (!routine.codes) routine.codes = [];
+                    originalRoutine = JSON.parse(JSON.stringify(routine));
+                }
+            } catch (e) { console.log('No routine.json found.'); }
+        }
+
+        // --- Theme Logic ---
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcon();
+        });
+        function updateThemeIcon() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.getElementById('themeToggle').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // --- Tab Navigation ---
+        function switchTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll('.p-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.p-nav-item[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            document.getElementById('previewTitle').innerText = 
+                tab === 'home' ? '66Notes' : 
+                tab === 'pdfs' ? 'PDFs' : 
+                tab === 'routine' ? 'Routine' : 'Faculty';
+
+            renderPreview();
+            closeEditor();
+        }
+
+        // --- Rendering the Mobile Preview ---
+        function renderPreview() {
+            const content = document.getElementById('previewContent');
+            
+            if (activeTab === 'home') {
+                let html = `
+                    <div class="p-announcement">
+                        <span class="material-symbols-rounded" style="font-size:1.2rem;">campaign</span>
+                        New semester registration is running...
+                    </div>
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-thumbtack"></i> Pinned Events</div>
+                            <button class="btn-edit-app" onclick="openEventEditor()"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                        <div>
+                `;
+                
+                if (events.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No events yet.</p>`;
+                } else {
+                    events.forEach((ev, index) => {
+                        html += `
+                            <div class="p-event-item">
+                                <div class="p-event-date"><span class="day">${ev.day || '?'}</span><span class="month">${ev.month || ''}</span></div>
+                                <div class="p-event-info">
+                                    <div class="p-event-title">${ev.title}</div>
+                                    <div class="p-event-tags">${(ev.tags||[]).join(' • ')}</div>
+                                </div>
+                                <div class="p-action-row">
+                                    <button class="p-btn p-btn-edit" onclick="editEvent(${index})"><i class="fas fa-pen"></i></button>
+                                    <button class="p-btn p-btn-del" onclick="deleteEvent(${index})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                        <button class="btn-save" style="width:100%; margin-top:10px; font-size:0.75rem; padding:6px;" onclick="addNewEvent()"><i class="fas fa-plus"></i> Add New Event</button>
+                    </div>
+                `;
+                content.innerHTML = html;
+            } 
+            else if (activeTab === 'pdfs') {
+                content.innerHTML = `
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-folder"></i> All Resources</div>
+                        </div>
+                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:10px 0 15px;">To add or change PDFs, please contact us.</p>
+                        <a href="https://www.facebook.com/people/66Notes/61594792364808/" target="_blank" class="btn-save" style="width:100%; text-decoration:none; display:block; text-align:center; background:#1877F2; margin-top:0;">
+                            <i class="fab fa-facebook"></i> Contact on Facebook
+                        </a>
+                    </div>
+                `;
+            }
+            else if (activeTab === 'routine') {
+                let html = `
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-calendar"></i> Class Routine</div>
+                            <button class="btn-edit-app" onclick="openRoutineEditor()"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                        <div>
+                `;
+                
+                if (routine.classes.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No routine added yet.</p>`;
+                } else {
+                    const sortedClasses = [...routine.classes].sort((a, b) => a.day - b.day || a.start.localeCompare(b.start));
+                    sortedClasses.forEach(c => {
+                        html += `
+                            <div class="p-event-item" style="margin-bottom:8px; padding:8px;">
+                                <div class="p-event-info">
+                                    <div class="p-event-title" style="font-size:0.7rem;">${DAYS_SHORT[c.day]} • ${c.start} - ${c.end}</div>
+                                    <div class="p-event-tags" style="font-size:0.65rem; font-weight:700; color:var(--navy);">${c.course}</div>
+                                    <div class="p-event-tags">Room ${c.room} • ${c.fac}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                html += `</div></div>`;
+                content.innerHTML = html;
+            }
+            else if (activeTab === 'faculty') {
+                let html = `<div class="p-card"><div class="p-card-header"><div class="p-card-title"><i class="fas fa-user-tie"></i> Faculty</div></div>`;
+                
+                if (faculty.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No faculty added.</p>`;
+                } else {
+                    faculty.forEach((fac, index) => {
+                        html += `
+                            <div class="p-fac-item">
+                                <div class="p-fac-actions">
+                                    <button class="p-btn p-btn-edit" onclick="editFaculty(${index})"><i class="fas fa-pen"></i></button>
+                                </div>
+                                <div class="p-fac-name">${fac.name}</div>
+                                <div class="p-fac-sub">${fac.subject || 'Subject'} • ${fac.course || 'Code'}</div>
+                                ${fac.hidePhone ? `<div class="p-fac-warn">Faculty didn't give permission for the "number". Ask CR or visit room ${fac.room || ''}.</div>` : `<div style="font-size:0.65rem; color:var(--text-secondary);"><i class="fas fa-phone"></i> ${fac.phone || 'N/A'}</div>`}
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        <button class="btn-save" style="width:100%; margin-top:10px; font-size:0.75rem; padding:6px;" onclick="addNewFaculty()"><i class="fas fa-plus"></i> Add New Faculty</button>
+                    </div>
+                `;
+                content.innerHTML = html;
+            }
+        }
+
+        // Trigger updates safely
+        function triggerUpdates() {
+            markChanged();
+            clearTimeout(previewDebounce);
+            previewDebounce = setTimeout(renderPreview, 300);
+            
+            clearTimeout(jsonDebounce);
+            jsonDebounce = setTimeout(() => {
+                let data = editorMode === 'event' ? events :
+                           editorMode === 'faculty' ? faculty :
+                           editorMode === 'routine' ? routine : [];
+                document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
+            }, 300);
+        }
+
+        function forceRender() {
+            markChanged();
+            renderPreview();
+            let data = editorMode === 'event' ? events :
+                       editorMode === 'faculty' ? faculty :
+                       editorMode === 'routine' ? routine : [];
+            document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
+        }
+
+        // --- Editor Logic: Events ---
+        function openEventEditor() {
+            editorMode = 'event';
+            document.getElementById('editorTitle').innerText = 'Edit Events List';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            document.getElementById('jsonPreview').innerText = JSON.stringify(events, null, 2);
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Select an event from the list, or add a new one.</p>`;
+        }
+
+        function addNewEvent() {
+            events.push({ title: 'New Event', day: '01', month: 'Jan', tags: ['Notice'] });
+            forceRender();
+            editEvent(events.length - 1);
+        }
+
+        function editEvent(index) {
+            editorMode = 'event';
+            document.getElementById('editorTitle').innerText = 'Edit Event';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            
+            const ev = events[index];
+            const formArea = document.getElementById('editorFormArea');
+            
+            const isRange = !!ev.startDay;
+            const onClassTime = !!ev.course;
+            const hasColor = ev.color || '#0d2b4e';
+
+            formArea.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Event Title</label>
+                    <input type="text" class="form-control" value="${ev.title || ''}" oninput="updateEventField(${index}, 'title', this.value)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">In Detail (One per line)</label>
+                    <textarea class="form-control" oninput="updateEventItems(${index}, this.value)">${(ev.items || []).join('\n')}</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Tags (Optional)</label>
+                        <input type="text" class="form-control" value="${(ev.tags || []).join(', ')}" oninput="updateEventField(${index}, 'tags', this.value.split(',').map(s=>s.trim()).filter(Boolean))">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Colour</label>
+                        <div class="color-options">
+                            ${COLORS.map(c => `<div class="color-circle ${hasColor === c ? 'active' : ''}" style="background:${c}" onclick="updateEventColor(${index}, '${c}', this)"></div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">1 Day event?</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn ${!isRange ? 'active' : ''}" onclick="setEventRange(${index}, false)">No</div>
+                            <div class="toggle-btn ${isRange ? 'active' : ''}" onclick="setEventRange(${index}, true)">Yes</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">On Class Time?</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn ${!onClassTime ? 'active' : ''}" onclick="setEventClassTime(${index}, false)">No</div>
+                            <div class="toggle-btn ${onClassTime ? 'active' : ''}" onclick="setEventClassTime(${index}, true)">Yes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col" style="${onClassTime ? 'display:none;' : ''}">
+                        <label class="form-label">Time (Optional)</label>
+                        <input type="time" class="form-control" onchange="updateEventField(${index}, 'startTime', this.value)">
+                    </div>
+                    <div class="col" style="${!onClassTime ? 'display:none;' : ''}">
+                        <label class="form-label">Which Subject</label>
+                        <select class="form-control" onchange="updateEventField(${index}, 'course', this.value)">
+                            <option value="">Select Subject...</option>
+                            <option value="MGT 1101" ${ev.course === 'MGT 1101' ? 'selected' : ''}>MGT 1101</option>
+                            <option value="QUA 1101" ${ev.course === 'QUA 1101' ? 'selected' : ''}>QUA 1101</option>
+                            <option value="ECO 1101" ${ev.course === 'ECO 1101' ? 'selected' : ''}>ECO 1101</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col">
+                        <label class="form-label">Date Start</label>
+                        <input type="date" class="form-control" value="${ev.startDate ? ev.startDate.slice(0,10) : ''}" onchange="updateEventDate(${index}, 'startDate', this.value)">
+                    </div>
+                    <div class="col" style="${!isRange ? 'display:none;' : ''}">
+                        <label class="form-label">Date End</label>
+                        <input type="date" class="form-control" value="${ev.expiresAt ? ev.expiresAt.slice(0,10) : ''}" onchange="updateEventDate(${index}, 'expiresAt', this.value)">
+                    </div>
+                </div>
+                <button class="btn-cancel" style="width:100%; margin-top:20px; background:#fee2e2; color:#991b1b;" onclick="deleteEvent(${index})"><i class="fas fa-trash"></i> Delete Event</button>
+            `;
+        }
+
+        function updateEventField(index, field, value) {
+            events[index][field] = value;
+            triggerUpdates();
+        }
+
+        function updateEventItems(index, value) {
+            events[index].items = value.split('\n').filter(Boolean);
+            triggerUpdates();
+        }
+
+        function updateEventColor(index, color, el) {
+            events[index].color = color;
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            triggerUpdates();
+        }
+
+        function setEventRange(index, isRange) {
+            if (isRange) {
+                events[index].startDay = events[index].day;
+                events[index].startMonth = events[index].month;
+                events[index].endDay = events[index].day;
+                events[index].endMonth = events[index].month;
+                delete events[index].day;
+                delete events[index].month;
+            } else {
+                events[index].day = events[index].startDay || '01';
+                events[index].month = events[index].startMonth || 'Jan';
+                delete events[index].startDay;
+                delete events[index].startMonth;
+                delete events[index].endDay;
+                delete events[index].endMonth;
+            }
+            forceRender();
+            editEvent(index); 
+        }
+
+        function setEventClassTime(index, isClassTime) {
+            if (isClassTime) {
+                events[index].course = 'MGT 1101';
+                delete events[index].expiresAt;
+            } else {
+                delete events[index].course;
+                events[index].expiresAt = events[index].startDate ? events[index].startDate.replace('T00:00', 'T23:59') : '';
+            }
+            forceRender();
+            editEvent(index);
+        }
+
+        function updateEventDate(index, field, dateStr) {
+            if (!dateStr) return;
+            events[index][field] = `${dateStr}T00:00:00+06:00`;
+            triggerUpdates();
+        }
+
+        function deleteEvent(index) {
+            if(confirm('Delete this event?')) {
+                events.splice(index, 1);
+                forceRender();
+                openEventEditor();
+            }
+        }
+
+        // --- Editor Logic: Faculty ---
+        function addNewFaculty() {
+            faculty.push({ name: 'New Teacher', phone: '', subject: '', course: '', room: '' });
+            forceRender();
+            editFaculty(faculty.length - 1);
+        }
+
+        function editFaculty(index) {
+            editorMode = 'faculty';
+            document.getElementById('editorTitle').innerText = 'Edit Faculty';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            
+            const fac = faculty[index];
+            const formArea = document.getElementById('editorFormArea');
+            
+            formArea.innerHTML = `
+                <div class="perm-menu">
+                    <button class="perm-btn" onclick="document.getElementById('permDropdown').classList.toggle('active')">No Permission?</button>
+                    <div class="perm-dropdown" id="permDropdown">
+                        <label class="perm-item">
+                            <input type="checkbox" ${fac.hidePhone ? 'checked' : ''} onchange="updateFacultyField(${index}, 'hidePhone', this.checked)">
+                            Hide Number
+                        </label>
+                        <label class="perm-item">
+                            <input type="checkbox" ${fac.hideWhatsapp ? 'checked' : ''} onchange="updateFacultyField(${index}, 'hideWhatsapp', this.checked)">
+                            Hide WhatsApp
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" value="${fac.name || ''}" oninput="updateFacultyField(${index}, 'name', this.value)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Number</label>
+                    <input type="text" class="form-control" value="${fac.phone || ''}" oninput="updateFacultyField(${index}, 'phone', this.value)">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Subject Code</label>
+                        <input type="text" class="form-control" value="${fac.course || ''}" oninput="updateFacultyField(${index}, 'course', this.value)">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" value="${fac.subject || ''}" oninput="updateFacultyField(${index}, 'subject', this.value)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Whatsapp Link</label>
+                    <input type="text" class="form-control" value="${fac.whatsapp || ''}" oninput="updateFacultyField(${index}, 'whatsapp', this.value)">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Room No.</label>
+                        <input type="text" class="form-control" value="${fac.room || ''}" oninput="updateFacultyField(${index}, 'room', this.value)">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Department</label>
+                        <input type="text" class="form-control" value="${fac.department || ''}" oninput="updateFacultyField(${index}, 'department', this.value)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Counseling hour time</label>
+                    <textarea class="form-control" placeholder="Anything written will show, no format needed" oninput="updateFacultyField(${index}, 'counseling', this.value)">${fac.counseling || ''}</textarea>
+                </div>
+                <button class="btn-cancel" style="width:100%; margin-top:20px; background:#fee2e2; color:#991b1b;" onclick="deleteFaculty(${index})"><i class="fas fa-trash"></i> Delete Faculty</button>
+            `;
+        }
+
+        function updateFacultyField(index, field, value) {
+            faculty[index][field] = value;
+            triggerUpdates();
+        }
+
+        function deleteFaculty(index) {
+            if(confirm('Delete this faculty?')) {
+                faculty.splice(index, 1);
+                forceRender();
+                openFacultyEditor();
+            }
+        }
+
+        function openFacultyEditor() {
+            editorMode = 'faculty';
+            document.getElementById('editorTitle').innerText = 'Edit Faculty List';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            document.getElementById('jsonPreview').innerText = JSON.stringify(faculty, null, 2);
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Select a faculty member to edit, or add a new one.</p>`;
+        }
+
+        // --- Editor Logic: Routine ---
+        function openRoutineEditor() {
+            editorMode = 'routine';
+            document.getElementById('editorTitle').innerText = 'Edit Class Routine';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            renderRoutineForm();
+        }
+
+        function renderRoutineForm() {
+            const formArea = document.getElementById('editorFormArea');
+            
+            let html = `
+                <div class="routine-wizard">
+                    <div class="routine-section">
+                        <label class="form-label">1. Select Day</label>
+                        <div class="day-grid">
+                            ${DAYS_SHORT.map((d, i) => `<button class="day-btn ${selectedDay === i ? 'active' : ''}" onclick="selectDay(${i})">${d}</button>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="routine-section">
+                        <label class="form-label">2. Select Time Slot</label>
+                        <div class="time-grid">
+                            ${TIME_SLOTS.map((t, i) => `<button class="time-btn ${selectedTimeIdx === i ? 'active' : ''}" onclick="selectTime(${i})">${t.label}</button>`).join('')}
+                        </div>
+                    </div>
+            `;
+
+            if (selectedTimeIdx !== null) {
+                html += `
+                    <div class="routine-section">
+                        <label class="form-label">3. Subject & Details</label>
+                        <select class="form-control" id="r-subject" onchange="onSubjectSelect(this.value)">
+                            <option value="">Select Subject...</option>
+                            ${faculty.map(f => `<option value="${f.course}">${f.course} - ${f.subject}</option>`).join('')}
+                        </select>
+                        
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col">
+                                <input type="text" class="form-control" id="r-fac" placeholder="Faculty (Auto)" readonly>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="r-room" placeholder="Room No.">
+                            </div>
+                        </div>
+                        
+                        <button class="btn-save" style="width:100%; margin-top:15px; padding:10px;" onclick="addClassToRoutine()">Add to Routine</button>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    <div class="routine-list" style="margin-top:20px; border-top:1px solid var(--border); padding-top:15px;">
+                        <label class="form-label">Current Routine for ${DAYS_SHORT[selectedDay]}</label>
+                        ${routine.classes.filter(c => c.day === selectedDay).map((c, idx) => `
+                            <div class="p-event-item" style="margin-bottom:5px;">
+                                <div class="p-event-info">
+                                    <div class="p-event-title">${c.start} - ${c.end} • ${c.course}</div>
+                                    <div class="p-event-tags">Room ${c.room} • ${c.fac}</div>
+                                </div>
+                                <button class="p-btn p-btn-del" onclick="deleteRoutineClass(${routine.classes.indexOf(c)})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `).join('') || '<p style="font-size:0.75rem;color:var(--text-muted)">No classes for this day.</p>'}
+                    </div>
+                </div>
+            `;
+            
+            formArea.innerHTML = html;
+            document.getElementById('jsonPreview').innerText = JSON.stringify(routine, null, 2);
+        }
+
+        function selectDay(idx) {
+            selectedDay = idx;
+            selectedTimeIdx = null;
+            renderRoutineForm();
+        }
+
+        function selectTime(idx) {
+            selectedTimeIdx = idx;
+            renderRoutineForm();
+        }
+
+        function onSubjectSelect(courseCode) {
+            const fac = faculty.find(f => f.course === courseCode);
+            if (fac) {
+                const match = fac.name.match(/\(([^)]+)\)/);
+                const initials = match ? match[1] : fac.name;
+                document.getElementById('r-fac').value = initials;
+            } else {
+                document.getElementById('r-fac').value = '';
+            }
+        }
+
+        function addClassToRoutine() {
+            const course = document.getElementById('r-subject').value;
+            const room = document.getElementById('r-room').value;
+            const fac = document.getElementById('r-fac').value;
+            
+            if (!course || !room) { alert('Please select a subject and enter a room.'); return; }
+            
+            const slot = TIME_SLOTS[selectedTimeIdx];
+            routine.classes.push({
+                day: selectedDay,
+                start: slot.start,
+                end: slot.end,
+                course: course,
+                room: room,
+                fac: fac
+            });
+            
+            selectedTimeIdx = null;
+            forceRender();
+            renderRoutineForm();
+        }
+
+        function deleteRoutineClass(globalIdx) {
+            if (confirm('Remove this class from routine?')) {
+                routine.classes.splice(globalIdx, 1);
+                forceRender();
+                renderRoutineForm();
+            }
+        }
+
+        // --- Save / Cancel / JSON ---
+        function markChanged() {
+            hasChanges = true;
+            document.getElementById('saveBar').classList.add('active');
+        }
+
+        function cancelChanges() {
+            events = JSON.parse(JSON.stringify(originalEvents));
+            faculty = JSON.parse(JSON.stringify(originalFaculty));
+            routine = JSON.parse(JSON.stringify(originalRoutine));
+            hasChanges = false;
+            document.getElementById('saveBar').classList.remove('active');
+            renderPreview();
+            closeEditor();
+            showToast('Changes discarded');
+        }
+
+        function saveChanges() {
+            originalEvents = JSON.parse(JSON.stringify(events));
+            originalFaculty = JSON.parse(JSON.stringify(faculty));
+            originalRoutine = JSON.parse(JSON.stringify(routine));
+            hasChanges = false;
+            document.getElementById('saveBar').classList.remove('active');
+            showToast('Saved locally! (Remember to copy JSON)');
+        }
+
+        function closeEditor() {
+            document.getElementById('editorPane').classList.remove('active');
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>`;
+            document.getElementById('jsonBox').style.display = 'none';
+        }
+
+        function copyJSON() {
+            const text = document.getElementById('jsonPreview').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('JSON Copied to Clipboard!');
+            });
+        }
+
+        function downloadJSON() {
+            const text = document.getElementById('jsonPreview').innerText;
+            const filename = editorMode === 'event' ? 'pinned-events.json' :
+                             editorMode === 'faculty' ? 'faculty.json' : 'routine.json';
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.perm-menu')) {
+                document.getElementById('permDropdown')?.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
