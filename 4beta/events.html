@@ -26,32 +26,41 @@
             --text: #f0f4f8; --text-secondary: #8b98a5; --text-muted: #5c6a7a;
             --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; overflow: hidden; }
         
         /* ══════════ EDITOR HEADER ══════════ */
-        .editor-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-        .editor-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+        .editor-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
+        .editor-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
         .editor-title span { color: var(--accent); }
-        .section-tag { font-size: 0.75rem; font-weight: 600; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; border: 1px solid #dbeafe; }
+        .section-tag { font-size: 0.7rem; font-weight: 600; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; border: 1px solid #dbeafe; display: none; }
+        @media (min-width: 600px) { .section-tag { display: block; } }
         .header-actions { display: flex; gap: 10px; align-items: center; }
         .btn-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1rem; }
         .btn-icon:active { transform: scale(0.92); }
 
         /* ══════════ DESKTOP LAYOUT ══════════ */
-        .layout { display: grid; grid-template-columns: 1fr; min-height: calc(100vh - 60px); }
+        .layout { display: grid; grid-template-columns: 1fr; height: 100vh; padding-top: 60px; overflow: hidden; }
         @media (min-width: 900px) {
-            .layout { grid-template-columns: 380px 1fr; }
+            .layout { grid-template-columns: 400px 1fr; }
         }
 
         /* ══════════ APP PREVIEW (LEFT SIDE) ══════════ */
-        .preview-pane { padding: 20px; display: flex; justify-content: center; background: var(--bg); border-right: 1px solid var(--border); }
-        .mobile-frame { width: 100%; max-width: 380px; background: var(--surface); border-radius: 30px; border: 8px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; position: relative; height: 750px; }
-        [data-theme="dark"] .mobile-frame { border-color: #1e293b; }
+        .preview-pane { display: flex; justify-content: center; background: var(--bg); border-right: 1px solid var(--border); height: 100%; overflow: hidden; position: relative; }
         
-        .preview-header { height: 50px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .mobile-frame { width: 100%; height: 100%; background: var(--surface); display: flex; flex-direction: column; position: relative; }
+        @media (min-width: 900px) {
+            .preview-pane { padding: 20px; align-items: center; }
+            .mobile-frame { max-width: 380px; height: 750px; border-radius: 30px; border: 8px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+            [data-theme="dark"] .mobile-frame { border-color: #1e293b; }
+        }
+        
+        /* Sticky App Header */
+        .preview-header { position: sticky; top: 0; z-index: 10; height: 50px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 1px solid var(--border); }
         .preview-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
-        .preview-content { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); }
+        
+        /* Scrollable Content */
+        .preview-content { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); overscroll-behavior: contain; }
         
         /* Dashboard UI Elements inside preview */
         .p-announcement { background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 8px 12px; margin-bottom: 15px; font-size: 0.75rem; color: #7c2d12; font-weight: 600; display: flex; align-items: center; gap: 8px; }
@@ -64,6 +73,7 @@
         
         /* Preview Events */
         .p-event-item { display: flex; gap: 10px; padding: 10px; background: #fafbfc; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; align-items: center; }
+        [data-theme="dark"] .p-event-item { background: #0f131a; }
         .p-event-date { width: 40px; height: 40px; background: var(--navy); color: white; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .p-event-date .day { font-size: 0.9rem; font-weight: 700; line-height: 1; }
         .p-event-date .month { font-size: 0.5rem; text-transform: uppercase; }
@@ -78,23 +88,34 @@
 
         /* Preview Faculty */
         .p-fac-item { background: #f9fafb; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 10px; position: relative; }
+        [data-theme="dark"] .p-fac-item { background: #0f131a; }
         .p-fac-name { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
         .p-fac-sub { font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 5px; }
         .p-fac-warn { font-size: 0.6rem; color: #b45309; background: #fef3c7; padding: 4px 8px; border-radius: 4px; margin-top: 4px; }
         .p-fac-actions { position: absolute; top: 10px; right: 10px; }
 
-        /* Bottom Nav Preview */
-        .preview-nav { height: 60px; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
-        .p-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 0.55rem; font-weight: 600; cursor: pointer; }
+        /* Sticky Bottom Nav Preview */
+        .preview-nav { position: sticky; bottom: 0; z-index: 10; height: 60px; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        .p-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 0.55rem; font-weight: 600; cursor: pointer; padding: 5px 10px; }
         .p-nav-item.active { color: var(--accent); }
         .p-nav-item i { font-size: 1.1rem; }
 
         /* ══════════ EDITOR PANE (RIGHT SIDE / MODAL ON MOBILE) ══════════ */
-        .editor-pane { padding: 20px; background: var(--surface); overflow-y: auto; position: fixed; inset: 60px 0 0 0; z-index: 40; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .editor-pane.active { transform: translateY(0); }
-        @media (min-width: 900px) {
-            .editor-pane { position: static; transform: none; padding: 30px; background: var(--bg); }
+        .editor-pane { 
+            position: fixed; top: 60px; left: 0; right: 0; bottom: 0; 
+            background: var(--bg); z-index: 500; 
+            transform: translateY(100%); 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            display: flex; flex-direction: column;
         }
+        .editor-pane.active { transform: translateY(0); }
+        
+        @media (min-width: 900px) {
+            .editor-pane { position: static; transform: none; background: var(--bg); border-left: none; overflow-y: auto; }
+        }
+        
+        .editor-scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
         
         .editor-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); max-width: 700px; margin: 0 auto; }
         .editor-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
@@ -108,7 +129,6 @@
         .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.85rem; background: var(--bg); color: var(--text); transition: var(--transition); }
         .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(18, 60, 243, 0.1); }
         textarea.form-control { resize: vertical; min-height: 80px; }
-        .form-hint { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; display: block; }
         
         .row { display: flex; gap: 10px; }
         .col { flex: 1; }
@@ -140,9 +160,9 @@
         .btn-cp { background: var(--accent); color: #fff; }
 
         /* Save Bar */
-        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 100; border-top: 1px solid var(--border); }
+        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 1000; border-top: 1px solid var(--border); }
         .save-bar.active { transform: translateY(0); }
-        @media (min-width: 900px) { .save-bar { left: 380px; } }
+        @media (min-width: 900px) { .save-bar { left: 400px; } }
         .save-text { font-size: 0.85rem; font-weight: 600; color: var(--text); }
         .save-actions { display: flex; gap: 10px; }
         .btn-save { background: var(--accent); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
@@ -153,7 +173,7 @@
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         /* Modals */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         .modal-icon { font-size: 3rem; color: var(--accent); margin-bottom: 15px; }
@@ -164,7 +184,7 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Fixed Header -->
     <header class="editor-header">
         <div class="editor-title">66<span>Notes</span> EDITOR</div>
         <div class="header-actions">
@@ -173,21 +193,24 @@
         </div>
     </header>
 
-    <!-- Main Layout -->
+    <!-- Main Layout Container -->
     <div class="layout">
         
         <!-- LEFT: Mobile Preview -->
         <div class="preview-pane">
             <div class="mobile-frame">
+                <!-- Sticky App Nav -->
                 <div class="preview-header">
                     <div class="preview-title" id="previewTitle">66Notes</div>
                     <i class="fas fa-bell" style="color:var(--text-muted)"></i>
                 </div>
                 
+                <!-- Scrollable Content -->
                 <div class="preview-content" id="previewContent">
                     <!-- Rendered by JS -->
                 </div>
 
+                <!-- Sticky Bottom Nav -->
                 <div class="preview-nav">
                     <div class="p-nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i>Home</div>
                     <div class="p-nav-item" onclick="switchTab('pdfs')"><i class="fas fa-folder"></i>PDFs</div>
@@ -197,23 +220,25 @@
             </div>
         </div>
 
-        <!-- RIGHT: Editor Panel -->
+        <!-- RIGHT: Editor Panel (Slides up on mobile) -->
         <div class="editor-pane" id="editorPane">
-            <div class="editor-box">
-                <div class="editor-box-header">
-                    <div class="editor-box-title" id="editorTitle">Select an item to edit</div>
-                    <button class="btn-close-editor" onclick="closeEditor()">Close</button>
-                </div>
-                
-                <div id="editorFormArea">
-                    <p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>
-                </div>
-                
-                <div class="json-box" id="jsonBox" style="display:none;">
-                    <div class="json-pre" id="jsonPreview"></div>
-                    <div class="json-actions">
-                        <button class="btn-json btn-dl" onclick="downloadJSON()"><i class="fas fa-download"></i> Download</button>
-                        <button class="btn-json btn-cp" onclick="copyJSON()"><i class="fas fa-copy"></i> Copy</button>
+            <div class="editor-scroll-area">
+                <div class="editor-box">
+                    <div class="editor-box-header">
+                        <div class="editor-box-title" id="editorTitle">Select an item to edit</div>
+                        <button class="btn-close-editor" onclick="closeEditor()">Close</button>
+                    </div>
+                    
+                    <div id="editorFormArea">
+                        <p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>
+                    </div>
+                    
+                    <div class="json-box" id="jsonBox" style="display:none;">
+                        <div class="json-pre" id="jsonPreview"></div>
+                        <div class="json-actions">
+                            <button class="btn-json btn-dl" onclick="downloadJSON()"><i class="fas fa-download"></i> Download</button>
+                            <button class="btn-json btn-cp" onclick="copyJSON()"><i class="fas fa-copy"></i> Copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,10 +248,10 @@
 
     <!-- Bottom Save Bar -->
     <div class="save-bar" id="saveBar">
-        <div class="save-text">You have unsaved changes!</div>
+        <div class="save-text">Unsaved changes!</div>
         <div class="save-actions">
             <button class="btn-cancel" onclick="cancelChanges()">Undo</button>
-            <button class="btn-save" onclick="saveChanges()">Save Changes</button>
+            <button class="btn-save" onclick="saveChanges()">Save</button>
         </div>
     </div>
 
@@ -249,26 +274,23 @@
         let editorMode = 'none'; // 'event', 'faculty'
         let hasChanges = false;
         
-        // Default Data (Fallbacks if fetch fails)
         let events = [];
         let faculty = [];
-        
         let originalEvents = [];
         let originalFaculty = [];
 
-        const COLORS = ['#0d2b4e', '#166534', '#991b1b', '#b45309', '#5b21b6']; // Navy, Green, Red, Amber, Violet
+        const COLORS = ['#0d2b4e', '#166534', '#991b1b', '#b45309', '#5b21b6'];
         
+        // Debounce timers for lag reduction
+        let previewDebounce, jsonDebounce;
+
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', async () => {
-            // Theme setup
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             updateThemeIcon();
 
-            // Fetch data
             await loadData();
-            
-            // Render initial view
             switchTab('home');
         });
 
@@ -279,7 +301,7 @@
                     events = await evRes.json();
                     originalEvents = JSON.parse(JSON.stringify(events));
                 }
-            } catch (e) { console.log('No pinned-events.json found, starting empty.'); }
+            } catch (e) { console.log('No pinned-events.json found.'); }
 
             try {
                 const facRes = await fetch('faculty.json');
@@ -287,7 +309,7 @@
                     faculty = await facRes.json();
                     originalFaculty = JSON.parse(JSON.stringify(faculty));
                 }
-            } catch (e) { console.log('No faculty.json found, starting empty.'); }
+            } catch (e) { console.log('No faculty.json found.'); }
         }
 
         // --- Theme Logic ---
@@ -339,7 +361,6 @@
                     html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No events yet.</p>`;
                 } else {
                     events.forEach((ev, index) => {
-                        const dateStr = ev.startDay ? `${ev.startDay}-${ev.endDay} ${ev.startMonth}` : `${ev.day} ${ev.month}`;
                         html += `
                             <div class="p-event-item">
                                 <div class="p-event-date"><span class="day">${ev.day || '?'}</span><span class="month">${ev.month || ''}</span></div>
@@ -405,21 +426,40 @@
             }
         }
 
+        // Trigger updates safely (debounced to prevent lag)
+        function triggerUpdates() {
+            markChanged();
+            clearTimeout(previewDebounce);
+            previewDebounce = setTimeout(renderPreview, 300); // Update preview after 300ms of no typing
+            
+            clearTimeout(jsonDebounce);
+            jsonDebounce = setTimeout(() => {
+                let data = editorMode === 'event' ? events : faculty;
+                document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
+            }, 300);
+        }
+
+        function forceRender() {
+            markChanged();
+            renderPreview();
+            let data = editorMode === 'event' ? events : faculty;
+            document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
+        }
+
         // --- Editor Logic: Events ---
         function openEventEditor() {
             editorMode = 'event';
             document.getElementById('editorTitle').innerText = 'Edit Events List';
             document.getElementById('editorPane').classList.add('active');
             document.getElementById('jsonBox').style.display = 'block';
-            updateJSON();
             
-            if (window.innerWidth < 900) document.getElementById('editorPane').classList.add('active');
+            // Instantly render current JSON
+            document.getElementById('jsonPreview').innerText = JSON.stringify(events, null, 2);
         }
 
         function addNewEvent() {
             events.push({ title: 'New Event', day: '01', month: 'Jan', tags: ['Notice'] });
-            markChanged();
-            renderPreview();
+            forceRender();
             editEvent(events.length - 1);
         }
 
@@ -431,7 +471,6 @@
             const ev = events[index];
             const formArea = document.getElementById('editorFormArea');
             
-            // Determine current toggles
             const isRange = !!ev.startDay;
             const onClassTime = !!ev.course;
             const hasColor = ev.color || '#0d2b4e';
@@ -506,29 +545,23 @@
                     </div>
                 </div>
             `;
-            updateJSON();
         }
 
         function updateEventField(index, field, value) {
             events[index][field] = value;
-            markChanged();
-            renderPreview();
-            updateJSON();
+            triggerUpdates();
         }
 
         function updateEventItems(index, value) {
             events[index].items = value.split('\n').filter(Boolean);
-            markChanged();
-            updateJSON();
+            triggerUpdates();
         }
 
         function updateEventColor(index, color, el) {
             events[index].color = color;
             document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-            markChanged();
-            renderPreview();
-            updateJSON();
+            triggerUpdates();
         }
 
         function setEventRange(index, isRange) {
@@ -547,36 +580,32 @@
                 delete events[index].endDay;
                 delete events[index].endMonth;
             }
-            markChanged();
-            renderPreview();
-            editEvent(index); // re-render form
+            forceRender();
+            editEvent(index); 
         }
 
         function setEventClassTime(index, isClassTime) {
             if (isClassTime) {
-                events[index].course = 'MGT 1101'; // default
+                events[index].course = 'MGT 1101';
                 delete events[index].expiresAt;
             } else {
                 delete events[index].course;
                 events[index].expiresAt = events[index].startDate ? events[index].startDate.replace('T00:00', 'T23:59') : '';
             }
-            markChanged();
-            renderPreview();
+            forceRender();
             editEvent(index);
         }
 
         function updateEventDate(index, field, dateStr) {
             if (!dateStr) return;
             events[index][field] = `${dateStr}T00:00:00+06:00`;
-            markChanged();
-            updateJSON();
+            triggerUpdates();
         }
 
         function deleteEvent(index) {
             if(confirm('Delete this event?')) {
                 events.splice(index, 1);
-                markChanged();
-                renderPreview();
+                forceRender();
                 closeEditor();
             }
         }
@@ -584,8 +613,7 @@
         // --- Editor Logic: Faculty ---
         function addNewFaculty() {
             faculty.push({ name: 'New Teacher', phone: '', subject: '', course: '', room: '' });
-            markChanged();
-            renderPreview();
+            forceRender();
             editFaculty(faculty.length - 1);
         }
 
@@ -654,14 +682,11 @@
                     <textarea class="form-control" placeholder="Anything written will show, no format needed" oninput="updateFacultyField(${index}, 'counseling', this.value)">${fac.counseling || ''}</textarea>
                 </div>
             `;
-            updateJSON();
         }
 
         function updateFacultyField(index, field, value) {
             faculty[index][field] = value;
-            markChanged();
-            renderPreview();
-            updateJSON();
+            triggerUpdates();
         }
 
         // --- Save / Cancel / JSON ---
@@ -685,18 +710,13 @@
             originalFaculty = JSON.parse(JSON.stringify(faculty));
             hasChanges = false;
             document.getElementById('saveBar').classList.remove('active');
-            showToast('Changes saved locally! (Remember to copy JSON)');
+            showToast('Saved locally! (Remember to copy JSON)');
         }
 
         function closeEditor() {
             document.getElementById('editorPane').classList.remove('active');
             document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>`;
             document.getElementById('jsonBox').style.display = 'none';
-        }
-
-        function updateJSON() {
-            let data = editorMode === 'event' ? events : faculty;
-            document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
         }
 
         function copyJSON() {
@@ -725,7 +745,6 @@
             setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // Close dropdown on click outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.perm-menu')) {
                 document.getElementById('permDropdown')?.classList.remove('active');
