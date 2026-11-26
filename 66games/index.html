@@ -94,6 +94,7 @@
             position: relative;
             overflow: hidden;
         }
+        .welcome-bar[hidden] { display: none; }
         .welcome-bar::before {
             content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
             background: var(--accent);
@@ -182,105 +183,99 @@
         .card-carrom { --card-color: #ea580c; --card-bg: #ffedd5; }
 
         /* ══════════ MODALS (No Blur) ══════════ */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(13, 43, 78, 0.85);
-            z-index: 1000;
-            display: none; align-items: center; justify-content: center;
-            padding: 1rem;
-        }
+        [hidden] { display: none !important; }
+        button { font-family: 'Poppins', sans-serif; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(13, 43, 78, 0.85); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 0.8rem; }
         .modal-overlay.active { display: flex; }
-        
-        .modal-box {
-            background: var(--surface); border-radius: var(--radius-xl);
-            padding: 1.5rem; width: 100%; max-width: 380px;
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            animation: popIn 0.2s ease-out;
-        }
+        .modal-box { background: var(--surface); border-radius: 24px; padding: 1.2rem; width: 100%; max-width: 380px; max-height: 96vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.25); animation: popIn 0.2s ease-out; }
         @keyframes popIn { from { transform: scale(0.95); } to { transform: scale(1); } }
-
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
         .modal-title { font-size: 1.2rem; font-weight: 800; color: var(--navy); }
-        .close-btn { background: var(--bg); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; color: var(--text); }
+        .close-btn { background: var(--bg); border: 1px solid var(--border-strong); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; color: var(--text); font-size: 0.95rem; }
+        .btn { width: 100%; height: 48px; border-radius: 14px; border: 2px solid var(--accent); font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 0.6rem; transition: transform 0.12s; }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.5; cursor: default; }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(18,60,243,0.28); }
+        .btn-outline { background: var(--surface); color: var(--accent); }
+        .result { font-size: 1.15rem; font-weight: 800; color: var(--navy); min-height: 1.8rem; margin: 0.5rem 0 0.2rem; }
 
-        /* Tic Tac Toe */
-        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
-        .ttt-cell {
-            background: var(--bg); aspect-ratio: 1; border-radius: 12px; border: 2px solid var(--border);
-            display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900;
-            cursor: pointer; transition: 0.1s;
-        }
-        .ttt-cell:active { transform: scale(0.95); }
-        .ttt-x { color: var(--accent); }
-        .ttt-o { color: #ef4444; }
-        
+        /* ══════════ TIC TAC TOE ══════════ */
+        .field-label { text-align: left; font-size: 0.68rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin: 0.4rem 0; }
+        .size-list { display: grid; gap: 0.5rem; margin-bottom: 0.8rem; }
+        .size-opt { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--bg); color: var(--text); cursor: pointer; text-align: left; }
+        .size-opt small { display: block; font-size: 0.62rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+        .size-opt strong { font-size: 1.1rem; }
+        .size-opt em { font-style: normal; font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); }
+        .size-opt.on { border-color: var(--accent); background: var(--accent-light); }
+        .size-opt.on em { color: var(--accent); }
+        .score-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.6rem; }
+        .score { background: var(--bg); border-radius: 12px; padding: 0.35rem; font-size: 0.65rem; font-weight: 700; color: var(--text-secondary); }
+        .score b { display: block; font-size: 1.2rem; color: var(--navy); }
+        .ttt-grid { display: grid; gap: 7px; margin: 0.6rem auto 0.2rem; width: 100%; max-width: min(100%, 52vh); }
+        .ttt-cell { aspect-ratio: 1; min-width: 0; padding: 0; border-radius: 12px; border: 2px solid var(--border-strong); background: var(--bg); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .ttt-cell:active { transform: scale(0.94); }
+        .ttt-cell svg { width: 62%; height: 62%; fill: none; stroke-width: 4; stroke-linecap: round; animation: mark 0.18s ease-out; }
+        @keyframes mark { from { transform: scale(0.4); } to { transform: scale(1); } }
+        .ttt-x { color: var(--accent); } .ttt-o { color: #ef4444; }
+        .ttt-cell svg { stroke: currentColor; }
+        .ttt-cell.win { background: #fde68a; border-color: #f59e0b; }
+        .ttt-grid.n7 { gap: 4px; }
+        .ttt-grid.n7 .ttt-cell { border-radius: 7px; border-width: 1px; }
+        .ttt-grid.n7 .ttt-cell svg { width: 74%; height: 74%; stroke-width: 5; }
+        .btn-row { display: flex; gap: 0.6rem; }
+
         /* ══════════ SPIN THE BOTTLE ══════════ */
-        .spin-stage {
-            width: 200px; height: 200px; border-radius: 50%;
-            background: var(--bg); border: 4px dashed var(--border-strong);
-            margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
-        .spin-bottle-container {
-            width: 40px; height: 120px; position: relative;
-            transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 1);
-            transform-origin: center center;
-        }
-        .bottle-body {
-            position: absolute; bottom: 0; width: 40px; height: 80px;
-            background: #22c55e; border-radius: 10px; border: 2px solid #166534;
-            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px;
-        }
-        .bottle-neck {
-            position: absolute; top: 20px; left: 12px; width: 16px; height: 25px;
-            background: #22c55e; border: 2px solid #166534; border-bottom: none;
-        }
-        .bottle-cap {
-            position: absolute; top: 0; left: 10px; width: 20px; height: 20px;
-            background: #ef4444; border-radius: 4px; border: 2px solid #b91c1c;
-        }
-        .bottle-pointer {
-            position: absolute; top: -15px; left: 10px;
-            width: 0; height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 15px solid #ef4444;
-        }
+        .spin-stage { width: min(280px, 100%); aspect-ratio: 1; margin: 0 auto; position: relative; }
+        .spin-table { position: absolute; inset: 24px; border-radius: 50%; background: radial-gradient(circle, #c98a4b 0 62%, #a86a32 63% 100%); border: 6px solid #7c4a21; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #spin-bottle { width: 24%; height: 80%; transition: transform 3.5s cubic-bezier(0.15, 0.7, 0.1, 1); filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3)); }
+        .seat { position: absolute; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; background: var(--surface); border: 3px solid var(--border-strong); color: var(--navy); z-index: 2; transition: transform 0.25s; }
+        .seat.s0 { top: 0; left: calc(50% - 22px); }
+        .seat.s1 { right: 0; top: calc(50% - 22px); }
+        .seat.s2 { bottom: 0; left: calc(50% - 22px); }
+        .seat.s3 { left: 0; top: calc(50% - 22px); }
+        .seat.pick { background: var(--accent); border-color: var(--accent); color: #fff; transform: scale(1.22); }
 
-        /* ══════════ COIN FLIP (INLINE) ══════════ */
-        .coinflip-card {
-            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
-            padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-        }
-        .coin-container { width: 100px; height: 100px; position: relative; perspective: 1000px; }
-        .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transform: rotateY(0deg); transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.3, 1); cursor: pointer; }
-        .coin-face { position: absolute; inset: 0; border-radius: 50%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 900; color: #fff; box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.25), 0 8px 20px rgba(0, 0, 0, 0.15); }
-        .coin-heads { background: linear-gradient(135deg, #f59e0b, #d97706); transform: rotateY(0deg); }
-        .coin-tails { background: linear-gradient(135deg, #ea580c, #c2410c); transform: rotateY(180deg); }
-        .flip-btn { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 1.2rem; border-radius: 40px; background: var(--accent); color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(18, 60, 243, 0.3); }
+        /* ══════════ COIN FLIP ══════════ */
+        .coin-stage { height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; background: var(--bg); border-radius: 18px; padding-bottom: 18px; perspective: 900px; }
+        .coin-lift { width: 130px; height: 130px; }
+        .coin-lift.toss { animation: toss 1.4s ease-in-out; }
+        @keyframes toss { 50% { transform: translateY(-55px) scale(1.08); } }
+        .coin { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 1.4s cubic-bezier(0.25, 0.7, 0.3, 1); cursor: pointer; }
+        .coin-face { position: absolute; inset: 0; border-radius: 50%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; border: 6px double rgba(255,255,255,0.75); text-shadow: 0 2px 2px rgba(0,0,0,0.25); }
+        .coin-face b { font-size: 3rem; line-height: 1; font-weight: 900; }
+        .coin-face small { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; }
+        .coin-heads { background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 50%, #b45309); }
+        .coin-tails { background: radial-gradient(circle at 35% 30%, #e2e8f0, #94a3b8 50%, #475569); transform: rotateY(180deg); }
+        .coin-shadow { width: 90px; height: 10px; margin-top: 10px; border-radius: 50%; background: rgba(0,0,0,0.15); }
 
         /* ══════════ LOGIN OVERLAY ══════════ */
-        .login-overlay { position: fixed; inset: 0; background: rgba(13, 43, 78, 0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .login-overlay { position: fixed; inset: 0; background: rgba(13, 43, 78, 0.92); z-index: 2000; display: flex; padding: 0.8rem; overflow-y: auto; }
         .login-overlay.hidden { display: none; }
-        .login-card { width: 100%; max-width: 380px; background: var(--surface); border-radius: var(--radius-xl); padding: 1.8rem 1.4rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; gap: 0.65rem; text-align: center; }
-        .login-brand { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
-        .login-brand i { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-size: 1rem; }
-        .login-card h2 { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
-        .login-sub { font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
-        .roll-input { width: 100%; height: 54px; padding: 0 1rem; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; font-size: 1.3rem; font-weight: 700; text-align: center; letter-spacing: 0.4em; outline: none; }
-        .roll-input:focus { border-color: var(--accent); background: var(--surface); }
-        .login-error { font-size: 0.7rem; font-weight: 600; color: #dc2626; background: #fef2f2; border-radius: 8px; padding: 0.4rem; display: none; }
+        .login-card { width: 100%; max-width: 360px; margin: auto; background: var(--surface); border-radius: 26px; padding: 1.3rem 1.2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+        .login-brand { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1.35rem; font-weight: 800; color: var(--navy); }
+        .login-brand i { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-size: 1rem; }
+        .login-card h2 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-top: 0.5rem; }
+        .login-sub { font-size: 0.72rem; color: var(--text-secondary); }
+        .roll-boxes { display: flex; justify-content: center; gap: 10px; margin: 0.8rem 0; }
+        .roll-boxes b { width: 62px; height: 70px; border-radius: 16px; border: 2px solid var(--border-strong); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 2.1rem; font-weight: 800; color: var(--navy); }
+        .roll-boxes b.typed { border-color: var(--accent); background: var(--accent-light); }
+        .roll-boxes b.ghost { color: var(--text-muted); opacity: 0.6; }
+        .login-error { font-size: 0.72rem; font-weight: 600; color: #dc2626; background: #fef2f2; border-radius: 10px; padding: 0.45rem; margin-bottom: 0.6rem; display: none; }
         .login-error.show { display: block; }
-        .login-btn { height: 48px; border-radius: 40px; border: none; background: var(--accent); color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-top: 0.3rem; }
-        .intake-options { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.3rem; }
-        .intake-option { display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1rem; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--bg); cursor: pointer; text-align: left; }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+        .key { height: clamp(46px, 8vh, 60px); border-radius: 16px; border: 1px solid var(--border-strong); border-bottom-width: 4px; background: var(--surface); color: var(--navy); font-size: 1.45rem; font-weight: 700; cursor: pointer; }
+        .key:active { transform: translateY(2px); border-bottom-width: 2px; background: var(--accent-light); }
+        .key.del { color: #dc2626; font-size: 1.2rem; }
+        .key.go { background: var(--accent); border-color: #0b2bb5; color: #fff; }
+        .keypad.busy { opacity: 0.55; pointer-events: none; }
+        .intake-options { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+        .intake-option { display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1rem; border-radius: 14px; border: 2px solid var(--border-strong); background: var(--bg); color: var(--text); cursor: pointer; text-align: left; }
         .intake-option__circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: #fff; }
-        .intake-option__circle.yes { background: #123cf3; }
-        .intake-option__circle.no { background: #ea580c; }
+        .intake-option__circle.yes { background: #123cf3; } .intake-option__circle.no { background: #ea580c; }
         .intake-option__body { display: flex; flex-direction: column; }
         .intake-option__label { font-size: 0.62rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
         .intake-option__name { font-size: 0.95rem; font-weight: 700; color: var(--navy); }
-        .intake-back { background: none; border: none; color: var(--text-muted); font-size: 0.7rem; font-weight: 600; cursor: pointer; margin-top: 0.25rem; }
+        .intake-back { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; margin-top: 0.8rem; }
 
         /* ══════════ DARK MODE ══════════ */
         :root[data-theme="dark"] {
@@ -290,8 +285,7 @@
             --orange-light: #2a1a0a;
         }
         :root[data-theme="dark"] .card-uno { --card-color: #fca5a5; --card-bg: #3f0f0f; }
-        :root[data-theme="dark"] .login-card { background: var(--surface); }
-        :root[data-theme="dark"] .roll-input { background: #0f131a; }
+        :root[data-theme="dark"] .login-error { background: #3f0f0f; color: #fca5a5; }
     </style>
 </head>
 <body>
@@ -401,19 +395,23 @@
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title">Coin Flip</div>
-                <button class="close-btn" onclick="closeModal('modal-coin')"><i class="fas fa-times"></i></button>
+                <button class="close-btn" onclick="closeModal('modal-coin')" aria-label="Close">✕</button>
             </div>
-            <div class="coinflip-card">
-                <div class="coin-container">
+            <div class="coin-stage">
+                <div class="coin-lift" id="coinLift">
                     <div class="coin" id="coin" onclick="flipCoin()">
-                        <div class="coin-face coin-heads"><span>H</span></div>
-                        <div class="coin-face coin-tails"><span>T</span></div>
+                        <div class="coin-face coin-heads"><b>H</b><small>HEADS</small></div>
+                        <div class="coin-face coin-tails"><b>T</b><small>TAILS</small></div>
                     </div>
                 </div>
-                <div id="coinResult" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); min-height: 1.2rem;">Tap to flip</div>
-                <button class="flip-btn" onclick="flipCoin()"><i class="fas fa-rotate"></i> Flip</button>
+                <div class="coin-shadow"></div>
             </div>
-            <button class="btn btn-outline" style="margin-top:1rem;" onclick="closeModal('modal-coin')">Back to Home</button>
+            <div class="result" id="coinResult">Tap the coin to flip</div>
+            <div class="score-row" style="grid-template-columns:1fr 1fr">
+                <div class="score">HEADS<b id="countH">0</b></div>
+                <div class="score">TAILS<b id="countT">0</b></div>
+            </div>
+            <button class="btn btn-primary" id="flipBtn" onclick="flipCoin()"><i class="fas fa-rotate"></i> Flip Coin</button>
         </div>
     </div>
 
@@ -422,14 +420,32 @@
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title">Tic-Tac-Toe</div>
-                <button class="close-btn" onclick="closeModal('modal-ttt')"><i class="fas fa-times"></i></button>
+                <button class="close-btn" onclick="closeTTT()" aria-label="Close">✕</button>
             </div>
-            <div class="ttt-grid" id="ttt-grid">
-                <!-- 9 cells generated by JS -->
+            <div id="ttt-menu">
+                <div class="field-label">Choose board</div>
+                <div class="size-list" id="ttt-sizes">
+                    <button class="size-opt on" data-n="3"><span><small>Option 1</small><strong>3 × 3</strong></span><em>3 in a row</em></button>
+                    <button class="size-opt" data-n="4"><span><small>Option 2</small><strong>4 × 4</strong></span><em>4 in a row</em></button>
+                    <button class="size-opt" data-n="7"><span><small>Option 3</small><strong>7 × 7</strong></span><em>5 in a row</em></button>
+                </div>
+                <div class="field-label">Play with</div>
+                <button class="btn btn-primary" onclick="startTTT('ai')"><i class="fas fa-robot"></i> Computer</button>
+                <button class="btn btn-outline" onclick="startTTT('friend')"><i class="fas fa-user-group"></i> Friend</button>
             </div>
-            <div id="ttt-status" style="font-weight: 700; margin-bottom: 1rem;">Your Turn (X)</div>
-            <button class="btn btn-primary" onclick="resetTTT()">Restart Game</button>
-            <button class="btn btn-outline" onclick="closeModal('modal-ttt')">Back to Home</button>
+            <div id="ttt-game" hidden>
+                <div class="score-row">
+                    <div class="score"><span id="nameX">X</span><b id="scoreX">0</b></div>
+                    <div class="score">Draw<b id="scoreD">0</b></div>
+                    <div class="score"><span id="nameO">O</span><b id="scoreO">0</b></div>
+                </div>
+                <div class="result" id="ttt-status"></div>
+                <div class="ttt-grid" id="ttt-grid"></div>
+                <div class="btn-row">
+                    <button class="btn btn-primary" onclick="resetTTT()">Restart</button>
+                    <button class="btn btn-outline" onclick="showTTTMenu()">Change Board</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -438,37 +454,45 @@
         <div class="modal-box">
             <div class="modal-header">
                 <div class="modal-title">Spin the Bottle</div>
-                <button class="close-btn" onclick="closeModal('modal-bottle')"><i class="fas fa-times"></i></button>
+                <button class="close-btn" onclick="closeModal('modal-bottle')" aria-label="Close">✕</button>
             </div>
-            
             <div class="spin-stage">
-                <div class="spin-bottle-container" id="spin-bottle">
-                    <div class="bottle-pointer"></div>
-                    <div class="bottle-cap"></div>
-                    <div class="bottle-neck"></div>
-                    <div class="bottle-body"></div>
+                <div class="seat s0">P1</div><div class="seat s1">P2</div><div class="seat s2">P3</div><div class="seat s3">P4</div>
+                <div class="spin-table" onclick="doSpinBottle()">
+                    <svg id="spin-bottle" viewBox="0 0 48 160">
+                        <rect x="16" y="2" width="16" height="14" rx="3" fill="#ef4444"/>
+                        <path d="M18 15h12v32c0 10 14 16 14 32v66q0 13-13 13H17Q4 158 4 145V79c0-16 14-22 14-32z" fill="#15803d"/>
+                        <rect x="4" y="94" width="40" height="38" fill="#fef3c7"/>
+                        <circle cx="24" cy="113" r="9" fill="#ea580c"/>
+                        <rect x="10" y="74" width="5" height="68" rx="2.5" fill="#fff" opacity="0.3"/>
+                    </svg>
                 </div>
             </div>
-            
-            <div id="bottle-result" style="font-weight: 700; margin-bottom: 1rem; min-height: 1.5rem; color: var(--navy);">Tap to Spin!</div>
-            <button class="btn btn-primary" onclick="doSpinBottle()" id="spin-btn">Spin</button>
-            <button class="btn btn-outline" onclick="closeModal('modal-bottle')">Back to Home</button>
+            <div class="result" id="bottle-result">Tap Spin to start</div>
+            <button class="btn btn-primary" onclick="doSpinBottle()" id="spin-btn"><i class="fas fa-rotate"></i> Spin</button>
         </div>
     </div>
 
     <!-- ══════════ LOGIN OVERLAY ══════════ -->
     <div class="login-overlay" id="loginOverlay">
-        <div class="login-card" id="loginCard">
+        <div class="login-card">
             <div id="loginStep1">
-                <div class="login-brand"><i class="fas fa-gamepad"></i> 66<span class="brand-accent">Games</span></div>
+                <div class="login-brand"><i class="fas fa-gamepad"></i> <span>66<span class="brand-accent">Games</span></span></div>
                 <h2>Enter Your Roll</h2>
-                <p class="login-sub">3-digit roll number to access</p>
-                <input type="text" id="rollInput" class="roll-input" inputmode="numeric" maxlength="3" placeholder="001" />
+                <p class="login-sub">Type 5 for roll 005</p>
+                <div class="roll-boxes" id="rollBoxes"><b></b><b></b><b></b></div>
                 <div class="login-error" id="loginError"></div>
-                <button class="login-btn" id="loginBtn">Continue</button>
+                <div class="keypad" id="keypad">
+                    <button class="key" data-k="1">1</button><button class="key" data-k="2">2</button><button class="key" data-k="3">3</button>
+                    <button class="key" data-k="4">4</button><button class="key" data-k="5">5</button><button class="key" data-k="6">6</button>
+                    <button class="key" data-k="7">7</button><button class="key" data-k="8">8</button><button class="key" data-k="9">9</button>
+                    <button class="key del" data-k="del" aria-label="Delete">⌫</button>
+                    <button class="key" data-k="0">0</button>
+                    <button class="key go" data-k="go" id="goKey" aria-label="Log in">OK</button>
+                </div>
             </div>
-            <div id="loginStep2" style="display: none;">
-                <div class="login-brand"><i class="fas fa-gamepad"></i> 66<span class="brand-accent">Games</span></div>
+            <div id="loginStep2" hidden>
+                <div class="login-brand"><i class="fas fa-gamepad"></i> <span>66<span class="brand-accent">Games</span></span></div>
                 <h2>Are you from Intake 66?</h2>
                 <p class="login-sub">Roll 138 is shared</p>
                 <div class="intake-options">
@@ -503,34 +527,67 @@
             btn.onclick = () => { d = !d; apply(d); localStorage.setItem('66games_theme', d ? 'dark' : 'light'); };
         })();
 
-        /* --- LOGIN --- */
+        /* --- LOGIN (keypad) --- */
         function saveUser(u) { localStorage.setItem('66games_user', JSON.stringify(u)); }
         function clearUser() { localStorage.removeItem('66games_user'); }
 
+        let roll = '', checking = false;
+
+        function drawRoll() {
+            // shows leading zeros in grey, so "5" appears as 0 0 5
+            const shown = roll ? roll.padStart(3, '0') : '';
+            [...$('rollBoxes').children].forEach((box, i) => {
+                const typed = i >= 3 - roll.length;
+                box.textContent = shown[i] || '';
+                box.className = !roll ? '' : typed ? 'typed' : 'ghost';
+            });
+        }
+
+        function loginError(msg) {
+            $('loginError').textContent = msg;
+            $('loginError').classList.add('show');
+        }
+
+        function pressKey(k) {
+            if (checking) return;
+            if (k === 'go') return attemptLogin();
+            $('loginError').classList.remove('show');
+            if (k === 'del') roll = roll.slice(0, -1);
+            else if (roll.length < 3) roll += k;
+            drawRoll();
+        }
+
         async function attemptLogin() {
-            await studentsReady;
-            const val = $('rollInput').value.padStart(3, '0');
+            if (checking) return;
+            if (!roll) return loginError('Enter your roll number');
+            const val = roll.padStart(3, '0');   // 5 becomes 005
             if (val === '138') {
-                $('loginStep1').style.display = 'none';
-                $('loginStep2').style.display = 'block';
+                $('loginStep1').hidden = true;
+                $('loginStep2').hidden = false;
                 return;
             }
+            if (typeof studentsReady === 'undefined') return loginError('students.js is missing. Upload it next to index.html');
+            checking = true;
+            $('keypad').classList.add('busy');
+            $('goKey').innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            await studentsReady;
+            checking = false;
+            $('keypad').classList.remove('busy');
+            $('goKey').textContent = 'OK';
+            if (!Object.keys(STUDENTS).length) return loginError('Cannot load students.json (' + studentsError + ')');
             const name = STUDENTS[val];
-            if (!name) return $('loginError').textContent = 'Roll not found!', $('loginError').classList.add('show');
-            
-            saveUser({ roll: val, name });
-            showDashboard({ roll: val, name });
+            if (!name) return loginError('Roll not found!');
+            loginUser({ roll: val, name });
         }
 
-        function loginIntake(name) {
-            saveUser({ roll: '138', name });
-            showDashboard({ roll: '138', name });
-        }
+        function loginUser(user) { saveUser(user); showDashboard(user); }
+        function loginIntake(name) { loginUser({ roll: '138', name }); }
 
         function resetLogin() {
-            $('loginStep2').style.display = 'none';
-            $('loginStep1').style.display = 'block';
-            $('rollInput').value = '';
+            $('loginStep2').hidden = true;
+            $('loginStep1').hidden = false;
+            roll = '';
+            drawRoll();
         }
 
         function showDashboard(user) {
@@ -539,7 +596,16 @@
             $('welcomeName').textContent = user.name;
         }
 
-        $('loginBtn').onclick = attemptLogin;
+        $('keypad').addEventListener('click', e => {
+            const key = e.target.closest('.key');
+            if (key) pressKey(key.dataset.k);
+        });
+        document.addEventListener('keydown', e => {
+            if ($('loginOverlay').classList.contains('hidden') || $('loginStep1').hidden) return;
+            if (/^[0-9]$/.test(e.key)) pressKey(e.key);
+            else if (e.key === 'Backspace') pressKey('del');
+            else if (e.key === 'Enter') { e.preventDefault(); pressKey('go'); }
+        });
         $('logoutBtn').onclick = () => { clearUser(); location.reload(); };
 
         // Check if logged in
@@ -551,130 +617,185 @@
         function closeModal(id) { $(id).classList.remove('active'); }
 
         /* --- COIN FLIP --- */
-        let coinDeg = 0;
+        let coinDeg = 0, flipping = false;
+        const coinCount = { H: 0, T: 0 };
         function openCoinFlip() { openModal('modal-coin'); }
         function flipCoin() {
+            if (flipping) return;
+            flipping = true;
             const isHeads = Math.random() < 0.5;
-            coinDeg += 720 + (isHeads ? 0 : 180);
+            // always finish on the face that matches the result
+            coinDeg = Math.ceil(coinDeg / 360) * 360 + 1800 + (isHeads ? 0 : 180);
+            const lift = $('coinLift');
+            lift.classList.remove('toss'); void lift.offsetWidth; lift.classList.add('toss');
             $('coin').style.transform = `rotateY(${coinDeg}deg)`;
             $('coinResult').textContent = 'Flipping...';
-            setTimeout(() => { $('coinResult').textContent = isHeads ? 'HEADS' : 'TAILS'; }, 1200);
+            $('flipBtn').disabled = true;
+            setTimeout(() => {
+                const side = isHeads ? 'H' : 'T';
+                $('count' + side).textContent = ++coinCount[side];
+                $('coinResult').textContent = isHeads ? 'HEADS!' : 'TAILS!';
+                $('flipBtn').disabled = false;
+                flipping = false;
+            }, 1400);
         }
 
         /* --- SPIN THE BOTTLE --- */
-        let isSpinning = false;
-        let currentRotation = 0;
-        
-        function openSpinBottle() { 
-            openModal('modal-bottle'); 
-            resetBottle();
-        }
-        
-        function resetBottle() {
-            const b = $('spin-bottle');
-            b.style.transition = 'none';
-            b.style.transform = 'rotate(0deg)';
-            $('bottle-result').textContent = 'Tap to Spin!';
-            isSpinning = false;
-        }
-
+        let isSpinning = false, rotation = 0;
+        const seats = () => document.querySelectorAll('.seat');
+        function openSpinBottle() { openModal('modal-bottle'); }
         function doSpinBottle() {
             if (isSpinning) return;
             isSpinning = true;
-            const b = $('spin-bottle');
-            
-            // Random spin between 5 and 10 full rotations + a random angle
-            const randomDeg = (Math.floor(Math.random() * 5) + 5) * 360 + Math.floor(Math.random() * 360);
-            currentRotation += randomDeg;
-            
-            b.style.transition = 'transform 3s cubic-bezier(0.17, 0.67, 0.12, 1)';
-            b.style.transform = `rotate(${currentRotation}deg)`;
-            
+            const winner = Math.floor(Math.random() * 4);
+            // land near the chosen player, never on a border between two
+            const target = winner * 90 + Math.floor(Math.random() * 51) - 25;
+            const turns = 5 + Math.floor(Math.random() * 4);
+            rotation = Math.ceil(rotation / 360) * 360 + turns * 360 + target;
+            $('spin-bottle').style.transform = `rotate(${rotation}deg)`;
+            seats().forEach(s => s.classList.remove('pick'));
             $('bottle-result').textContent = 'Spinning...';
-            
+            $('spin-btn').disabled = true;
             setTimeout(() => {
+                seats()[winner].classList.add('pick');
+                $('bottle-result').textContent = `Player ${winner + 1}, it's you!`;
+                $('spin-btn').disabled = false;
                 isSpinning = false;
-                // Calculate where it points (Top, Right, Bottom, Left)
-                const finalAngle = (currentRotation % 360 + 360) % 360;
-                let direction = '';
-                
-                if (finalAngle >= 315 || finalAngle < 45) direction = '⬆️ Top (Player 1)';
-                else if (finalAngle >= 45 && finalAngle < 135) direction = '➡️ Right (Player 2)';
-                else if (finalAngle >= 135 && finalAngle < 225) direction = '⬇️ Bottom (Player 3)';
-                else direction = '⬅️ Left (Player 4)';
-                
-                $('bottle-result').innerHTML = `Points to: <span style="color:var(--accent);">${direction}</span>`;
-            }, 3000);
+            }, 3500);
         }
 
         /* --- TIC TAC TOE --- */
-        let tttBoard = [];
-        let tttActive = false;
-        
-        function openTicTacToe() {
-            openModal('modal-ttt');
+        const NEED = { 3: 3, 4: 4, 7: 5 };   // board size : marks in a row to win
+        const MARK = {
+            X: '<svg viewBox="0 0 32 32"><path d="M6 6l20 20M26 6L6 26"/></svg>',
+            O: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/></svg>'
+        };
+        let tttSize = 3, tttMode = 'ai', tttBoard = [], tttLines = [], tttTurn = 'X', tttActive = false, tttTimer = null;
+        let tttScore = { X: 0, O: 0, D: 0 };
+
+        function openTicTacToe() { openModal('modal-ttt'); showTTTMenu(); }
+        function closeTTT() { clearTimeout(tttTimer); closeModal('modal-ttt'); }
+        function showTTTMenu() {
+            clearTimeout(tttTimer);
+            $('ttt-menu').hidden = false;
+            $('ttt-game').hidden = true;
+        }
+        $('ttt-sizes').addEventListener('click', e => {
+            const opt = e.target.closest('.size-opt');
+            if (!opt) return;
+            tttSize = Number(opt.dataset.n);
+            document.querySelectorAll('.size-opt').forEach(o => o.classList.toggle('on', o === opt));
+        });
+
+        function buildLines(n, k) {
+            const lines = [];
+            for (let r = 0; r < n; r++)
+                for (let c = 0; c < n; c++)
+                    for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]) {
+                        const endR = r + dr * (k - 1), endC = c + dc * (k - 1);
+                        if (endR >= n || endC < 0 || endC >= n) continue;
+                        lines.push(Array.from({ length: k }, (_, i) => (r + dr * i) * n + c + dc * i));
+                    }
+            return lines;
+        }
+
+        function startTTT(mode) {
+            tttMode = mode;
+            tttScore = { X: 0, O: 0, D: 0 };
+            tttLines = buildLines(tttSize, NEED[tttSize]);
+            $('nameX').textContent = mode === 'ai' ? 'You (X)' : 'Player 1 (X)';
+            $('nameO').textContent = mode === 'ai' ? 'Computer (O)' : 'Player 2 (O)';
+            $('ttt-menu').hidden = true;
+            $('ttt-game').hidden = false;
+            const grid = $('ttt-grid');
+            grid.className = 'ttt-grid n' + tttSize;
+            grid.style.gridTemplateColumns = `repeat(${tttSize}, minmax(0, 1fr))`;
+            grid.innerHTML = '';
+            for (let i = 0; i < tttSize * tttSize; i++) {
+                const cell = document.createElement('button');
+                cell.className = 'ttt-cell';
+                cell.setAttribute('aria-label', 'Cell ' + (i + 1));
+                cell.onclick = () => handleTTT(i);
+                grid.appendChild(cell);
+            }
             resetTTT();
         }
 
         function resetTTT() {
-            tttBoard = ['', '', '', '', '', '', '', '', ''];
+            clearTimeout(tttTimer);
+            tttBoard = Array(tttSize * tttSize).fill('');
+            tttTurn = 'X';
             tttActive = true;
-            $('ttt-status').textContent = 'Your Turn (X)';
-            renderTTT();
+            [...$('ttt-grid').children].forEach(c => { c.className = 'ttt-cell'; c.innerHTML = ''; });
+            showScores();
+            showTurn();
         }
 
-        function renderTTT() {
-            const grid = $('ttt-grid');
-            grid.innerHTML = '';
-            tttBoard.forEach((val, i) => {
-                const cell = document.createElement('div');
-                cell.className = 'ttt-cell ' + (val === 'X' ? 'ttt-x' : 'ttt-o');
-                cell.textContent = val;
-                cell.onclick = () => handleTTT(i);
-                grid.appendChild(cell);
-            });
+        function showScores() {
+            for (const k of ['X', 'O', 'D']) $('score' + k).textContent = tttScore[k];
         }
 
-        function handleTTT(index) {
-            if (!tttActive || tttBoard[index] !== '') return;
-            
-            // Player move
-            tttBoard[index] = 'X';
-            renderTTT();
-            
-            if (checkWin('X')) return endTTT('You Win! 🎉');
-            if (!tttBoard.includes('')) return endTTT('Draw!');
-            
-            // AI Move
-            tttActive = false;
-            $('ttt-status').textContent = 'AI is thinking...';
-            setTimeout(() => {
-                let empty = tttBoard.map((v, i) => v === '' ? i : null).filter(v => v !== null);
-                if (empty.length > 0) {
-                    const move = empty[Math.floor(Math.random() * empty.length)];
-                    tttBoard[move] = 'O';
-                    renderTTT();
-                    
-                    if (checkWin('O')) return endTTT('AI Wins! 💀');
-                    if (!tttBoard.includes('')) return endTTT('Draw!');
-                    
-                    tttActive = true;
-                    $('ttt-status').textContent = 'Your Turn (X)';
+        function showTurn() {
+            $('ttt-status').textContent = tttMode === 'ai'
+                ? (tttTurn === 'X' ? 'Your turn' : 'Computer is thinking...')
+                : `Player ${tttTurn === 'X' ? 1 : 2}'s turn (${tttTurn})`;
+        }
+
+        function handleTTT(i) {
+            if (!tttActive || tttBoard[i] || (tttMode === 'ai' && tttTurn === 'O')) return;
+            placeMark(i);
+            if (tttActive && tttMode === 'ai') tttTimer = setTimeout(() => placeMark(computerMove()), 500);
+        }
+
+        const winningLine = p => tttLines.find(line => line.every(i => tttBoard[i] === p));
+
+        function placeMark(i) {
+            tttBoard[i] = tttTurn;
+            const cell = $('ttt-grid').children[i];
+            cell.classList.add(tttTurn === 'X' ? 'ttt-x' : 'ttt-o');
+            cell.innerHTML = MARK[tttTurn];
+            const line = winningLine(tttTurn);
+            if (line) {
+                line.forEach(j => $('ttt-grid').children[j].classList.add('win'));
+                tttScore[tttTurn]++;
+                return endTTT(tttMode === 'ai'
+                    ? (tttTurn === 'X' ? 'You win! 🎉' : 'Computer wins!')
+                    : `Player ${tttTurn === 'X' ? 1 : 2} wins! 🎉`);
+            }
+            if (!tttBoard.includes('')) { tttScore.D++; return endTTT('Draw!'); }
+            tttTurn = tttTurn === 'X' ? 'O' : 'X';
+            showTurn();
+        }
+
+        // Computer: win if possible, else block, else pick the most useful cell
+        function computerMove() {
+            const empty = tttBoard.map((v, i) => v ? -1 : i).filter(i => i >= 0);
+            for (const p of ['O', 'X']) {
+                for (const i of empty) {
+                    tttBoard[i] = p;
+                    const wins = winningLine(p);
+                    tttBoard[i] = '';
+                    if (wins) return i;
                 }
-            }, 500);
-        }
-
-        function checkWin(player) {
-            const wins = [
-                [0,1,2],[3,4,5],[6,7,8], // Rows
-                [0,3,6],[1,4,7],[2,5,8], // Cols
-                [0,4,8],[2,4,6]           // Diags
-            ];
-            return wins.some(combo => combo.every(i => tttBoard[i] === player));
+            }
+            let best = empty[0], bestScore = -1;
+            for (const i of empty) {
+                let score = Math.random() * 2;
+                for (const line of tttLines) {
+                    if (!line.includes(i)) continue;
+                    const o = line.filter(j => tttBoard[j] === 'O').length;
+                    const x = line.filter(j => tttBoard[j] === 'X').length;
+                    if (!x) score += 4 ** o;
+                    if (!o) score += 3.5 ** x;
+                }
+                if (score > bestScore) { best = i; bestScore = score; }
+            }
+            return best;
         }
 
         function endTTT(msg) {
             tttActive = false;
+            showScores();
             $('ttt-status').textContent = msg;
         }
     </script>
