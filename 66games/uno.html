@@ -294,9 +294,8 @@ button{font-family:inherit}
   </div>
 </div>
 
+<script src="students.js"></script>
 <script>
-const STUDENTS={'002':'Orin','004':'Saikat','005':'ASHIK','007':'Preonti','009':'Nazmul','010':'Sumaiya Siya','015':'M D Emran','017':'Boishakhi','019':'Aysha','022':'Iftikh','023':'Ryan','024':'Shakib','026':'Fahim','027':'Shajid','028':'Nafi','029':'Polok','030':'Adnan','031':'Sumaiya','032':'Mahde','033':'Foujia','035':'Risal','036':'Tonmoy','039':'Alif','040':'Sohan','041':'Shuvo','052':'Prapti','064':'Rifa','117':'Rafa','125':'Nusrat','129':'ABIR','137':'Mahin','140':'Meghla','145':'Samir','146':'Teetun','147':'Faiyaz','153':'Wafa','161':'Nafis','164':'Sanjana','381':'Moon'};
-
 const TURN_MS=15000, HINT_AFTER_MS=5000;
 const HEX={red:'#ef4444',blue:'#3b82f6',green:'#22c55e',yellow:'#eab308'};
 const $=id=>document.getElementById(id);
@@ -377,7 +376,8 @@ function submitRoll(){
   checking=true;
   const kp=$('keypad');kp.classList.add('busy');
   const okBtn=kp.lastChild;okBtn.innerHTML='<span class="spin"></span>';
-  setTimeout(()=>{                                   // short loading animation, then the single lookup
+  setTimeout(async()=>{                                   // short loading animation, then the single lookup
+    await studentsReady;
     checking=false;kp.classList.remove('busy');okBtn.textContent='OK';
     const roll=rollVal.padStart(3,'0');
     if(roll==='138'){$('split-step1').hidden=true;$('split-step2').hidden=false;return}
