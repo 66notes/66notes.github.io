@@ -2,1049 +2,735 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pinned Events Builder — 66Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>66Notes Editor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=campaign,code,description,folder,open_in_new&display=block" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
     <style>
         :root {
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
             --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
             --navy: #0d2b4e; --accent: #123cf3; --accent-light: #eef2ff;
-            --green: #22c55e; --red: #dc2626; --amber: #f59e0b;
-            --radius-sm: 8px; --radius: 12px; --radius-lg: 16px;
-            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
-            --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            --green: #22c55e; --amber: #f59e0b; --orange: #f97316; --purple: #8b5cf6;
+            --radius-sm: 10px; --radius: 14px; --radius-lg: 18px; --radius-xl: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="dark"] {
+            --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
+            --text: #f0f4f8; --text-secondary: #8b98a5; --text-muted: #5c6a7a;
+            --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg); color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh; line-height: 1.5;
-            padding: 20px 14px 60px;
-        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; overflow-x: hidden; }
+        
+        /* ══════════ EDITOR HEADER ══════════ */
+        .editor-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 20px; background: var(--surface); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .editor-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+        .editor-title span { color: var(--accent); }
+        .section-tag { font-size: 0.75rem; font-weight: 600; background: var(--accent-light); color: var(--accent); padding: 4px 12px; border-radius: 20px; border: 1px solid #dbeafe; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .btn-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-light); border: 1px solid #dbeafe; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+        .btn-icon:active { transform: scale(0.92); }
 
-        .header { max-width: 1180px; margin: 0 auto 16px; }
-        .header h1 { font-size: 1.4rem; font-weight: 700; color: var(--navy); }
-        .header h1 span { color: var(--accent); }
-        .header p { font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; }
-
-        /* Status banner */
-        .status-banner {
-            max-width: 1180px; margin: 0 auto 16px;
-            padding: 12px 16px; border-radius: var(--radius);
-            font-size: 0.82rem; font-weight: 500;
-            display: flex; align-items: flex-start; gap: 10px;
-            border: 1px solid transparent;
-        }
-        .status-banner.hidden { display: none; }
-        .status-banner i { flex-shrink: 0; margin-top: 2px; }
-        .status-banner.info { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
-        .status-banner.warn { background: #fff7ed; border-color: #fed7aa; color: #7c2d12; }
-        .status-banner.danger { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
-        .status-banner.success { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
-        .status-banner strong { font-weight: 700; }
-        .status-banner code { background: rgba(0,0,0,0.06); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; }
-        .status-banner button {
-            background: none; border: none; cursor: pointer; color: inherit;
-            font-family: inherit; font-size: 0.75rem; font-weight: 700;
-            text-decoration: underline; padding: 0; flex-shrink: 0;
-        }
-
-        .layout { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
+        /* ══════════ DESKTOP LAYOUT ══════════ */
+        .layout { display: grid; grid-template-columns: 1fr; min-height: calc(100vh - 60px); }
         @media (min-width: 900px) {
-            .layout { grid-template-columns: 1.15fr 1fr; align-items: start; }
-            .output-col { position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px; }
+            .layout { grid-template-columns: 380px 1fr; }
         }
 
-        .card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); box-shadow: var(--shadow);
-            padding: 18px 18px 20px; margin-bottom: 16px;
-        }
-        .card:last-child { margin-bottom: 0; }
-        .card-header {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 10px; padding-bottom: 10px; margin-bottom: 14px;
-            border-bottom: 1px solid var(--border);
-        }
-        .card-header h2 {
-            font-size: 0.95rem; font-weight: 700; color: var(--navy);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .card-header h2 i { color: var(--accent); font-size: 0.9rem; }
-        .card-header .count {
-            font-size: 0.7rem; font-weight: 700; background: var(--accent-light);
-            color: var(--accent); padding: 2px 10px; border-radius: 20px;
-        }
+        /* ══════════ APP PREVIEW (LEFT SIDE) ══════════ */
+        .preview-pane { padding: 20px; display: flex; justify-content: center; background: var(--bg); border-right: 1px solid var(--border); }
+        .mobile-frame { width: 100%; max-width: 380px; background: var(--surface); border-radius: 30px; border: 8px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; position: relative; height: 750px; }
+        [data-theme="dark"] .mobile-frame { border-color: #1e293b; }
+        
+        .preview-header { height: 50px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-bottom: 1px solid var(--border); }
+        .preview-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+        .preview-content { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); }
+        
+        /* Dashboard UI Elements inside preview */
+        .p-announcement { background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 8px 12px; margin-bottom: 15px; font-size: 0.75rem; color: #7c2d12; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .p-card { background: var(--surface); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .p-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; }
+        .p-card-title { font-size: 0.85rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+        
+        /* App Edit Buttons */
+        .btn-edit-app { background: var(--accent-light); color: var(--accent); border: 1px solid #dbeafe; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        
+        /* Preview Events */
+        .p-event-item { display: flex; gap: 10px; padding: 10px; background: #fafbfc; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; align-items: center; }
+        .p-event-date { width: 40px; height: 40px; background: var(--navy); color: white; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .p-event-date .day { font-size: 0.9rem; font-weight: 700; line-height: 1; }
+        .p-event-date .month { font-size: 0.5rem; text-transform: uppercase; }
+        .p-event-info { flex: 1; min-width: 0; }
+        .p-event-title { font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; }
+        .p-event-tags { font-size: 0.6rem; color: var(--text-muted); }
+        
+        .p-action-row { display: flex; gap: 5px; }
+        .p-btn { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; border: none; cursor: pointer; }
+        .p-btn-edit { background: var(--accent-light); color: var(--accent); }
+        .p-btn-del { background: #fee2e2; color: #991b1b; }
 
-        .field { margin-bottom: 12px; }
-        .field:last-child { margin-bottom: 0; }
-        .field > label {
-            display: block; font-size: 0.72rem; font-weight: 600;
-            color: var(--text-secondary); margin-bottom: 4px;
-            text-transform: uppercase; letter-spacing: 0.03em;
-        }
-        .field .req { color: var(--red); margin-left: 2px; }
-        .field .hint { font-size: 0.65rem; color: var(--text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 6px; }
+        /* Preview Faculty */
+        .p-fac-item { background: #f9fafb; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 10px; position: relative; }
+        .p-fac-name { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
+        .p-fac-sub { font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 5px; }
+        .p-fac-warn { font-size: 0.6rem; color: #b45309; background: #fef3c7; padding: 4px 8px; border-radius: 4px; margin-top: 4px; }
+        .p-fac-actions { position: absolute; top: 10px; right: 10px; }
 
-        input[type="text"], input[type="datetime-local"], input[type="color"],
-        select, textarea {
-            width: 100%; padding: 8px 10px; font-family: inherit; font-size: 0.82rem;
-            color: var(--text); background: #fafbfc;
-            border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none; border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(18, 60, 243, 0.1);
-            background: #fff;
-        }
-        input.invalid { border-color: var(--red); background: #fef2f2; }
-        textarea { resize: vertical; min-height: 70px; line-height: 1.4; }
+        /* Bottom Nav Preview */
+        .preview-nav { height: 60px; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        .p-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-muted); font-size: 0.55rem; font-weight: 600; cursor: pointer; }
+        .p-nav-item.active { color: var(--accent); }
+        .p-nav-item i { font-size: 1.1rem; }
 
-        .row { display: flex; gap: 8px; align-items: center; }
-        .row > * { flex: 1; }
-        .row > .fixed { flex: 0 0 auto; }
-        .row .sep { flex: 0 0 auto; font-size: 0.72rem; color: var(--text-muted); }
+        /* ══════════ EDITOR PANE (RIGHT SIDE / MODAL ON MOBILE) ══════════ */
+        .editor-pane { padding: 20px; background: var(--surface); overflow-y: auto; position: fixed; inset: 60px 0 0 0; z-index: 40; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .editor-pane.active { transform: translateY(0); }
+        @media (min-width: 900px) {
+            .editor-pane { position: static; transform: none; padding: 30px; background: var(--bg); }
+        }
+        
+        .editor-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); max-width: 700px; margin: 0 auto; }
+        .editor-box-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .editor-box-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+        .btn-close-editor { background: #f3f4f6; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
+        @media (min-width: 900px) { .btn-close-editor { display: none; } }
 
-        input[type="color"] {
-            width: 44px; height: 34px; padding: 2px; cursor: pointer;
-            border-radius: var(--radius-sm); background: #fff; flex: 0 0 44px;
-        }
+        /* Forms */
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.85rem; background: var(--bg); color: var(--text); transition: var(--transition); }
+        .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(18, 60, 243, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .form-hint { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; display: block; }
+        
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
+        
+        /* Toggles */
+        .toggle-group { display: flex; background: var(--bg); border-radius: var(--radius-sm); padding: 4px; border: 1px solid var(--border); }
+        .toggle-btn { flex: 1; text-align: center; padding: 6px; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); border-radius: 4px; cursor: pointer; transition: var(--transition); }
+        .toggle-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
 
-        .checkbox-row {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 0.78rem; color: var(--text); cursor: pointer;
-            padding: 4px 0;
-        }
-        .checkbox-row input[type="checkbox"] {
-            width: 16px; height: 16px; accent-color: var(--accent);
-            cursor: pointer; flex-shrink: 0;
-        }
+        /* Color Picker */
+        .color-options { display: flex; gap: 10px; margin-top: 5px; }
+        .color-circle { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.1s; }
+        .color-circle.active { transform: scale(1.2); border-color: var(--text); }
+        
+        /* Faculty Permissions */
+        .perm-menu { position: relative; display: inline-block; float: right; }
+        .perm-btn { background: var(--bg); border: 1px solid var(--border-strong); color: var(--text-secondary); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
+        .perm-dropdown { position: absolute; top: 100%; right: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; box-shadow: var(--shadow); display: none; z-index: 10; width: 160px; margin-top: 4px; }
+        .perm-dropdown.active { display: block; }
+        .perm-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; padding: 4px; cursor: pointer; }
+        .perm-item input { cursor: pointer; }
 
-        .form-actions {
-            display: flex; gap: 8px; margin-top: 16px;
-            padding-top: 14px; border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 6px; padding: 8px 16px; font-family: inherit; font-size: 0.78rem;
-            font-weight: 600; border-radius: var(--radius-sm); border: none;
-            cursor: pointer; transition: background 0.15s, transform 0.05s;
-            min-height: 36px;
-        }
-        .btn:active { transform: scale(0.98); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-primary { background: var(--accent); color: #fff; flex: 1; }
-        .btn-primary:hover:not(:disabled) { background: #1032d9; }
-        .btn-secondary { background: #f3f4f6; color: #374151; }
-        .btn-secondary:hover { background: #e5e7eb; }
-        .btn-danger { background: #fee2e2; color: #991b1b; }
-        .btn-danger:hover { background: #fecaca; }
-        .btn-small { padding: 4px 10px; font-size: 0.7rem; min-height: 28px; }
+        /* JSON Code Box */
+        .json-box { background: #0f172a; border-radius: var(--radius-sm); padding: 15px; margin-top: 20px; position: relative; }
+        .json-pre { color: #e2e8f0; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.5; overflow: auto; max-height: 200px; white-space: pre-wrap; word-break: break-all; }
+        .json-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-json { flex: 1; padding: 8px; border-radius: 6px; border: none; font-family: inherit; font-weight: 600; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-dl { background: #334155; color: #fff; }
+        .btn-cp { background: var(--accent); color: #fff; }
 
-        .events-list {
-            display: flex; flex-direction: column; gap: 8px;
-            max-height: 360px; overflow-y: auto;
-            padding-right: 4px; margin-right: -4px;
-        }
-        .events-list::-webkit-scrollbar { width: 6px; }
-        .events-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+        /* Save Bar */
+        .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s; z-index: 100; border-top: 1px solid var(--border); }
+        .save-bar.active { transform: translateY(0); }
+        @media (min-width: 900px) { .save-bar { left: 380px; } }
+        .save-text { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+        .save-actions { display: flex; gap: 10px; }
+        .btn-save { background: var(--accent); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
+        .btn-cancel { background: transparent; color: var(--text-secondary); border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; }
 
-        .event-item {
-            display: flex; gap: 10px; align-items: flex-start;
-            padding: 10px 12px; background: #fafbfc;
-            border: 1px solid var(--border); border-radius: var(--radius);
-            transition: border-color 0.15s;
-        }
-        .event-item:hover { border-color: var(--border-strong); }
-        .event-item.invalid { border-color: var(--red); background: #fef2f2; }
-        .event-item-main { flex: 1; min-width: 0; }
-        .event-item-title { font-size: 0.82rem; font-weight: 700; color: var(--text); word-break: break-word; }
-        .event-item-meta { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
-        .event-item-warn { font-size: 0.68rem; color: var(--red); margin-top: 4px; font-weight: 600; }
-        .event-item-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
-        .badge {
-            font-size: 0.55rem; font-weight: 700; padding: 2px 7px;
-            border-radius: 20px; text-transform: uppercase; letter-spacing: 0.03em;
-            background: #e5e7eb; color: #374151;
-        }
-        .badge.range { background: #fef3c7; color: #92400e; }
-        .badge.tba { background: #ede9fe; color: #5b21b6; }
-        .badge.auto { background: #dbeafe; color: #1e40af; }
-        .badge.explicit { background: #d1fae5; color: #065f46; }
-        .badge.none { background: #f3f4f6; color: #4b5563; }
-        .badge.process { background: #fce7f3; color: #9d174d; }
-        .badge.course { background: #e0e7ff; color: #3730a3; }
-        .badge.lost { background: #fee2e2; color: #991b1b; }
-
-        .event-item-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
-        .icon-btn {
-            width: 28px; height: 28px; border-radius: 6px; border: none;
-            background: #f3f4f6; color: #4b5563; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem; transition: background 0.15s;
-        }
-        .icon-btn:hover { background: #e5e7eb; }
-        .icon-btn.danger { color: #991b1b; }
-        .icon-btn.danger:hover { background: #fee2e2; }
-
-        .empty-state {
-            text-align: center; padding: 24px 12px;
-            color: var(--text-muted); font-size: 0.8rem;
-        }
-
-        .json-preview {
-            background: #0f172a; color: #e2e8f0;
-            padding: 14px; border-radius: var(--radius);
-            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
-            font-size: 0.72rem; line-height: 1.55;
-            max-height: 320px; overflow: auto;
-            white-space: pre; word-break: break-all;
-            tab-size: 2;
-        }
-        .json-preview::-webkit-scrollbar { width: 8px; height: 8px; }
-        .json-preview::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-
-        .output-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-        .output-actions .btn { flex: 1; }
-
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-            display: none; align-items: center; justify-content: center;
-            z-index: 100; padding: 16px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-            background: var(--surface); border-radius: var(--radius-lg);
-            max-width: 720px; width: 100%; max-height: 85vh;
-            display: flex; flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 20px; border-bottom: 1px solid var(--border);
-        }
-        .modal-header h2 { font-size: 1rem; color: var(--navy); font-weight: 700; }
-        .modal-close {
-            background: #f3f4f6; border: none; width: 30px; height: 30px;
-            border-radius: 50%; cursor: pointer; font-size: 0.9rem; color: #4b5563;
-        }
-        .modal-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
-        .modal-body textarea {
-            width: 100%; min-height: 320px; font-family: 'SF Mono', 'Monaco', monospace;
-            font-size: 0.72rem; line-height: 1.5; background: #f8fafc;
-        }
-        .modal-footer {
-            padding: 12px 20px 16px; display: flex; gap: 8px; justify-content: flex-end;
-            border-top: 1px solid var(--border);
-        }
-        .error-text { color: var(--red); font-size: 0.72rem; margin-top: 6px; font-weight: 600; }
-        .success-text { color: var(--green); font-size: 0.72rem; margin-top: 6px; font-weight: 600; }
-
-        .toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
-            background: #1e2a3e; color: #fff; padding: 10px 20px;
-            border-radius: 30px; font-size: 0.78rem; font-weight: 600;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0;
-            transition: transform 0.25s ease, opacity 0.25s ease;
-            z-index: 200; pointer-events: none; max-width: 90vw; text-align: center;
-        }
+        /* Toast */
+        .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 500; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s; z-index: 1000; pointer-events: none; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast.warn { background: #b45309; }
-        .toast.error { background: #991b1b; }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
-                --text: #f0f4f8; --text-secondary: #8b98a5; --text-muted: #5c6a7a;
-                --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
-            }
-            input, select, textarea { background: #0f131a !important; color: var(--text) !important; }
-            input:focus, select:focus, textarea:focus { background: #0f131a !important; }
-            .event-item { background: #0f131a; }
-            .event-item:hover { border-color: #3a4556; }
-            .btn-secondary { background: #222a35; color: #cbd5e1; }
-            .btn-secondary:hover { background: #2a3446; }
-            .icon-btn { background: #222a35; color: #cbd5e1; }
-            .icon-btn:hover { background: #2a3446; }
-            .icon-btn.danger:hover { background: #422006; }
-            .modal-close { background: #222a35; color: #cbd5e1; }
-            .btn-danger { background: #422006; color: #fcd34d; }
-            .modal-body textarea { background: #0f131a !important; }
-            .status-banner.info { background: #1e2638; border-color: #313b4c; color: #93c5fd; }
-            .status-banner.warn { background: #2a2419; border-color: #4a3a1a; color: #fcd34d; }
-            .status-banner.danger { background: #2a1414; border-color: #4a1a1a; color: #fca5a5; }
-            .status-banner.success { background: #142a19; border-color: #1a4a2a; color: #86efac; }
-            .event-item.invalid { background: #2a1414; }
-        }
-
-        @media (max-width: 500px) {
-            body { padding: 12px 10px 50px; }
-            .card { padding: 14px; }
-            .header h1 { font-size: 1.15rem; }
-            .row { flex-wrap: wrap; }
-            .row input[type="text"], .row select { flex: 1 1 calc(50% - 4px); }
-            .row .sep { display: none; }
-        }
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-icon { font-size: 3rem; color: var(--accent); margin-bottom: 15px; }
+        .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+        .modal-text { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+        .modal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border-radius: 30px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>66<span>Notes</span> · Pinned Events Builder</h1>
-        <p>Add / edit events → copy the JSON → paste into <code>pinned-events.json</code> on GitHub</p>
-    </div>
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="editor-title">66<span>Notes</span> EDITOR</div>
+        <div class="header-actions">
+            <div class="section-tag">3rd Semester Section 4</div>
+            <button class="btn-icon" id="themeToggle" aria-label="Toggle Theme"><i class="fas fa-moon"></i></button>
+        </div>
+    </header>
 
-    <div class="status-banner hidden" id="status-banner">
-        <i class="fas fa-info-circle" id="status-icon"></i>
-        <div style="flex:1" id="status-text"></div>
-        <button type="button" id="status-dismiss" style="display:none;">✕</button>
-    </div>
-
+    <!-- Main Layout -->
     <div class="layout">
-
-        <div class="form-col">
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="fas fa-plus-circle"></i> <span id="formTitle">Add New Event</span></h2>
-                    <button type="button" class="btn btn-secondary btn-small" id="btn-new" hidden><i class="fas fa-times"></i> Cancel edit</button>
+        
+        <!-- LEFT: Mobile Preview -->
+        <div class="preview-pane">
+            <div class="mobile-frame">
+                <div class="preview-header">
+                    <div class="preview-title" id="previewTitle">66Notes</div>
+                    <i class="fas fa-bell" style="color:var(--text-muted)"></i>
+                </div>
+                
+                <div class="preview-content" id="previewContent">
+                    <!-- Rendered by JS -->
                 </div>
 
-                <div class="field">
-                    <label>Title <span class="req">*</span></label>
-                    <input type="text" id="f-title" placeholder="e.g., Math CT" maxlength="120" />
-                </div>
-
-                <div class="field">
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="f-use-color" />
-                        Custom card color
-                    </label>
-                    <div class="row" id="color-row" style="display:none; margin-top:6px;">
-                        <input type="color" id="f-color" value="#166534" class="fixed" />
-                        <span style="font-size:0.72rem;color:var(--text-muted);flex:1;">Pick a color</span>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Date display <span class="hint">what shows on the card</span></label>
-                    <select id="f-date-mode">
-                        <option value="single">Single day (e.g., 02 Nov)</option>
-                        <option value="range">Date range (e.g., 09–12 Nov)</option>
-                        <option value="tba">Date TBA</option>
-                    </select>
-                </div>
-
-                <div class="field" id="date-single">
-                    <label>Day &amp; month</label>
-                    <div class="row">
-                        <input type="text" id="f-day" placeholder="02" maxlength="2" />
-                        <select id="f-month">
-                            <option value="">Month</option>
-                            <option>Jan</option><option>Feb</option><option>Mar</option>
-                            <option>Apr</option><option>May</option><option>Jun</option>
-                            <option>Jul</option><option>Aug</option><option>Sep</option>
-                            <option>Oct</option><option>Nov</option><option>Dec</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="field" id="date-range" style="display:none;">
-                    <label>Start &amp; end day</label>
-                    <div class="row">
-                        <input type="text" id="f-start-day" placeholder="09" maxlength="2" />
-                        <select id="f-start-month">
-                            <option value="">Month</option>
-                            <option>Jan</option><option>Feb</option><option>Mar</option>
-                            <option>Apr</option><option>May</option><option>Jun</option>
-                            <option>Jul</option><option>Aug</option><option>Sep</option>
-                            <option>Oct</option><option>Nov</option><option>Dec</option>
-                        </select>
-                        <span class="sep">→</span>
-                        <input type="text" id="f-end-day" placeholder="12" maxlength="2" />
-                        <select id="f-end-month">
-                            <option value="">Month</option>
-                            <option>Jan</option><option>Feb</option><option>Mar</option>
-                            <option>Apr</option><option>May</option><option>Jun</option>
-                            <option>Jul</option><option>Aug</option><option>Sep</option>
-                            <option>Oct</option><option>Nov</option><option>Dec</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Start date <span class="hint">Bangladesh Time — powers "Running" / "Next" badge</span></label>
-                    <input type="datetime-local" id="f-start-date" step="60" />
-                </div>
-
-                <div class="field">
-                    <label>Expiry <span class="hint">when it stops showing</span></label>
-                    <select id="f-expiry-mode">
-                        <option value="explicit">Explicit date &amp; time</option>
-                        <option value="auto">Auto — end of a course's class</option>
-                        <option value="none">No expiry (show until removed)</option>
-                    </select>
-                </div>
-
-                <div class="field" id="expiry-explicit">
-                    <label>Expires at <span class="hint">Bangladesh Time</span></label>
-                    <input type="datetime-local" id="f-expires-at" step="60" />
-                </div>
-
-                <div class="field" id="expiry-auto" style="display:none;">
-                    <label>Course <span class="hint">e.g. MGT 1101 — expires when that class ends</span></label>
-                    <input type="text" id="f-course" list="course-list" placeholder="MGT 1101" />
-                    <datalist id="course-list">
-                        <option value="MGT 1101" />
-                        <option value="QUA 1101" />
-                        <option value="ECO 1101" />
-                    </datalist>
-                </div>
-
-                <div class="field">
-                    <label>Tags <span class="hint">comma separated — e.g. CT, Monday</span></label>
-                    <input type="text" id="f-tags" placeholder="CT, Monday" />
-                </div>
-
-                <div class="field">
-                    <label>Items <span class="hint">one per line — bullet points in the modal</span></label>
-                    <textarea id="f-items" rows="3" placeholder="Coordinate Geometry (1–8) type math&#10;Arithmetic Progression (1–10) type math"></textarea>
-                </div>
-
-                <div class="field">
-                    <label>Note <span class="hint">optional — shown as a highlighted hint</span></label>
-                    <input type="text" id="f-note" placeholder="e.g., Check with faculty." />
-                </div>
-
-                <div class="field">
-                    <label class="checkbox-row">
-                        <input type="checkbox" id="f-process" />
-                        Mark as "process" (excluded from Next badge)
-                    </label>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn btn-primary" id="btn-add">
-                        <i class="fas fa-plus"></i> Add to list
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btn-clear">
-                        Clear form
-                    </button>
+                <div class="preview-nav">
+                    <div class="p-nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i>Home</div>
+                    <div class="p-nav-item" onclick="switchTab('pdfs')"><i class="fas fa-folder"></i>PDFs</div>
+                    <div class="p-nav-item" onclick="switchTab('routine')"><i class="fas fa-calendar"></i>Routine</div>
+                    <div class="p-nav-item" onclick="switchTab('faculty')"><i class="fas fa-user-tie"></i>Faculty</div>
                 </div>
             </div>
         </div>
 
-        <div class="output-col">
-
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="fas fa-thumbtack"></i> Events</h2>
-                    <span class="count" id="count-badge">0</span>
+        <!-- RIGHT: Editor Panel -->
+        <div class="editor-pane" id="editorPane">
+            <div class="editor-box">
+                <div class="editor-box-header">
+                    <div class="editor-box-title" id="editorTitle">Select an item to edit</div>
+                    <button class="btn-close-editor" onclick="closeEditor()">Close</button>
                 </div>
-                <div class="events-list" id="events-list">
-                    <div class="empty-state">No events yet. Fill the form on the left.</div>
+                
+                <div id="editorFormArea">
+                    <p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>
                 </div>
-                <div class="output-actions">
-                    <button type="button" class="btn btn-secondary" id="btn-import">
-                        <i class="fas fa-file-import"></i> Import JSON
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btn-reload" title="Re-fetch pinned-events.json">
-                        <i class="fas fa-rotate"></i> Reload
-                    </button>
-                    <button type="button" class="btn btn-danger" id="btn-clear-all">
-                        <i class="fas fa-trash"></i> Clear all
-                    </button>
+                
+                <div class="json-box" id="jsonBox" style="display:none;">
+                    <div class="json-pre" id="jsonPreview"></div>
+                    <div class="json-actions">
+                        <button class="btn-json btn-dl" onclick="downloadJSON()"><i class="fas fa-download"></i> Download</button>
+                        <button class="btn-json btn-cp" onclick="copyJSON()"><i class="fas fa-copy"></i> Copy</button>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="fas fa-code"></i> JSON Output</h2>
-                    <span class="badge" id="json-status" style="display:none;"></span>
-                </div>
-                <pre class="json-preview" id="json-output">[]</pre>
-                <div class="output-actions">
-                    <button type="button" class="btn btn-primary" id="btn-copy">
-                        <i class="fas fa-copy"></i> Copy JSON
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btn-download">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
+    </div>
 
+    <!-- Bottom Save Bar -->
+    <div class="save-bar" id="saveBar">
+        <div class="save-text">You have unsaved changes!</div>
+        <div class="save-actions">
+            <button class="btn-cancel" onclick="cancelChanges()">Undo</button>
+            <button class="btn-save" onclick="saveChanges()">Save Changes</button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="import-modal">
+    <!-- Facebook Contact Modal -->
+    <div class="modal-overlay" id="fbModal">
         <div class="modal-box">
-            <div class="modal-header">
-                <h2>Import JSON</h2>
-                <button type="button" class="modal-close" id="import-close">✕</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:10px;">
-                    Paste your existing <code>pinned-events.json</code> below. It will replace the current list.
-                </p>
-                <textarea id="import-textarea" placeholder='[ { "title": "Math CT", ... } ]'></textarea>
-                <div class="error-text" id="import-error"></div>
-                <div class="success-text" id="import-success"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="import-cancel">Cancel</button>
-                <button type="button" class="btn btn-primary" id="import-load">Load</button>
-            </div>
+            <i class="fab fa-facebook modal-icon" style="color: #1877F2;"></i>
+            <div class="modal-title">Request PDF Update</div>
+            <div class="modal-text">To add or change PDFs, please contact us on Facebook with your requirements.</div>
+            <a href="https://www.facebook.com/profile.php?id=61594792364808" target="_blank" class="modal-btn" style="background: #1877F2;">Go to Facebook</a>
+            <button class="btn-cancel" style="margin-top: 10px; width: 100%;" onclick="document.getElementById('fbModal').classList.remove('active')">Close</button>
         </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast">Saved successfully!</div>
 
     <script>
-    (function () {
-        'use strict';
-        const $ = id => document.getElementById(id);
-
+        // --- State ---
+        let activeTab = 'home';
+        let editorMode = 'none'; // 'event', 'faculty'
+        let hasChanges = false;
+        
+        // Default Data (Fallbacks if fetch fails)
         let events = [];
-        let editingIndex = -1;
+        let faculty = [];
+        
+        let originalEvents = [];
+        let originalFaculty = [];
 
-        /* ═════════ STATUS BANNER ═════════ */
-        function showBanner(type, html, dismissible) {
-            const b = $('status-banner');
-            b.className = 'status-banner ' + type;
-            $('status-icon').className = 'fas ' + (type === 'danger' ? 'fa-exclamation-triangle' : type === 'warn' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle');
-            $('status-text').innerHTML = html;
-            $('status-dismiss').style.display = dismissible ? 'block' : 'none';
-            b.classList.remove('hidden');
-        }
-        $('status-dismiss').addEventListener('click', () => $('status-banner').classList.add('hidden'));
+        const COLORS = ['#0d2b4e', '#166534', '#991b1b', '#b45309', '#5b21b6']; // Navy, Green, Red, Amber, Violet
+        
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Theme setup
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            updateThemeIcon();
 
-        /* ═════════ HELPERS ═════════ */
-        // Robustly converts datetime-local value to ISO with +06:00.
-        // Handles "YYYY-MM-DDTHH:MM", "YYYY-MM-DDTHH:MM:SS", "YYYY-MM-DDTHH:MM:SS.sss"
-        function localToIso(v) {
-            if (!v) return '';
-            const m = String(v).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
-            if (!m) return '';
-            return m[1] + 'T' + m[2] + ':' + m[3] + ':00+06:00';
-        }
-        function isoToLocal(iso) {
-            if (!iso) return '';
-            const m = String(iso).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
-            if (!m) return '';
-            return m[1] + 'T' + m[2] + ':' + m[3];
-        }
-        function isValidDate(s) {
-            if (!s) return false;
-            const t = Date.parse(s);
-            return !isNaN(t);
-        }
-
-        function copyText(text) {
-            if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
-            return new Promise((resolve, reject) => {
-                const ta = document.createElement('textarea');
-                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-                document.body.appendChild(ta); ta.select();
-                try {
-                    const ok = document.execCommand('copy');
-                    document.body.removeChild(ta);
-                    ok ? resolve() : reject(new Error('copy failed'));
-                } catch (err) { document.body.removeChild(ta); reject(err); }
-            });
-        }
-
-        function toast(msg, type) {
-            const t = $('toast');
-            t.textContent = msg;
-            t.className = 'toast show' + (type ? ' ' + type : '');
-            clearTimeout(t._timer);
-            t._timer = setTimeout(() => { t.className = 'toast' + (type ? ' ' + type : ''); }, 2800);
-        }
-
-        /* ═════════ EVENT VALIDATION ═════════ */
-        // Checks whether an event has any field that would make it break in index.html
-        function validateEvent(ev) {
-            const issues = [];
-            if (!ev || typeof ev !== 'object') return ['Event is not an object'];
-
-            if (!ev.title || !String(ev.title).trim()) {
-                issues.push('Missing title');
-            }
-
-            // Date display: must have day OR startDay OR day === '?'
-            const hasDate = ev.day === '?' || (ev.day && ev.month) || (ev.startDay && ev.startMonth && ev.endDay);
-            if (!hasDate) issues.push('Missing date (day/month or startDay/endDay or "?" for TBA)');
-
-            // Start date: if present, must be valid ISO
-            if (ev.startDate && !isValidDate(ev.startDate)) {
-                issues.push('Invalid startDate: ' + ev.startDate);
-            }
-            if (ev.expiresAt && !isValidDate(ev.expiresAt)) {
-                issues.push('Invalid expiresAt: ' + ev.expiresAt);
-            }
-            if (ev.runFrom && !isValidDate(ev.runFrom)) {
-                issues.push('Invalid runFrom: ' + ev.runFrom);
-            }
-
-            return issues;
-        }
-
-        /* ═════════ CONDITIONAL FIELDS ═════════ */
-        function updateDateMode() {
-            const mode = $('f-date-mode').value;
-            $('date-single').style.display = mode === 'single' ? '' : 'none';
-            $('date-range').style.display = mode === 'range' ? '' : 'none';
-        }
-        function updateExpiryMode() {
-            const mode = $('f-expiry-mode').value;
-            $('expiry-explicit').style.display = mode === 'explicit' ? '' : 'none';
-            $('expiry-auto').style.display = mode === 'auto' ? '' : 'none';
-        }
-        function updateColorRow() {
-            $('color-row').style.display = $('f-use-color').checked ? 'flex' : 'none';
-        }
-
-        /* ═════════ FORM → EVENT OBJECT ═════════ */
-        function formToEvent() {
-            const title = $('f-title').value.trim();
-            if (!title) { toast('Title is required', 'error'); $('f-title').focus(); return null; }
-
-            const ev = { title };
-            const mode = $('f-date-mode').value;
-
-            if (mode === 'tba') {
-                ev.day = '?';
-            } else if (mode === 'range') {
-                const sd = $('f-start-day').value.trim();
-                const sm = $('f-start-month').value;
-                const ed = $('f-end-day').value.trim();
-                const em = $('f-end-month').value;
-                if (!sd || !sm || !ed || !em) { toast('Fill all start/end date fields', 'error'); return null; }
-                ev.startDay = sd; ev.startMonth = sm; ev.endDay = ed; ev.endMonth = em;
-            } else {
-                const d = $('f-day').value.trim();
-                const m = $('f-month').value;
-                if (!d || !m) { toast('Fill day and month', 'error'); return null; }
-                ev.day = d; ev.month = m;
-            }
-
-            const startDate = localToIso($('f-start-date').value);
-            if (startDate) ev.startDate = startDate;
-
-            const expMode = $('f-expiry-mode').value;
-            if (expMode === 'explicit') {
-                const exp = localToIso($('f-expires-at').value);
-                if (exp) ev.expiresAt = exp;
-            } else if (expMode === 'auto') {
-                const c = $('f-course').value.trim();
-                if (!c) { toast('Course code is required for auto-expiry', 'error'); $('f-course').focus(); return null; }
-                ev.course = c;
-            }
-
-            const tags = $('f-tags').value.split(',').map(s => s.trim()).filter(Boolean);
-            if (tags.length) ev.tags = tags;
-
-            if ($('f-use-color').checked) ev.color = $('f-color').value;
-
-            const items = $('f-items').value.split('\n').map(s => s.trim()).filter(Boolean);
-            if (items.length) ev.items = items;
-
-            const note = $('f-note').value.trim();
-            if (note) ev.note = note;
-
-            if ($('f-process').checked) ev.process = true;
-
-            return ev;
-        }
-
-        /* ═════════ EVENT OBJECT → FORM ═════════ */
-        function eventToForm(ev) {
-            $('f-title').value = ev.title || '';
-
-            if (ev.day === '?') {
-                $('f-date-mode').value = 'tba';
-                $('f-day').value = ''; $('f-month').value = '';
-            } else if (ev.startDay && ev.endDay) {
-                $('f-date-mode').value = 'range';
-                $('f-start-day').value = ev.startDay || '';
-                $('f-start-month').value = ev.startMonth || '';
-                $('f-end-day').value = ev.endDay || '';
-                $('f-end-month').value = ev.endMonth || '';
-            } else {
-                $('f-date-mode').value = 'single';
-                $('f-day').value = ev.day || '';
-                $('f-month').value = ev.month || '';
-            }
-
-            $('f-start-date').value = isoToLocal(ev.startDate);
-
-            if (ev.course) {
-                $('f-expiry-mode').value = 'auto';
-                $('f-course').value = ev.course;
-                $('f-expires-at').value = '';
-            } else if (ev.expiresAt) {
-                $('f-expiry-mode').value = 'explicit';
-                $('f-expires-at').value = isoToLocal(ev.expiresAt);
-                $('f-course').value = '';
-            } else {
-                $('f-expiry-mode').value = 'none';
-                $('f-expires-at').value = '';
-                $('f-course').value = '';
-            }
-
-            $('f-tags').value = (ev.tags || []).join(', ');
-
-            if (ev.color) {
-                $('f-use-color').checked = true;
-                $('f-color').value = ev.color;
-            } else {
-                $('f-use-color').checked = false;
-            }
-
-            $('f-items').value = (ev.items || []).join('\n');
-            $('f-note').value = ev.note || '';
-            $('f-process').checked = !!ev.process;
-
-            updateDateMode();
-            updateExpiryMode();
-            updateColorRow();
-        }
-
-        /* ═════════ RESET / CLEAR FORM ═════════ */
-        function resetForm() {
-            ['f-title','f-day','f-start-day','f-end-day','f-start-date','f-expires-at','f-course','f-tags','f-items','f-note']
-                .forEach(id => $(id).value = '');
-            $('f-month').value = '';
-            $('f-start-month').value = '';
-            $('f-end-month').value = '';
-            $('f-date-mode').value = 'single';
-            $('f-expiry-mode').value = 'explicit';
-            $('f-use-color').checked = false;
-            $('f-process').checked = false;
-            editingIndex = -1;
-            $('formTitle').textContent = 'Add New Event';
-            $('btn-add').innerHTML = '<i class="fas fa-plus"></i> Add to list';
-            $('btn-new').hidden = true;
-            updateDateMode();
-            updateExpiryMode();
-            updateColorRow();
-            $('f-title').focus();
-        }
-
-        /* ═════════ EVENTS LIST ═════════ */
-        function eventDateDisplay(ev) {
-            if (ev.day === '?') return 'Date TBA';
-            if (ev.startDay && ev.endDay) return ev.startDay + '–' + ev.endDay + ' ' + ev.startMonth;
-            if (ev.day && ev.month) return ev.day + ' ' + ev.month;
-            return '(no date)';
-        }
-
-        function escapeHtml(s) {
-            return String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[ch]));
-        }
-
-        function renderList() {
-            const list = $('events-list');
-            $('count-badge').textContent = events.length;
-            if (!events.length) {
-                list.innerHTML = '<div class="empty-state">No events yet. Fill the form on the left.</div>';
-                return;
-            }
-            list.innerHTML = events.map((ev, idx) => {
-                const issues = validateEvent(ev);
-                const badges = [];
-                if (ev.day === '?') badges.push('<span class="badge tba">TBA</span>');
-                else if (ev.startDay && ev.endDay) badges.push('<span class="badge range">Range</span>');
-                if (ev.course) badges.push('<span class="badge auto">Auto</span><span class="badge course">' + escapeHtml(ev.course) + '</span>');
-                else if (ev.expiresAt) badges.push('<span class="badge explicit">Expires</span>');
-                else badges.push('<span class="badge none">No expiry</span>');
-                if (ev.process) badges.push('<span class="badge process">Process</span>');
-                if (ev.dynamicDay) badges.push('<span class="badge explicit" title="Has dynamicDay field">Dynamic</span>');
-                if (ev.runFrom) badges.push('<span class="badge explicit" title="Has runFrom field">runFrom</span>');
-                if (issues.length) badges.push('<span class="badge lost">⚠ ' + issues.length + ' issue' + (issues.length > 1 ? 's' : '') + '</span>');
-
-                const tagsStr = (ev.tags && ev.tags.length) ? ev.tags.join(' · ') : '';
-                const warnHtml = issues.length
-                    ? '<div class="event-item-warn">' + issues.map(escapeHtml).join(' · ') + '</div>'
-                    : '';
-
-                return '<div class="event-item' + (issues.length ? ' invalid' : '') + '">' +
-                    '<div class="event-item-main">' +
-                        '<div class="event-item-title">' + escapeHtml(ev.title) + '</div>' +
-                        '<div class="event-item-meta">' + escapeHtml(eventDateDisplay(ev)) +
-                            (tagsStr ? ' · ' + escapeHtml(tagsStr) : '') + '</div>' +
-                        '<div class="event-item-badges">' + badges.join('') + '</div>' +
-                        warnHtml +
-                    '</div>' +
-                    '<div class="event-item-actions">' +
-                        '<button type="button" class="icon-btn" data-edit="' + idx + '" title="Edit"><i class="fas fa-pen"></i></button>' +
-                        '<button type="button" class="icon-btn danger" data-delete="' + idx + '" title="Delete"><i class="fas fa-trash"></i></button>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-
-            list.querySelectorAll('[data-edit]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.dataset.edit, 10);
-                    editingIndex = idx;
-                    eventToForm(events[idx]);
-                    $('formTitle').textContent = 'Edit Event';
-                    $('btn-add').innerHTML = '<i class="fas fa-check"></i> Update event';
-                    $('btn-new').hidden = false;
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            });
-            list.querySelectorAll('[data-delete]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const idx = parseInt(btn.dataset.delete, 10);
-                    if (!confirm('Delete "' + events[idx].title + '"?')) return;
-                    events.splice(idx, 1);
-                    if (editingIndex === idx) resetForm();
-                    else if (editingIndex > idx) editingIndex--;
-                    renderList();
-                    renderJSON();
-                });
-            });
-        }
-
-        /* ═════════ JSON OUTPUT ═════════ */
-        function renderJSON() {
-            const json = JSON.stringify(events, null, 2);
-            $('json-output').textContent = json || '[]';
-            window._currentJSON = json;
-
-            const status = $('json-status');
-            // Validate the whole array
-            try {
-                const parsed = JSON.parse(json);
-                if (!Array.isArray(parsed)) throw new Error('not an array');
-                const badCount = parsed.filter(ev => validateEvent(ev).length > 0).length;
-                if (badCount) {
-                    status.style.display = 'inline-block';
-                    status.className = 'badge lost';
-                    status.textContent = '⚠ ' + badCount + ' event' + (badCount > 1 ? 's' : '') + ' with issues';
-                } else {
-                    status.style.display = 'inline-block';
-                    status.className = 'badge explicit';
-                    status.textContent = '✓ valid JSON';
-                }
-            } catch (e) {
-                status.style.display = 'inline-block';
-                status.className = 'badge lost';
-                status.textContent = '✗ invalid JSON';
-            }
-        }
-
-        /* ═════════ AUTO-LOAD EXISTING JSON ═════════ */
-        async function autoLoad() {
-            // Don't even try on file:// - fetch would fail
-            if (location.protocol === 'file:') {
-                showBanner('warn',
-                    '<strong>⚠ Auto-load is disabled</strong> — you opened this file directly (<code>file://</code>). ' +
-                    'Your existing <code>pinned-events.json</code> could not be loaded. ' +
-                    'Click <strong>Import JSON</strong> and paste your current file first, otherwise the JSON you copy will <strong>replace</strong> your file and delete all old events.',
-                    true);
-                return;
-            }
-
-            try {
-                const res = await fetch('pinned-events.json', { cache: 'no-cache' });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
-                if (!Array.isArray(data)) throw new Error('not an array');
-                if (data.length === 0) {
-                    showBanner('info',
-                        '<strong>Info:</strong> <code>pinned-events.json</code> exists but is empty. Starting with a fresh list.',
-                        true);
-                    return;
-                }
-                events = data;
-                renderList();
-                renderJSON();
-                const badCount = data.filter(ev => validateEvent(ev).length > 0).length;
-                if (badCount) {
-                    showBanner('warn',
-                        '<strong>Loaded ' + data.length + ' events</strong>, but <strong>' + badCount + '</strong> ' +
-                        'have issues (see red rows). Fix them before exporting or you may lose data.',
-                        true);
-                } else {
-                    showBanner('success',
-                        '<strong>✓ Loaded ' + data.length + ' existing events</strong> from <code>pinned-events.json</code>. ' +
-                        'Add / edit below — the JSON you copy will keep everything.',
-                        true);
-                }
-            } catch (e) {
-                // File missing, empty, or invalid — that's fine, start fresh but warn
-                if (e.message.indexOf('HTTP 404') !== -1) {
-                    showBanner('info',
-                        '<strong>Info:</strong> No existing <code>pinned-events.json</code> found. Starting with an empty list.',
-                        true);
-                } else {
-                    showBanner('warn',
-                        '<strong>Could not auto-load</strong> (<code>' + escapeHtml(e.message) + '</code>). ' +
-                        'If you have an existing JSON file, use <strong>Import JSON</strong> before adding new events.',
-                        true);
-                }
-            }
-        }
-
-        /* ═════════ HANDLERS ═════════ */
-        $('f-date-mode').addEventListener('change', updateDateMode);
-        $('f-expiry-mode').addEventListener('change', updateExpiryMode);
-        $('f-use-color').addEventListener('change', updateColorRow);
-
-        $('btn-add').addEventListener('click', () => {
-            const ev = formToEvent();
-            if (!ev) return;
-            const issues = validateEvent(ev);
-            if (issues.length) {
-                toast('Cannot add: ' + issues[0], 'error');
-                return;
-            }
-            if (editingIndex >= 0) {
-                events[editingIndex] = ev;
-                toast('Event updated');
-                resetForm();
-            } else {
-                events.push(ev);
-                toast('Event added');
-                resetForm();
-            }
-            renderList();
-            renderJSON();
+            // Fetch data
+            await loadData();
+            
+            // Render initial view
+            switchTab('home');
         });
 
-        $('btn-clear').addEventListener('click', () => {
-            if (editingIndex >= 0) resetForm();
+        async function loadData() {
+            try {
+                const evRes = await fetch('pinned-events.json');
+                if (evRes.ok) {
+                    events = await evRes.json();
+                    originalEvents = JSON.parse(JSON.stringify(events));
+                }
+            } catch (e) { console.log('No pinned-events.json found, starting empty.'); }
+
+            try {
+                const facRes = await fetch('faculty.json');
+                if (facRes.ok) {
+                    faculty = await facRes.json();
+                    originalFaculty = JSON.parse(JSON.stringify(faculty));
+                }
+            } catch (e) { console.log('No faculty.json found, starting empty.'); }
+        }
+
+        // --- Theme Logic ---
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcon();
+        });
+        function updateThemeIcon() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.getElementById('themeToggle').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // --- Tab Navigation ---
+        function switchTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll('.p-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.p-nav-item[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            document.getElementById('previewTitle').innerText = 
+                tab === 'home' ? '66Notes' : 
+                tab === 'pdfs' ? 'PDFs' : 
+                tab === 'routine' ? 'Routine' : 'Faculty';
+
+            renderPreview();
+            closeEditor();
+        }
+
+        // --- Rendering the Mobile Preview ---
+        function renderPreview() {
+            const content = document.getElementById('previewContent');
+            
+            if (activeTab === 'home') {
+                let html = `
+                    <div class="p-announcement">
+                        <span class="material-symbols-rounded" style="font-size:1.2rem;">campaign</span>
+                        New semester registration is running...
+                    </div>
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-thumbtack"></i> Pinned Events</div>
+                            <button class="btn-edit-app" onclick="openEventEditor()"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                        <div>
+                `;
+                
+                if (events.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No events yet.</p>`;
+                } else {
+                    events.forEach((ev, index) => {
+                        const dateStr = ev.startDay ? `${ev.startDay}-${ev.endDay} ${ev.startMonth}` : `${ev.day} ${ev.month}`;
+                        html += `
+                            <div class="p-event-item">
+                                <div class="p-event-date"><span class="day">${ev.day || '?'}</span><span class="month">${ev.month || ''}</span></div>
+                                <div class="p-event-info">
+                                    <div class="p-event-title">${ev.title}</div>
+                                    <div class="p-event-tags">${(ev.tags||[]).join(' • ')}</div>
+                                </div>
+                                <div class="p-action-row">
+                                    <button class="p-btn p-btn-edit" onclick="editEvent(${index})"><i class="fas fa-pen"></i></button>
+                                    <button class="p-btn p-btn-del" onclick="deleteEvent(${index})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                        <button class="btn-save" style="width:100%; margin-top:10px; font-size:0.75rem; padding:6px;" onclick="addNewEvent()"><i class="fas fa-plus"></i> Add New Event</button>
+                    </div>
+                `;
+                content.innerHTML = html;
+            } 
+            else if (activeTab === 'pdfs') {
+                content.innerHTML = `
+                    <div class="p-card">
+                        <div class="p-card-header">
+                            <div class="p-card-title"><i class="fas fa-folder"></i> All Resources</div>
+                            <button class="btn-edit-app" onclick="document.getElementById('fbModal').classList.add('active')"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                        <p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">Click Edit to request changes via Facebook.</p>
+                    </div>
+                `;
+            }
+            else if (activeTab === 'faculty') {
+                let html = `<div class="p-card"><div class="p-card-header"><div class="p-card-title"><i class="fas fa-user-tie"></i> Faculty</div></div>`;
+                
+                if (faculty.length === 0) {
+                    html += `<p style="text-align:center; font-size:0.75rem; color:var(--text-muted); padding:20px 0;">No faculty added.</p>`;
+                } else {
+                    faculty.forEach((fac, index) => {
+                        html += `
+                            <div class="p-fac-item">
+                                <div class="p-fac-actions">
+                                    <button class="p-btn p-btn-edit" onclick="editFaculty(${index})"><i class="fas fa-pen"></i></button>
+                                </div>
+                                <div class="p-fac-name">${fac.name}</div>
+                                <div class="p-fac-sub">${fac.subject || 'Subject'} • ${fac.course || 'Code'}</div>
+                                ${fac.hidePhone ? `<div class="p-fac-warn">Faculty didn't give permission for the "number". Ask CR or visit room ${fac.room || ''}.</div>` : `<div style="font-size:0.65rem; color:var(--text-secondary);"><i class="fas fa-phone"></i> ${fac.phone || 'N/A'}</div>`}
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        <button class="btn-save" style="width:100%; margin-top:10px; font-size:0.75rem; padding:6px;" onclick="addNewFaculty()"><i class="fas fa-plus"></i> Add New Faculty</button>
+                    </div>
+                `;
+                content.innerHTML = html;
+            }
             else {
-                ['f-title','f-day','f-start-day','f-end-day','f-start-date','f-expires-at','f-course','f-tags','f-items','f-note']
-                    .forEach(id => $(id).value = '');
-                $('f-month').value = '';
-                $('f-start-month').value = '';
-                $('f-end-month').value = '';
-                $('f-use-color').checked = false;
-                $('f-process').checked = false;
-                updateColorRow();
+                content.innerHTML = `<div class="p-card"><p style="text-align:center; font-size:0.75rem; color:var(--text-muted);">Routine editor coming soon...</p></div>`;
             }
-        });
+        }
 
-        $('btn-new').addEventListener('click', resetForm);
+        // --- Editor Logic: Events ---
+        function openEventEditor() {
+            editorMode = 'event';
+            document.getElementById('editorTitle').innerText = 'Edit Events List';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            updateJSON();
+            
+            if (window.innerWidth < 900) document.getElementById('editorPane').classList.add('active');
+        }
 
-        $('btn-clear-all').addEventListener('click', () => {
-            if (!events.length) return;
-            if (!confirm('Clear all ' + events.length + ' events? The JSON you export will be [].')) return;
-            events = [];
-            resetForm();
-            renderList();
-            renderJSON();
-            showBanner('warn', 'All events cleared. Copy or download the empty <code>[]</code> only if you really want to wipe the file.', true);
-        });
+        function addNewEvent() {
+            events.push({ title: 'New Event', day: '01', month: 'Jan', tags: ['Notice'] });
+            markChanged();
+            renderPreview();
+            editEvent(events.length - 1);
+        }
 
-        $('btn-copy').addEventListener('click', function () {
-            const text = window._currentJSON || '[]';
-            const btn = this;
-            const orig = btn.innerHTML;
+        function editEvent(index) {
+            editorMode = 'event';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            
+            const ev = events[index];
+            const formArea = document.getElementById('editorFormArea');
+            
+            // Determine current toggles
+            const isRange = !!ev.startDay;
+            const onClassTime = !!ev.course;
+            const hasColor = ev.color || '#0d2b4e';
 
-            // Block copy if any event has issues
-            const badCount = events.filter(ev => validateEvent(ev).length > 0).length;
-            if (badCount) {
-                if (!confirm('⚠ ' + badCount + ' event(s) have issues that may break your dashboard. Copy anyway?')) return;
+            formArea.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Event Title</label>
+                    <input type="text" class="form-control" value="${ev.title || ''}" oninput="updateEventField(${index}, 'title', this.value)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">In Detail (One per line)</label>
+                    <textarea class="form-control" oninput="updateEventItems(${index}, this.value)">${(ev.items || []).join('\n')}</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Tags (Optional)</label>
+                        <input type="text" class="form-control" value="${(ev.tags || []).join(', ')}" oninput="updateEventField(${index}, 'tags', this.value.split(',').map(s=>s.trim()).filter(Boolean))">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Colour</label>
+                        <div class="color-options">
+                            ${COLORS.map(c => `<div class="color-circle ${hasColor === c ? 'active' : ''}" style="background:${c}" onclick="updateEventColor(${index}, '${c}', this)"></div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">1 Day event?</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn ${!isRange ? 'active' : ''}" onclick="setEventRange(${index}, false)">No</div>
+                            <div class="toggle-btn ${isRange ? 'active' : ''}" onclick="setEventRange(${index}, true)">Yes</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">On Class Time?</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn ${!onClassTime ? 'active' : ''}" onclick="setEventClassTime(${index}, false)">No</div>
+                            <div class="toggle-btn ${onClassTime ? 'active' : ''}" onclick="setEventClassTime(${index}, true)">Yes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col" style="${onClassTime ? 'display:none;' : ''}">
+                        <label class="form-label">Time (Optional)</label>
+                        <input type="time" class="form-control" onchange="updateEventField(${index}, 'startTime', this.value)">
+                    </div>
+                    <div class="col" style="${!onClassTime ? 'display:none;' : ''}">
+                        <label class="form-label">Which Subject</label>
+                        <select class="form-control" onchange="updateEventField(${index}, 'course', this.value)">
+                            <option value="">Select Subject...</option>
+                            <option value="MGT 1101" ${ev.course === 'MGT 1101' ? 'selected' : ''}>MGT 1101</option>
+                            <option value="QUA 1101" ${ev.course === 'QUA 1101' ? 'selected' : ''}>QUA 1101</option>
+                            <option value="ECO 1101" ${ev.course === 'ECO 1101' ? 'selected' : ''}>ECO 1101</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col">
+                        <label class="form-label">Date Start</label>
+                        <input type="date" class="form-control" value="${ev.startDate ? ev.startDate.slice(0,10) : ''}" onchange="updateEventDate(${index}, 'startDate', this.value)">
+                    </div>
+                    <div class="col" style="${!isRange ? 'display:none;' : ''}">
+                        <label class="form-label">Date End</label>
+                        <input type="date" class="form-control" value="${ev.expiresAt ? ev.expiresAt.slice(0,10) : ''}" onchange="updateEventDate(${index}, 'expiresAt', this.value)">
+                    </div>
+                </div>
+            `;
+            updateJSON();
+        }
+
+        function updateEventField(index, field, value) {
+            events[index][field] = value;
+            markChanged();
+            renderPreview();
+            updateJSON();
+        }
+
+        function updateEventItems(index, value) {
+            events[index].items = value.split('\n').filter(Boolean);
+            markChanged();
+            updateJSON();
+        }
+
+        function updateEventColor(index, color, el) {
+            events[index].color = color;
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            markChanged();
+            renderPreview();
+            updateJSON();
+        }
+
+        function setEventRange(index, isRange) {
+            if (isRange) {
+                events[index].startDay = events[index].day;
+                events[index].startMonth = events[index].month;
+                events[index].endDay = events[index].day;
+                events[index].endMonth = events[index].month;
+                delete events[index].day;
+                delete events[index].month;
+            } else {
+                events[index].day = events[index].startDay || '01';
+                events[index].month = events[index].startMonth || 'Jan';
+                delete events[index].startDay;
+                delete events[index].startMonth;
+                delete events[index].endDay;
+                delete events[index].endMonth;
             }
+            markChanged();
+            renderPreview();
+            editEvent(index); // re-render form
+        }
 
-            copyText(text).then(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                toast('JSON copied — paste into pinned-events.json');
-                setTimeout(() => btn.innerHTML = orig, 1800);
-            }).catch(() => {
-                btn.innerHTML = '<i class="fas fa-times"></i> Failed';
-                setTimeout(() => btn.innerHTML = orig, 1800);
+        function setEventClassTime(index, isClassTime) {
+            if (isClassTime) {
+                events[index].course = 'MGT 1101'; // default
+                delete events[index].expiresAt;
+            } else {
+                delete events[index].course;
+                events[index].expiresAt = events[index].startDate ? events[index].startDate.replace('T00:00', 'T23:59') : '';
+            }
+            markChanged();
+            renderPreview();
+            editEvent(index);
+        }
+
+        function updateEventDate(index, field, dateStr) {
+            if (!dateStr) return;
+            events[index][field] = `${dateStr}T00:00:00+06:00`;
+            markChanged();
+            updateJSON();
+        }
+
+        function deleteEvent(index) {
+            if(confirm('Delete this event?')) {
+                events.splice(index, 1);
+                markChanged();
+                renderPreview();
+                closeEditor();
+            }
+        }
+
+        // --- Editor Logic: Faculty ---
+        function addNewFaculty() {
+            faculty.push({ name: 'New Teacher', phone: '', subject: '', course: '', room: '' });
+            markChanged();
+            renderPreview();
+            editFaculty(faculty.length - 1);
+        }
+
+        function editFaculty(index) {
+            editorMode = 'faculty';
+            document.getElementById('editorPane').classList.add('active');
+            document.getElementById('jsonBox').style.display = 'block';
+            
+            const fac = faculty[index];
+            const formArea = document.getElementById('editorFormArea');
+            
+            formArea.innerHTML = `
+                <div class="perm-menu">
+                    <button class="perm-btn" onclick="document.getElementById('permDropdown').classList.toggle('active')">No Permission?</button>
+                    <div class="perm-dropdown" id="permDropdown">
+                        <label class="perm-item">
+                            <input type="checkbox" ${fac.hidePhone ? 'checked' : ''} onchange="updateFacultyField(${index}, 'hidePhone', this.checked)">
+                            Hide Number
+                        </label>
+                        <label class="perm-item">
+                            <input type="checkbox" ${fac.hideWhatsapp ? 'checked' : ''} onchange="updateFacultyField(${index}, 'hideWhatsapp', this.checked)">
+                            Hide WhatsApp
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" value="${fac.name || ''}" oninput="updateFacultyField(${index}, 'name', this.value)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Number</label>
+                    <input type="text" class="form-control" value="${fac.phone || ''}" oninput="updateFacultyField(${index}, 'phone', this.value)">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Subject Code</label>
+                        <input type="text" class="form-control" value="${fac.course || ''}" oninput="updateFacultyField(${index}, 'course', this.value)">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" value="${fac.subject || ''}" oninput="updateFacultyField(${index}, 'subject', this.value)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Whatsapp Link</label>
+                    <input type="text" class="form-control" value="${fac.whatsapp || ''}" oninput="updateFacultyField(${index}, 'whatsapp', this.value)">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label">Room No.</label>
+                        <input type="text" class="form-control" value="${fac.room || ''}" oninput="updateFacultyField(${index}, 'room', this.value)">
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Department</label>
+                        <input type="text" class="form-control" value="${fac.department || ''}" oninput="updateFacultyField(${index}, 'department', this.value)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Counseling hour time</label>
+                    <textarea class="form-control" placeholder="Anything written will show, no format needed" oninput="updateFacultyField(${index}, 'counseling', this.value)">${fac.counseling || ''}</textarea>
+                </div>
+            `;
+            updateJSON();
+        }
+
+        function updateFacultyField(index, field, value) {
+            faculty[index][field] = value;
+            markChanged();
+            renderPreview();
+            updateJSON();
+        }
+
+        // --- Save / Cancel / JSON ---
+        function markChanged() {
+            hasChanges = true;
+            document.getElementById('saveBar').classList.add('active');
+        }
+
+        function cancelChanges() {
+            events = JSON.parse(JSON.stringify(originalEvents));
+            faculty = JSON.parse(JSON.stringify(originalFaculty));
+            hasChanges = false;
+            document.getElementById('saveBar').classList.remove('active');
+            renderPreview();
+            closeEditor();
+            showToast('Changes discarded');
+        }
+
+        function saveChanges() {
+            originalEvents = JSON.parse(JSON.stringify(events));
+            originalFaculty = JSON.parse(JSON.stringify(faculty));
+            hasChanges = false;
+            document.getElementById('saveBar').classList.remove('active');
+            showToast('Changes saved locally! (Remember to copy JSON)');
+        }
+
+        function closeEditor() {
+            document.getElementById('editorPane').classList.remove('active');
+            document.getElementById('editorFormArea').innerHTML = `<p style="color:var(--text-muted); text-align:center; padding: 40px 0;">Click the Edit button on the left preview to start editing.</p>`;
+            document.getElementById('jsonBox').style.display = 'none';
+        }
+
+        function updateJSON() {
+            let data = editorMode === 'event' ? events : faculty;
+            document.getElementById('jsonPreview').innerText = JSON.stringify(data, null, 2);
+        }
+
+        function copyJSON() {
+            const text = document.getElementById('jsonPreview').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('JSON Copied to Clipboard!');
             });
-        });
+        }
 
-        $('btn-download').addEventListener('click', () => {
-            const badCount = events.filter(ev => validateEvent(ev).length > 0).length;
-            if (badCount) {
-                if (!confirm('⚠ ' + badCount + ' event(s) have issues. Download anyway?')) return;
-            }
-            const blob = new Blob([window._currentJSON || '[]'], { type: 'application/json' });
+        function downloadJSON() {
+            const text = document.getElementById('jsonPreview').innerText;
+            const filename = editorMode === 'event' ? 'pinned-events.json' : 'faculty.json';
+            const blob = new Blob([text], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'pinned-events.json';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            a.download = filename;
+            a.click();
             URL.revokeObjectURL(url);
-            toast('Downloaded pinned-events.json');
-        });
-
-        $('btn-reload').addEventListener('click', () => {
-            if (location.protocol === 'file:') {
-                toast('Reload only works over http(s)', 'warn');
-                return;
-            }
-            if (events.length && !confirm('Reload from pinned-events.json? Unsaved changes will be lost.')) return;
-            events = [];
-            resetForm();
-            renderList();
-            renderJSON();
-            autoLoad();
-        });
-
-        /* ═════════ IMPORT MODAL ═════════ */
-        const importModal = $('import-modal');
-        function openImport() {
-            $('import-textarea').value = events.length ? JSON.stringify(events, null, 2) : '';
-            $('import-error').textContent = '';
-            $('import-success').textContent = '';
-            importModal.classList.add('active');
         }
-        function closeImport() { importModal.classList.remove('active'); }
 
-        $('btn-import').addEventListener('click', openImport);
-        $('import-close').addEventListener('click', closeImport);
-        $('import-cancel').addEventListener('click', closeImport);
-        importModal.addEventListener('click', e => { if (e.target === importModal) closeImport(); });
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
 
-        $('import-load').addEventListener('click', () => {
-            const raw = $('import-textarea').value.trim();
-            $('import-error').textContent = '';
-            $('import-success').textContent = '';
-            if (!raw) { $('import-error').textContent = 'Paste JSON first.'; return; }
-            let parsed;
-            try { parsed = JSON.parse(raw); }
-            catch (e) { $('import-error').textContent = 'Invalid JSON: ' + e.message; return; }
-            if (!Array.isArray(parsed)) { $('import-error').textContent = 'JSON must be an array of events.'; return; }
-
-            const badCount = parsed.filter(ev => validateEvent(ev).length > 0).length;
-            events = parsed;
-            resetForm();
-            renderList();
-            renderJSON();
-            if (badCount) {
-                $('import-success').textContent = '';
-                $('import-error').textContent = 'Loaded ' + parsed.length + ' events, but ' + badCount + ' have issues (check red rows).';
-            } else {
-                $('import-success').textContent = '✓ Loaded ' + parsed.length + ' events successfully.';
-                setTimeout(closeImport, 700);
+        // Close dropdown on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.perm-menu')) {
+                document.getElementById('permDropdown')?.classList.remove('active');
             }
         });
-
-        /* ═════════ INIT ═════════ */
-        updateDateMode();
-        updateExpiryMode();
-        updateColorRow();
-        renderList();
-        renderJSON();
-        autoLoad();
-    })();
     </script>
 </body>
 </html>
