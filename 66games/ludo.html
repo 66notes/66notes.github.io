@@ -16,7 +16,7 @@
             --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
             --accent: #123cf3; --accent-light: #eef2ff; 
             --blue:#2aa8ff; --green:#049a48; --yellow:#ffdc1a; --red:#ee1c25;
-            --line:#c9ccd1;
+            --line:#aab2bd;
             --shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
         
@@ -64,65 +64,65 @@
         .input-roll:focus { border-color: var(--accent); }
 
         /* GAME BOARD */
-        #game-screen { justify-content: flex-start; padding-top: 10px; }
+        #game-screen { justify-content: flex-start; padding: 10px 8px; }
         .board-wrapper{width:100%;max-width:400px;aspect-ratio:1;background:#fff;
-          border:2px solid var(--line);border-radius:0;padding:0;position:relative; box-shadow: var(--shadow);}
-        .board{width:100%;height:100%;display:grid;
-          grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:0;background:#fff}
+          border:2px solid var(--navy);position:relative; box-shadow: var(--shadow);}
+        .board{position:absolute;inset:0;display:grid;
+          grid-template-columns:repeat(15,minmax(0,1fr));grid-template-rows:repeat(15,minmax(0,1fr));background:#fff}
 
         /* FIXED BASES */
-        .base-blue, .base-green, .base-yellow, .base-red { position: relative; overflow: hidden; }
-        .base-blue  {grid-area:1/1/7/7; background:var(--blue);}
-        .base-green {grid-area:1/10/7/16; background:var(--green);}
-        .base-yellow{grid-area:10/1/16/7; background:var(--yellow);}
-        .base-red   {grid-area:10/10/16/16; background:var(--red);}
+        .base-blue, .base-green, .base-yellow, .base-red { position: relative; border: 1px solid var(--line); }
+        .base-blue  {grid-area:1/1/7/7; background:var(--blue); --base:var(--blue)}
+        .base-green {grid-area:1/10/7/16; background:var(--green); --base:var(--green)}
+        .base-yellow{grid-area:10/1/16/7; background:var(--yellow); --base:var(--yellow)}
+        .base-red   {grid-area:10/10/16/16; background:var(--red); --base:var(--red)}
 
-        .base-inner{position:absolute;inset:14%;background:#fff;border-radius:0;
-          display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
-          place-items:center;padding:12%;gap:0}
+        .base-inner{position:absolute;inset:14%;background:#fff;border-radius:14%;
+          display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));
+          place-items:center;padding:6%}
+        /* two pawn spots in every base, placed diagonally */
+        .slot{width:82%;aspect-ratio:1;border-radius:50%;background:var(--base);position:relative;
+          display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
+        .slot:first-child{grid-area:1/1}
+        .slot:last-child{grid-area:2/2}
 
         /* PATH CELLS */
-        .cell{background:#fff;position:relative;border:1px solid var(--line)}
+        .cell{background:#fff;position:relative;border:.5px solid var(--line)}
         .cell.safe::after{content:'★';position:absolute;inset:0;display:flex;
-          align-items:center;justify-content:center;font-size:.8rem;color:#555}
+          align-items:center;justify-content:center;font-size:.85rem;line-height:1;color:#64748b}
+        .cell.safe[class*="start-"]::after{color:#fff}
         .home-path-blue,.start-blue{background:var(--blue)}
         .home-path-green,.start-green{background:var(--green)}
         .home-path-yellow,.start-yellow{background:var(--yellow)}
         .home-path-red,.start-red{background:var(--red)}
 
         /* CENTER */
-        .center-home{grid-area:7/7/10/10;position:relative;background:transparent}
+        .center-home{grid-area:7/7/10/10;position:relative;background:#fff;border:1px solid var(--line)}
         .center-home .triangle{position:absolute;inset:0;width:100%;height:100%}
         .t-top   {background:var(--green);clip-path:polygon(0 0,100% 0,50% 50%)}
         .t-right {background:var(--red);  clip-path:polygon(100% 0,100% 100%,50% 50%)}
         .t-bottom{background:var(--yellow);clip-path:polygon(0 100%,100% 100%,50% 50%)}
         .t-left  {background:var(--blue); clip-path:polygon(0 0,0 100%,50% 50%)}
 
-        /* FIXED PAWNS */
-        .pawn{position:absolute;inset:0;margin:auto;width:70%;height:70%;z-index:10;
-          transition:all .3s ease-in-out;background:none;border:none;box-shadow:none}
-        .pawn::before{ /* ring */
-          content:'';position:absolute;left:10%;right:10%;bottom:0;height:45%;
-          border-radius:50%;border:3px solid #7a1f1f;background:var(--pawn-color)}
+        /* PAWNS: a map-pin token with a soft shadow, outlined so it shows on any colour */
+        .pawn{position:absolute;inset:0;margin:auto;width:76%;height:76%;z-index:10;background:none;border:none}
+        .pawn::before{ /* shadow */
+          content:'';position:absolute;left:18%;right:18%;bottom:-4%;height:24%;
+          border-radius:50%;background:rgba(0,0,0,.35)}
         .pawn::after{ /* pin */
-          content:'';position:absolute;left:18%;top:-30%;width:64%;aspect-ratio:1;
-          background:radial-gradient(circle at 35% 30%,#fff 0 12%,var(--pawn-color) 13% 55%,#222 100%);
-          border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
-          box-shadow:0 3px 5px rgba(0,0,0,.45)}
+          content:'';position:absolute;left:9%;top:-8%;width:82%;aspect-ratio:1;
+          background:radial-gradient(circle,#fff 0 20%,var(--pawn-color) 24% 100%);
+          border:2px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+          box-shadow:0 0 0 1.5px var(--navy)}
         .pawn-p1{--pawn-color:var(--red)}
         .pawn-p2{--pawn-color:var(--blue)}
         
-        /* Lock base pawns into the grid so they don't stack */
-        .pawn-base {
-            position: relative !important;
-            inset: auto !important;
-            margin: 0 !important;
-            width: 80% !important;
-            height: 80% !important;
-        }
-        
-        .pawn-selectable{animation:pulse 1s infinite;cursor:pointer}
-        @keyframes pulse{50%{transform:scale(1.15)}}
+        /* pawns resting in their base */
+        .pawn-base{position:relative;inset:auto;margin:0;width:72%;height:72%}
+
+        .pawn-selectable{animation:pulse .8s infinite;cursor:pointer;z-index:20}
+        .pawn-selectable::after{box-shadow:0 0 0 2px var(--navy),0 0 7px 5px #fff}
+        @keyframes pulse{50%{scale:1.25}}
 
         /* PLAYER INFO & DICE */
         .player-info-row { 
@@ -141,7 +141,7 @@
         .dice-container.disabled { opacity: 0.3; pointer-events: none; }
         .dice-cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s ease-out; transform: translateZ(-30px); }
         .dice-face {
-            position: absolute; width: 60px; height: 60px; background: white; border-radius: 8px;
+            position: absolute; width: 60px; height: 60px; background: white; border-radius: 8px; backface-visibility: hidden; -webkit-backface-visibility: hidden;
             border: 2px solid #e2e8f0; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
             display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); padding: 6px;
         }
@@ -199,13 +199,13 @@
     <div id="setup-screen" class="screen active">
         <h1 class="title">Select Ludo Mode</h1>
         <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
-        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
+        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-user-group"></i> You vs Friend</button>
         <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
     </div>
 
     <div id="split-screen" class="screen">
-        <h1 class="title">Split-Screen Setup</h1>
-        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter Player 2's Roll Number</p>
+        <h1 class="title">You vs Friend</h1>
+        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter your friend's roll number</p>
         <input type="number" id="p2-roll" class="input-roll" placeholder="e.g. 015" />
         <button class="btn btn-primary" onclick="startSplit()">Start Game</button>
         <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
@@ -309,12 +309,14 @@
             {r:7,c:0},{r:6,c:0}
         ];
 
-        const RED_HOME = [{r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},{r:7,c:8},{r:7,c:7}];
-        const BLUE_HOME = [{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},{r:7,c:6},{r:7,c:7}];
+        // each pawn walks 51 shared squares, turns into its own 5-square home lane, then reaches the centre
+        const CENTRE = {r:7,c:7};
+        const RED_HOME = [{r:7,c:13},{r:7,c:12},{r:7,c:11},{r:7,c:10},{r:7,c:9},CENTRE];
+        const BLUE_HOME = [{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5},CENTRE];
 
-        const P1_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26), ...RED_HOME]; 
-        const P2_PATH = [...LOOP, ...BLUE_HOME];
-        const HOME_INDEX = 58;
+        const P1_PATH = [...LOOP.slice(26), ...LOOP.slice(0, 26)].slice(0, 51).concat(RED_HOME);
+        const P2_PATH = LOOP.slice(0, 51).concat(BLUE_HOME);
+        const HOME_INDEX = 56;
         const SAFE_SPOTS = [0, 8, 13, 21, 26, 34, 39, 47];
 
         let p1Pawns = [-1, -1];
@@ -381,15 +383,20 @@
                     cell.id = `cell-${r}-${c}`;
                     cell.style.gridArea = `${r+1} / ${c+1}`;
 
+                    // start squares
                     if (r === 6 && c === 1) cell.classList.add('start-blue');
-                    if (r === 7 && c > 0 && c < 7) cell.classList.add('home-path-blue');
-                    
+                    if (r === 1 && c === 8) cell.classList.add('start-green');
                     if (r === 8 && c === 13) cell.classList.add('start-red');
-                    if (r === 7 && c > 7 && c < 14) cell.classList.add('home-path-red');
-                    
-                    if ((r === 8 && c === 2) || (r === 6 && c === 12) || (r === 13 && c === 6) || (r === 1 && c === 8)) {
-                        cell.classList.add('safe');
-                    }
+                    if (r === 13 && c === 6) cell.classList.add('start-yellow');
+
+                    // home lanes
+                    if (r === 7 && c >= 1 && c <= 5) cell.classList.add('home-path-blue');
+                    if (r === 7 && c >= 9 && c <= 13) cell.classList.add('home-path-red');
+                    if (c === 7 && r >= 1 && r <= 5) cell.classList.add('home-path-green');
+                    if (c === 7 && r >= 9 && r <= 13) cell.classList.add('home-path-yellow');
+
+                    // safe squares (match SAFE_SPOTS)
+                    if (SAFE_SPOTS.some(i => LOOP[i].r === r && LOOP[i].c === c)) cell.classList.add('safe');
                     board.appendChild(cell);
                 }
             }
@@ -398,7 +405,9 @@
 
         function renderBoard() {
             document.querySelectorAll('.pawn').forEach(p => p.remove());
-            document.querySelectorAll('.base-inner').forEach(b => b.innerHTML = '');
+            document.querySelectorAll('.base-inner').forEach(b => {
+                b.innerHTML = '<div class="slot"></div><div class="slot"></div>';
+            });
 
             const placePawn = (pathIndex, colorClass, pIdx) => {
                 const p = document.createElement('div');
@@ -408,8 +417,7 @@
                 if (pathIndex === -1) {
                     p.classList.add('pawn-base');
                     const baseId = colorClass.includes('p1') ? 'base-p1' : 'base-p2';
-                    const baseInner = document.getElementById(baseId);
-                    baseInner.appendChild(p);
+                    document.getElementById(baseId).children[pIdx].appendChild(p);
                     return;
                 }
 
@@ -420,18 +428,19 @@
                 const {r, c} = path[pathIndex];
                 const cell = document.getElementById(`cell-${r}-${c}`);
                 
-                if (cell) {
-                    const otherPawn = cell.querySelector('.pawn');
-                    if (otherPawn) {
-                        p.style.transform = 'translate(20%, 20%) scale(0.7)';
-                        otherPawn.style.transform = 'translate(-20%, -20%) scale(0.7)';
-                    }
-                    cell.appendChild(p);
-                }
+                if (cell) cell.appendChild(p);
             };
 
             p1Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p1', idx));
             p2Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p2', idx));
+
+            // pawns sharing a square sit side by side
+            document.querySelectorAll('.cell').forEach(cell => {
+                const group = cell.querySelectorAll('.pawn');
+                if (group.length < 2) return;
+                const spots = group.length === 2 ? [[-28, 0], [28, 0]] : [[-28, -18], [28, -18], [-28, 24], [28, 24]];
+                group.forEach((p, i) => { p.style.transform = `translate(${spots[i][0]}%, ${spots[i][1]}%) scale(0.72)`; });
+            });
 
             const p1Out = p1Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
             const p1Home = p1Pawns.filter(p => p === HOME_INDEX).length;
@@ -447,8 +456,9 @@
         let currentX1 = 0, currentY1 = 0;
         let currentX2 = 0, currentY2 = 0;
 
-        function handleDiceClick(player) {
+        function handleDiceClick(player, byComputer) {
             if (isRolling || hasRolled || isSelecting) return;
+            if (mode === 'ai' && player === 2 && !byComputer) return; // only the computer rolls its dice
             
             if (turn === 1 && player === 2) return;
             if (turn === 2 && player === 1) return;
@@ -468,11 +478,11 @@
             if (player === 1) {
                 currentX1 = spins * 360 + faceMap[diceValue].x;
                 currentY1 = spins * 360 + faceMap[diceValue].y;
-                cube.style.transform = `rotateX(${currentX1}deg) rotateY(${currentY1}deg)`;
+                cube.style.transform = `translateZ(-30px) rotateX(${currentX1}deg) rotateY(${currentY1}deg)`;
             } else {
                 currentX2 = spins * 360 + faceMap[diceValue].x;
                 currentY2 = spins * 360 + faceMap[diceValue].y;
-                cube.style.transform = `rotateX(${currentX2}deg) rotateY(${currentY2}deg)`;
+                cube.style.transform = `translateZ(-30px) rotateX(${currentX2}deg) rotateY(${currentY2}deg)`;
             }
 
             setTimeout(() => {
@@ -564,6 +574,7 @@
             if (extraTurn) {
                 hasRolled = false;
                 updateTurnUI();
+                if (mode === 'ai' && turn === 2) setTimeout(() => handleDiceClick(2, true), 800);
             } else {
                 setTimeout(nextTurn, 600);
             }
@@ -576,7 +587,7 @@
             updateTurnUI();
 
             if (mode === 'ai' && turn === 2) {
-                setTimeout(() => handleDiceClick(2), 800);
+                setTimeout(() => handleDiceClick(2, true), 800);
             }
         }
 
