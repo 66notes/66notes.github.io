@@ -1,627 +1,756 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Carrom · 66Games</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#ffffff" />
+<title>Carrom · 66Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#eef6fd;--surface:#fff;--border:#dbe7f3;--text:#1e2a3e;--text2:#64748b;--navy:#0d2b4e;
+  --accent:#123cf3;--accent-light:#eef2ff;--blue-light:#aed6f6;--frame:#5fa8e0;
+}
+:root[data-theme="dark"]{
+  --bg:#0b0e14;--surface:#151a22;--border:#2a3442;--text:#f0f4f8;--text2:#8b98a5;--navy:#e2e8f0;
+  --accent:#4f7bff;--accent-light:#1c2540;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 
-    <style>
-        :root{
-            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --text: #1e2a3e; --navy: #0d2b4e;
-            --accent: #123cf3; --accent-light: #eef2ff; 
-            --red: #ef4444; --blue: #3b82f6;
-            --board-wood: #d4a373; --board-line: #8b5a2b;
-            --shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); 
-            min-height: 100vh; overflow: hidden; -webkit-font-smoothing: antialiased; 
-            user-select: none; -webkit-user-select: none;
-            display: flex; flex-direction: column;
-        }
-        
-        /* TOP BAR */
-        .top-bar { 
-            height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 14px; background: var(--surface); border-bottom: 1px solid var(--border);
-            z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-        .logo-small { font-size: 1.15rem; font-weight: 700; color: var(--navy); text-decoration: none; }
-        .logo-small span { color: var(--accent); }
-        .brand-badge { 
-            background: linear-gradient(135deg, #d97706, #b45309); color: white; 
-            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; 
-        }
-        
-        /* SCREENS */
-        .screen { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .screen.active { display: flex; }
-        .title { font-size: 1.8rem; font-weight: 900; color: var(--navy); margin-bottom: 20px; }
-        
-        .btn { 
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: none; 
-            font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; 
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; 
-            justify-content: center; gap: 10px; margin-bottom: 12px; 
-        }
-        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(18,60,243,0.3); }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-outline { background: var(--surface); border: 2px solid var(--accent); color: var(--accent); }
-        .input-roll { 
-            width: 100%; max-width: 300px; padding: 14px; border-radius: 12px; border: 2px solid var(--border); 
-            font-size: 1.2rem; font-weight: 700; text-align: center; margin-bottom: 10px; 
-            outline: none; font-family: 'Poppins', sans-serif; background: var(--surface); color: var(--text); 
-        }
+.top-bar{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.logo{font-size:1.15rem;font-weight:800;color:var(--navy);text-decoration:none}
+.logo span{color:var(--accent)}
+.badge{background:var(--accent);color:#fff;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:700}
 
-        /* GAME SCREEN */
-        #game-screen { display: none; flex-direction: column; justify-content: flex-start; padding: 10px; position: relative; height: 100vh; overflow: hidden; }
-        #game-screen.active { display: flex; }
+.screen{flex:1;min-height:0;display:none;flex-direction:column;align-items:center;overflow-y:auto;padding:16px}
+.screen.active{display:flex}
+.card{width:100%;max-width:360px;margin:auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:20px;text-align:center}
+.hero{width:84px;height:84px;margin:0 auto 8px;display:block}
+h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
+.sub{font-size:.78rem;color:var(--text2);margin-bottom:8px}
+.btn{width:100%;min-height:48px;border-radius:14px;border:2px solid var(--accent);font-size:.92rem;font-weight:700;margin-top:10px;padding:8px}
+.btn:active{transform:scale(.97)}
+.primary{background:var(--accent);color:#fff}
+.outline{background:var(--surface);color:var(--accent)}
+.ghost{background:none;border-color:transparent;color:var(--text2)}
+.seg{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:12px;margin-top:12px}
+.seg button{flex:1;border:none;background:none;color:var(--text2);padding:8px;border-radius:9px;font-weight:700;font-size:.8rem}
+.seg button.on{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.12)}
 
-        /* TURN BANNER */
-        .turn-banner {
-            position: absolute; top: -80px; left: 0; right: 0; 
-            background: linear-gradient(90deg, #d97706, #ea580c); color: white;
-            padding: 12px; font-weight: 800; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 50;
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-        }
-        .turn-banner.show { top: 0; }
+/* keypad */
+.boxes{display:flex;justify-content:center;gap:10px;margin:8px 0 12px}
+.boxes b{width:60px;height:66px;border-radius:15px;border:2px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--navy)}
+.boxes b.typed{border-color:var(--accent);background:var(--accent-light)}
+.boxes b.ghosted{opacity:.4}
+.err{font-size:.74rem;font-weight:600;color:#dc2626;background:rgba(220,38,38,.1);border-radius:10px;padding:7px;margin-bottom:10px}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.key{height:clamp(44px,7.5vh,58px);border-radius:15px;border:1px solid var(--border);border-bottom-width:4px;background:var(--surface);color:var(--navy);font-size:1.4rem;font-weight:700}
+.key:active{transform:translateY(2px);border-bottom-width:2px;background:var(--accent-light)}
+.key.del{color:#dc2626}
+.key.ok{background:var(--accent);border-color:#0b2bb5;color:#fff}
+.keypad.busy{opacity:.5;pointer-events:none}
 
-        /* PLAYER INFO */
-        .player-info-row { 
-            display: flex; justify-content: space-between; align-items: center; 
-            width: 100%; max-width: 400px; margin: 10px auto; padding: 0 10px;
-            transition: flex-direction 0.3s ease; z-index: 10;
-        }
-        .player-info-row.swapped { flex-direction: row-reverse; }
-        
-        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 2px; }
-        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); }
-        .p1-text { color: var(--red); }
-        .p2-text { color: var(--blue); }
-        .p-score { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+/* game */
+#game{justify-content:center;gap:8px;padding:8px;--size:min(calc(100vw - 16px),calc(100vh - 288px),540px)}
+@supports (height:100dvh){#game{--size:min(calc(100vw - 16px),calc(100dvh - 288px),540px)}}
+.panel{width:var(--size);min-width:290px;flex-shrink:0;background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:6px 10px}
+.panel.turn{border-color:var(--accent);background:var(--accent-light)}
+.panel.rot{transform:rotate(180deg)}
+.row{display:flex;align-items:center;gap:10px}
+.disc{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:3px solid var(--frame)}
+.disc.white{background:radial-gradient(circle,#fff 35%,#cbd5e1 40%,#fff 48%)}
+.disc.black{background:radial-gradient(circle,#0d2b4e 35%,#4a6c95 40%,#0d2b4e 48%)}
+.who{flex:1;min-width:0}
+.pname{font-weight:700;font-size:.9rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.msg{font-size:.66rem;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.panel.turn .msg{color:var(--accent)}
+.queen{font-size:.62rem;font-weight:800;background:#ef4444;color:#fff;border-radius:20px;padding:3px 8px}
+.left{text-align:center;line-height:1;min-width:34px}
+.left b{display:block;font-size:1.35rem;color:var(--navy)}
+.left small{font-size:.55rem;font-weight:700;color:var(--text2);text-transform:uppercase}
+input[type=range]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:34px;background:transparent;touch-action:none}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:10px;background:var(--blue-light)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:28px;margin-top:-9px;border-radius:16px;background:var(--accent);border:4px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+input[type=range]::-moz-range-track{height:10px;border-radius:10px;background:var(--blue-light)}
+input[type=range]::-moz-range-thumb{width:36px;height:20px;border-radius:16px;background:var(--accent);border:4px solid #fff}
+input[type=range]:disabled{opacity:.3}
 
-        /* BOARD */
-        .board-container {
-            width: 100%; max-width: 400px; aspect-ratio: 1;
-            margin: 0 auto; position: relative; border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            background: var(--board-wood);
-            border: 8px solid var(--board-line);
-            touch-action: none; /* Prevent scrolling while dragging */
-        }
-        canvas { width: 100%; height: 100%; display: block; border-radius: 6px; }
+.board-wrap{width:var(--size);height:var(--size);min-width:290px;min-height:290px;flex-shrink:0;padding:9px;border-radius:20px;
+  background:linear-gradient(145deg,#7cc0f0,#3f86c4);box-shadow:0 10px 24px rgba(18,90,160,.3)}
+canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none;cursor:crosshair}
 
-        /* CONTROLS */
-        .controls { display: flex; justify-content: center; margin-top: auto; padding-bottom: 10px; }
-        .btn-icon { 
-            padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border); background: var(--surface); color: var(--text);
-            font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-icon:active { transform: scale(0.95); }
+.controls{width:var(--size);min-width:290px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex-shrink:0}
+.ctl{height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-size:.62rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ctl i{font-style:normal;font-size:1.05rem;line-height:1.1;color:var(--accent)}
+.ctl:active{transform:scale(.94)}
 
-        /* WIN OVERLAY */
-        .win-overlay { position: fixed; inset: 0; background: rgba(13,43,78,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; color: white; text-align: center; padding: 20px; }
-        .win-overlay.active { display: flex; }
-        .win-crown { font-size: 6rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-
-    </style>
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(13,43,78,.82);display:flex;align-items:center;justify-content:center;padding:20px}
+.overlay .card{margin:0;max-height:94vh;overflow-y:auto}
+.rules{text-align:left;font-size:.78rem;line-height:1.55;padding-left:18px;margin-top:8px}
+.rules li{margin-bottom:5px}
+.trophy{font-size:3.5rem;line-height:1.2}
+</style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <a href="index.html" class="logo-small">66<span>Notes</span></a>
-        <div class="brand-badge">Carrom</div>
-        <div style="width: 32px;"></div>
+<header class="top-bar" id="topBar">
+  <a href="index.html" class="logo">66<span>Games</span></a>
+  <div class="badge">Carrom</div>
+</header>
+
+<section id="setup" class="screen active">
+  <div class="card">
+    <svg class="hero" viewBox="0 0 84 84"><rect x="3" y="3" width="78" height="78" rx="16" fill="#e0f0fd" stroke="#5fa8e0" stroke-width="6"/><g fill="#0d2b4e"><circle cx="18" cy="18" r="7"/><circle cx="66" cy="18" r="7"/><circle cx="18" cy="66" r="7"/><circle cx="66" cy="66" r="7"/></g><circle cx="42" cy="40" r="17" fill="#fff" stroke="#5fa8e0" stroke-width="3"/><circle cx="42" cy="40" r="6" fill="#ef4444"/><circle cx="42" cy="65" r="8" fill="#123cf3"/></svg>
+    <h1>Carrom</h1>
+    <p class="sub" id="hello"></p>
+    <button class="btn primary" onclick="openFriend()">You vs Friend</button>
+    <button class="btn outline" onclick="startAI()">Solo vs Computer</button>
+    <div class="seg" id="levelSeg">
+      <button data-level="easy">Easy</button><button data-level="normal" class="on">Normal</button>
     </div>
+    <button class="btn ghost" onclick="location.href='index.html'">← Back to Hub</button>
+  </div>
+</section>
 
-    <div id="setup-screen" class="screen active">
-        <h1 class="title" style="color: #b45309;">Select Carrom Mode</h1>
-        <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
-        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-mobile-screen"></i> 1v1 Split-screen</button>
-        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
+<section id="friend" class="screen">
+  <div class="card">
+    <div id="step1">
+      <h1>You vs Friend</h1>
+      <p class="sub">Enter your friend's roll (5 means 005)</p>
+      <div class="boxes" id="boxes"><b></b><b></b><b></b></div>
+      <div class="err" id="err" hidden></div>
+      <div class="keypad" id="keypad"></div>
     </div>
-
-    <div id="split-screen" class="screen">
-        <h1 class="title">Split-Screen Setup</h1>
-        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter Player 2's Roll Number</p>
-        <input type="number" id="p2-roll" class="input-roll" placeholder="e.g. 015" />
-        <button class="btn btn-primary" onclick="startSplit()">Start Game</button>
-        <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
+    <div id="step2" hidden>
+      <h1>Who is your friend?</h1>
+      <p class="sub">Roll 138 is shared</p>
+      <div class="err" id="err2" hidden></div>
+      <button class="btn primary" onclick="pickShared('Aion')">Aion</button>
+      <button class="btn outline" onclick="pickShared('Maria')">Maria</button>
     </div>
+    <button class="btn ghost" onclick="show('setup')">Cancel</button>
+  </div>
+</section>
 
-    <div id="game-screen" class="screen">
-        
-        <div class="turn-banner" id="turn-banner">Player's Turn!</div>
+<section id="game" class="screen">
+  <div class="panel" id="topPanel"></div>
+  <div class="board-wrap"><canvas id="board"></canvas></div>
+  <div class="panel" id="bottomPanel"></div>
+  <div class="controls">
+    <button class="ctl" onclick="$('helpOverlay').hidden=false"><i>?</i>Rules</button>
+    <button class="ctl" onclick="switchSides()"><i>⇅</i>Switch Sides</button>
+    <button class="ctl" onclick="askRestart()"><i>↻</i>Restart</button>
+    <button class="ctl" onclick="askLeave()"><i>✕</i>Exit</button>
+  </div>
+</section>
 
-        <div class="player-info-row" id="player-ui-row">
-            <div class="player-side">
-                <span class="p-name p1-text" id="ui-p1">Opponent</span>
-                <span class="p-score" id="score-p1">Coins: 9</span>
-            </div>
-            <div class="player-side">
-                <span class="p-name p2-text" id="ui-p2">My Name</span>
-                <span class="p-score" id="score-p2">Coins: 9</span>
-            </div>
-        </div>
+<div class="overlay" id="helpOverlay" hidden>
+  <div class="card">
+    <h1>How to play</h1>
+    <ul class="rules">
+      <li>Move the <b>slider</b> to place your striker.</li>
+      <li><b>Drag backwards</b> anywhere on the board, then let go to shoot. Drag farther for more power. Drag back to the start to cancel.</li>
+      <li>Pocket all your coins to win. Pocket one of yours and you shoot again.</li>
+      <li><b>Queen (red):</b> after pocketing it, pocket one of your coins in the same or next shot, or it returns.</li>
+      <li>The Queen must be covered before anyone's last coin can be pocketed.</li>
+      <li><b>Foul:</b> if the striker is pocketed, one of your coins comes back and your turn ends.</li>
+    </ul>
+    <button class="btn primary" onclick="$('helpOverlay').hidden=true">Got it</button>
+  </div>
+</div>
 
-        <div class="board-container">
-            <canvas id="carromCanvas" width="600" height="600"></canvas>
-        </div>
+<div class="overlay" id="endOverlay" hidden>
+  <div class="card">
+    <div class="trophy" id="endIcon"></div>
+    <h1 id="endTitle"></h1>
+    <p class="sub" id="endReason"></p>
+    <button class="btn primary" onclick="newGame()">Play again</button>
+    <button class="btn ghost" onclick="location.href='index.html'">Back to Hub</button>
+  </div>
+</div>
 
-        <div class="controls">
-            <button class="btn-icon" onclick="toggleSides()">
-                <i class="fas fa-arrow-right-arrow-left"></i> Switch Sides
-            </button>
-        </div>
+<script src="students.js"></script>
+<script>
+const $ = id => document.getElementById(id);
 
-    </div>
+try { if (localStorage.getItem('66games_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem('66games_user')); } catch (e) {}
+if (!currentUser) location.replace('index.html');
+const me = currentUser || { roll: '', name: 'Player' };
+$('hello').textContent = 'Playing as ' + me.name;
 
-    <div class="win-overlay" id="win-overlay">
-        <i class="fas fa-crown win-crown"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
-        <p style="color: #cbd5e1;">Returning to dashboard...</p>
-    </div>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  $('topBar').hidden = id === 'game';
+}
 
-    <script>
-        const STUDENTS = { '002': 'Orin', '004': 'Saikat', '005': 'ASHIK', '007': 'Preonti', '009': 'Nazmul', '010': 'Sumaiya Siya', '015': 'M D Emran', '017': 'Boishakhi', '019': 'Aysha', '022': 'Iftikh', '023': 'Ryan', '024': 'Shakib', '026': 'Fahim', '027': 'Shajid', '028': 'Nafi', '029': 'Polok', '030': 'Adnan', '031': 'Sumaiya', '032': 'Mahde', '033': 'Foujia', '035': 'Risal', '036': 'Tonmoy', '039': 'Alif', '040': 'Sohan', '041': 'Shuvo', '052': 'Prapti', '064': 'Rifa', '117': 'Rafa', '125': 'Nusrat', '129': 'ABIR', '137': 'Mahin', '140': 'Meghla', '145': 'Samir', '146': 'Teetun', '147': 'Faiyaz', '153': 'Wafa', '161': 'Nafis', '164': 'Sanjana', '381': 'Moon' };
-        
-        const currentUser = JSON.parse(localStorage.getItem('66games_user'));
-        if (!currentUser) window.location.href = 'index.html';
+/* ═════════ Board and physics ═════════ */
+const SIZE = 600, COIN_R = 15, STRIKER_R = 21, POCKET_R = 32;
+const BASE_MIN = 150, BASE_MAX = 450, BASE_BOTTOM = 494, BASE_TOP = 106;
+const POCKETS = [[34, 34], [566, 34], [34, 566], [566, 566]];
+const SUBSTEPS = 4;
 
-        // UI State
-        let mode = ''; let p1Name = currentUser.name; let p2Name = '';
-        let sidesSwapped = false;
+const makeBody = (type, x, y) => ({
+  type, x, y, vx: 0, vy: 0, on: true,
+  r: type === 'striker' ? STRIKER_R : COIN_R,
+  m: type === 'striker' ? 1.7 : 1
+});
 
-        // Game Constants
-        const canvas = document.getElementById('carromCanvas');
-        const ctx = canvas.getContext('2d');
-        const W = canvas.width;
-        const H = canvas.height;
-        
-        const POCKET_RADIUS = 30;
-        const COIN_RADIUS = 16;
-        const STRIKER_RADIUS = 22;
-        const FRICTION = 0.985;
-        const MIN_SPEED = 0.2;
+function startingCoins() {
+  const list = [makeBody('queen', 300, 300)];
+  const gap = COIN_R * 2 + 0.3;
+  for (let i = 0; i < 6; i++) {
+    const a = i * Math.PI / 3 - Math.PI / 2;
+    list.push(makeBody(i % 2 ? 'white' : 'black', 300 + Math.cos(a) * gap, 300 + Math.sin(a) * gap));
+  }
+  for (let i = 0; i < 12; i++) {
+    const a = i * Math.PI / 6 - Math.PI / 2, d = i % 2 ? gap * 1.732 : gap * 2;
+    list.push(makeBody(i % 2 ? 'black' : 'white', 300 + Math.cos(a) * d, 300 + Math.sin(a) * d));
+  }
+  return list;
+}
 
-        const POCKETS = [
-            { x: 30, y: 30 }, { x: W - 30, y: 30 },
-            { x: 30, y: H - 30 }, { x: W - 30, y: H - 30 }
-        ];
+// advances one frame; pocketed pieces are pushed into `sunk`; returns true while anything moves
+function physics(bodies, sunk) {
+  for (let s = 0; s < SUBSTEPS; s++) {
+    for (const b of bodies) if (b.on) { b.x += b.vx / SUBSTEPS; b.y += b.vy / SUBSTEPS; }
+    for (let i = 0; i < bodies.length; i++) {
+      const a = bodies[i];
+      if (!a.on) continue;
+      for (let j = i + 1; j < bodies.length; j++) {
+        const b = bodies[j];
+        if (!b.on) continue;
+        const dx = b.x - a.x, dy = b.y - a.y, min = a.r + b.r, d2 = dx * dx + dy * dy;
+        if (d2 >= min * min || d2 === 0) continue;
+        const d = Math.sqrt(d2), nx = dx / d, ny = dy / d;
+        const push = (min - d) / (a.m + b.m);
+        a.x -= nx * push * b.m; a.y -= ny * push * b.m;
+        b.x += nx * push * a.m; b.y += ny * push * a.m;
+        const speed = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+        if (speed >= 0) continue;
+        const impulse = -1.93 * speed / (1 / a.m + 1 / b.m);
+        a.vx -= impulse / a.m * nx; a.vy -= impulse / a.m * ny;
+        b.vx += impulse / b.m * nx; b.vy += impulse / b.m * ny;
+      }
+    }
+    for (const b of bodies) {
+      if (!b.on) continue;
+      if (POCKETS.some(([px, py]) => (b.x - px) ** 2 + (b.y - py) ** 2 < POCKET_R * POCKET_R)) {
+        b.on = false; b.vx = b.vy = 0; sunk.push(b); continue;
+      }
+      if (b.x < b.r) { b.x = b.r; b.vx = Math.abs(b.vx) * 0.75; }
+      if (b.x > SIZE - b.r) { b.x = SIZE - b.r; b.vx = -Math.abs(b.vx) * 0.75; }
+      if (b.y < b.r) { b.y = b.r; b.vy = Math.abs(b.vy) * 0.75; }
+      if (b.y > SIZE - b.r) { b.y = SIZE - b.r; b.vy = -Math.abs(b.vy) * 0.75; }
+    }
+  }
+  let moving = false;
+  for (const b of bodies) {
+    if (!b.on) continue;
+    const speed = Math.hypot(b.vx, b.vy);
+    if (!speed) continue;
+    const next = speed * 0.983 - 0.02;
+    if (next < 0.06) b.vx = b.vy = 0;
+    else { b.vx *= next / speed; b.vy *= next / speed; moving = true; }
+  }
+  return moving;
+}
 
-        // Game State
-        let coins = [];
-        let striker = { x: 0, y: 0, vx: 0, vy: 0, radius: STRIKER_RADIUS };
-        let turn = 1; // 1 = P1 (Red/Top), 2 = P2 (Blue/Bottom)
-        let isAiming = false;
-        let aimStart = { x: 0, y: 0 };
-        let aimEnd = { x: 0, y: 0 };
-        let isMoving = false;
-        let p1Score = 9, p2Score = 9;
-        let turnTimeouts = [];
+/* ═════════ Game state ═════════ */
+let mode = 'ai', level = 'normal', players = [], bottom = 0, turn = 0;
+let coins = [], striker = makeBody('striker', 300, BASE_BOTTOM);
+let sunk = [], moving = false, over = false, aim = null;
+let queenPending = null, queenOwner = null;   // player index
+let message = '', timers = [], effects = [];
 
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+const stopTimers = () => { timers.forEach(clearTimeout); timers = []; };
+const baseY = p => p === bottom ? BASE_BOTTOM : BASE_TOP;
+const turnedAround = p => mode === 'friend' && p !== bottom;
+const remaining = color => coins.filter(c => c.on && c.type === color).length;
+const isAI = p => players[p].ai;
 
-        function startMode(m) {
-            mode = m; p2Name = (m === 'ai') ? 'Computer' : p2Name; initGame();
-        }
+$('levelSeg').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  level = btn.dataset.level;
+  [...$('levelSeg').children].forEach(x => x.classList.toggle('on', x === btn));
+});
 
-        function startSplit() {
-            const roll = document.getElementById('p2-roll').value.padStart(3, '0');
-            let name = STUDENTS[roll];
-            if (roll === '138') name = 'Aion/Maria'; 
-            if (!name) return alert('Roll not found!');
-            p2Name = name; mode = 'split'; initGame();
-        }
+function begin(opponent, ai) {
+  players = [{ name: me.name, color: 'white', ai: false }, { name: opponent, color: 'black', ai }];
+  bottom = 0;
+  show('game');
+  newGame();
+}
+function startAI() { mode = 'ai'; begin('Computer', true); }
+function startFriend(name) { mode = 'friend'; begin(name, false); }
 
-        function toggleSides() {
-            sidesSwapped = !sidesSwapped;
-            const uiRow = document.getElementById('player-ui-row');
-            if (sidesSwapped) uiRow.classList.add('swapped');
-            else uiRow.classList.remove('swapped');
-        }
+function newGame() {
+  stopTimers();
+  coins = startingCoins(); sunk = []; effects = [];
+  moving = false; over = false; aim = null; queenPending = queenOwner = null;
+  turn = 0;
+  $('endOverlay').hidden = true;
+  buildPanels();
+  startTurn('Break the coins!');
+}
 
-        function initGame() {
-            document.getElementById('ui-p1').innerText = p1Name;
-            document.getElementById('ui-p2').innerText = p2Name;
-            document.getElementById('player-ui-row').classList.remove('swapped');
-            
-            resetBoard();
-            showScreen('game-screen');
-            turn = 1;
-            startTurn();
-            requestAnimationFrame(gameLoop);
-        }
+const overlaps = (x, y, r, list) => list.some(c => c.on && (c.x - x) ** 2 + (c.y - y) ** 2 < (c.r + r) ** 2);
 
-        function resetBoard() {
-            coins = [];
-            // Setup 19 coins in the center
-            const cx = W/2, cy = H/2;
-            const R = COIN_RADIUS * 2;
-            
-            const positions = [
-                {x: cx, y: cy, type: 'queen'}, // Queen
-                // Inner circle (6)
-                {x: cx, y: cy - R, type: 'black'}, {x: cx + R*0.866, y: cy - R*0.5, type: 'white'},
-                {x: cx + R*0.866, y: cy + R*0.5, type: 'black'}, {x: cx, y: cy + R, type: 'white'},
-                {x: cx - R*0.866, y: cy + R*0.5, type: 'black'}, {x: cx - R*0.866, y: cy - R*0.5, type: 'white'},
-                // Outer circle (12)
-                {x: cx, y: cy - R*2, type: 'white'}, {x: cx + R, y: cy - R*1.732, type: 'black'},
-                {x: cx + R*1.732, y: cy - R, type: 'white'}, {x: cx + R*2, y: cy, type: 'black'},
-                {x: cx + R*1.732, y: cy + R, type: 'white'}, {x: cx + R, y: cy + R*1.732, type: 'black'},
-                {x: cx, y: cy + R*2, type: 'white'}, {x: cx - R, y: cy + R*1.732, type: 'black'},
-                {x: cx - R*1.732, y: cy + R, type: 'white'}, {x: cx - R*2, y: cy, type: 'black'},
-                {x: cx - R*1.732, y: cy - R, type: 'white'}, {x: cx - R, y: cy - R*1.732, type: 'black'}
-            ];
+// nearest free spot on the baseline to where the player wants the striker
+function freeX(wanted, y) {
+  wanted = Math.max(BASE_MIN, Math.min(BASE_MAX, wanted));
+  for (let d = 0; d <= BASE_MAX - BASE_MIN; d += 2)
+    for (const x of [wanted - d, wanted + d])
+      if (x >= BASE_MIN && x <= BASE_MAX && !overlaps(x, y, STRIKER_R, coins)) return x;
+  return wanted;
+}
 
-            positions.forEach(p => {
-                coins.push({ x: p.x, y: p.y, vx: 0, vy: 0, radius: COIN_RADIUS, type: p.type, active: true });
-            });
+function placeStriker(x) {
+  const y = baseY(turn);
+  striker = makeBody('striker', freeX(x, y), y);
+}
 
-            p1Score = 9; p2Score = 9;
-            updateScores();
-        }
+function startTurn(note) {
+  moving = false; aim = null; sunk = [];
+  message = note || '';
+  placeStriker(300);
+  updatePanels(true);
+  draw();
+  if (isAI(turn)) later(computerTurn, 700);
+}
 
-        function updateScores() {
-            document.getElementById('score-p1').innerText = `Coins: ${p1Score}`;
-            document.getElementById('score-p2').innerText = `Coins: ${p2Score}`;
-        }
+function fire(angle, power) {
+  const speed = 3 + power * 24;
+  striker.vx = Math.cos(angle) * speed;
+  striker.vy = Math.sin(angle) * speed;
+  moving = true; aim = null;
+  updatePanels();
+  run();
+}
 
-        function startTurn() {
-            striker.vx = 0; striker.vy = 0;
-            isAiming = false; isMoving = false;
-            
-            // Position striker
-            if (turn === 1) {
-                striker.x = W/2; striker.y = H - 100; // Top player shoots from bottom? No, P1 is Top.
-                striker.y = 100; // P1 shoots from top
-            } else {
-                striker.x = W/2; striker.y = H - 100; // P2 shoots from bottom
-            }
+// put a coin back as close to the centre as possible
+function returnToCentre(coin) {
+  for (let d = 0; d < 260; d += 8)
+    for (let a = 0; a < Math.PI * 2; a += Math.PI / 12) {
+      const x = 300 + Math.cos(a) * d, y = 300 + Math.sin(a) * d;
+      if (!overlaps(x, y, COIN_R, coins)) { Object.assign(coin, { x, y, vx: 0, vy: 0, on: true }); return; }
+    }
+}
 
-            // Check if striker position is blocked, shift if needed (simplified)
-            
-            triggerTurnBanner();
-            
-            if (mode === 'ai' && turn === 1) {
-                setTimeout(aiShoot, 1500);
-            }
-        }
+// apply the rules once everything has stopped
+function finishShot() {
+  const p = turn, q = 1 - p;
+  const mine = players[p].color, theirs = players[q].color;
+  const queen = coins.find(c => c.type === 'queen');
+  const own = sunk.filter(c => c.type === mine);
+  const opp = sunk.filter(c => c.type === theirs);
+  const gotQueen = sunk.includes(queen);
+  let again = false, note = '';
 
-        function triggerTurnBanner() {
-            const banner = document.getElementById('turn-banner');
-            const name = turn === 1 ? p1Name : p2Name;
-            banner.innerHTML = `🎯 ${name}'s Turn`;
-            banner.classList.add('show');
-            setTimeout(() => banner.classList.remove('show'), 2000);
-        }
+  if (sunk.some(c => c.type === 'striker')) {
+    own.forEach(returnToCentre);
+    const penalty = coins.find(c => !c.on && c.type === mine);
+    if (penalty) returnToCentre(penalty);
+    if (gotQueen || queenPending === p) { returnToCentre(queen); queenPending = null; }
+    note = penalty ? 'Foul! A coin came back' : 'Foul! Striker pocketed';
+  } else {
+    if (gotQueen) {
+      if (own.length) { queenOwner = p; note = 'Queen covered!'; }
+      else { queenPending = p; note = 'Now cover the Queen!'; }
+      again = true;
+    } else if (queenPending === p) {
+      if (own.length) { queenOwner = p; note = 'Queen covered!'; }
+      else { returnToCentre(queen); note = 'Queen returned'; }
+      queenPending = null;
+    }
+    if (own.length) { again = true; note = note || 'Nice! Shoot again'; }
+  }
 
-        /* INPUT HANDLING */
-        canvas.addEventListener('mousedown', handleStart);
-        canvas.addEventListener('touchstart', handleStart, {passive: false});
-        canvas.addEventListener('mousemove', handleMove);
-        canvas.addEventListener('touchmove', handleMove, {passive: false});
-        canvas.addEventListener('mouseup', handleEnd);
-        canvas.addEventListener('touchend', handleEnd);
+  // nobody's last coin may go before the Queen is covered
+  if (queenOwner === null) {
+    for (const [color, list] of [[mine, own], [theirs, opp]]) {
+      if (remaining(color) === 0 && list.length) {
+        returnToCentre(list[0]);
+        note = 'Cover the Queen before the last coin';
+        if (color === mine) again = queenPending === p;
+      }
+    }
+  }
 
-        function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return {
-                x: (clientX - rect.left) * (W / rect.width),
-                y: (clientY - rect.top) * (H / rect.height)
-            };
-        }
+  sunk = [];
+  if (queenOwner !== null) {
+    const winner = remaining(mine) === 0 ? p : remaining(theirs) === 0 ? q : null;
+    if (winner !== null) return finishGame(winner);
+  }
+  if (!again) turn = q;
+  startTurn(note);
+}
 
-        function handleStart(e) {
-            if (isMoving || (mode === 'ai' && turn === 1)) return;
-            e.preventDefault();
-            const pos = getPos(e);
-            
-            // Check if touching near striker
-            const dist = Math.hypot(pos.x - striker.x, pos.y - striker.y);
-            if (dist < STRIKER_RADIUS * 2) {
-                isAiming = true;
-                aimStart = { x: striker.x, y: striker.y };
-                aimEnd = pos;
-            }
-        }
+function finishGame(winner) {
+  over = true; moving = false;
+  message = 'Game over';
+  updatePanels(); draw();
+  $('endIcon').textContent = isAI(winner) ? '🤖' : '🏆';
+  $('endTitle').textContent = `${players[winner].name} wins!`;
+  $('endReason').textContent = `All ${players[winner].color} coins pocketed`;
+  later(() => { $('endOverlay').hidden = false; }, 700);
+}
 
-        function handleMove(e) {
-            if (!isAiming) return;
-            e.preventDefault();
-            aimEnd = getPos(e);
-        }
+/* ═════════ Loop (only runs while something moves) ═════════ */
+let frame = 0, last = 0, pile = 0;
+const STEP = 1000 / 60;
 
-        function handleEnd(e) {
-            if (!isAiming) return;
-            e.preventDefault();
-            isAiming = false;
-            
-            // Calculate vector (pull back)
-            const dx = aimStart.x - aimEnd.x;
-            const dy = aimStart.y - aimEnd.y;
-            const power = Math.min(Math.hypot(dx, dy), 150); // Max power cap
-            
-            if (power > 10) { // Minimum threshold
-                const angle = Math.atan2(dy, dx);
-                striker.vx = Math.cos(angle) * (power * 0.15);
-                striker.vy = Math.sin(angle) * (power * 0.15);
-                isMoving = true;
-            }
-        }
+function tick() {
+  const before = sunk.length;
+  const still = physics([striker, ...coins], sunk);
+  for (const b of sunk.slice(before)) effects.push({ body: b, life: 1 });
+  if (!still) { moving = false; finishShot(); }
+}
 
-        /* AI LOGIC */
-        function aiShoot() {
-            if (turn !== 1) return;
-            
-            // Simple AI: Find the nearest black coin and aim at it
-            let target = null;
-            let minDist = Infinity;
-            coins.forEach(c => {
-                if (c.active && c.type === 'black') {
-                    const d = Math.hypot(c.x - striker.x, c.y - striker.y);
-                    if (d < minDist) { minDist = d; target = c; }
-                }
-            });
+function run() {
+  if (frame) return;
+  last = performance.now(); pile = 0;
+  frame = requestAnimationFrame(loop);
+}
+function loop(now) {
+  pile += Math.min(100, now - last); last = now;   // same speed on 60 Hz and 120 Hz screens
+  while (pile >= STEP) {
+    pile -= STEP;
+    if (moving) tick();
+    effects.forEach(e => e.life -= 0.07);
+    effects = effects.filter(e => e.life > 0);
+  }
+  draw();
+  frame = moving || effects.length ? requestAnimationFrame(loop) : 0;
+}
 
-            if (target) {
-                const dx = target.x - striker.x;
-                const dy = target.y - striker.y;
-                const angle = Math.atan2(dy, dx) + (Math.random() * 0.2 - 0.1); // Add slight inaccuracy
-                const power = 10 + Math.random() * 5; // Random power
-                
-                striker.vx = Math.cos(angle) * power;
-                striker.vy = Math.sin(angle) * power;
-                isMoving = true;
-            } else {
-                nextTurn(); // No targets left
-            }
-        }
+/* ═════════ Drawing ═════════ */
+const canvas = $('board');
+const SCALE = Math.min(2, window.devicePixelRatio || 1);
+canvas.width = canvas.height = SIZE * SCALE;
+const ctx = canvas.getContext('2d');
+ctx.scale(SCALE, SCALE);
 
-        /* PHYSICS ENGINE */
-        function gameLoop() {
-            updatePhysics();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
+function circle(g, x, y, r, fill, stroke, width = 2) {
+  g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2);
+  if (fill) { g.fillStyle = fill; g.fill(); }
+  if (stroke) { g.strokeStyle = stroke; g.lineWidth = width; g.stroke(); }
+}
 
-        function updatePhysics() {
-            if (!isMoving) return;
-            
-            let activeBodies = 0;
+// the empty board is drawn once and reused
+const background = document.createElement('canvas');
+(function paintBoard() {
+  background.width = background.height = SIZE * SCALE;
+  const g = background.getContext('2d');
+  g.scale(SCALE, SCALE);
+  g.fillStyle = '#d7ecfc'; g.fillRect(0, 0, SIZE, SIZE);
+  g.strokeStyle = '#5fa8e0'; g.lineWidth = 2; g.strokeRect(64, 64, SIZE - 128, SIZE - 128);
 
-            // Move Striker
-            striker.x += striker.vx;
-            striker.y += striker.vy;
-            striker.vx *= FRICTION;
-            striker.vy *= FRICTION;
-            if (Math.hypot(striker.vx, striker.vy) > MIN_SPEED) activeBodies++;
+  for (let side = 0; side < 4; side++) {            // baselines on all four sides
+    g.save(); g.translate(300, 300); g.rotate(side * Math.PI / 2); g.translate(-300, -300);
+    g.fillStyle = '#fff'; g.strokeStyle = '#3f86c4'; g.lineWidth = 2;
+    g.beginPath(); g.rect(BASE_MIN, BASE_BOTTOM - 14, BASE_MAX - BASE_MIN, 28); g.fill(); g.stroke();
+    for (const x of [BASE_MIN, BASE_MAX]) { circle(g, x, BASE_BOTTOM, 15, '#aed6f6', '#3f86c4'); circle(g, x, BASE_BOTTOM, 7, '#ef4444'); }
+    g.restore();
+  }
+  for (const [px, py] of POCKETS) {                 // diagonal guide lines
+    const dx = Math.sign(300 - px), dy = Math.sign(300 - py);
+    g.beginPath(); g.moveTo(px + dx * 34, py + dy * 34); g.lineTo(px + dx * 138, py + dy * 138);
+    g.strokeStyle = '#3f86c4'; g.lineWidth = 2; g.stroke();
+    circle(g, px + dx * 138, py + dy * 138, 6, '#fff', '#3f86c4');
+  }
+  circle(g, 300, 300, 88, '#fff', '#3f86c4', 3);
+  for (let i = 0; i < 8; i++) {                     // centre star
+    const a = i * Math.PI / 4;
+    g.beginPath(); g.moveTo(300, 300);
+    g.lineTo(300 + Math.cos(a - 0.32) * 40, 300 + Math.sin(a - 0.32) * 40);
+    g.lineTo(300 + Math.cos(a) * 82, 300 + Math.sin(a) * 82);
+    g.lineTo(300 + Math.cos(a + 0.32) * 40, 300 + Math.sin(a + 0.32) * 40);
+    g.fillStyle = i % 2 ? '#d7ecfc' : '#aed6f6'; g.fill();
+  }
+  circle(g, 300, 300, 17, null, '#ef4444', 2);
+  for (const [px, py] of POCKETS) { circle(g, px, py, POCKET_R, '#3f86c4'); circle(g, px, py, POCKET_R - 5, '#08182c'); }
+})();
 
-            // Move Coins
-            coins.forEach(c => {
-                if (!c.active) return;
-                c.x += c.vx;
-                c.y += c.vy;
-                c.vx *= FRICTION;
-                c.vy *= FRICTION;
-                if (Math.hypot(c.vx, c.vy) > MIN_SPEED) activeBodies++;
-            });
+const LOOK = {
+  white: ['#ffffff', '#0d2b4e', '#aebfd3'],
+  black: ['#0d2b4e', '#02101f', '#5b7ca6'],
+  queen: ['#ef4444', '#991b1b', '#fecaca'],
+  striker: ['#123cf3', '#ffffff', '#aed6f6']
+};
+function piece(b, x = b.x, y = b.y, scale = 1) {
+  const [fill, edge, ring] = LOOK[b.type], r = b.r * scale;
+  circle(ctx, x + 1.5, y + 3, r, 'rgba(13,43,78,.22)');
+  circle(ctx, x, y, r - 1, fill, edge);
+  circle(ctx, x, y, r * 0.62, null, ring);
+  circle(ctx, x, y, r * 0.22, ring);
+}
 
-            // Check Wall Collisions
-            const checkWall = (obj) => {
-                if (obj.x - obj.radius < 0) { obj.x = obj.radius; obj.vx *= -0.8; }
-                if (obj.x + obj.radius > W) { obj.x = W - obj.radius; obj.vx *= -0.8; }
-                if (obj.y - obj.radius < 0) { obj.y = obj.radius; obj.vy *= -0.8; }
-                if (obj.y + obj.radius > H) { obj.y = H - obj.radius; obj.vy *= -0.8; }
-            };
-            
-            checkWall(striker);
-            coins.forEach(c => { if(c.active) checkWall(c); });
+// dashed guide: where the striker travels and what it hits first
+function guide() {
+  const dx = Math.cos(aim.angle), dy = Math.sin(aim.angle);
+  let reach = 900, target = null;
+  if (dx) reach = Math.min(reach, ((dx > 0 ? SIZE - STRIKER_R : STRIKER_R) - striker.x) / dx);
+  if (dy) reach = Math.min(reach, ((dy > 0 ? SIZE - STRIKER_R : STRIKER_R) - striker.y) / dy);
+  for (const c of coins) {
+    if (!c.on) continue;
+    const ox = c.x - striker.x, oy = c.y - striker.y, along = ox * dx + oy * dy;
+    const off = ox * ox + oy * oy - along * along, min = (STRIKER_R + COIN_R) ** 2;
+    if (along <= 0 || off >= min) continue;
+    const t = along - Math.sqrt(min - off);
+    if (t < reach) { reach = t; target = c; }
+  }
+  const x = striker.x + dx * reach, y = striker.y + dy * reach;
+  ctx.setLineDash([9, 8]);
+  ctx.beginPath(); ctx.moveTo(striker.x, striker.y); ctx.lineTo(x, y);
+  ctx.strokeStyle = '#123cf3'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.setLineDash([]);
+  circle(ctx, x, y, STRIKER_R, 'rgba(18,60,243,.1)', '#123cf3');
+  if (target) {
+    const nx = target.x - x, ny = target.y - y, n = Math.hypot(nx, ny);
+    ctx.beginPath(); ctx.moveTo(target.x, target.y); ctx.lineTo(target.x + nx / n * 55, target.y + ny / n * 55);
+    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+  }
+  // power ring
+  ctx.beginPath();
+  ctx.arc(striker.x, striker.y, STRIKER_R + 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * aim.power);
+  ctx.strokeStyle = aim.power > 0.75 ? '#ef4444' : aim.power > 0.4 ? '#f59e0b' : '#16a34a';
+  ctx.lineWidth = 6; ctx.stroke();
+}
 
-            // Check Collisions (Striker vs Coins, Coin vs Coin)
-            const collide = (a, b) => {
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
-                const dist = Math.hypot(dx, dy);
-                
-                if (dist < a.radius + b.radius) {
-                    const angle = Math.atan2(dy, dx);
-                    const overlap = (a.radius + b.radius) - dist;
-                    
-                    // Separate
-                    a.x -= Math.cos(angle) * overlap/2;
-                    a.y -= Math.sin(angle) * overlap/2;
-                    b.x += Math.cos(angle) * overlap/2;
-                    b.y += Math.sin(angle) * overlap/2;
+function draw() {
+  ctx.drawImage(background, 0, 0, SIZE, SIZE);
+  coins.forEach(c => { if (c.on) piece(c); });
+  effects.forEach(e => {
+    const [px, py] = POCKETS.reduce((a, b) => Math.hypot(e.body.x - a[0], e.body.y - a[1]) < Math.hypot(e.body.x - b[0], e.body.y - b[1]) ? a : b);
+    piece(e.body, px, py, e.life);
+  });
+  if (!over && striker.on) {
+    if (aim) guide();
+    else if (!moving) circle(ctx, striker.x, striker.y, STRIKER_R + 6, null, 'rgba(18,60,243,.45)', 3);
+    piece(striker);
+  }
+}
 
-                    // Elastic collision (simplified equal mass for coins, striker is heavier)
-                    const nx = dx / dist;
-                    const ny = dy / dist;
-                    
-                    const p = 2 * (a.vx * nx + a.vy * ny - b.vx * nx - b.vy * ny) / 2;
-                    
-                    a.vx -= p * nx; a.vy -= p * ny;
-                    b.vx += p * nx; b.vy += p * ny;
-                }
-            };
+/* ═════════ Aiming ═════════ */
+let drag = null;
+const point = e => {
+  const rect = canvas.getBoundingClientRect();
+  return { x: (e.clientX - rect.left) * SIZE / rect.width, y: (e.clientY - rect.top) * SIZE / rect.height };
+};
+const canShoot = () => players.length && !moving && !over && !isAI(turn);
 
-            coins.forEach((c, i) => {
-                if (!c.active) return;
-                collide(striker, c);
-                for (let j = i + 1; j < coins.length; j++) {
-                    if (coins[j].active) collide(c, coins[j]);
-                }
-            });
+canvas.addEventListener('pointerdown', e => {
+  if (!canShoot() || drag) return;
+  drag = { id: e.pointerId, start: point(e) };
+  try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+});
+canvas.addEventListener('pointermove', e => {
+  if (!drag || e.pointerId !== drag.id || !canShoot()) return;
+  const now = point(e), dx = drag.start.x - now.x, dy = drag.start.y - now.y, length = Math.hypot(dx, dy);
+  aim = length < 20 ? null : { angle: Math.atan2(dy, dx), power: Math.min(1, (length - 20) / 180) };
+  draw();
+});
+canvas.addEventListener('pointerup', e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  drag = null;
+  if (aim && canShoot()) fire(aim.angle, aim.power);
+  else { aim = null; draw(); }
+});
+canvas.addEventListener('pointercancel', () => { drag = null; aim = null; draw(); });
 
-            // Check Pockets
-            const checkPocket = (obj) => {
-                POCKETS.forEach(p => {
-                    if (Math.hypot(obj.x - p.x, obj.y - p.y) < POCKET_RADIUS) {
-                        return true;
-                    }
-                });
-                return false;
-            };
+/* ═════════ Panels ═════════ */
+const panelOf = p => $(p === bottom ? 'bottomPanel' : 'topPanel');
 
-            if (checkPocket(striker)) {
-                // Striker pocketed (foul) - reset striker, next turn
-                striker.x = -100; striker.y = -100; // Hide it
-                setTimeout(nextTurn, 1000);
-                isMoving = false;
-            }
+function buildPanels() {
+  drag = null;
+  players.forEach((player, p) => {
+    const el = panelOf(p);
+    el.innerHTML = `<div class="row">
+        <div class="disc ${player.color}"></div>
+        <div class="who"><div class="pname"></div><div class="msg"></div></div>
+        <span class="queen" hidden>QUEEN</span>
+        <div class="left"><b></b><small>left</small></div>
+      </div>
+      <input type="range" min="${BASE_MIN}" max="${BASE_MAX}" value="300" aria-label="Striker position">`;
+    el.querySelector('.pname').textContent = player.name;
+    el.querySelector('input').addEventListener('input', e => {
+      if (p !== turn || !canShoot()) return;
+      const v = Number(e.target.value);
+      placeStriker(turnedAround(p) ? SIZE - v : v);
+      aim = null;
+      draw();
+    });
+  });
+}
 
-            coins.forEach(c => {
-                if (c.active && checkPocket(c)) {
-                    c.active = false;
-                    if (c.type === 'black') { p1Score--; }
-                    if (c.type === 'white') { p2Score--; }
-                    updateScores();
-                    
-                    if (p1Score === 0) triggerWin(p1Name);
-                    if (p2Score === 0) triggerWin(p2Name);
-                }
-            });
+function updatePanels(reset) {
+  players.forEach((player, p) => {
+    const el = panelOf(p), active = p === turn && !over;
+    el.className = 'panel' + (active ? ' turn' : '') + (turnedAround(p) ? ' rot' : '');
+    el.querySelector('.left b').textContent = remaining(player.color);
+    el.querySelector('.queen').hidden = !(queenOwner === p || queenPending === p);
+    el.querySelector('.queen').textContent = queenPending === p ? 'COVER IT' : 'QUEEN';
+    el.querySelector('.msg').textContent = over ? 'Game over'
+      : !active ? 'Waiting'
+      : moving ? 'Shooting...'
+      : player.ai ? (message ? message + ' · ' : '') + 'Thinking...'
+      : message || 'Slide, then pull back to shoot';
+    const slider = el.querySelector('input');
+    slider.disabled = !active || moving || player.ai;
+    if (reset) slider.value = active ? (turnedAround(p) ? SIZE - striker.x : striker.x) : 300;
+  });
+}
 
-            // Stop moving if everything is slow
-            if (activeBodies === 0) {
-                isMoving = false;
-                setTimeout(nextTurn, 500);
-            }
-        }
+function switchSides() {
+  if (moving) return;
+  stopTimers();
+  bottom = 1 - bottom;
+  buildPanels();
+  if (over) { updatePanels(); draw(); $('endOverlay').hidden = false; }
+  else startTurn(message);
+}
+function askRestart() { if (over || confirm('Restart this game?')) newGame(); }
+function askLeave() {
+  if (!over && !confirm('Leave this game?')) return;
+  stopTimers(); moving = false; drag = null;
+  cancelAnimationFrame(frame); frame = 0;
+  $('endOverlay').hidden = true;
+  show('setup');
+}
 
-        function nextTurn() {
-            turn = turn === 1 ? 2 : 1;
-            startTurn();
-        }
+/* ═════════ Computer player: tries many shots in a practice copy ═════════ */
+function trial(x, y, angle, power) {
+  const bodies = [makeBody('striker', x, y), ...coins.map(c => Object.assign({}, c))];
+  const speed = 3 + power * 24, down = [];
+  bodies[0].vx = Math.cos(angle) * speed; bodies[0].vy = Math.sin(angle) * speed;
+  for (let i = 0; i < 600 && physics(bodies, down); i++);
+  const mine = players[turn].color;
+  let score = 0;
+  for (const b of down) {
+    if (b.type === 'striker') score -= 250;
+    else if (b.type === mine) score += 100;
+    else if (b.type === 'queen') score += 50;
+    else score -= 70;
+  }
+  if (queenOwner === null && !bodies.some(b => b.on && b.type === mine)) score -= 150;
+  // small reward for moving own coins nearer to pockets
+  const near = b => Math.min(...POCKETS.map(([px, py]) => Math.hypot(b.x - px, b.y - py)));
+  bodies.slice(1).forEach((b, i) => { if (b.on && coins[i].on && b.type === mine) score += (near(coins[i]) - near(b)) * 0.08; });
+  return score;
+}
 
-        /* RENDERING */
-        function draw() {
-            ctx.clearRect(0, 0, W, H);
+function chooseShot() {
+  const y = baseY(turn), mine = players[turn].color;
+  const targets = coins.filter(c => c.on && (c.type === mine || c.type === 'queen'));
+  const ideas = [];
+  for (let x = BASE_MIN; x <= BASE_MAX; x += 30) {
+    if (overlaps(x, y, STRIKER_R, coins)) continue;
+    for (const c of targets) {
+      for (const [px, py] of POCKETS) {
+        const d = Math.hypot(px - c.x, py - c.y), ux = (px - c.x) / d, uy = (py - c.y) / d;
+        const gx = c.x - ux * (STRIKER_R + COIN_R - 2), gy = c.y - uy * (STRIKER_R + COIN_R - 2);
+        const len = Math.hypot(gx - x, gy - y);
+        const cut = ((gx - x) * ux + (gy - y) * uy) / len;
+        if (cut > 0.3) ideas.push({ x, angle: Math.atan2(gy - y, gx - x), rank: cut * 2 - (len + d) / 500 });
+      }
+    }
+  }
+  ideas.sort((a, b) => b.rank - a.rank);
+  const shots = [];
+  ideas.slice(0, 28).forEach(i => [0.4, 0.65].forEach(power => shots.push({ x: i.x, angle: i.angle, power })));
+  targets.forEach(c => { const x = freeX(c.x, y); shots.push({ x, angle: Math.atan2(c.y - y, c.x - x), power: 0.9 }); });
+  let best = null;
+  for (const shot of shots) {
+    const score = trial(shot.x, y, shot.angle, shot.power) + Math.random() * 4;
+    if (!best || score > best.score) best = Object.assign({ score }, shot);
+  }
+  if (!best) { const x = freeX(300, y); best = { x, angle: Math.atan2(300 - y, 300 - x), power: 0.8 }; }
+  const wobble = level === 'easy' ? 0.09 : 0.015;
+  best.angle += (Math.random() - 0.5) * wobble * 2;
+  return best;
+}
 
-            // Draw Board background
-            ctx.fillStyle = '#e6c28f';
-            ctx.fillRect(0, 0, W, H);
+function computerTurn() {
+  if (over || moving || !isAI(turn)) return;
+  const shot = chooseShot();
+  placeStriker(shot.x);
+  aim = { angle: shot.angle, power: shot.power };
+  panelOf(turn).querySelector('input').value = striker.x;
+  draw();
+  later(() => fire(shot.angle, shot.power), 700);
+}
 
-            // Draw Lines
-            ctx.strokeStyle = '#8b5a2b';
-            ctx.lineWidth = 4;
-            
-            // Outer border
-            ctx.strokeRect(20, 20, W - 40, H - 40);
-            
-            // Center circles
-            ctx.beginPath();
-            ctx.arc(W/2, H/2, 120, 0, Math.PI*2);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(W/2, H/2, 40, 0, Math.PI*2);
-            ctx.stroke();
+/* ═════════ Roll keypad ═════════ */
+let roll = '', checking = false;
+['1','2','3','4','5','6','7','8','9','del','0','ok'].forEach(k => {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'key' + (k === 'del' || k === 'ok' ? ' ' + k : '');
+  btn.dataset.k = k;
+  btn.textContent = k === 'del' ? '⌫' : k === 'ok' ? 'OK' : k;
+  btn.onclick = () => press(k);
+  $('keypad').appendChild(btn);
+});
 
-            // Draw Pockets
-            POCKETS.forEach(p => {
-                ctx.fillStyle = '#1e293b';
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, POCKET_RADIUS, 0, Math.PI*2);
-                ctx.fill();
-                // Inner shadow
-                ctx.fillStyle = '#0f172a';
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, POCKET_RADIUS - 5, 0, Math.PI*2);
-                ctx.fill();
-            });
-
-            // Draw Coins
-            coins.forEach(c => {
-                if (!c.active) return;
-                ctx.beginPath();
-                ctx.arc(c.x, c.y, c.radius, 0, Math.PI*2);
-                
-                if (c.type === 'black') {
-                    ctx.fillStyle = '#334155'; ctx.fill();
-                    ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2; ctx.stroke();
-                } else if (c.type === 'white') {
-                    ctx.fillStyle = '#f8fafc'; ctx.fill();
-                    ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2; ctx.stroke();
-                } else if (c.type === 'queen') {
-                    ctx.fillStyle = '#ef4444'; ctx.fill();
-                    ctx.strokeStyle = '#b91c1c'; ctx.lineWidth = 2; ctx.stroke();
-                }
-                
-                // Add a little highlight
-                ctx.beginPath();
-                ctx.arc(c.x - c.radius*0.3, c.y - c.radius*0.3, c.radius*0.2, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(255,255,255,0.4)';
-                ctx.fill();
-            });
-
-            // Draw Striker (if active)
-            if (striker.x > 0 && striker.y > 0) {
-                ctx.beginPath();
-                ctx.arc(striker.x, striker.y, striker.radius, 0, Math.PI*2);
-                ctx.fillStyle = turn === 1 ? '#ef4444' : '#3b82f6'; 
-                ctx.fill();
-                ctx.strokeStyle = turn === 1 ? '#b91c1c' : '#1d4ed8';
-                ctx.lineWidth = 3;
-                ctx.stroke();
-                
-                // Highlight
-                ctx.beginPath();
-                ctx.arc(striker.x - striker.radius*0.3, striker.y - striker.radius*0.3, striker.radius*0.2, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(255,255,255,0.4)';
-                ctx.fill();
-            }
-
-            // Draw Aiming Line
-            if (isAiming) {
-                ctx.beginPath();
-                ctx.moveTo(aimStart.x, aimStart.y);
-                ctx.lineTo(aimEnd.x, aimEnd.y);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.setLineDash([5, 5]);
-                ctx.lineWidth = 3;
-                ctx.stroke();
-                ctx.setLineDash([]); // reset
-
-                // Draw power arc
-                const dx = aimStart.x - aimEnd.x;
-                const dy = aimStart.y - aimEnd.y;
-                const dist = Math.min(Math.hypot(dx, dy), 150);
-                const powerPercent = dist / 150;
-                
-                ctx.beginPath();
-                ctx.arc(striker.x, striker.y, STRIKER_RADIUS + 10, -Math.PI/2, -Math.PI/2 + (Math.PI*2 * powerPercent));
-                ctx.strokeStyle = powerPercent > 0.7 ? '#ef4444' : '#22c55e';
-                ctx.lineWidth = 4;
-                ctx.stroke();
-            }
-        }
-
-        function triggerWin(winnerName) {
-            cancelAnimationFrame(gameLoop);
-            document.getElementById('win-text').innerText = `${winnerName} Wins!`;
-            document.getElementById('win-overlay').classList.add('active');
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 4000);
-        }
-    </script>
+function drawRoll() {
+  const shown = roll ? roll.padStart(3, '0') : '';
+  [...$('boxes').children].forEach((box, i) => {
+    box.textContent = shown[i] || '';
+    box.className = !roll ? '' : i >= 3 - roll.length ? 'typed' : 'ghosted';
+  });
+}
+function fail(msg, id = 'err') { $(id).textContent = msg; $(id).hidden = false; }
+function openFriend() {
+  roll = ''; checking = false; drawRoll();
+  $('step1').hidden = false; $('step2').hidden = true;
+  $('err').hidden = true; $('err2').hidden = true;
+  $('keypad').classList.remove('busy');
+  show('friend');
+}
+function press(k) {
+  if (checking) return;
+  if (k === 'ok') return submitRoll();
+  $('err').hidden = true;
+  if (k === 'del') roll = roll.slice(0, -1);
+  else if (roll.length < 3) roll += k;
+  drawRoll();
+}
+async function submitRoll() {
+  if (!roll) return fail('Enter a roll number');
+  const value = roll.padStart(3, '0');
+  if (value === '138') { $('step1').hidden = true; $('step2').hidden = false; return; }
+  if (typeof studentsReady === 'undefined') return fail('students.js is missing. Upload it next to carrom.html');
+  checking = true; $('keypad').classList.add('busy');
+  await studentsReady;
+  checking = false; $('keypad').classList.remove('busy');
+  if (!$('friend').classList.contains('active')) return;
+  if (!Object.keys(STUDENTS).length) return fail('Cannot load students.json (' + studentsError + ')');
+  const name = STUDENTS[value];
+  if (!name) return fail('Roll not found!');
+  if (value === me.roll) return fail("That's you! Pick a friend.");
+  startFriend(name);
+}
+function pickShared(name) {
+  if (me.roll === '138' && me.name === name) return fail("That's you! Pick the other one.", 'err2');
+  startFriend(name);
+}
+document.addEventListener('keydown', e => {
+  if (!$('friend').classList.contains('active') || !$('step2').hidden) return;
+  if (/^[0-9]$/.test(e.key)) press(e.key);
+  else if (e.key === 'Backspace') press('del');
+  else if (e.key === 'Enter') { e.preventDefault(); press('ok'); }
+});
+</script>
 </body>
 </html>
