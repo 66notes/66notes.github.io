@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinned Events Builder — 66Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg: #f4f7fc; --surface: #ffffff; --border: #eef2f6; --border-strong: #e0e5ec;
+            --text: #1e2a3e; --text-secondary: #6b7280; --text-muted: #9ca3af;
+            --navy: #0d2b4e; --accent: #123cf3; --accent-light: #eef2ff;
+            --green: #22c55e; --red: #dc2626; --amber: #f59e0b;
+            --radius-sm: 8px; --radius: 12px; --radius-lg: 16px;
+            --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+            --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg); color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh; line-height: 1.5;
+            padding: 20px 14px 60px;
+        }
+
+        .header { max-width: 1180px; margin: 0 auto 16px; }
+        .header h1 { font-size: 1.4rem; font-weight: 700; color: var(--navy); }
+        .header h1 span { color: var(--accent); }
+        .header p { font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; }
+
+        /* Status banner */
+        .status-banner {
+            max-width: 1180px; margin: 0 auto 16px;
+            padding: 12px 16px; border-radius: var(--radius);
+            font-size: 0.82rem; font-weight: 500;
+            display: flex; align-items: flex-start; gap: 10px;
+            border: 1px solid transparent;
+        }
+        .status-banner.hidden { display: none; }
+        .status-banner i { flex-shrink: 0; margin-top: 2px; }
+        .status-banner.info { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+        .status-banner.warn { background: #fff7ed; border-color: #fed7aa; color: #7c2d12; }
+        .status-banner.danger { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+        .status-banner.success { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+        .status-banner strong { font-weight: 700; }
+        .status-banner code { background: rgba(0,0,0,0.06); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; }
+        .status-banner button {
+            background: none; border: none; cursor: pointer; color: inherit;
+            font-family: inherit; font-size: 0.75rem; font-weight: 700;
+            text-decoration: underline; padding: 0; flex-shrink: 0;
+        }
+
+        .layout { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 16px; }
+        @media (min-width: 900px) {
+            .layout { grid-template-columns: 1.15fr 1fr; align-items: start; }
+            .output-col { position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px; }
+        }
+
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow);
+            padding: 18px 18px 20px; margin-bottom: 16px;
+        }
+        .card:last-child { margin-bottom: 0; }
+        .card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 10px; padding-bottom: 10px; margin-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .card-header h2 {
+            font-size: 0.95rem; font-weight: 700; color: var(--navy);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card-header h2 i { color: var(--accent); font-size: 0.9rem; }
+        .card-header .count {
+            font-size: 0.7rem; font-weight: 700; background: var(--accent-light);
+            color: var(--accent); padding: 2px 10px; border-radius: 20px;
+        }
+
+        .field { margin-bottom: 12px; }
+        .field:last-child { margin-bottom: 0; }
+        .field > label {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: var(--text-secondary); margin-bottom: 4px;
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+        .field .req { color: var(--red); margin-left: 2px; }
+        .field .hint { font-size: 0.65rem; color: var(--text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 6px; }
+
+        input[type="text"], input[type="datetime-local"], input[type="color"],
+        select, textarea {
+            width: 100%; padding: 8px 10px; font-family: inherit; font-size: 0.82rem;
+            color: var(--text); background: #fafbfc;
+            border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(18, 60, 243, 0.1);
+            background: #fff;
+        }
+        input.invalid { border-color: var(--red); background: #fef2f2; }
+        textarea { resize: vertical; min-height: 70px; line-height: 1.4; }
+
+        .row { display: flex; gap: 8px; align-items: center; }
+        .row > * { flex: 1; }
+        .row > .fixed { flex: 0 0 auto; }
+        .row .sep { flex: 0 0 auto; font-size: 0.72rem; color: var(--text-muted); }
+
+        input[type="color"] {
+            width: 44px; height: 34px; padding: 2px; cursor: pointer;
+            border-radius: var(--radius-sm); background: #fff; flex: 0 0 44px;
+        }
+
+        .checkbox-row {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.78rem; color: var(--text); cursor: pointer;
+            padding: 4px 0;
+        }
+        .checkbox-row input[type="checkbox"] {
+            width: 16px; height: 16px; accent-color: var(--accent);
+            cursor: pointer; flex-shrink: 0;
+        }
+
+        .form-actions {
+            display: flex; gap: 8px; margin-top: 16px;
+            padding-top: 14px; border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 6px; padding: 8px 16px; font-family: inherit; font-size: 0.78rem;
+            font-weight: 600; border-radius: var(--radius-sm); border: none;
+            cursor: pointer; transition: background 0.15s, transform 0.05s;
+            min-height: 36px;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: var(--accent); color: #fff; flex: 1; }
+        .btn-primary:hover:not(:disabled) { background: #1032d9; }
+        .btn-secondary { background: #f3f4f6; color: #374151; }
+        .btn-secondary:hover { background: #e5e7eb; }
+        .btn-danger { background: #fee2e2; color: #991b1b; }
+        .btn-danger:hover { background: #fecaca; }
+        .btn-small { padding: 4px 10px; font-size: 0.7rem; min-height: 28px; }
+
+        .events-list {
+            display: flex; flex-direction: column; gap: 8px;
+            max-height: 360px; overflow-y: auto;
+            padding-right: 4px; margin-right: -4px;
+        }
+        .events-list::-webkit-scrollbar { width: 6px; }
+        .events-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+        .event-item {
+            display: flex; gap: 10px; align-items: flex-start;
+            padding: 10px 12px; background: #fafbfc;
+            border: 1px solid var(--border); border-radius: var(--radius);
+            transition: border-color 0.15s;
+        }
+        .event-item:hover { border-color: var(--border-strong); }
+        .event-item.invalid { border-color: var(--red); background: #fef2f2; }
+        .event-item-main { flex: 1; min-width: 0; }
+        .event-item-title { font-size: 0.82rem; font-weight: 700; color: var(--text); word-break: break-word; }
+        .event-item-meta { font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; }
+        .event-item-warn { font-size: 0.68rem; color: var(--red); margin-top: 4px; font-weight: 600; }
+        .event-item-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+        .badge {
+            font-size: 0.55rem; font-weight: 700; padding: 2px 7px;
+            border-radius: 20px; text-transform: uppercase; letter-spacing: 0.03em;
+            background: #e5e7eb; color: #374151;
+        }
+        .badge.range { background: #fef3c7; color: #92400e; }
+        .badge.tba { background: #ede9fe; color: #5b21b6; }
+        .badge.auto { background: #dbeafe; color: #1e40af; }
+        .badge.explicit { background: #d1fae5; color: #065f46; }
+        .badge.none { background: #f3f4f6; color: #4b5563; }
+        .badge.process { background: #fce7f3; color: #9d174d; }
+        .badge.course { background: #e0e7ff; color: #3730a3; }
+        .badge.lost { background: #fee2e2; color: #991b1b; }
+
+        .event-item-actions { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+        .icon-btn {
+            width: 28px; height: 28px; border-radius: 6px; border: none;
+            background: #f3f4f6; color: #4b5563; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; transition: background 0.15s;
+        }
+        .icon-btn:hover { background: #e5e7eb; }
+        .icon-btn.danger { color: #991b1b; }
+        .icon-btn.danger:hover { background: #fee2e2; }
+
+        .empty-state {
+            text-align: center; padding: 24px 12px;
+            color: var(--text-muted); font-size: 0.8rem;
+        }
+
+        .json-preview {
+            background: #0f172a; color: #e2e8f0;
+            padding: 14px; border-radius: var(--radius);
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Courier New', monospace;
+            font-size: 0.72rem; line-height: 1.55;
+            max-height: 320px; overflow: auto;
+            white-space: pre; word-break: break-all;
+            tab-size: 2;
+        }
+        .json-preview::-webkit-scrollbar { width: 8px; height: 8px; }
+        .json-preview::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        .output-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .output-actions .btn { flex: 1; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; align-items: center; justify-content: center;
+            z-index: 100; padding: 16px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--surface); border-radius: var(--radius-lg);
+            max-width: 720px; width: 100%; max-height: 85vh;
+            display: flex; flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px; border-bottom: 1px solid var(--border);
+        }
+        .modal-header h2 { font-size: 1rem; color: var(--navy); font-weight: 700; }
+        .modal-close {
+            background: #f3f4f6; border: none; width: 30px; height: 30px;
+            border-radius: 50%; cursor: pointer; font-size: 0.9rem; color: #4b5563;
+        }
+        .modal-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
+        .modal-body textarea {
+            width: 100%; min-height: 320px; font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.72rem; line-height: 1.5; background: #f8fafc;
+        }
+        .modal-footer {
+            padding: 12px 20px 16px; display: flex; gap: 8px; justify-content: flex-end;
+            border-top: 1px solid var(--border);
+        }
+        .error-text { color: var(--red); font-size: 0.72rem; margin-top: 6px; font-weight: 600; }
+        .success-text { color: var(--green); font-size: 0.72rem; margin-top: 6px; font-weight: 600; }
+
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+            background: #1e2a3e; color: #fff; padding: 10px 20px;
+            border-radius: 30px; font-size: 0.78rem; font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+            z-index: 200; pointer-events: none; max-width: 90vw; text-align: center;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.warn { background: #b45309; }
+        .toast.error { background: #991b1b; }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b0e14; --surface: #151a22; --border: #222a35; --border-strong: #313b4c;
+                --text: #f0f4f8; --text-secondary: #8b98a5; --text-muted: #5c6a7a;
+                --navy: #e2e8f0; --accent: #3b6cff; --accent-light: #1e2638;
+            }
+            input, select, textarea { background: #0f131a !important; color: var(--text) !important; }
+            input:focus, select:focus, textarea:focus { background: #0f131a !important; }
+            .event-item { background: #0f131a; }
+            .event-item:hover { border-color: #3a4556; }
+            .btn-secondary { background: #222a35; color: #cbd5e1; }
+            .btn-secondary:hover { background: #2a3446; }
+            .icon-btn { background: #222a35; color: #cbd5e1; }
+            .icon-btn:hover { background: #2a3446; }
+            .icon-btn.danger:hover { background: #422006; }
+            .modal-close { background: #222a35; color: #cbd5e1; }
+            .btn-danger { background: #422006; color: #fcd34d; }
+            .modal-body textarea { background: #0f131a !important; }
+            .status-banner.info { background: #1e2638; border-color: #313b4c; color: #93c5fd; }
+            .status-banner.warn { background: #2a2419; border-color: #4a3a1a; color: #fcd34d; }
+            .status-banner.danger { background: #2a1414; border-color: #4a1a1a; color: #fca5a5; }
+            .status-banner.success { background: #142a19; border-color: #1a4a2a; color: #86efac; }
+            .event-item.invalid { background: #2a1414; }
+        }
+
+        @media (max-width: 500px) {
+            body { padding: 12px 10px 50px; }
+            .card { padding: 14px; }
+            .header h1 { font-size: 1.15rem; }
+            .row { flex-wrap: wrap; }
+            .row input[type="text"], .row select { flex: 1 1 calc(50% - 4px); }
+            .row .sep { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>66<span>Notes</span> · Pinned Events Builder</h1>
+        <p>Add / edit events → copy the JSON → paste into <code>pinned-events.json</code> on GitHub</p>
+    </div>
+
+    <div class="status-banner hidden" id="status-banner">
+        <i class="fas fa-info-circle" id="status-icon"></i>
+        <div style="flex:1" id="status-text"></div>
+        <button type="button" id="status-dismiss" style="display:none;">✕</button>
+    </div>
+
+    <div class="layout">
+
+        <div class="form-col">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-plus-circle"></i> <span id="formTitle">Add New Event</span></h2>
+                    <button type="button" class="btn btn-secondary btn-small" id="btn-new" hidden><i class="fas fa-times"></i> Cancel edit</button>
+                </div>
+
+                <div class="field">
+                    <label>Title <span class="req">*</span></label>
+                    <input type="text" id="f-title" placeholder="e.g., Math CT" maxlength="120" />
+                </div>
+
+                <div class="field">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="f-use-color" />
+                        Custom card color
+                    </label>
+                    <div class="row" id="color-row" style="display:none; margin-top:6px;">
+                        <input type="color" id="f-color" value="#166534" class="fixed" />
+                        <span style="font-size:0.72rem;color:var(--text-muted);flex:1;">Pick a color</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Date display <span class="hint">what shows on the card</span></label>
+                    <select id="f-date-mode">
+                        <option value="single">Single day (e.g., 02 Nov)</option>
+                        <option value="range">Date range (e.g., 09–12 Nov)</option>
+                        <option value="tba">Date TBA</option>
+                    </select>
+                </div>
+
+                <div class="field" id="date-single">
+                    <label>Day &amp; month</label>
+                    <div class="row">
+                        <input type="text" id="f-day" placeholder="02" maxlength="2" />
+                        <select id="f-month">
+                            <option value="">Month</option>
+                            <option>Jan</option><option>Feb</option><option>Mar</option>
+                            <option>Apr</option><option>May</option><option>Jun</option>
+                            <option>Jul</option><option>Aug</option><option>Sep</option>
+                            <option>Oct</option><option>Nov</option><option>Dec</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field" id="date-range" style="display:none;">
+                    <label>Start &amp; end day</label>
+                    <div class="row">
+                        <input type="text" id="f-start-day" placeholder="09" maxlength="2" />
+                        <select id="f-start-month">
+                            <option value="">Month</option>
+                            <option>Jan</option><option>Feb</option><option>Mar</option>
+                            <option>Apr</option><option>May</option><option>Jun</option>
+                            <option>Jul</option><option>Aug</option><option>Sep</option>
+                            <option>Oct</option><option>Nov</option><option>Dec</option>
+                        </select>
+                        <span class="sep">→</span>
+                        <input type="text" id="f-end-day" placeholder="12" maxlength="2" />
+                        <select id="f-end-month">
+                            <option value="">Month</option>
+                            <option>Jan</option><option>Feb</option><option>Mar</option>
+                            <option>Apr</option><option>May</option><option>Jun</option>
+                            <option>Jul</option><option>Aug</option><option>Sep</option>
+                            <option>Oct</option><option>Nov</option><option>Dec</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Start date <span class="hint">Bangladesh Time — powers "Running" / "Next" badge</span></label>
+                    <input type="datetime-local" id="f-start-date" step="60" />
+                </div>
+
+                <div class="field">
+                    <label>Expiry <span class="hint">when it stops showing</span></label>
+                    <select id="f-expiry-mode">
+                        <option value="explicit">Explicit date &amp; time</option>
+                        <option value="auto">Auto — end of a course's class</option>
+                        <option value="none">No expiry (show until removed)</option>
+                    </select>
+                </div>
+
+                <div class="field" id="expiry-explicit">
+                    <label>Expires at <span class="hint">Bangladesh Time</span></label>
+                    <input type="datetime-local" id="f-expires-at" step="60" />
+                </div>
+
+                <div class="field" id="expiry-auto" style="display:none;">
+                    <label>Course <span class="hint">e.g. MGT 1101 — expires when that class ends</span></label>
+                    <input type="text" id="f-course" list="course-list" placeholder="MGT 1101" />
+                    <datalist id="course-list">
+                        <option value="MGT 1101" />
+                        <option value="QUA 1101" />
+                        <option value="ECO 1101" />
+                    </datalist>
+                </div>
+
+                <div class="field">
+                    <label>Tags <span class="hint">comma separated — e.g. CT, Monday</span></label>
+                    <input type="text" id="f-tags" placeholder="CT, Monday" />
+                </div>
+
+                <div class="field">
+                    <label>Items <span class="hint">one per line — bullet points in the modal</span></label>
+                    <textarea id="f-items" rows="3" placeholder="Coordinate Geometry (1–8) type math&#10;Arithmetic Progression (1–10) type math"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>Note <span class="hint">optional — shown as a highlighted hint</span></label>
+                    <input type="text" id="f-note" placeholder="e.g., Check with faculty." />
+                </div>
+
+                <div class="field">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="f-process" />
+                        Mark as "process" (excluded from Next badge)
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" id="btn-add">
+                        <i class="fas fa-plus"></i> Add to list
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btn-clear">
+                        Clear form
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="output-col">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-thumbtack"></i> Events</h2>
+                    <span class="count" id="count-badge">0</span>
+                </div>
+                <div class="events-list" id="events-list">
+                    <div class="empty-state">No events yet. Fill the form on the left.</div>
+                </div>
+                <div class="output-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-import">
+                        <i class="fas fa-file-import"></i> Import JSON
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btn-reload" title="Re-fetch pinned-events.json">
+                        <i class="fas fa-rotate"></i> Reload
+                    </button>
+                    <button type="button" class="btn btn-danger" id="btn-clear-all">
+                        <i class="fas fa-trash"></i> Clear all
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-code"></i> JSON Output</h2>
+                    <span class="badge" id="json-status" style="display:none;"></span>
+                </div>
+                <pre class="json-preview" id="json-output">[]</pre>
+                <div class="output-actions">
+                    <button type="button" class="btn btn-primary" id="btn-copy">
+                        <i class="fas fa-copy"></i> Copy JSON
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btn-download">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="import-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>Import JSON</h2>
+                <button type="button" class="modal-close" id="import-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:10px;">
+                    Paste your existing <code>pinned-events.json</code> below. It will replace the current list.
+                </p>
+                <textarea id="import-textarea" placeholder='[ { "title": "Math CT", ... } ]'></textarea>
+                <div class="error-text" id="import-error"></div>
+                <div class="success-text" id="import-success"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="import-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="import-load">Load</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+    (function () {
+        'use strict';
+        const $ = id => document.getElementById(id);
+
+        let events = [];
+        let editingIndex = -1;
+
+        /* ═════════ STATUS BANNER ═════════ */
+        function showBanner(type, html, dismissible) {
+            const b = $('status-banner');
+            b.className = 'status-banner ' + type;
+            $('status-icon').className = 'fas ' + (type === 'danger' ? 'fa-exclamation-triangle' : type === 'warn' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle');
+            $('status-text').innerHTML = html;
+            $('status-dismiss').style.display = dismissible ? 'block' : 'none';
+            b.classList.remove('hidden');
+        }
+        $('status-dismiss').addEventListener('click', () => $('status-banner').classList.add('hidden'));
+
+        /* ═════════ HELPERS ═════════ */
+        // Robustly converts datetime-local value to ISO with +06:00.
+        // Handles "YYYY-MM-DDTHH:MM", "YYYY-MM-DDTHH:MM:SS", "YYYY-MM-DDTHH:MM:SS.sss"
+        function localToIso(v) {
+            if (!v) return '';
+            const m = String(v).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+            if (!m) return '';
+            return m[1] + 'T' + m[2] + ':' + m[3] + ':00+06:00';
+        }
+        function isoToLocal(iso) {
+            if (!iso) return '';
+            const m = String(iso).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+            if (!m) return '';
+            return m[1] + 'T' + m[2] + ':' + m[3];
+        }
+        function isValidDate(s) {
+            if (!s) return false;
+            const t = Date.parse(s);
+            return !isNaN(t);
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+            return new Promise((resolve, reject) => {
+                const ta = document.createElement('textarea');
+                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                try {
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    ok ? resolve() : reject(new Error('copy failed'));
+                } catch (err) { document.body.removeChild(ta); reject(err); }
+            });
+        }
+
+        function toast(msg, type) {
+            const t = $('toast');
+            t.textContent = msg;
+            t.className = 'toast show' + (type ? ' ' + type : '');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => { t.className = 'toast' + (type ? ' ' + type : ''); }, 2800);
+        }
+
+        /* ═════════ EVENT VALIDATION ═════════ */
+        // Checks whether an event has any field that would make it break in index.html
+        function validateEvent(ev) {
+            const issues = [];
+            if (!ev || typeof ev !== 'object') return ['Event is not an object'];
+
+            if (!ev.title || !String(ev.title).trim()) {
+                issues.push('Missing title');
+            }
+
+            // Date display: must have day OR startDay OR day === '?'
+            const hasDate = ev.day === '?' || (ev.day && ev.month) || (ev.startDay && ev.startMonth && ev.endDay);
+            if (!hasDate) issues.push('Missing date (day/month or startDay/endDay or "?" for TBA)');
+
+            // Start date: if present, must be valid ISO
+            if (ev.startDate && !isValidDate(ev.startDate)) {
+                issues.push('Invalid startDate: ' + ev.startDate);
+            }
+            if (ev.expiresAt && !isValidDate(ev.expiresAt)) {
+                issues.push('Invalid expiresAt: ' + ev.expiresAt);
+            }
+            if (ev.runFrom && !isValidDate(ev.runFrom)) {
+                issues.push('Invalid runFrom: ' + ev.runFrom);
+            }
+
+            return issues;
+        }
+
+        /* ═════════ CONDITIONAL FIELDS ═════════ */
+        function updateDateMode() {
+            const mode = $('f-date-mode').value;
+            $('date-single').style.display = mode === 'single' ? '' : 'none';
+            $('date-range').style.display = mode === 'range' ? '' : 'none';
+        }
+        function updateExpiryMode() {
+            const mode = $('f-expiry-mode').value;
+            $('expiry-explicit').style.display = mode === 'explicit' ? '' : 'none';
+            $('expiry-auto').style.display = mode === 'auto' ? '' : 'none';
+        }
+        function updateColorRow() {
+            $('color-row').style.display = $('f-use-color').checked ? 'flex' : 'none';
+        }
+
+        /* ═════════ FORM → EVENT OBJECT ═════════ */
+        function formToEvent() {
+            const title = $('f-title').value.trim();
+            if (!title) { toast('Title is required', 'error'); $('f-title').focus(); return null; }
+
+            const ev = { title };
+            const mode = $('f-date-mode').value;
+
+            if (mode === 'tba') {
+                ev.day = '?';
+            } else if (mode === 'range') {
+                const sd = $('f-start-day').value.trim();
+                const sm = $('f-start-month').value;
+                const ed = $('f-end-day').value.trim();
+                const em = $('f-end-month').value;
+                if (!sd || !sm || !ed || !em) { toast('Fill all start/end date fields', 'error'); return null; }
+                ev.startDay = sd; ev.startMonth = sm; ev.endDay = ed; ev.endMonth = em;
+            } else {
+                const d = $('f-day').value.trim();
+                const m = $('f-month').value;
+                if (!d || !m) { toast('Fill day and month', 'error'); return null; }
+                ev.day = d; ev.month = m;
+            }
+
+            const startDate = localToIso($('f-start-date').value);
+            if (startDate) ev.startDate = startDate;
+
+            const expMode = $('f-expiry-mode').value;
+            if (expMode === 'explicit') {
+                const exp = localToIso($('f-expires-at').value);
+                if (exp) ev.expiresAt = exp;
+            } else if (expMode === 'auto') {
+                const c = $('f-course').value.trim();
+                if (!c) { toast('Course code is required for auto-expiry', 'error'); $('f-course').focus(); return null; }
+                ev.course = c;
+            }
+
+            const tags = $('f-tags').value.split(',').map(s => s.trim()).filter(Boolean);
+            if (tags.length) ev.tags = tags;
+
+            if ($('f-use-color').checked) ev.color = $('f-color').value;
+
+            const items = $('f-items').value.split('\n').map(s => s.trim()).filter(Boolean);
+            if (items.length) ev.items = items;
+
+            const note = $('f-note').value.trim();
+            if (note) ev.note = note;
+
+            if ($('f-process').checked) ev.process = true;
+
+            return ev;
+        }
+
+        /* ═════════ EVENT OBJECT → FORM ═════════ */
+        function eventToForm(ev) {
+            $('f-title').value = ev.title || '';
+
+            if (ev.day === '?') {
+                $('f-date-mode').value = 'tba';
+                $('f-day').value = ''; $('f-month').value = '';
+            } else if (ev.startDay && ev.endDay) {
+                $('f-date-mode').value = 'range';
+                $('f-start-day').value = ev.startDay || '';
+                $('f-start-month').value = ev.startMonth || '';
+                $('f-end-day').value = ev.endDay || '';
+                $('f-end-month').value = ev.endMonth || '';
+            } else {
+                $('f-date-mode').value = 'single';
+                $('f-day').value = ev.day || '';
+                $('f-month').value = ev.month || '';
+            }
+
+            $('f-start-date').value = isoToLocal(ev.startDate);
+
+            if (ev.course) {
+                $('f-expiry-mode').value = 'auto';
+                $('f-course').value = ev.course;
+                $('f-expires-at').value = '';
+            } else if (ev.expiresAt) {
+                $('f-expiry-mode').value = 'explicit';
+                $('f-expires-at').value = isoToLocal(ev.expiresAt);
+                $('f-course').value = '';
+            } else {
+                $('f-expiry-mode').value = 'none';
+                $('f-expires-at').value = '';
+                $('f-course').value = '';
+            }
+
+            $('f-tags').value = (ev.tags || []).join(', ');
+
+            if (ev.color) {
+                $('f-use-color').checked = true;
+                $('f-color').value = ev.color;
+            } else {
+                $('f-use-color').checked = false;
+            }
+
+            $('f-items').value = (ev.items || []).join('\n');
+            $('f-note').value = ev.note || '';
+            $('f-process').checked = !!ev.process;
+
+            updateDateMode();
+            updateExpiryMode();
+            updateColorRow();
+        }
+
+        /* ═════════ RESET / CLEAR FORM ═════════ */
+        function resetForm() {
+            ['f-title','f-day','f-start-day','f-end-day','f-start-date','f-expires-at','f-course','f-tags','f-items','f-note']
+                .forEach(id => $(id).value = '');
+            $('f-month').value = '';
+            $('f-start-month').value = '';
+            $('f-end-month').value = '';
+            $('f-date-mode').value = 'single';
+            $('f-expiry-mode').value = 'explicit';
+            $('f-use-color').checked = false;
+            $('f-process').checked = false;
+            editingIndex = -1;
+            $('formTitle').textContent = 'Add New Event';
+            $('btn-add').innerHTML = '<i class="fas fa-plus"></i> Add to list';
+            $('btn-new').hidden = true;
+            updateDateMode();
+            updateExpiryMode();
+            updateColorRow();
+            $('f-title').focus();
+        }
+
+        /* ═════════ EVENTS LIST ═════════ */
+        function eventDateDisplay(ev) {
+            if (ev.day === '?') return 'Date TBA';
+            if (ev.startDay && ev.endDay) return ev.startDay + '–' + ev.endDay + ' ' + ev.startMonth;
+            if (ev.day && ev.month) return ev.day + ' ' + ev.month;
+            return '(no date)';
+        }
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+        }
+
+        function renderList() {
+            const list = $('events-list');
+            $('count-badge').textContent = events.length;
+            if (!events.length) {
+                list.innerHTML = '<div class="empty-state">No events yet. Fill the form on the left.</div>';
+                return;
+            }
+            list.innerHTML = events.map((ev, idx) => {
+                const issues = validateEvent(ev);
+                const badges = [];
+                if (ev.day === '?') badges.push('<span class="badge tba">TBA</span>');
+                else if (ev.startDay && ev.endDay) badges.push('<span class="badge range">Range</span>');
+                if (ev.course) badges.push('<span class="badge auto">Auto</span><span class="badge course">' + escapeHtml(ev.course) + '</span>');
+                else if (ev.expiresAt) badges.push('<span class="badge explicit">Expires</span>');
+                else badges.push('<span class="badge none">No expiry</span>');
+                if (ev.process) badges.push('<span class="badge process">Process</span>');
+                if (ev.dynamicDay) badges.push('<span class="badge explicit" title="Has dynamicDay field">Dynamic</span>');
+                if (ev.runFrom) badges.push('<span class="badge explicit" title="Has runFrom field">runFrom</span>');
+                if (issues.length) badges.push('<span class="badge lost">⚠ ' + issues.length + ' issue' + (issues.length > 1 ? 's' : '') + '</span>');
+
+                const tagsStr = (ev.tags && ev.tags.length) ? ev.tags.join(' · ') : '';
+                const warnHtml = issues.length
+                    ? '<div class="event-item-warn">' + issues.map(escapeHtml).join(' · ') + '</div>'
+                    : '';
+
+                return '<div class="event-item' + (issues.length ? ' invalid' : '') + '">' +
+                    '<div class="event-item-main">' +
+                        '<div class="event-item-title">' + escapeHtml(ev.title) + '</div>' +
+                        '<div class="event-item-meta">' + escapeHtml(eventDateDisplay(ev)) +
+                            (tagsStr ? ' · ' + escapeHtml(tagsStr) : '') + '</div>' +
+                        '<div class="event-item-badges">' + badges.join('') + '</div>' +
+                        warnHtml +
+                    '</div>' +
+                    '<div class="event-item-actions">' +
+                        '<button type="button" class="icon-btn" data-edit="' + idx + '" title="Edit"><i class="fas fa-pen"></i></button>' +
+                        '<button type="button" class="icon-btn danger" data-delete="' + idx + '" title="Delete"><i class="fas fa-trash"></i></button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            list.querySelectorAll('[data-edit]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.edit, 10);
+                    editingIndex = idx;
+                    eventToForm(events[idx]);
+                    $('formTitle').textContent = 'Edit Event';
+                    $('btn-add').innerHTML = '<i class="fas fa-check"></i> Update event';
+                    $('btn-new').hidden = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+            list.querySelectorAll('[data-delete]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.delete, 10);
+                    if (!confirm('Delete "' + events[idx].title + '"?')) return;
+                    events.splice(idx, 1);
+                    if (editingIndex === idx) resetForm();
+                    else if (editingIndex > idx) editingIndex--;
+                    renderList();
+                    renderJSON();
+                });
+            });
+        }
+
+        /* ═════════ JSON OUTPUT ═════════ */
+        function renderJSON() {
+            const json = JSON.stringify(events, null, 2);
+            $('json-output').textContent = json || '[]';
+            window._currentJSON = json;
+
+            const status = $('json-status');
+            // Validate the whole array
+            try {
+                const parsed = JSON.parse(json);
+                if (!Array.isArray(parsed)) throw new Error('not an array');
+                const badCount = parsed.filter(ev => validateEvent(ev).length > 0).length;
+                if (badCount) {
+                    status.style.display = 'inline-block';
+                    status.className = 'badge lost';
+                    status.textContent = '⚠ ' + badCount + ' event' + (badCount > 1 ? 's' : '') + ' with issues';
+                } else {
+                    status.style.display = 'inline-block';
+                    status.className = 'badge explicit';
+                    status.textContent = '✓ valid JSON';
+                }
+            } catch (e) {
+                status.style.display = 'inline-block';
+                status.className = 'badge lost';
+                status.textContent = '✗ invalid JSON';
+            }
+        }
+
+        /* ═════════ AUTO-LOAD EXISTING JSON ═════════ */
+        async function autoLoad() {
+            // Don't even try on file:// - fetch would fail
+            if (location.protocol === 'file:') {
+                showBanner('warn',
+                    '<strong>⚠ Auto-load is disabled</strong> — you opened this file directly (<code>file://</code>). ' +
+                    'Your existing <code>pinned-events.json</code> could not be loaded. ' +
+                    'Click <strong>Import JSON</strong> and paste your current file first, otherwise the JSON you copy will <strong>replace</strong> your file and delete all old events.',
+                    true);
+                return;
+            }
+
+            try {
+                const res = await fetch('pinned-events.json', { cache: 'no-cache' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error('not an array');
+                if (data.length === 0) {
+                    showBanner('info',
+                        '<strong>Info:</strong> <code>pinned-events.json</code> exists but is empty. Starting with a fresh list.',
+                        true);
+                    return;
+                }
+                events = data;
+                renderList();
+                renderJSON();
+                const badCount = data.filter(ev => validateEvent(ev).length > 0).length;
+                if (badCount) {
+                    showBanner('warn',
+                        '<strong>Loaded ' + data.length + ' events</strong>, but <strong>' + badCount + '</strong> ' +
+                        'have issues (see red rows). Fix them before exporting or you may lose data.',
+                        true);
+                } else {
+                    showBanner('success',
+                        '<strong>✓ Loaded ' + data.length + ' existing events</strong> from <code>pinned-events.json</code>. ' +
+                        'Add / edit below — the JSON you copy will keep everything.',
+                        true);
+                }
+            } catch (e) {
+                // File missing, empty, or invalid — that's fine, start fresh but warn
+                if (e.message.indexOf('HTTP 404') !== -1) {
+                    showBanner('info',
+                        '<strong>Info:</strong> No existing <code>pinned-events.json</code> found. Starting with an empty list.',
+                        true);
+                } else {
+                    showBanner('warn',
+                        '<strong>Could not auto-load</strong> (<code>' + escapeHtml(e.message) + '</code>). ' +
+                        'If you have an existing JSON file, use <strong>Import JSON</strong> before adding new events.',
+                        true);
+                }
+            }
+        }
+
+        /* ═════════ HANDLERS ═════════ */
+        $('f-date-mode').addEventListener('change', updateDateMode);
+        $('f-expiry-mode').addEventListener('change', updateExpiryMode);
+        $('f-use-color').addEventListener('change', updateColorRow);
+
+        $('btn-add').addEventListener('click', () => {
+            const ev = formToEvent();
+            if (!ev) return;
+            const issues = validateEvent(ev);
+            if (issues.length) {
+                toast('Cannot add: ' + issues[0], 'error');
+                return;
+            }
+            if (editingIndex >= 0) {
+                events[editingIndex] = ev;
+                toast('Event updated');
+                resetForm();
+            } else {
+                events.push(ev);
+                toast('Event added');
+                resetForm();
+            }
+            renderList();
+            renderJSON();
+        });
+
+        $('btn-clear').addEventListener('click', () => {
+            if (editingIndex >= 0) resetForm();
+            else {
+                ['f-title','f-day','f-start-day','f-end-day','f-start-date','f-expires-at','f-course','f-tags','f-items','f-note']
+                    .forEach(id => $(id).value = '');
+                $('f-month').value = '';
+                $('f-start-month').value = '';
+                $('f-end-month').value = '';
+                $('f-use-color').checked = false;
+                $('f-process').checked = false;
+                updateColorRow();
+            }
+        });
+
+        $('btn-new').addEventListener('click', resetForm);
+
+        $('btn-clear-all').addEventListener('click', () => {
+            if (!events.length) return;
+            if (!confirm('Clear all ' + events.length + ' events? The JSON you export will be [].')) return;
+            events = [];
+            resetForm();
+            renderList();
+            renderJSON();
+            showBanner('warn', 'All events cleared. Copy or download the empty <code>[]</code> only if you really want to wipe the file.', true);
+        });
+
+        $('btn-copy').addEventListener('click', function () {
+            const text = window._currentJSON || '[]';
+            const btn = this;
+            const orig = btn.innerHTML;
+
+            // Block copy if any event has issues
+            const badCount = events.filter(ev => validateEvent(ev).length > 0).length;
+            if (badCount) {
+                if (!confirm('⚠ ' + badCount + ' event(s) have issues that may break your dashboard. Copy anyway?')) return;
+            }
+
+            copyText(text).then(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                toast('JSON copied — paste into pinned-events.json');
+                setTimeout(() => btn.innerHTML = orig, 1800);
+            }).catch(() => {
+                btn.innerHTML = '<i class="fas fa-times"></i> Failed';
+                setTimeout(() => btn.innerHTML = orig, 1800);
+            });
+        });
+
+        $('btn-download').addEventListener('click', () => {
+            const badCount = events.filter(ev => validateEvent(ev).length > 0).length;
+            if (badCount) {
+                if (!confirm('⚠ ' + badCount + ' event(s) have issues. Download anyway?')) return;
+            }
+            const blob = new Blob([window._currentJSON || '[]'], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pinned-events.json';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast('Downloaded pinned-events.json');
+        });
+
+        $('btn-reload').addEventListener('click', () => {
+            if (location.protocol === 'file:') {
+                toast('Reload only works over http(s)', 'warn');
+                return;
+            }
+            if (events.length && !confirm('Reload from pinned-events.json? Unsaved changes will be lost.')) return;
+            events = [];
+            resetForm();
+            renderList();
+            renderJSON();
+            autoLoad();
+        });
+
+        /* ═════════ IMPORT MODAL ═════════ */
+        const importModal = $('import-modal');
+        function openImport() {
+            $('import-textarea').value = events.length ? JSON.stringify(events, null, 2) : '';
+            $('import-error').textContent = '';
+            $('import-success').textContent = '';
+            importModal.classList.add('active');
+        }
+        function closeImport() { importModal.classList.remove('active'); }
+
+        $('btn-import').addEventListener('click', openImport);
+        $('import-close').addEventListener('click', closeImport);
+        $('import-cancel').addEventListener('click', closeImport);
+        importModal.addEventListener('click', e => { if (e.target === importModal) closeImport(); });
+
+        $('import-load').addEventListener('click', () => {
+            const raw = $('import-textarea').value.trim();
+            $('import-error').textContent = '';
+            $('import-success').textContent = '';
+            if (!raw) { $('import-error').textContent = 'Paste JSON first.'; return; }
+            let parsed;
+            try { parsed = JSON.parse(raw); }
+            catch (e) { $('import-error').textContent = 'Invalid JSON: ' + e.message; return; }
+            if (!Array.isArray(parsed)) { $('import-error').textContent = 'JSON must be an array of events.'; return; }
+
+            const badCount = parsed.filter(ev => validateEvent(ev).length > 0).length;
+            events = parsed;
+            resetForm();
+            renderList();
+            renderJSON();
+            if (badCount) {
+                $('import-success').textContent = '';
+                $('import-error').textContent = 'Loaded ' + parsed.length + ' events, but ' + badCount + ' have issues (check red rows).';
+            } else {
+                $('import-success').textContent = '✓ Loaded ' + parsed.length + ' events successfully.';
+                setTimeout(closeImport, 700);
+            }
+        });
+
+        /* ═════════ INIT ═════════ */
+        updateDateMode();
+        updateExpiryMode();
+        updateColorRow();
+        renderList();
+        renderJSON();
+        autoLoad();
+    })();
+    </script>
+</body>
+</html>
