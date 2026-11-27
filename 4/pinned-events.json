@@ -43,8 +43,6 @@
   },
   {
     "title": "Math CT",
-    "day": "30",
-    "month": "Nov",
     "startDate": "2026-11-30T00:00:00+06:00",
     "course": "QUA 1101",
     "tags": [
@@ -53,10 +51,12 @@
     ],
     "color": "#991b1b",
     "items": [
-      "Coordinate Geometry (1–8) type math",
-      "Arithmetic Progression (1–10) type math"
+      "1. Coordinate Geometry (Problem: 1-11 from worksheet)",
+      "2. Arithmetic Series (Problem: 1-10 from worksheet)"
     ],
-    "note": "Check with faculty."
+    "note": "Check with faculty.",
+    "day": "30",
+    "month": "Nov"
   },
   {
     "title": "ECO Presentation + Assignment (Groups 1–4)",
