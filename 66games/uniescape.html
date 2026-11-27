@@ -1,28 +1,27 @@
-<!-- ... existing code ... -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#0f2547">
-  <title>Uni Escape - Survive University</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>UniEscape · 66Games</title>
   <style>
-    /* =========================================================
-       CLEAN SYSTEM-FONT VARSITY THEME & MOBILE-FIRST LAYOUT
-       ========================================================= */
     :root {
       --bg-outer: #0d1b2e;
-      --bg-app: #eef4fb;
       --surface: #ffffff;
       --glass: rgba(255, 255, 255, 0.92);
       --border: #d5e2f2;
       --border-strong: #b9cde6;
       --navy: #0f2547;
-      --blue: #2563eb;
+      --blue: #123cf3;
       --blue-dark: #1d4ed8;
       --gold: #d97706;
       --crimson: #dc2626;
       --emerald: #059669;
-      --text: #16243b;
+      --text: #111827;
       --muted: #5b6b82;
       --shadow-lg: 0 16px 36px rgba(15, 37, 71, 0.16);
-      --shadow-sm: 0 3px 10px rgba(15, 37, 71, 0.07);
+      --shadow-sm: 0 3px 10px rgba(15, 37, 71, 0.08);
     }
 
     * {
@@ -44,12 +43,13 @@
       -webkit-user-select: none;
     }
 
-    button {
+    button, a {
       font: inherit;
       border: none;
       background: none;
       cursor: pointer;
       touch-action: manipulation;
+      text-decoration: none;
     }
 
     .ic {
@@ -58,7 +58,6 @@
       flex-shrink: 0;
     }
 
-    /* Main App Container: mobile-first full height, crisp desktop frame */
     .app {
       position: relative;
       width: 100%;
@@ -68,9 +67,10 @@
       display: flex;
       flex-direction: column;
       background: linear-gradient(180deg, #f5f9ff 0%, #e7f0fb 100%);
-      padding: max(8px, env(safe-area-inset-top)) 12px max(10px, env(safe-area-inset-bottom));
+      padding: max(8px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
       overflow: hidden;
       box-shadow: 0 0 50px rgba(0, 0, 0, 0.42);
+      gap: 6px;
     }
 
     @media (min-width: 520px) {
@@ -81,306 +81,94 @@
         padding: 14px;
       }
       .app {
-        height: min(94dvh, 840px);
+        height: min(94dvh, 850px);
         border-radius: 26px;
         border: 1px solid rgba(255, 255, 255, 0.22);
       }
     }
 
-    /* =========================================================
-       HEADER BAR
-       ========================================================= */
+    /* ══════════ TOP BAR (66notes | UniEscape | Pause) ══════════ */
     .header {
-      height: 48px;
+      height: 46px;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 2px;
-      z-index: 4;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-badge {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: var(--navy);
-      color: #fff;
       display: grid;
-      place-items: center;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       box-shadow: var(--shadow-sm);
+      z-index: 6;
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.08;
-    }
-
-    .brand-title {
-      font-size: 1.05rem;
-      font-weight: 900;
-      letter-spacing: -0.3px;
-      color: var(--navy);
-    }
-
-    .brand-title span {
-      color: var(--blue);
-    }
-
-    .brand-sub {
-      font-size: 0.6rem;
+    .brand-left {
+      font-size: 0.95rem;
       font-weight: 800;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      color: var(--navy);
+      padding-left: 8px;
+      justify-self: start;
     }
+    .brand-left span { color: var(--blue); }
 
-    .header-actions {
+    .brand-center {
+      font-size: 1.18rem;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      justify-self: center;
+    }
+    .brand-center .uni { color: var(--blue); }
+    .brand-center .escape { color: #0b1220; }
+
+    .header-right {
+      justify-self: end;
       display: flex;
       align-items: center;
       gap: 6px;
-    }
-
-    .best-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      white-space: nowrap;
+      padding-right: 4px;
     }
 
     .icon-btn {
       width: 34px;
       height: 34px;
-      border-radius: 11px;
-      background: var(--surface);
+      border-radius: 10px;
+      background: #f1f5f9;
       border: 1px solid var(--border);
       color: var(--navy);
       display: grid;
       place-items: center;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.12s ease, background 0.15s ease;
+      transition: transform 0.12s ease;
     }
+    .icon-btn:active { transform: scale(0.92); }
+    .icon-btn.muted { color: var(--muted); opacity: 0.7; }
 
-    .icon-btn:active {
-      transform: scale(0.92);
-    }
-
-    .icon-btn.muted {
-      color: var(--muted);
-      background: #eef2f7;
-    }
-
-    .icon-btn[hidden] {
-      display: none;
-    }
-
-    /* =========================================================
-       SCREENS (HOME & PLAY)
-       ========================================================= */
-    .screen {
-      display: none;
-      flex: 1;
-      min-height: 0;
-      flex-direction: column;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    /* HOME SCREEN */
-    #home {
-      align-items: center;
-      justify-content: center;
-      padding: 6px 2px;
-      overflow-y: auto;
-    }
-
-    .home-card {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 20px 18px 18px;
-      text-align: center;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .home-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--navy), var(--blue), #f59e0b);
-    }
-
-    .hero-wrap {
-      width: 96px;
-      height: 96px;
-      margin: 2px auto 10px;
-      animation: floatHero 2.8s ease-in-out infinite;
-    }
-
-    @keyframes floatHero {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    .home-card h1 {
-      font-size: 1.58rem;
-      font-weight: 900;
-      color: var(--navy);
-      letter-spacing: -0.5px;
-      line-height: 1.15;
-    }
-
-    .home-sub {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.48;
-      margin: 7px 0 13px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 7px;
-      margin-bottom: 12px;
-    }
-
-    .feature-chip {
-      background: #f3f7fd;
-      border: 1px solid #dce7f7;
-      border-radius: 13px;
-      padding: 8px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .feature-chip b {
-      font-size: 0.88rem;
-      color: var(--navy);
-      font-weight: 900;
-    }
-
-    .feature-chip span {
-      font-size: 0.6rem;
+    .pause-pill {
+      height: 34px;
+      padding: 0 11px;
+      border-radius: 10px;
+      background: var(--navy);
+      color: #ffffff;
+      font-size: 0.72rem;
       font-weight: 800;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .obstacle-legend {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-      margin-bottom: 14px;
-    }
-
-    .legend-tag {
-      font-size: 0.62rem;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .tag-ct { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-    .tag-asg { background: #fefce8; color: #a16207; border-color: #fde047; }
-    .tag-ppt { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
-    .tag-att { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
-    .tag-mid { background: #fff1f2; color: #be123c; border-color: #fecdd3; }
-    .tag-fin { background: #eef2ff; color: #312e81; border-color: #c7d2fe; }
-
-    /* BUTTONS */
-    .btn {
-      width: 100%;
-      min-height: 46px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 0.92rem;
-      padding: 11px 14px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 7px;
-      transition: transform 0.12s ease, filter 0.15s ease;
+      gap: 5px;
     }
+    .pause-pill:active { transform: scale(0.94); }
 
-    .btn:active {
-      transform: scale(0.97);
-    }
-
-    .btn-primary {
-      background: var(--blue);
-      color: #fff;
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28);
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
-
-    .btn-secondary {
-      background: #fff;
-      color: var(--navy);
-      border: 2px solid var(--border);
-      margin-top: 8px;
-    }
-
-    .btn-gold {
-      background: var(--gold);
-      color: #fff;
-      box-shadow: 0 6px 16px rgba(217, 119, 6, 0.28);
-    }
-
-    .small-note {
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 10px;
-      font-weight: 700;
-    }
-
-    /* =========================================================
-       PLAY SCREEN & HUD
-       ========================================================= */
-    #play {
-      gap: 6px;
-      padding-top: 2px;
-    }
-
-    .hud-row {
+    /* ══════════ IN-GAME HUD ══════════ */
+    .hud-grid {
       display: grid;
-      grid-template-columns: 1.15fr 1fr 0.85fr;
-      gap: 6px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
       flex-shrink: 0;
     }
 
     .hud-card {
       background: var(--glass);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 6px 8px;
+      border-radius: 12px;
+      padding: 5px 4px;
       text-align: center;
       box-shadow: var(--shadow-sm);
       min-width: 0;
@@ -388,81 +176,68 @@
 
     .hud-card small {
       display: block;
-      font-size: 0.55rem;
+      font-size: 0.52rem;
       font-weight: 800;
       color: var(--muted);
-      letter-spacing: 0.65px;
       text-transform: uppercase;
-    }
-
-    .hud-card b {
-      display: block;
-      font-size: 0.92rem;
-      font-weight: 900;
-      color: var(--navy);
-      margin-top: 1px;
+      letter-spacing: 0.35px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .hud-card b .sub-pts {
-      font-size: 0.7rem;
-      color: var(--muted);
-      font-weight: 700;
+    .hud-card b {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-top: 1px;
     }
 
-    .hud-card.lives-card b {
+    .hud-card.main-marks b { color: var(--blue); }
+    .hud-card.temp-marks b { color: var(--gold); }
+
+    .lives-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 5px 10px;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .lives-hearts {
+      font-size: 0.95rem;
+      font-weight: 900;
       color: var(--crimson);
       letter-spacing: 2px;
-      font-size: 0.98rem;
+      white-space: nowrap;
     }
-
-    .hud-card.lives-card.pulse {
-      animation: heartShake 0.35s ease;
-    }
-
+    .lives-bar.pulse { animation: heartShake 0.35s ease; }
     @keyframes heartShake {
       0%, 100% { transform: translateX(0); }
       25% { transform: translateX(-4px); }
       75% { transform: translateX(4px); }
     }
 
-    /* Semester & Progress Bar Strip */
-    .semester-strip {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 6px 10px 7px;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .semester-top {
+    .sem-progress {
+      flex: 1;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+    .sem-progress-top {
+      display: flex;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .semester-label {
-      font-size: 0.7rem;
-      font-weight: 900;
-      color: var(--blue-dark);
-      letter-spacing: 0.4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .semester-step {
-      font-size: 0.63rem;
+      font-size: 0.6rem;
       font-weight: 800;
       color: var(--muted);
-      white-space: nowrap;
     }
-
     .progress-track {
       width: 100%;
       height: 5px;
@@ -470,16 +245,15 @@
       background: #dce8f8;
       overflow: hidden;
     }
-
     .progress-fill {
       height: 100%;
       width: 0%;
       border-radius: 999px;
-      background: linear-gradient(90deg, #3b82f6, #2563eb, #f59e0b);
+      background: linear-gradient(90deg, #2563eb, #f59e0b);
       transition: width 0.22s ease;
     }
 
-    /* Game Canvas Wrapper */
+    /* ══════════ CANVAS STAGE ══════════ */
     .canvas-wrap {
       position: relative;
       flex: 1;
@@ -499,329 +273,357 @@
       touch-action: none;
     }
 
-    .hint-bar {
-      text-align: center;
-      font-size: 0.63rem;
-      font-weight: 800;
-      color: var(--muted);
-      letter-spacing: 0.35px;
-      flex-shrink: 0;
+    /* ══════════ START SCREEN OVERLAY (LIVE FLYING BIRD BEHIND) ══════════ */
+    .start-ui {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+      pointer-events: none;
+    }
+    .start-ui[hidden] { display: none; }
+
+    .start-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: auto;
     }
 
-    /* =========================================================
-       OVERLAYS (PAUSE, GAME OVER, VICTORY)
-       ========================================================= */
+    .back-btn {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border-strong);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: var(--shadow-sm);
+    }
+    .back-btn:active { transform: scale(0.95); }
+
+    .high-score-pill {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 12px;
+      background: rgba(254, 243, 199, 0.95);
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      font-size: 0.78rem;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tap-center {
+      text-align: center;
+      margin: auto 0;
+      pointer-events: none;
+    }
+    .tap-badge {
+      display: inline-block;
+      background: rgba(15, 37, 71, 0.88);
+      color: #ffffff;
+      border: 2px solid #60a5fa;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      box-shadow: 0 8px 20px rgba(15, 37, 71, 0.35);
+      animation: pulseTap 1.3s ease-in-out infinite;
+    }
+    @keyframes pulseTap {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    .player-tag {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #0f2547;
+      text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
+    }
+
+    /* BOTTOM TOP-5 LEADERBOARD CARD */
+    .lb-card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow-lg);
+      pointer-events: auto;
+    }
+    .lb-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .lb-head h3 {
+      font-size: 0.76rem;
+      font-weight: 900;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .lb-status {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .lb-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .lb-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      border-radius: 9px;
+      background: #f1f5f9;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .lb-row:first-child { background: #fef3c7; color: #92400e; }
+    .lb-rank { width: 22px; font-weight: 900; color: var(--blue); }
+    .lb-row:first-child .lb-rank { color: #b45309; }
+    .lb-name { flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lb-score { font-weight: 900; color: var(--blue); }
+
+    /* ══════════ MODALS (PAUSE / END) ══════════ */
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(11, 22, 40, 0.76);
+      background: rgba(11, 22, 40, 0.78);
       z-index: 20;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
-
-    .overlay[hidden] {
-      display: none;
-    }
+    .overlay[hidden] { display: none; }
 
     .modal-card {
       width: 100%;
-      max-width: 370px;
+      max-width: 360px;
       max-height: 92%;
       overflow-y: auto;
-      background: #fff;
-      border-radius: 24px;
+      background: #ffffff;
+      border-radius: 22px;
       padding: 20px 18px 18px;
       text-align: center;
       box-shadow: 0 22px 48px rgba(0, 0, 0, 0.38);
     }
 
-    .modal-mark {
-      width: 52px;
-      height: 52px;
-      margin: 0 auto 10px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
-
     .modal-title {
-      font-size: 1.32rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: var(--navy);
-      letter-spacing: -0.35px;
-      line-height: 1.2;
+      margin-bottom: 6px;
     }
-
     .modal-sub {
       font-size: 0.82rem;
+      font-weight: 600;
       color: var(--text);
-      line-height: 1.48;
-      margin: 7px 0 8px;
-      font-weight: 600;
+      margin-bottom: 8px;
     }
-
     .modal-detail {
-      font-size: 0.74rem;
-      color: var(--muted);
-      line-height: 1.45;
-      margin-bottom: 12px;
+      font-size: 0.72rem;
       font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
     }
 
     .score-box {
       background: #f4f8fe;
       border: 1px solid #dce8f8;
-      border-radius: 16px;
-      padding: 12px;
-      margin-bottom: 14px;
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 12px;
     }
-
     .acad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      text-align: center;
+      gap: 6px;
     }
-
     .acad-cell {
-      background: #fff;
+      background: #ffffff;
       border: 1px solid #e2ebf7;
-      border-radius: 12px;
-      padding: 8px 4px;
+      border-radius: 10px;
+      padding: 7px 4px;
     }
-
     .acad-cell small {
       display: block;
-      font-size: 0.56rem;
+      font-size: 0.54rem;
       font-weight: 800;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.4px;
     }
-
     .acad-cell b {
       display: block;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 900;
       color: var(--navy);
       margin-top: 2px;
     }
 
-    .acad-cell b.marks-val {
-      color: var(--blue);
-    }
-
-    .acad-cell b.marks-val.win {
-      color: var(--gold);
-    }
-
-    .acad-cell b.gpa-val {
-      color: var(--emerald);
-    }
-
-    .score-meta {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px dashed #cbd5e1;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--muted);
-    }
-
-    .score-meta b {
-      color: var(--navy);
-    }
-
-    .journey-chip {
-      display: inline-block;
-      background: #eff6ff;
-      color: var(--blue-dark);
-      border: 1px solid #bfdbfe;
-      border-radius: 999px;
-      padding: 4px 11px;
-      font-size: 0.68rem;
+    .btn {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 12px;
       font-weight: 800;
-      margin-bottom: 10px;
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 8px;
     }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--blue); color: #ffffff; }
+    .btn-gold { background: var(--gold); color: #ffffff; }
+    .btn-secondary { background: #ffffff; color: var(--navy); border: 2px solid var(--border); }
   </style>
 </head>
 <body>
 <div class="app">
-  <!-- TOP HEADER -->
+  <!-- TOP BAR: 66notes | UniEscape | Pause -->
   <header class="header">
-    <div class="brand">
-      <div class="brand-badge" aria-hidden="true">
-        <svg class="ic" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 9.5L12 4l10 5.5L12 15 2 9.5z"/>
-          <path d="M6 12v5c0 2 12 2 12 0v-5"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <div class="brand-title">Uni<span>Escape</span></div>
-        <div class="brand-sub">4-Year Survival</div>
-      </div>
-    </div>
-
-    <div class="header-actions">
-      <div class="best-pill" id="bestPill" title="Best Marks">
-        <svg class="ic" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
-        </svg>
-        <span id="bestScoreHeader">0</span>/100
-      </div>
-      <button class="icon-btn" id="soundBtn" aria-label="Toggle Sound" title="Mute / Unmute"></button>
-      <button class="icon-btn" id="pauseBtn" aria-label="Pause Game" title="Pause (P / Esc)" hidden>
-        <svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+    <a href="index.html" class="brand-left">66<span>notes</span></a>
+    <div class="brand-center"><span class="uni">Uni</span><span class="escape">Escape</span></div>
+    <div class="header-right">
+      <button class="icon-btn" id="soundBtn" aria-label="Toggle Sound"></button>
+      <button class="pause-pill" id="pauseBtn" aria-label="Pause Game">
+        <svg class="ic" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
           <path d="M9 5v14M15 5v14"/>
         </svg>
+        PAUSE
       </button>
     </div>
   </header>
 
-  <!-- HOME SCREEN -->
-  <section id="home" class="screen active">
-    <div class="home-card">
-      <!-- Vector Scholarly Bird Hero (Zero Emojis) -->
-      <div class="hero-wrap">
-        <svg viewBox="0 0 120 120" width="96" height="96" aria-hidden="true">
-          <circle cx="60" cy="60" r="54" fill="#e0f2fe" stroke="#60a5fa" stroke-width="4"/>
-          <circle cx="30" cy="79" r="10" fill="#ffffff" opacity="0.85"/>
-          <circle cx="42" cy="77" r="12" fill="#ffffff" opacity="0.85"/>
-          <circle cx="89" cy="41" r="9" fill="#ffffff" opacity="0.75"/>
-          <ellipse cx="58" cy="67" rx="24" ry="19" fill="#fbbf24" stroke="#92400e" stroke-width="3"/>
-          <ellipse cx="54" cy="72" rx="13" ry="8" fill="#fef3c7"/>
-          <ellipse cx="45" cy="70" rx="11" ry="7.5" transform="rotate(-18 45 70)" fill="#f59e0b" stroke="#92400e" stroke-width="2.4"/>
-          <polygon points="80,62 96,67 80,72" fill="#f97316" stroke="#9a3412" stroke-width="2.4" stroke-linejoin="round"/>
-          <circle cx="70" cy="59" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="2.4"/>
-          <circle cx="72" cy="59" r="2.7" fill="#0f172a"/>
-          <line x1="63" y1="59" x2="54" y2="57" stroke="#1e293b" stroke-width="2.2"/>
-          <polygon points="36,47 59,36 82,46 59,54" fill="#0f2547" stroke="#0f172a" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M46,50 v7 c0,3 26,3 26,0 v-7" fill="#1e3a8a" stroke="#0f172a" stroke-width="2"/>
-          <path d="M82,46 l4,11" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="86" cy="58" r="2.6" fill="#f59e0b"/>
-        </svg>
-      </div>
-
-      <h1>Survive University</h1>
-      <p class="home-sub">Fly through 4 years and 12 continuous semesters of CTs, Assignments, PPTX, Attendance, moving Mids, and Finals.</p>
-
-      <div class="feature-grid">
-        <div class="feature-chip"><b>3 LIVES</b><span>Per Run</span></div>
-        <div class="feature-chip"><b>12 SEMS</b><span>4 Years</span></div>
-        <div class="feature-chip"><b>4.00 A+</b><span>100 Marks</span></div>
-      </div>
-
-      <div class="obstacle-legend" aria-label="Obstacle types">
-        <span class="legend-tag tag-ct">CT (-1 Life)</span>
-        <span class="legend-tag tag-asg">ASSIGN (-1 Life)</span>
-        <span class="legend-tag tag-ppt">PPTX (-1 Life)</span>
-        <span class="legend-tag tag-att">ATTEND (-1 Life)</span>
-        <span class="legend-tag tag-mid">MID (-2 Lives)</span>
-        <span class="legend-tag tag-fin">FINAL</span>
-      </div>
-
-      <button class="btn btn-primary" id="startBtn">
-        <svg class="ic" viewBox="0 0 24 24" width="17" height="17" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-        Start University Journey
-      </button>
-      <p class="small-note">Tap screen, click, or press Space to flap · 100 Marks = 4.00 CGPA (A+)</p>
+  <!-- IN-GAME HUD: Year, Semester, Main Marks, Temp Marks -->
+  <div class="hud-grid">
+    <div class="hud-card">
+      <small>Year</small>
+      <b id="yearVal">1 / 4</b>
     </div>
-  </section>
-
-  <!-- PLAY SCREEN -->
-  <section id="play" class="screen">
-    <div class="hud-row">
-      <div class="hud-card">
-        <small>Marks / Temp</small>
-        <b><span id="marksVal">0</span><span class="sub-pts">/100 · <span id="tempVal">0</span>t</span></b>
-      </div>
-      <div class="hud-card lives-card" id="livesCard">
-        <small>Lives</small>
-        <b id="livesVal">3 / 3</b>
-      </div>
-      <div class="hud-card">
-        <small>Year</small>
-        <b id="yearVal">1 / 4</b>
-      </div>
+    <div class="hud-card">
+      <small>Semester</small>
+      <b id="semesterVal">1 / 12</b>
     </div>
+    <div class="hud-card main-marks">
+      <small>Main Marks</small>
+      <b id="mainMarksVal">0</b>
+    </div>
+    <div class="hud-card temp-marks">
+      <small>Temp Marks</small>
+      <b id="tempMarksVal">0</b>
+    </div>
+  </div>
 
-    <div class="semester-strip">
-      <div class="semester-top">
-        <div class="semester-label" id="semesterLabel">FIRST YEAR · FIRST SEMESTER</div>
-        <div class="semester-step" id="semesterStep">0 / 11 TO FINAL</div>
+  <!-- LIVES & PROGRESS -->
+  <div class="lives-bar" id="livesBar">
+    <div class="lives-hearts" id="livesVal">♥ ♥ ♥</div>
+    <div class="sem-progress">
+      <div class="sem-progress-top">
+        <span id="envLabel">Morning</span>
+        <span id="stepLabel">0 / 11 to Final</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
+  </div>
 
-    <div class="canvas-wrap" id="canvasWrap">
-      <canvas id="gameCanvas"></canvas>
+  <!-- GAME CANVAS + LIVE START UI -->
+  <div class="canvas-wrap">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- START SCREEN OVERLAY (3 elements: Back, High Score, Bottom Top 5 Leaderboard) -->
+    <div class="start-ui" id="startUI">
+      <div class="start-top-row">
+        <a href="index.html" class="back-btn">
+          <svg class="ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M11 6l-6 6 6 6"/>
+          </svg>
+          Back
+        </a>
+        <div class="high-score-pill">
+          Best: <span id="highScoreVal">0</span>
+        </div>
+      </div>
+
+      <div class="tap-center">
+        <div class="tap-badge">TAP TO START</div>
+        <div class="player-tag" id="playerTag">Playing as Guest</div>
+      </div>
+
+      <div class="lb-card">
+        <div class="lb-head">
+          <h3>Top 5 Leaderboard</h3>
+          <span class="lb-status" id="lbStatus">Loading...</span>
+        </div>
+        <ol class="lb-list" id="lbList">
+          <li class="lb-row"><span class="lb-name">Connecting to server...</span></li>
+        </ol>
+      </div>
     </div>
-
-    <div class="hint-bar">TAP / SPACE TO FLAP · TOWERS BREAK ON HIT · 3 PRE-FINAL HITS = 0 MARKS</div>
-  </section>
+  </div>
 
   <!-- PAUSE OVERLAY -->
   <div class="overlay" id="pauseOverlay" hidden>
     <div class="modal-card">
-      <div class="modal-mark" style="background:#eff6ff;color:var(--blue)">
-        <svg class="ic" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-          <path d="M9 5v14M15 5v14"/>
-        </svg>
-      </div>
-      <h2 class="modal-title">Study Break</h2>
-      <p class="modal-sub">Your semester progress is paused.</p>
-      <button class="btn btn-primary" id="resumeBtn">Continue</button>
-      <button class="btn btn-secondary" id="restartBtn">Restart Run</button>
-      <button class="btn btn-secondary" id="pauseHomeBtn">Back to Home</button>
+      <h2 class="modal-title">Game Paused</h2>
+      <p class="modal-sub">Take a quick breather before the next exam.</p>
+      <button class="btn btn-primary" id="resumeBtn">Resume</button>
+      <button class="btn btn-secondary" id="restartBtn">Restart</button>
+      <a href="index.html" class="btn btn-secondary">Back to Hub</a>
     </div>
   </div>
 
   <!-- END / VICTORY OVERLAY -->
   <div class="overlay" id="endOverlay" hidden>
     <div class="modal-card">
-      <div class="modal-mark" id="endMark"></div>
       <h2 class="modal-title" id="endTitle">Game Over</h2>
       <p class="modal-sub" id="endSub"></p>
       <p class="modal-detail" id="endDetail"></p>
 
-      <div class="journey-chip" id="endJourney">FIRST YEAR · FIRST SEMESTER</div>
-
       <div class="score-box">
         <div class="acad-grid">
           <div class="acad-cell">
-            <small>Marks</small>
-            <b class="marks-val" id="endMarks">0/100</b>
+            <small>Main Marks</small>
+            <b id="endMainMarks" style="color:var(--blue)">0</b>
           </div>
           <div class="acad-cell">
-            <small>CGPA</small>
-            <b class="gpa-val" id="endGpa">0.00</b>
+            <small>Temp Marks</small>
+            <b id="endTempMarks" style="color:var(--gold)">0</b>
           </div>
           <div class="acad-cell">
-            <small>Grade</small>
-            <b id="endGrade">F</b>
+            <small>Best</small>
+            <b id="endBestMarks" style="color:var(--emerald)">0</b>
           </div>
-        </div>
-        <div class="score-meta">
-          <div>Temp Pts: <b id="endTemp">0</b></div>
-          <div>Pre-Final Hits: <b id="endPreHits">0</b></div>
-          <div>Best: <b id="endBest">0/100</b></div>
         </div>
       </div>
 
       <button class="btn btn-primary" id="againBtn">Play Again</button>
-      <button class="btn btn-secondary" id="endHomeBtn">Back to Home</button>
+      <a href="index.html" class="btn btn-secondary">Back to Hub</a>
     </div>
   </div>
 </div>
@@ -831,219 +633,228 @@
   'use strict';
 
   /* =========================================================
-     DOM & STORAGE HELPERS
+     CONFIG & PLAYER IDENTITY (66Games localStorage + Enzonic API)
      ========================================================= */
+  const API_URL = 'http://66notes-game.enzonic.dev:26496';
+  const STORAGE_BEST = 'uniescape_best_main_v4';
+  const STORAGE_MUTE = 'uniescape_muted_v4';
+
   const $ = id => document.getElementById(id);
   const canvas = $('gameCanvas');
   const ctx = canvas.getContext('2d');
 
-  const STORAGE_BEST_KEY = 'uni_escape_best_marks_v3';
-  const STORAGE_MUTE_KEY = 'uni_escape_muted_v3';
+  let playerName = 'Guest';
+  try {
+    const savedUser = JSON.parse(localStorage.getItem('66games_user'));
+    if (savedUser && savedUser.name) playerName = savedUser.name;
+  } catch {}
+  $('playerTag').textContent = `Playing as ${playerName}`;
 
-  function loadStorage(key, fallback) {
-    try {
-      const v = localStorage.getItem(key);
-      return v !== null ? v : fallback;
-    } catch {
-      return fallback;
-    }
+  function loadNum(key, fallback = 0) {
+    try { return parseInt(localStorage.getItem(key), 10) || fallback; } catch { return fallback; }
   }
-
-  function saveStorage(key, value) {
-    try {
-      localStorage.setItem(key, String(value));
-    } catch {
-      // Ignore storage restrictions
-    }
+  function saveVal(key, val) {
+    try { localStorage.setItem(key, String(val)); } catch {}
   }
 
   /* =========================================================
-     SYNTHESIZED WEB AUDIO EFFECTS (NO EXTERNAL ASSETS)
+     LEADERBOARD API (Enzonic Top 5)
+     ========================================================= */
+  function renderLeaderboard(scores) {
+    const list = $('lbList');
+    list.innerHTML = '';
+    if (!scores || !scores.length) {
+      list.innerHTML = '<li class="lb-row"><span class="lb-name">No scores yet — be #1!</span></li>';
+      return;
+    }
+    scores.slice(0, 5).forEach((entry, idx) => {
+      const li = document.createElement('li');
+      li.className = 'lb-row';
+      const rank = document.createElement('span');
+      rank.className = 'lb-rank';
+      rank.textContent = `#${idx + 1}`;
+      const name = document.createElement('span');
+      name.className = 'lb-name';
+      name.textContent = entry.name || 'Guest';
+      const score = document.createElement('span');
+      score.className = 'lb-score';
+      score.textContent = `${entry.score} pts`;
+      li.append(rank, name, score);
+      list.appendChild(li);
+    });
+  }
+
+  async function fetchLeaderboard() {
+    $('lbStatus').textContent = 'Syncing...';
+    try {
+      const res = await fetch(`${API_URL}/top5`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      renderLeaderboard(data);
+      $('lbStatus').textContent = 'Live';
+    } catch {
+      $('lbStatus').textContent = 'Offline';
+      $('lbList').innerHTML = '<li class="lb-row"><span class="lb-name">Leaderboard offline</span></li>';
+    }
+  }
+
+  async function submitScore(finalScore) {
+    if (finalScore <= 0) return;
+    try {
+      const res = await fetch(`${API_URL}/score`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: playerName, score: finalScore })
+      });
+      const data = await res.json();
+      if (data && data.top5) renderLeaderboard(data.top5);
+    } catch {}
+  }
+
+  /* =========================================================
+     WEB AUDIO SOUND EFFECTS
      ========================================================= */
   const Sound = (() => {
     let ac = null;
-    let muted = loadStorage(STORAGE_MUTE_KEY, '0') === '1';
+    let muted = loadNum(STORAGE_MUTE, 0) === 1;
 
-    function ensureContext() {
+    function ctxA() {
       if (muted) return null;
       try {
-        if (!ac) {
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (!AudioCtx) return null;
-          ac = new AudioCtx();
-        }
+        if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
         if (ac.state === 'suspended') ac.resume();
         return ac;
-      } catch {
-        return null;
-      }
+      } catch { return null; }
     }
 
-    function playTone(freq, endFreq, duration, type = 'sine', volume = 0.1, delay = 0) {
-      const ctxA = ensureContext();
-      if (!ctxA) return;
-      const now = ctxA.currentTime + delay;
-      const osc = ctxA.createOscillator();
-      const gain = ctxA.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, now);
-      if (endFreq !== freq) {
-        osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), now + duration);
-      }
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(volume, now + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-      osc.connect(gain);
-      gain.connect(ctxA.destination);
-      osc.start(now);
-      osc.stop(now + duration + 0.02);
+    function tone(f1, f2, dur, type = 'sine', vol = 0.09, delay = 0) {
+      const a = ctxA();
+      if (!a) return;
+      const t = a.currentTime + delay;
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f1, t);
+      if (f2 !== f1) o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(vol, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(a.destination);
+      o.start(t); o.stop(t + dur + 0.02);
     }
 
-    function playPaperCrash(duration = 0.24, volume = 0.18) {
-      const ctxA = ensureContext();
-      if (!ctxA) return;
-      const len = Math.floor(ctxA.sampleRate * duration);
-      const buf = ctxA.createBuffer(1, len, ctxA.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.42));
-      }
-      const src = ctxA.createBufferSource();
-      src.buffer = buf;
-
-      const filter = ctxA.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 1350;
-      filter.Q.value = 0.7;
-
-      const gain = ctxA.createGain();
-      gain.gain.setValueAtTime(volume, ctxA.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctxA.currentTime + duration);
-
-      src.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctxA.destination);
+    function crash() {
+      const a = ctxA();
+      if (!a) return;
+      const len = Math.floor(a.sampleRate * 0.24);
+      const buf = a.createBuffer(1, len, a.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.42));
+      const src = a.createBufferSource(); src.buffer = buf;
+      const flt = a.createBiquadFilter(); flt.type = 'bandpass'; flt.frequency.value = 1350;
+      const g = a.createGain(); g.gain.setValueAtTime(0.18, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.24);
+      src.connect(flt); flt.connect(g); g.connect(a.destination);
       src.start();
     }
 
     return {
       isMuted: () => muted,
-      toggle() {
-        muted = !muted;
-        saveStorage(STORAGE_MUTE_KEY, muted ? '1' : '0');
-        return muted;
+      toggle() { muted = !muted; saveVal(STORAGE_MUTE, muted ? 1 : 0); return muted; },
+      flap: () => tone(310, 520, 0.08, 'triangle', 0.08),
+      pass: () => tone(640, 860, 0.06, 'sine', 0.05),
+      hit: () => { crash(); tone(185, 70, 0.2, 'sawtooth', 0.11); },
+      lifeUp: () => { tone(523, 659, 0.12, 'triangle', 0.1, 0); tone(659, 880, 0.18, 'triangle', 0.11, 0.1); },
+      semClear: () => {
+        tone(523.25, 523.25, 0.1, 'triangle', 0.1, 0);
+        tone(659.25, 659.25, 0.1, 'triangle', 0.1, 0.08);
+        tone(783.99, 783.99, 0.18, 'triangle', 0.11, 0.16);
       },
-      flap() {
-        playTone(300, 510, 0.085, 'triangle', 0.085);
-      },
-      pass() {
-        playTone(640, 860, 0.065, 'sine', 0.055);
-      },
-      hit() {
-        playPaperCrash(0.24, 0.2);
-        playTone(185, 72, 0.2, 'sawtooth', 0.11);
-      },
-      semesterClear() {
-        playTone(523.25, 523.25, 0.1, 'triangle', 0.1, 0);
-        playTone(659.25, 659.25, 0.1, 'triangle', 0.1, 0.08);
-        playTone(783.99, 783.99, 0.18, 'triangle', 0.11, 0.16);
-      },
-      victory() {
-        const notes = [523.25, 659.25, 783.99, 1046.5];
-        notes.forEach((n, i) => playTone(n, n, i === 3 ? 0.45 : 0.15, 'triangle', 0.12, i * 0.1));
-      },
-      gameOver() {
-        playTone(320, 240, 0.16, 'sawtooth', 0.09, 0);
-        playTone(230, 130, 0.34, 'sawtooth', 0.1, 0.16);
-      }
+      victory: () => [523.25, 659.25, 783.99, 1046.5].forEach((n, i) => tone(n, n, i === 3 ? 0.45 : 0.15, 'triangle', 0.12, i * 0.1)),
+      gameOver: () => { tone(310, 220, 0.16, 'sawtooth', 0.09, 0); tone(220, 120, 0.34, 'sawtooth', 0.1, 0.16); }
     };
   })();
 
-  /* =========================================================
-     GAME CONSTANTS & SEMESTER / SCORING RULES
-     ========================================================= */
-  const YEAR_NAMES = ['FIRST YEAR', 'SECOND YEAR', 'THIRD YEAR', 'FOURTH YEAR'];
-  const SEM_NAMES = ['FIRST SEMESTER', 'SECOND SEMESTER', 'THIRD SEMESTER'];
+  function syncSoundIcon() {
+    const btn = $('soundBtn');
+    const m = Sound.isMuted();
+    btn.classList.toggle('muted', m);
+    btn.innerHTML = m
+      ? '<svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>'
+      : '<svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+  }
 
-  // 11 obstacles per semester * 12 semesters = 132 obstacles total
-  const SEMESTER_SEQUENCE = [
-    'CT', 'ASSIGNMENT', 'PRESENTATION', 'ATTENDANCE', 'MID',
-    'ASSIGNMENT', 'PRESENTATION', 'ATTENDANCE', 'CT', 'MID', 'FINAL'
+  /* =========================================================
+     12-SEMESTER ENVIRONMENT & WEATHER CYCLE
+     ========================================================= */
+  const SEM_THEMES = [
+    // Sem 1: Crisp Morning
+    { name: 'Morning', top: [115, 205, 252], mid: [186, 230, 253], bot: [240, 249, 255], hill: [134, 189, 224], bldg: [98, 152, 194], cloud: 0.85, clouds: 5, star: 0, win: 0, rain: 0, sunY: 130, sunR: 20, sunCol: [254, 240, 138], moon: false },
+    // Sem 2: Bright Day
+    { name: 'Bright Day', top: [42, 128, 235], mid: [110, 178, 250], bot: [219, 234, 254], hill: [90, 158, 214], bldg: [65, 122, 178], cloud: 0.9, clouds: 5, star: 0, win: 0, rain: 0, sunY: 90, sunR: 21, sunCol: [255, 248, 190], moon: false },
+    // Sem 3: Afternoon
+    { name: 'Afternoon', top: [56, 152, 236], mid: [165, 206, 242], bot: [254, 236, 195], hill: [118, 162, 198], bldg: [84, 124, 162], cloud: 0.8, clouds: 5, star: 0, win: 0.1, rain: 0, sunY: 175, sunR: 23, sunCol: [253, 224, 102], moon: false },
+    // Sem 4: Evening / Night
+    { name: 'Evening / Night', top: [22, 27, 68], mid: [66, 56, 118], bot: [164, 98, 124], hill: [48, 44, 86], bldg: [30, 30, 62], cloud: 0.35, clouds: 4, star: 0.65, win: 0.8, rain: 0, sunY: 118, sunR: 18, sunCol: [241, 245, 249], moon: true },
+    // Sem 5: Sun Rising Morning
+    { name: 'Sunrise Morning', top: [72, 128, 206], mid: [245, 168, 132], bot: [254, 235, 178], hill: [132, 122, 156], bldg: [96, 88, 126], cloud: 0.72, clouds: 5, star: 0.08, win: 0.15, rain: 0, sunY: 325, sunR: 26, sunCol: [254, 215, 102], moon: false },
+    // Sem 6: Rainy Season
+    { name: 'Rainy Season', top: [64, 82, 104], mid: [108, 128, 148], bot: [162, 178, 194], hill: [78, 98, 116], bldg: [54, 70, 88], cloud: 0.92, clouds: 8, star: 0, win: 0.35, rain: 1, sunY: 120, sunR: 0, sunCol: [200, 210, 220], moon: false },
+    // Sem 7: Afternoon
+    { name: 'Afternoon', top: [48, 142, 228], mid: [152, 198, 240], bot: [253, 232, 185], hill: [110, 156, 192], bldg: [78, 118, 156], cloud: 0.78, clouds: 5, star: 0, win: 0.1, rain: 0, sunY: 185, sunR: 23, sunCol: [253, 224, 102], moon: false },
+    // Sem 8: Night
+    { name: 'Night', top: [10, 16, 40], mid: [22, 32, 74], bot: [44, 58, 112], hill: [24, 34, 68], bldg: [15, 22, 48], cloud: 0.22, clouds: 4, star: 0.95, win: 0.95, rain: 0, sunY: 105, sunR: 19, sunCol: [241, 245, 249], moon: true },
+    // Sem 9: Night Rain
+    { name: 'Night Rain', top: [9, 14, 30], mid: [22, 30, 52], bot: [42, 52, 78], hill: [20, 28, 46], bldg: [14, 20, 36], cloud: 0.45, clouds: 7, star: 0.25, win: 0.9, rain: 1.25, sunY: 105, sunR: 15, sunCol: [203, 213, 225], moon: true },
+    // Sem 10: Cloudy Morning
+    { name: 'Cloudy Morning', top: [132, 166, 198], mid: [184, 206, 224], bot: [226, 236, 244], hill: [120, 148, 174], bldg: [92, 118, 144], cloud: 0.96, clouds: 9, star: 0, win: 0.1, rain: 0, sunY: 140, sunR: 17, sunCol: [248, 250, 252], moon: false },
+    // Sem 11: Sunny Morning
+    { name: 'Sunny Morning', top: [46, 168, 252], mid: [135, 212, 254], bot: [232, 248, 255], hill: [104, 178, 222], bldg: [72, 138, 186], cloud: 0.65, clouds: 4, star: 0, win: 0, rain: 0, sunY: 96, sunR: 26, sunCol: [254, 240, 110], moon: false },
+    // Sem 12: Afternoon Great Sunset
+    { name: 'Great Sunset', top: [64, 28, 108], mid: [226, 78, 52], bot: [254, 196, 84], hill: [118, 52, 86], bldg: [72, 32, 66], cloud: 0.7, clouds: 6, star: 0.22, win: 0.55, rain: 0, sunY: 342, sunR: 40, sunCol: [254, 215, 92], moon: false }
   ];
 
+  const SEMESTER_SEQUENCE = [
+    'CT', 'ASSIGN', 'PPTX', 'ATTEND', 'MID',
+    'ASSIGN', 'PPTX', 'ATTEND', 'CT', 'MID', 'FINAL'
+  ];
   const TOTAL_SEMESTERS = 12;
   const OBSTACLES_PER_SEM = SEMESTER_SEQUENCE.length;
-  const TOTAL_OBSTACLES = TOTAL_SEMESTERS * OBSTACLES_PER_SEM; // 132
-
-  // 4-Year Sky Palettes
-  const SKY_THEMES = [
-    { // Year 1: Crisp Morning
-      top: [115, 205, 252], mid: [186, 230, 253], bot: [240, 249, 255],
-      hill: [134, 189, 224], bldg: [98, 152, 194], cloudAlpha: 0.85,
-      starAlpha: 0, windowAlpha: 0, sunY: 132, sunColor: [254, 240, 138]
-    },
-    { // Year 2: Bright Day
-      top: [42, 122, 232], mid: [104, 170, 248], bot: [219, 234, 254],
-      hill: [90, 158, 214], bldg: [65, 122, 178], cloudAlpha: 0.9,
-      starAlpha: 0, windowAlpha: 0, sunY: 92, sunColor: [255, 248, 190]
-    },
-    { // Year 3: Warm Sunset
-      top: [76, 44, 133], mid: [234, 108, 60], bot: [253, 212, 115],
-      hill: [130, 74, 110], bldg: [88, 50, 92], cloudAlpha: 0.65,
-      starAlpha: 0.2, windowAlpha: 0.45, sunY: 345, sunColor: [254, 215, 102]
-    },
-    { // Year 4: Graduation Dusk / Twilight
-      top: [15, 23, 52], mid: [36, 44, 102], bot: [92, 76, 156],
-      hill: [32, 42, 82], bldg: [22, 30, 62], cloudAlpha: 0.3,
-      starAlpha: 0.9, windowAlpha: 0.95, sunY: 112, sunColor: [241, 245, 249]
-    }
-  ];
 
   /* =========================================================
-     LOGICAL CANVAS SCALING
+     CANVAS SCALING & STATE
      ========================================================= */
   const H = 700;
   const GROUND_H = 44;
   let W = 420;
-  let dpr = 1;
   let scale = 1;
 
   function resizeCanvas() {
     const rect = canvas.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
     W = Math.max(350, Math.min(500, Math.round(H * (rect.width / rect.height))));
     scale = canvas.height / H;
   }
 
-  /* =========================================================
-     GAME STATE
-     ========================================================= */
-  let state = 'home'; // 'home' | 'ready' | 'playing' | 'paused' | 'over' | 'won'
+  let state = 'start'; // 'start' | 'playing' | 'paused' | 'dying' | 'over' | 'victory_anim' | 'won'
   let rafId = 0;
   let lastTime = 0;
   let elapsed = 0;
 
-  let bestMarks = Math.min(100, parseInt(loadStorage(STORAGE_BEST_KEY, '0'), 10) || 0);
+  let bestMarks = loadNum(STORAGE_BEST, 0);
   let lives = 3;
+  let maxLivesCap = 6;
+  let mainMarks = 0;  // Banked at each Final checkpoint
+  let tempMarks = 0;  // Earned wall-by-wall in current semester
 
-  // Temporary points for satisfaction + pre-final hit counter + official marks (0..100)
-  let tempPoints = 0;
-  let preFinalHits = 0;
-  let marks = 0;
-
-  // Player & spawner semester tracking (0..11)
-  let currentSemester = 0;
-  let clearedInSemester = 0;
-  let totalClearedObstacles = 0;
+  let currentSemester = 0; // 0..11
+  let clearedInSem = 0;
   let spawnSemester = 0;
   let spawnStep = 0;
-  let spawnTimer = 0;
-
-  let lastObstacleFaced = 'CT';
-  let lastHitWasFinal = false;
+  let spawnTimer = 0.7;
 
   let themePos = 0;
   let worldScroll = 0;
@@ -1051,136 +862,120 @@
   let flashAlpha = 0;
   let invulnerable = 0;
   let stunTimer = 0;
+  let cutsceneTimer = 0;
 
-  let player = {
-    x: 108,
-    y: H * 0.45,
-    vy: 0,
-    rot: 0,
-    wingPhase: 0,
-    dizzyAngle: 0
-  };
+  let player = { x: 112, y: H * 0.43, vy: 0, rot: 0, wingPhase: 0, dizzyAngle: 0 };
 
   let obstacles = [];
   let particles = [];
   let debris = [];
   let confetti = [];
   let banners = [];
+  let popups = [];       // Floating +1, +CHECKPOINT, +1 ♥ popups
+  let skyBirds = [];     // Intro/Death (red, green, yellow) & Outro (cyan, pink, black)
 
-  const stars = Array.from({ length: 38 }, (_, i) => ({
+  const stars = Array.from({ length: 42 }, (_, i) => ({
     x: ((i * 73) % 100) / 100,
-    y: ((i * 41) % 56) / 100,
+    y: ((i * 41) % 58) / 100,
     r: 0.9 + (i % 3) * 0.55,
     phase: i * 1.1
   }));
 
-  /* =========================================================
-     HELPERS, GPA & SPEED CURVE
-     ========================================================= */
+  const raindrops = Array.from({ length: 70 }, () => ({
+    x: Math.random() * 520,
+    y: Math.random() * H,
+    len: 10 + Math.random() * 12,
+    spd: 460 + Math.random() * 200
+  }));
+
   const rand = (a, b) => a + Math.random() * (b - a);
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   const lerp = (a, b, t) => a + (b - a) * t;
+  const rgbLerp = (c1, c2, t) =>
+    `rgb(${Math.round(lerp(c1[0], c2[0], t))},${Math.round(lerp(c1[1], c2[1], t))},${Math.round(lerp(c1[2], c2[2], t))})`;
 
-  function rgbLerp(c1, c2, t) {
-    return `rgb(${Math.round(lerp(c1[0], c2[0], t))},${Math.round(lerp(c1[1], c2[1], t))},${Math.round(lerp(c1[2], c2[2], t))})`;
-  }
-
-  function getSemesterLabel(semIdx) {
-    const c = clamp(semIdx, 0, 11);
-    return `${YEAR_NAMES[Math.floor(c / 3)]} · ${SEM_NAMES[c % 3]}`;
-  }
-
-  // Speed increases noticeably after 1st semester (sem >= 1) and peaks in 4th year (sem 9..11)
-  // while staying humanly beatable
+  // Speed increases every Year (plus subtle semester bump)
   function getCurrentSpeed() {
-    if (currentSemester === 0) return 178; // 1st semester warm-up pace
-    if (currentSemester <= 2) return 212 + (currentSemester - 1) * 8; // Noticeable jump on 2nd sem
-    if (currentSemester <= 5) return 228 + (currentSemester - 3) * 6; // 2nd year
-    if (currentSemester <= 8) return 244 + (currentSemester - 6) * 6; // 3rd year
-    return 264 + (currentSemester - 9) * 8; // 4th year hardest, fair & beatable
-  }
-
-  function computeOfficialMarks(completedAll = false) {
-    if (preFinalHits >= 3) return 0;
-    if (completedAll || totalClearedObstacles >= TOTAL_OBSTACLES) return 100;
-    return Math.min(99, Math.round((totalClearedObstacles / TOTAL_OBSTACLES) * 100));
-  }
-
-  function computeGpaAndGrade(m) {
-    const clampedMarks = clamp(m, 0, 100);
-    const gpa = clampedMarks === 100 ? 4.0 : Math.min(4.0, Math.max(0.0, (clampedMarks / 100) * 4.0));
-    const gpaStr = gpa.toFixed(2);
-    let grade = 'F';
-    if (clampedMarks === 100 || gpa >= 4.0) grade = 'A+';
-    else if (gpa >= 3.6) grade = 'A';
-    else if (gpa >= 3.2) grade = 'A-';
-    else if (gpa >= 2.8) grade = 'B+';
-    else if (gpa >= 2.4) grade = 'B';
-    else if (gpa >= 2.0) grade = 'C';
-    return { gpaStr, grade };
+    const year = Math.floor(currentSemester / 3); // 0..3
+    const semInYear = currentSemester % 3;
+    return 184 + year * 30 + semInYear * 6;
   }
 
   /* =========================================================
-     HUD & UI UPDATES
+     UI & POPUPS
      ========================================================= */
-  function syncSoundIcon() {
-    const btn = $('soundBtn');
-    const isMuted = Sound.isMuted();
-    btn.classList.toggle('muted', isMuted);
-    btn.innerHTML = isMuted
-      ? '<svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>'
-      : '<svg class="ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
-  }
-
   function updateHud(animateLives = false) {
-    $('marksVal').textContent = marks;
-    $('tempVal').textContent = tempPoints;
-    $('bestScoreHeader').textContent = bestMarks;
-    $('livesVal').textContent = Array.from({ length: 3 }, (_, i) => (i < lives ? '♥' : '♡')).join(' ');
     const yearNum = Math.min(4, Math.floor(currentSemester / 3) + 1);
     $('yearVal').textContent = `${yearNum} / 4`;
-    $('semesterLabel').textContent = getSemesterLabel(currentSemester);
-    $('semesterStep').textContent = `${clearedInSemester} / ${OBSTACLES_PER_SEM} TO FINAL`;
-    $('progressFill').style.width = `${(clearedInSemester / OBSTACLES_PER_SEM) * 100}%`;
+    $('semesterVal').textContent = `${currentSemester + 1} / 12`;
+    $('mainMarksVal').textContent = mainMarks;
+    $('tempMarksVal').textContent = tempMarks;
+    $('highScoreVal').textContent = bestMarks;
+
+    const hearts = [];
+    const totalSlots = Math.max(3, lives);
+    for (let i = 0; i < totalSlots; i++) hearts.push(i < lives ? '♥' : '♡');
+    $('livesVal').textContent = hearts.join(' ');
+
+    $('envLabel').textContent = SEM_THEMES[clamp(currentSemester, 0, 11)].name;
+    $('stepLabel').textContent = `${clearedInSem} / ${OBSTACLES_PER_SEM} to Final`;
+    $('progressFill').style.width = `${(clearedInSem / OBSTACLES_PER_SEM) * 100}%`;
 
     if (animateLives) {
-      const card = $('livesCard');
-      card.classList.remove('pulse');
-      void card.offsetWidth;
-      card.classList.add('pulse');
+      const bar = $('livesBar');
+      bar.classList.remove('pulse');
+      void bar.offsetWidth;
+      bar.classList.add('pulse');
     }
   }
 
-  function showScreen(name) {
-    $('home').classList.toggle('active', name === 'home');
-    $('play').classList.toggle('active', name === 'play');
-    $('pauseBtn').hidden = name !== 'play';
+  function pushBanner(title, subtitle = '', accent = '#123cf3') {
+    banners.push({ title, subtitle, accent, life: 2.3, maxLife: 2.3 });
   }
 
-  function pushBanner(title, subtitle = '', accent = '#2563eb') {
-    banners.push({
-      title,
-      subtitle,
-      accent,
-      life: 2.2,
-      maxLife: 2.2
-    });
+  function addPopup(text, x, y, color = '#ffffff', bg = '#0f2547', big = false) {
+    popups.push({ text, x, y, vy: big ? -38 : -54, color, bg, big, life: big ? 1.8 : 1.1, maxLife: big ? 1.8 : 1.1 });
   }
 
   /* =========================================================
-     PARTICLES, PAPER DEBRIS & CONFETTI
+     SKY BIRDS (INTRO / DEATH: Red, Green, Yellow | OUTRO: Cyan, Pink, Black)
+     ========================================================= */
+  function spawnIntroBirds() {
+    skyBirds = [
+      { x: player.x + 48, y: player.y - 54, vx: 120, color: '#ef4444', stroke: '#7f1d1d', wing: 0, mode: 'intro' },
+      { x: player.x + 86, y: player.y + 42, vx: 138, color: '#22c55e', stroke: '#14532d', wing: 1.5, mode: 'intro' },
+      { x: player.x + 28, y: player.y + 72, vx: 112, color: '#eab308', stroke: '#713f12', wing: 3.1, mode: 'intro' }
+    ];
+  }
+
+  function spawnDeathSkyBirds() {
+    skyBirds = [
+      { x: -30, y: H * 0.25, vx: 165, color: '#ef4444', stroke: '#7f1d1d', wing: 0, mode: 'death' },
+      { x: -75, y: H * 0.36, vx: 175, color: '#22c55e', stroke: '#14532d', wing: 1.2, mode: 'death' },
+      { x: -120, y: H * 0.29, vx: 158, color: '#eab308', stroke: '#713f12', wing: 2.5, mode: 'death' },
+      { x: -165, y: H * 0.42, vx: 168, color: '#2563eb', stroke: '#0f172a', wing: 3.8, mode: 'death' }
+    ];
+  }
+
+  function spawnVictoryBirds() {
+    // 3 different rival birds (cyan, pink, black) that player's blue bird overtakes
+    skyBirds = [
+      { x: W * 0.62, y: H * 0.34, vx: -52, color: '#06b6d4', stroke: '#164e63', wing: 0, mode: 'outro' },
+      { x: W * 0.74, y: H * 0.48, vx: -46, color: '#ec4899', stroke: '#831843', wing: 1.6, mode: 'outro' },
+      { x: W * 0.85, y: H * 0.40, vx: -58, color: '#1e293b', stroke: '#020617', wing: 3.0, mode: 'outro' }
+    ];
+  }
+
+  /* =========================================================
+     PARTICLES, PAPER CRASH DEBRIS & CONFETTI
      ========================================================= */
   function spawnFlapFeathers() {
     for (let i = 0; i < 4; i++) {
       particles.push({
-        x: player.x - 13,
-        y: player.y + rand(-5, 6),
-        vx: rand(-85, -35),
-        vy: rand(-20, 40),
-        size: rand(2.5, 4.5),
-        color: i % 2 === 0 ? '#fef3c7' : '#ffffff',
-        life: rand(0.25, 0.45),
-        maxLife: 0.45
+        x: player.x - 14, y: player.y + rand(-5, 6),
+        vx: rand(-85, -35), vy: rand(-20, 40),
+        size: rand(2.5, 4.2), color: i % 2 === 0 ? '#bfdbfe' : '#ffffff',
+        life: rand(0.25, 0.45), maxLife: 0.45
       });
     }
   }
@@ -1188,155 +983,99 @@
   function spawnPassSparkles(x, y, color = '#60a5fa', count = 6) {
     for (let i = 0; i < count; i++) {
       particles.push({
-        x,
-        y: y + rand(-28, 28),
-        vx: rand(-40, 70),
-        vy: rand(-80, 40),
-        size: rand(2.5, 4.8),
-        color,
-        life: rand(0.32, 0.65),
-        maxLife: 0.65
+        x, y: y + rand(-26, 26), vx: rand(-40, 70), vy: rand(-80, 40),
+        size: rand(2.4, 4.6), color, life: rand(0.32, 0.65), maxLife: 0.65
       });
     }
   }
 
-  function spawnConfetti(count = 36, spreadY = H * 0.25) {
-    const colors = ['#f59e0b', '#2563eb', '#10b981', '#dc2626', '#6366f1'];
+  function spawnConfetti(count = 34, spreadY = H * 0.25) {
+    const colors = ['#f59e0b', '#2563eb', '#10b981', '#dc2626', '#ec4899'];
     for (let i = 0; i < count; i++) {
       confetti.push({
-        x: rand(W * 0.1, W * 0.9),
-        y: rand(-20, spreadY),
-        vx: rand(-90, 90),
-        vy: rand(-130, 40),
-        w: rand(6, 10),
-        h: rand(4, 6.5),
-        rot: rand(0, Math.PI * 2),
-        vrot: rand(-7, 7),
-        color: colors[i % colors.length],
-        life: rand(1.4, 2.6),
-        maxLife: 2.6
+        x: rand(W * 0.1, W * 0.9), y: rand(-20, spreadY),
+        vx: rand(-90, 90), vy: rand(-130, 40),
+        w: rand(6, 10), h: rand(4, 6.5),
+        rot: rand(0, Math.PI * 2), vrot: rand(-7, 7),
+        color: colors[i % colors.length], life: rand(1.4, 2.6), maxLife: 2.6
       });
     }
   }
 
-  // Breaks struck tower into falling paper sheets / blocks with gravity, rotation & scatter
   function spawnTowerBreakDebris(o, hitTop) {
     const impactY = hitTop ? Math.max(24, o.gapY - o.gap / 2 - 14) : Math.min(H - GROUND_H - 18, o.gapY + o.gap / 2 + 14);
-    const pieces = 18;
-    for (let i = 0; i < pieces; i++) {
-      let sheetFill = '#ffffff';
-      let lineCol = '#93c5fd';
-      let isPencil = false;
-
-      if (o.type === 'CT') {
-        sheetFill = '#f8fafc';
-        lineCol = '#f87171';
-        if (i === 0) isPencil = true;
-      } else if (o.type === 'ASSIGNMENT') {
-        sheetFill = '#ffffff';
-        lineCol = '#60a5fa';
-      } else if (o.type === 'PRESENTATION') {
-        sheetFill = i % 2 === 0 ? '#f97316' : '#ffedd5';
-        lineCol = '#9a3412';
-      } else if (o.type === 'ATTENDANCE') {
-        sheetFill = '#ecfdf5';
-        lineCol = '#10b981';
-      } else if (o.type === 'MID') {
-        sheetFill = i % 2 === 0 ? '#ffe4e6' : '#fecdd3';
-        lineCol = '#be123c';
-      } else if (o.type === 'FINAL') {
-        sheetFill = i % 2 === 0 ? '#fef3c7' : '#e2e8f0';
-        lineCol = '#b45309';
-      }
+    for (let i = 0; i < 18; i++) {
+      let sheetFill = '#ffffff', lineCol = '#93c5fd', isPencil = false;
+      if (o.type === 'CT') { sheetFill = '#f8fafc'; lineCol = '#f87171'; if (i === 0) isPencil = true; }
+      else if (o.type === 'PPTX') { sheetFill = i % 2 === 0 ? '#f97316' : '#ffedd5'; lineCol = '#9a3412'; }
+      else if (o.type === 'ATTEND') { sheetFill = '#ecfdf5'; lineCol = '#10b981'; }
+      else if (o.type === 'MID') { sheetFill = i % 2 === 0 ? '#ffe4e6' : '#fecdd3'; lineCol = '#be123c'; }
+      else if (o.type === 'FINAL') { sheetFill = i % 2 === 0 ? '#fef3c7' : '#e2e8f0'; lineCol = '#b45309'; }
 
       debris.push({
-        x: o.x + rand(4, o.w - 4),
-        y: impactY + rand(-34, 34),
-        vx: rand(-95, 220),
-        vy: hitTop ? rand(-240, -50) : rand(-170, 50),
-        w: isPencil ? 26 : rand(16, 25),
-        h: isPencil ? 6 : rand(12, 18),
-        rot: rand(0, Math.PI * 2),
-        vrot: rand(-11, 11),
-        sheetFill,
-        lineCol,
-        isPencil,
-        life: rand(0.8, 1.4),
-        maxLife: 1.4
+        x: o.x + rand(4, o.w - 4), y: impactY + rand(-34, 34),
+        vx: rand(-95, 220), vy: hitTop ? rand(-240, -50) : rand(-170, 50),
+        w: isPencil ? 26 : rand(16, 25), h: isPencil ? 6 : rand(12, 18),
+        rot: rand(0, Math.PI * 2), vrot: rand(-11, 11),
+        sheetFill, lineCol, isPencil, life: rand(0.8, 1.4), maxLife: 1.4
       });
     }
   }
 
   /* =========================================================
-     GAME LIFECYCLE & KNOCKOUT MESSAGES
+     GAME LIFECYCLE
      ========================================================= */
-  function resetGame() {
+  function resetToStart() {
     lives = 3;
-    tempPoints = 0;
-    preFinalHits = 0;
-    marks = 0;
-
+    mainMarks = 0;
+    tempMarks = 0;
     currentSemester = 0;
-    clearedInSemester = 0;
-    totalClearedObstacles = 0;
-
+    clearedInSem = 0;
     spawnSemester = 0;
     spawnStep = 0;
     spawnTimer = 0.72;
-
-    lastObstacleFaced = 'CT';
-    lastHitWasFinal = false;
-
     themePos = 0;
     worldScroll = 0;
     shakeTimer = 0;
     flashAlpha = 0;
     invulnerable = 0;
     stunTimer = 0;
+    cutsceneTimer = 0;
 
     obstacles = [];
     particles = [];
     debris = [];
     confetti = [];
     banners = [];
+    popups = [];
 
-    player = {
-      x: Math.round(W * 0.27),
-      y: H * 0.45,
-      vy: 0,
-      rot: 0,
-      wingPhase: 0,
-      dizzyAngle: 0
-    };
+    player = { x: Math.round(W * 0.27), y: H * 0.43, vy: 0, rot: 0, wingPhase: 0, dizzyAngle: 0 };
+    spawnIntroBirds();
 
-    updateHud();
-  }
-
-  function startNewGame() {
-    showScreen('play');
+    state = 'start';
+    $('startUI').hidden = false;
     $('pauseOverlay').hidden = true;
     $('endOverlay').hidden = true;
-    resizeCanvas();
-    resetGame();
-    state = 'ready';
-    lastTime = performance.now();
-    cancelAnimationFrame(rafId);
-    rafId = requestAnimationFrame(loop);
+    updateHud();
+    fetchLeaderboard();
+  }
+
+  function startRunFromTap() {
+    state = 'playing';
+    $('startUI').hidden = true;
+    player.vy = -410;
+    player.rot = -0.4;
+    Sound.flap();
+    spawnFlapFeathers();
+    pushBanner('YEAR 1 · SEMESTER 1', '3 LIVES · SURVIVE THE YEAR', '#123cf3');
   }
 
   function flap() {
-    if (state === 'ready') {
-      state = 'playing';
-      player.vy = -410;
-      player.rot = -0.4;
-      Sound.flap();
-      spawnFlapFeathers();
-      pushBanner('FIRST SEMESTER', '12 SEMESTERS · 4 YEARS', '#2563eb');
+    if (state === 'start') {
+      startRunFromTap();
       return;
     }
-    if (state !== 'playing') return;
-    if (stunTimer > 0) return;
-
+    if (state !== 'playing' || stunTimer > 0) return;
     player.vy = -410;
     player.rot = -0.4;
     player.wingPhase = 0.2;
@@ -1345,7 +1084,7 @@
   }
 
   function pauseGame() {
-    if (state !== 'playing' && state !== 'ready') return;
+    if (state !== 'playing') return;
     state = 'paused';
     $('pauseOverlay').hidden = false;
   }
@@ -1353,121 +1092,54 @@
   function resumeGame() {
     if (state !== 'paused') return;
     $('pauseOverlay').hidden = true;
-    state = totalClearedObstacles === 0 && spawnStep === 0 && spawnTimer > 0.7 ? 'ready' : 'playing';
+    state = 'playing';
     lastTime = performance.now();
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(loop);
   }
 
-  function buildEndSummary(won) {
-    const finalMarks = computeOfficialMarks(won);
-    marks = finalMarks;
-    if (marks > bestMarks) {
-      bestMarks = marks;
-      saveStorage(STORAGE_BEST_KEY, bestMarks);
+  function openEndModal(won) {
+    state = won ? 'won' : 'over';
+
+    // Banked Main Marks always count even if you fail later!
+    if (mainMarks > bestMarks) {
+      bestMarks = mainMarks;
+      saveVal(STORAGE_BEST, bestMarks);
     }
     updateHud();
+    submitScore(mainMarks);
 
-    const { gpaStr, grade } = computeGpaAndGrade(marks);
-    const markBox = $('endMark');
-    const marksEl = $('endMarks');
-
-    marksEl.textContent = `${marks}/100`;
-    marksEl.classList.toggle('win', won);
-    $('endGpa').textContent = gpaStr;
-    $('endGrade').textContent = grade;
-    $('endTemp').textContent = tempPoints;
-    $('endPreHits').textContent = preFinalHits;
-    $('endBest').textContent = `${bestMarks}/100`;
-    $('endJourney').textContent = won
-      ? 'FOURTH YEAR · THIRD SEMESTER (COMPLETED)'
-      : getSemesterLabel(currentSemester);
+    $('endMainMarks').textContent = mainMarks;
+    $('endTempMarks').textContent = tempMarks;
+    $('endBestMarks').textContent = bestMarks;
 
     if (won) {
-      markBox.style.background = '#fef3c7';
-      markBox.style.color = '#b45309';
-      markBox.innerHTML = '<svg class="ic" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5L12 4l10 5.5L12 15 2 9.5z"/><path d="M6 12v5c0 2 12 2 12 0v-5"/></svg>';
-      $('endTitle').textContent = 'Graduation Complete!';
-      $('endSub').textContent = 'You survived all 4 years and 12 semesters with 100 / 100 marks (CGPA 4.00, Grade A+).';
-      $('endDetail').textContent = `Temporary points earned: ${tempPoints} pts.`;
+      $('endTitle').textContent = 'Graduated! Uni Escaped!';
+      $('endSub').textContent = 'You overtook the flock and conquered all 4 Years & 12 Semesters!';
+      $('endDetail').textContent = `Final Banked Score: ${mainMarks} Main Marks.`;
       $('againBtn').className = 'btn btn-gold';
-      return;
-    }
-
-    // Knockout / Game Over messages matching exact requested conditions
-    markBox.style.background = '#fee2e2';
-    markBox.style.color = '#dc2626';
-    markBox.innerHTML = '<svg class="ic" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
-    $('againBtn').className = 'btn btn-primary';
-
-    const inFourthYear = currentSemester >= 9;
-    const inFirstSem = currentSemester === 0;
-
-    if (lastHitWasFinal) {
-      $('endTitle').textContent = 'You Failed in Final Lol !';
-      if (inFirstSem) {
-        $('endSub').textContent = 'no points for first sem broh!';
-        $('endDetail').textContent = preFinalHits >= 3
-          ? `3+ pre-final hits dropped official marks to 0 (Temp pts: ${tempPoints}).`
-          : `Temp pts: ${tempPoints} · Marks: ${marks}/100 · CGPA: ${gpaStr} (${grade}).`;
-      } else if (inFourthYear) {
-        $('endSub').textContent = 'ouh! can say u did great but guess what u failed again!';
-        $('endDetail').textContent = "(you're friends are chilling with the graduation hats and u taking improvements sadly)";
-      } else {
-        $('endSub').textContent = 'Retake!';
-        $('endDetail').textContent = 'u gotta give retake or take subject again in other sem or get improvements bro';
-      }
-    } else if (inFourthYear) {
-      $('endTitle').textContent = 'ouh! can say u did great but guess what u failed again!';
-      $('endSub').textContent = "(you're friends are chilling with the graduation hats and u taking improvements sadly)";
-      $('endDetail').textContent = preFinalHits >= 3
-        ? `Hit limit reached before Final (0 official marks, ${tempPoints} temp pts).`
-        : `Final Marks: ${marks}/100 · CGPA: ${gpaStr} (${grade}) · Temp pts: ${tempPoints}.`;
-    } else if (inFirstSem) {
-      $('endTitle').textContent = 'Game Over';
-      $('endSub').textContent = 'no points for first sem broh!';
-      $('endDetail').textContent = preFinalHits >= 3
-        ? `3 hits before Final: 0 official marks (${tempPoints} temp pts for satisfaction).`
-        : `Marks: ${marks}/100 · CGPA: ${gpaStr} (${grade}) · Temp pts: ${tempPoints}.`;
     } else {
-      // 2nd semester and other non-4th-year semesters
-      $('endTitle').textContent = 'Retake!';
-      $('endSub').textContent = 'u gotta give retake or take subject again in other sem or get improvements bro';
-      $('endDetail').textContent = preFinalHits >= 3
-        ? `3+ hits before Final: 0 official marks (${tempPoints} temp pts).`
-        : `Marks: ${marks}/100 · CGPA: ${gpaStr} (${grade}) · Temp pts: ${tempPoints}.`;
+      const yearNum = Math.min(4, Math.floor(currentSemester / 3) + 1);
+      $('endTitle').textContent = currentSemester === 0 ? 'Eliminated in Semester 1!' : 'Semester Failed!';
+      $('endSub').textContent = mainMarks > 0
+        ? `Your previous Final checkpoints saved ${mainMarks} Main Marks!`
+        : 'Pass a Final exam to lock in Main Marks on the leaderboard!';
+      $('endDetail').textContent = `Reached Year ${yearNum} · Semester ${currentSemester + 1} (${tempMarks} Temp Marks).`;
+      $('againBtn').className = 'btn btn-primary';
     }
-  }
 
-  function finishRun(won) {
-    state = won ? 'won' : 'over';
-    buildEndSummary(won);
-
-    if (won) {
-      Sound.victory();
-      spawnConfetti(85, H * 0.35);
-      setTimeout(() => {
-        if (state === 'won') $('endOverlay').hidden = false;
-      }, 500);
-    } else {
-      Sound.gameOver();
-      setTimeout(() => {
-        if (state === 'over') $('endOverlay').hidden = false;
-      }, 240);
-    }
+    $('endOverlay').hidden = false;
   }
 
   /* =========================================================
-     OBSTACLE SPAWNING & SEMESTER PROGRESSION
+     OBSTACLES, DAMAGE & CHECKPOINTS
      ========================================================= */
   function spawnNextObstacle() {
     if (spawnSemester >= TOTAL_SEMESTERS) return;
-
     const type = SEMESTER_SEQUENCE[spawnStep];
-    const year = Math.floor(spawnSemester / 3); // 0..3
+    const year = Math.floor(spawnSemester / 3);
     const moving = type === 'MID';
 
-    // Tighter in 4th year, yet always fair & humanly beatable
     let gap = 194 - year * 6;
     if (type === 'MID') gap -= 7;
     if (type === 'FINAL') gap -= 8;
@@ -1480,20 +1152,12 @@
     obstacles.push({
       x: W + 42,
       w: type === 'FINAL' ? 76 : type === 'MID' ? 74 : 70,
-      gapY,
-      baseY: gapY,
-      gap,
-      type,
-      semIndex: spawnSemester,
-      stepIndex: spawnStep,
-      moving,
-      phase: rand(0, Math.PI * 2),
-      amp: moving ? (year === 3 ? rand(44, 62) : rand(34, 50)) : 0,
-      passed: false,
-      topBroken: false,
-      bottomBroken: false,
-      topBreakAnim: 0,
-      bottomBreakAnim: 0
+      gapY, baseY: gapY, gap, type,
+      semIndex: spawnSemester, stepIndex: spawnStep,
+      moving, phase: rand(0, Math.PI * 2),
+      amp: moving ? (year === 3 ? rand(44, 60) : rand(32, 48)) : 0,
+      passed: false, topBroken: false, bottomBroken: false,
+      topBreakAnim: 0, bottomBreakAnim: 0
     });
 
     spawnStep++;
@@ -1504,56 +1168,70 @@
   }
 
   function handleSemesterComplete(completedSem) {
-    const isLastSemOfUni = completedSem >= TOTAL_SEMESTERS - 1;
+    // Final Checkpoint: bank Temp Marks + Final Bonus into Main Marks!
+    const checkpointBonus = 10 + completedSem * 2;
+    const earned = tempMarks + checkpointBonus;
+    mainMarks += earned;
+    tempMarks = 0;
 
-    if (isLastSemOfUni) {
+    addPopup(`+${earned} CHECKPOINT!`, W / 2, H * 0.28, '#fef08a', '#b45309', true);
+
+    const completedYear = Math.floor(completedSem / 3) + 1;
+    const isEndOfYear = (completedSem + 1) % 3 === 0;
+    const isLastSem = completedSem >= TOTAL_SEMESTERS - 1;
+
+    if (isLastSem) {
+      // Graduation! Trigger victory overtaking animation in Sem 12 sunset
       currentSemester = TOTAL_SEMESTERS - 1;
-      clearedInSemester = OBSTACLES_PER_SEM;
-      marks = computeOfficialMarks(true);
+      clearedInSem = OBSTACLES_PER_SEM;
+      obstacles = [];
+      state = 'victory_anim';
+      cutsceneTimer = 3.2;
+      spawnVictoryBirds();
+      spawnConfetti(80, H * 0.35);
+      Sound.victory();
+      pushBanner('YEAR 4 SURVIVED · GRADUATED!', 'OVERTAKING THE FLOCK!', '#d97706');
       updateHud();
-      pushBanner('UNIVERSITY COMPLETED!', '100 MARKS · 4.00 CGPA · A+', '#d97706');
-      finishRun(true);
       return;
     }
 
     currentSemester = completedSem + 1;
-    clearedInSemester = 0;
-    marks = computeOfficialMarks(false);
-    Sound.semesterClear();
-    spawnConfetti(24, H * 0.18);
+    clearedInSem = 0;
+    Sound.semClear();
+    spawnConfetti(26, H * 0.2);
 
-    const nextSemTitle = SEM_NAMES[currentSemester % 3];
-    const nextYearTitle = YEAR_NAMES[Math.floor(currentSemester / 3)];
-    const isNewYear = currentSemester % 3 === 0;
-    pushBanner(
-      isNewYear ? `${nextYearTitle} · ${nextSemTitle}` : nextSemTitle,
-      isNewYear ? 'FASTER PACE AHEAD' : `${nextYearTitle} · SPEED INCREASED`,
-      isNewYear ? '#d97706' : '#2563eb'
-    );
-    updateHud();
+    if (isEndOfYear) {
+      // Survived a full Year: +1 Extra Life + top popup + speed increase!
+      lives = Math.min(maxLivesCap, lives + 1);
+      Sound.lifeUp();
+      addPopup('+1 ♥ EXTRA LIFE', W / 2, 74, '#ffffff', '#dc2626', true);
+      pushBanner(
+        `YEAR ${completedYear} SURVIVED!`,
+        `+1 ♥ LIFE · YEAR ${completedYear + 1} SPEED UP!`,
+        '#059669'
+      );
+      updateHud(true);
+    } else {
+      pushBanner(
+        `YEAR ${Math.floor(currentSemester / 3) + 1} · SEMESTER ${currentSemester + 1}`,
+        `${SEM_THEMES[currentSemester].name.toUpperCase()} · CHECKPOINT SAVED`,
+        '#123cf3'
+      );
+      updateHud();
+    }
   }
 
-  function applyDamage(dmg, sourceName, obstacle = null, hitTop = false) {
+  function applyDamage(dmg, sourceType, obstacle = null, hitTop = false) {
     if (invulnerable > 0) return;
 
-    lastObstacleFaced = sourceName;
-    lastHitWasFinal = sourceName === 'FINAL';
-
-    // Track hits taken before Final
-    if (!lastHitWasFinal) {
-      preFinalHits++;
-      if (preFinalHits >= 3) {
-        marks = 0;
-      }
-    }
-
     lives = Math.max(0, lives - dmg);
-    invulnerable = 3.0; // ~3s recovery / invulnerability window
-    stunTimer = 0.42;
+    invulnerable = 2.6;
+    stunTimer = 0.38;
     shakeTimer = 0.3;
     flashAlpha = 0.38;
-
     Sound.hit();
+
+    addPopup(`-${dmg} ♥`, player.x, player.y - 30, '#ffffff', '#dc2626', false);
 
     if (obstacle) {
       if (hitTop) obstacle.topBroken = true;
@@ -1561,13 +1239,18 @@
       spawnTowerBreakDebris(obstacle, hitTop);
       player.vy = hitTop ? 135 : -235;
     } else {
-      player.vy = -280;
+      player.vy = -260;
     }
 
     updateHud(true);
 
     if (lives <= 0) {
-      finishRun(false);
+      // Clear nearby walls so the 4 birds in the sky animation is unobstructed!
+      obstacles = [];
+      state = 'dying';
+      cutsceneTimer = 2.1;
+      spawnDeathSkyBirds();
+      Sound.gameOver();
     }
   }
 
@@ -1577,39 +1260,100 @@
   function update(dt) {
     elapsed += dt;
 
-    const targetTheme = Math.min(3, Math.floor(currentSemester / 3));
-    themePos += (targetTheme - themePos) * Math.min(1, dt * 1.6);
+    // Smoothly transition sky theme to current semester
+    themePos += (currentSemester - themePos) * Math.min(1, dt * 1.4);
 
-    for (const c of confetti) {
-      c.x += c.vx * dt;
-      c.y += c.vy * dt;
-      c.vy += 240 * dt;
-      c.rot += c.vrot * dt;
-      c.life -= dt;
+    // Rain update
+    const curRain = SEM_THEMES[clamp(Math.round(themePos), 0, 11)].rain;
+    if (curRain > 0.05) {
+      for (const r of raindrops) {
+        r.y += r.spd * dt * curRain;
+        r.x -= 95 * dt;
+        if (r.y > H) { r.y = -20; r.x = Math.random() * (W + 120); }
+        if (r.x < -20) r.x = W + 40;
+      }
     }
+
+    // Confetti, particles, debris, popups, banners
+    for (const c of confetti) { c.x += c.vx * dt; c.y += c.vy * dt; c.vy += 240 * dt; c.rot += c.vrot * dt; c.life -= dt; }
     confetti = confetti.filter(c => c.life > 0);
+
+    for (const p of particles) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 180 * dt; p.life -= dt; }
+    particles = particles.filter(p => p.life > 0);
+
+    for (const d of debris) { d.x += d.vx * dt; d.y += d.vy * dt; d.vy += 540 * dt; d.rot += d.vrot * dt; d.life -= dt; }
+    debris = debris.filter(d => d.life > 0);
+
+    for (const pop of popups) { pop.y += pop.vy * dt; pop.life -= dt; }
+    popups = popups.filter(pop => pop.life > 0);
 
     if (banners.length > 0) {
       banners[0].life -= dt;
       if (banners[0].life <= 0) banners.shift();
     }
 
-    if (state === 'ready') {
-      worldScroll += 70 * dt;
+    if (shakeTimer > 0) shakeTimer = Math.max(0, shakeTimer - dt);
+    if (flashAlpha > 0) flashAlpha = Math.max(0, flashAlpha - dt * 1.25);
+
+    // START SCREEN: live flying bird + 3 rival birds cruising
+    if (state === 'start') {
+      worldScroll += 85 * dt;
       player.x = Math.round(W * 0.27);
-      player.y = H * 0.45 + Math.sin(elapsed * 4.5) * 10;
+      player.y = H * 0.41 + Math.sin(elapsed * 4.5) * 10;
       player.rot = Math.sin(elapsed * 4.5) * 0.08;
-      player.wingPhase += dt * 10;
+      player.wingPhase += dt * 11;
+      for (const b of skyBirds) {
+        b.wing += dt * 11;
+        b.y += Math.sin(elapsed * 3.5 + b.wing) * 0.45;
+      }
+      return;
+    }
+
+    // DEATH CUTSCENE: nearby walls gone, 4 birds fly across the sky
+    if (state === 'dying') {
+      worldScroll += 65 * dt;
+      player.vy += 900 * dt;
+      player.y = Math.min(H - GROUND_H - 12, player.y + player.vy * dt);
+      player.rot = Math.min(1.4, player.rot + dt * 4);
+      for (const b of skyBirds) {
+        b.x += b.vx * dt;
+        b.wing += dt * 13;
+        b.y += Math.sin(elapsed * 5 + b.wing) * 0.6;
+      }
+      cutsceneTimer -= dt;
+      if (cutsceneTimer <= 0) openEndModal(false);
+      return;
+    }
+
+    // VICTORY CUTSCENE: Sem 12 Sunset, Blue player bird overtakes Cyan, Pink, Black birds
+    if (state === 'victory_anim') {
+      worldScroll += 210 * dt;
+      player.y += (H * 0.40 - player.y) * Math.min(1, dt * 3);
+      player.x = Math.min(W * 0.78, player.x + 115 * dt);
+      player.rot = -0.08 + Math.sin(elapsed * 6) * 0.05;
+      player.wingPhase += dt * 16;
+      for (const b of skyBirds) {
+        b.x += b.vx * dt; // Falls behind as blue bird overtakes them
+        b.wing += dt * 12;
+        b.y += Math.sin(elapsed * 4 + b.wing) * 0.5;
+      }
+      cutsceneTimer -= dt;
+      if (cutsceneTimer <= 0) openEndModal(true);
       return;
     }
 
     if (state !== 'playing') return;
 
+    // Intro rival birds fly away ahead when game starts
+    for (const b of skyBirds) {
+      b.x += b.vx * dt;
+      b.wing += dt * 14;
+    }
+    skyBirds = skyBirds.filter(b => b.x < W + 80);
+
     const speed = getCurrentSpeed();
     worldScroll += speed * dt;
 
-    if (shakeTimer > 0) shakeTimer = Math.max(0, shakeTimer - dt);
-    if (flashAlpha > 0) flashAlpha = Math.max(0, flashAlpha - dt * 1.25);
     if (invulnerable > 0) {
       invulnerable = Math.max(0, invulnerable - dt);
       player.dizzyAngle += dt * 9;
@@ -1629,16 +1373,12 @@
       player.wingPhase += dt * (player.vy < 0 ? 18 : 9);
     }
 
-    if (player.y < 20) {
-      player.y = 20;
-      player.vy = Math.max(0, player.vy);
-    }
-
+    if (player.y < 20) { player.y = 20; player.vy = Math.max(0, player.vy); }
     const floorY = H - GROUND_H - 15;
     if (player.y >= floorY) {
       player.y = floorY;
       if (invulnerable <= 0) {
-        applyDamage(1, 'CAMPUS FLOOR');
+        applyDamage(1, 'FLOOR');
         if (state !== 'playing') return;
       } else {
         player.vy = -240;
@@ -1651,20 +1391,17 @@
         spawnNextObstacle();
         const justFinishedSem = spawnStep === 0 && spawnSemester > 0;
         const interval = 335 / speed;
-        spawnTimer = justFinishedSem ? interval + 0.34 : interval;
+        spawnTimer = justFinishedSem ? interval + 0.36 : interval;
       }
     }
 
-    const hitRadius = 13.5;
+    const hitR = 13.5;
     for (const o of obstacles) {
       o.x -= speed * dt;
-
       if (o.moving) {
         const freq = currentSemester >= 9 ? 2.65 : 2.15;
         o.phase += dt * freq;
-        const minC = 126 + o.gap * 0.5;
-        const maxC = H - GROUND_H - 86 - o.gap * 0.5;
-        o.gapY = clamp(o.baseY + Math.sin(o.phase) * o.amp, minC, maxC);
+        o.gapY = clamp(o.baseY + Math.sin(o.phase) * o.amp, 126 + o.gap * 0.5, H - GROUND_H - 86 - o.gap * 0.5);
       }
 
       if (o.topBroken) o.topBreakAnim = Math.min(1, o.topBreakAnim + dt * 4.5);
@@ -1672,12 +1409,11 @@
 
       if (!o.passed && o.x + o.w < player.x - 10) {
         o.passed = true;
-        lastObstacleFaced = o.type;
-        totalClearedObstacles++;
-        clearedInSemester = Math.min(OBSTACLES_PER_SEM, o.stepIndex + 1);
-        tempPoints++;
-        marks = computeOfficialMarks(false);
+        clearedInSem = Math.min(OBSTACLES_PER_SEM, o.stepIndex + 1);
+        const pts = o.type === 'MID' ? 2 : 1;
+        tempMarks += pts;
         Sound.pass();
+        addPopup(pts > 1 ? `+${pts} MID` : '+1', player.x + 18, player.y - 24, '#ffffff', pts > 1 ? '#be123c' : '#123cf3', false);
         spawnPassSparkles(o.x + o.w, o.gapY, o.type === 'FINAL' ? '#f59e0b' : '#60a5fa', o.type === 'FINAL' ? 12 : 5);
         updateHud();
 
@@ -1687,16 +1423,16 @@
         }
       }
 
-      if (player.x + hitRadius > o.x + 3 && player.x - hitRadius < o.x + o.w - 3) {
+      if (player.x + hitR > o.x + 3 && player.x - hitR < o.x + o.w - 3) {
         const topBottom = o.gapY - o.gap / 2;
         const bottomTop = o.gapY + o.gap / 2;
+        // FINAL = -2 lives, MID = -1 life, others = -1 life
+        const dmg = o.type === 'FINAL' ? 2 : 1;
 
-        if (!o.topBroken && player.y - hitRadius < topBottom) {
-          const dmg = o.type === 'MID' ? 2 : 1;
+        if (!o.topBroken && player.y - hitR < topBottom) {
           applyDamage(dmg, o.type, o, true);
           if (state !== 'playing') return;
-        } else if (!o.bottomBroken && player.y + hitRadius > bottomTop) {
-          const dmg = o.type === 'MID' ? 2 : 1;
+        } else if (!o.bottomBroken && player.y + hitR > bottomTop) {
           applyDamage(dmg, o.type, o, false);
           if (state !== 'playing') return;
         }
@@ -1704,92 +1440,16 @@
     }
 
     obstacles = obstacles.filter(o => o.x + o.w > -40);
-
-    for (const p of particles) {
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-      p.vy += 180 * dt;
-      p.life -= dt;
-    }
-    particles = particles.filter(p => p.life > 0);
-
-    for (const d of debris) {
-      d.x += d.vx * dt;
-      d.y += d.vy * dt;
-      d.vy += 540 * dt;
-      d.rot += d.vrot * dt;
-      d.life -= dt;
-    }
-    debris = debris.filter(d => d.life > 0);
   }
 
   /* =========================================================
-     RENDERING: PARALLAX CAMPUS + 4TH YEAR GRADUATION FRIENDS
+     RENDERING: 12-SEMESTER SKY, RAIN, CAMPUS, TOWERS & BIRDS
      ========================================================= */
-  function drawGraduationCap(cx, cy, scaleFactor = 1, capColor = '#0f2547') {
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.scale(scaleFactor, scaleFactor);
-    ctx.fillStyle = capColor;
-    ctx.strokeStyle = '#0f172a';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(-12, 0);
-    ctx.lineTo(0, -6);
-    ctx.lineTo(12, 0);
-    ctx.lineTo(0, 5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 1.8;
-    ctx.beginPath();
-    ctx.moveTo(11, 0);
-    ctx.lineTo(13.5, 6.5);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  function drawFourthYearFriends(baseY) {
-    // Friends in graduation caps chilling near the campus quad in 4th year
-    const friends = [
-      { x: W * 0.42, coat: '#1e3a8a', bob: 0 },
-      { x: W * 0.56, coat: '#0f766e', bob: 1.7 },
-      { x: W * 0.70, coat: '#4338ca', bob: 3.3 }
-    ];
-    for (const f of friends) {
-      const chillY = baseY - 12 + Math.sin(elapsed * 2.4 + f.bob) * 2.2;
-      ctx.save();
-      ctx.translate(f.x, chillY);
-      // Gown torso
-      ctx.fillStyle = f.coat;
-      ctx.beginPath();
-      ctx.roundRect(-7, -14, 14, 14, 4);
-      ctx.fill();
-      // Head
-      ctx.fillStyle = '#fde68a';
-      ctx.beginPath();
-      ctx.arc(0, -19, 5.5, 0, Math.PI * 2);
-      ctx.fill();
-      // Happy smile
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.arc(0, -18, 2.5, 0.2, Math.PI - 0.2);
-      ctx.stroke();
-      // Graduation cap
-      drawGraduationCap(0, -25, 0.85, '#0f172a');
-      ctx.restore();
-    }
-  }
-
   function drawBackground() {
-    const idxA = Math.floor(clamp(themePos, 0, 3));
-    const idxB = Math.min(3, idxA + 1);
+    const idxA = Math.floor(clamp(themePos, 0, 11));
+    const idxB = Math.min(11, idxA + 1);
     const t = clamp(themePos - idxA, 0, 1);
-    const A = SKY_THEMES[idxA];
-    const B = SKY_THEMES[idxB];
+    const A = SEM_THEMES[idxA], B = SEM_THEMES[idxB];
 
     const sky = ctx.createLinearGradient(0, 0, 0, H - GROUND_H);
     sky.addColorStop(0, rgbLerp(A.top, B.top, t));
@@ -1798,143 +1458,117 @@
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
 
-    const starAlpha = lerp(A.starAlpha, B.starAlpha, t);
+    // Stars
+    const starAlpha = lerp(A.star, B.star, t);
     if (starAlpha > 0.02) {
-      ctx.save();
       for (const s of stars) {
         const tw = 0.45 + 0.55 * Math.sin(elapsed * 3 + s.phase);
-        ctx.fillStyle = `rgba(255, 255, 255, ${starAlpha * tw})`;
+        ctx.fillStyle = `rgba(255,255,255,${starAlpha * tw})`;
         ctx.beginPath();
         ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.restore();
     }
 
-    const sunY = lerp(A.sunY, B.sunY, t);
-    const sunX = W * 0.78;
-    const sunCol = rgbLerp(A.sunColor, B.sunColor, t);
-    ctx.save();
-    ctx.globalAlpha = 0.92;
-    ctx.fillStyle = sunCol;
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, 20, 0, Math.PI * 2);
-    ctx.fill();
-    if (themePos > 2.4) {
-      ctx.fillStyle = rgbLerp(A.top, B.top, t);
+    // Sun or Moon (Grand Sunset glow on Sem 12!)
+    const sunR = lerp(A.sunR, B.sunR, t);
+    if (sunR > 2) {
+      const sunY = lerp(A.sunY, B.sunY, t);
+      const sunX = W * 0.76;
+      const sunCol = rgbLerp(A.sunCol, B.sunCol, t);
+      if (themePos > 10.6) {
+        const glow = ctx.createRadialGradient(sunX, sunY, sunR * 0.4, sunX, sunY, sunR * 2.5);
+        glow.addColorStop(0, 'rgba(254, 215, 102, 0.55)');
+        glow.addColorStop(1, 'rgba(254, 215, 102, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, sunR * 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = sunCol;
       ctx.beginPath();
-      ctx.arc(sunX + 8, sunY - 4, 16, 0, Math.PI * 2);
+      ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
       ctx.fill();
+      if (A.moon && t < 0.5 || B.moon && t >= 0.5) {
+        ctx.fillStyle = rgbLerp(A.top, B.top, t);
+        ctx.beginPath();
+        ctx.arc(sunX + 7, sunY - 4, sunR * 0.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
-    ctx.restore();
 
-    const cloudAlpha = lerp(A.cloudAlpha, B.cloudAlpha, t);
-    ctx.save();
-    ctx.fillStyle = `rgba(255, 255, 255, ${cloudAlpha})`;
-    const cloudSpan = W + 180;
-    for (let i = 0; i < 5; i++) {
-      const cx = (((i * 125 - worldScroll * 0.11) % cloudSpan) + cloudSpan) % cloudSpan - 80;
-      const cy = 76 + (i % 3) * 68;
+    // Clouds
+    const cloudAlpha = lerp(A.cloud, B.cloud, t);
+    const cloudCount = Math.round(lerp(A.clouds, B.clouds, t));
+    ctx.fillStyle = `rgba(255,255,255,${cloudAlpha})`;
+    const span = W + 200;
+    for (let i = 0; i < cloudCount; i++) {
+      const cx = (((i * 96 - worldScroll * 0.11) % span) + span) % span - 90;
+      const cy = 68 + (i % 3) * 58;
       ctx.beginPath();
       ctx.arc(cx, cy, 19, 0, Math.PI * 2);
       ctx.arc(cx + 21, cy - 7, 24, 0, Math.PI * 2);
       ctx.arc(cx + 44, cy, 17, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.restore();
 
+    // Hills
     ctx.fillStyle = rgbLerp(A.hill, B.hill, t);
     ctx.beginPath();
     ctx.moveTo(0, H - GROUND_H);
     for (let x = 0; x <= W + 20; x += 20) {
-      const y = H - GROUND_H - 94 - Math.sin((x + worldScroll * 0.16) * 0.012) * 16;
-      ctx.lineTo(x, y);
+      ctx.lineTo(x, H - GROUND_H - 94 - Math.sin((x + worldScroll * 0.16) * 0.012) * 16);
     }
     ctx.lineTo(W, H - GROUND_H);
     ctx.closePath();
     ctx.fill();
 
+    // Campus buildings
     const bldgColor = rgbLerp(A.bldg, B.bldg, t);
-    const winAlpha = lerp(A.windowAlpha, B.windowAlpha, t);
+    const winAlpha = lerp(A.win, B.win, t);
     const tileW = 300;
     const baseY = H - GROUND_H;
     const offset = ((worldScroll * 0.28) % tileW + tileW) % tileW;
 
-    for (let startX = -offset - tileW; startX < W + tileW; startX += tileW) {
+    for (let sx = -offset - tileW; sx < W + tileW; sx += tileW) {
       ctx.fillStyle = bldgColor;
-      ctx.fillRect(startX + 12, baseY - 80, 76, 80);
+      ctx.fillRect(sx + 12, baseY - 80, 76, 80);
       ctx.beginPath();
-      ctx.moveTo(startX + 6, baseY - 80);
-      ctx.lineTo(startX + 50, baseY - 100);
-      ctx.lineTo(startX + 94, baseY - 80);
-      ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(sx + 6, baseY - 80); ctx.lineTo(sx + 50, baseY - 100); ctx.lineTo(sx + 94, baseY - 80);
+      ctx.closePath(); ctx.fill();
 
-      ctx.fillRect(startX + 108, baseY - 134, 36, 134);
+      ctx.fillRect(sx + 108, baseY - 134, 36, 134);
       ctx.beginPath();
-      ctx.moveTo(startX + 104, baseY - 134);
-      ctx.lineTo(startX + 126, baseY - 166);
-      ctx.lineTo(startX + 148, baseY - 134);
-      ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(sx + 104, baseY - 134); ctx.lineTo(sx + 126, baseY - 166); ctx.lineTo(sx + 148, baseY - 134);
+      ctx.closePath(); ctx.fill();
 
       ctx.fillStyle = winAlpha > 0.3 ? '#fef08a' : 'rgba(255,255,255,0.65)';
-      ctx.beginPath();
-      ctx.arc(startX + 126, baseY - 114, 7.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(sx + 126, baseY - 114, 7.5, 0, Math.PI * 2); ctx.fill();
 
       ctx.fillStyle = bldgColor;
-      ctx.fillRect(startX + 168, baseY - 70, 92, 70);
-      ctx.beginPath();
-      ctx.arc(startX + 214, baseY - 70, 30, Math.PI, 0);
-      ctx.fill();
+      ctx.fillRect(sx + 168, baseY - 70, 92, 70);
+      ctx.beginPath(); ctx.arc(sx + 214, baseY - 70, 30, Math.PI, 0); ctx.fill();
 
       if (winAlpha > 0.05) {
-        ctx.fillStyle = `rgba(253, 224, 71, ${winAlpha * 0.85})`;
-        for (let r = 0; r < 3; r++) {
-          for (let c = 0; c < 4; c++) {
-            ctx.fillRect(startX + 22 + c * 15, baseY - 66 + r * 18, 7, 10);
-          }
-        }
+        ctx.fillStyle = `rgba(253,224,71,${winAlpha * 0.85})`;
+        for (let r = 0; r < 3; r++)
+          for (let c = 0; c < 4; c++)
+            ctx.fillRect(sx + 22 + c * 15, baseY - 66 + r * 18, 7, 10);
       }
     }
 
-    if (currentSemester >= 9) {
-      drawGraduationFriendsSafe(baseY);
-    }
-  }
-
-  function drawGraduationFriendsSafe(baseY) {
-    drawGraduationFriends(baseY);
-  }
-
-  function drawGraduationFriends(baseY) {
-    drawGraduationCap;
-    drawGraduationFriendsImpl(baseY);
-  }
-
-  function drawGraduationFriendsImpl(baseY) {
-    const pals = [
-      { x: W * 0.44, robe: '#1e3a8a', offset: 0 },
-      { x: W * 0.58, robe: '#0f766e', offset: 1.8 },
-      { x: W * 0.72, robe: '#4338ca', offset: 3.4 }
-    ];
-    for (const p of pals) {
-      const y = baseY - 6 + Math.sin(elapsed * 2.2 + p.offset) * 1.5;
+    // Rain overlay (Sem 6 & Sem 9)
+    const rainAmt = lerp(A.rain, B.rain, t);
+    if (rainAmt > 0.05) {
       ctx.save();
-      ctx.translate(p.x, y);
-      // Sitting/chilling gown
-      ctx.fillStyle = p.robe;
+      ctx.strokeStyle = `rgba(203, 213, 225, ${Math.min(0.65, rainAmt * 0.55)})`;
+      ctx.lineWidth = 1.4;
       ctx.beginPath();
-      ctx.roundRect(-7, -12, 14, 12, 4);
-      ctx.fill();
-      // Head
-      ctx.fillStyle = '#fde68a';
-      ctx.beginPath();
-      ctx.arc(0, -17, 5, 0, Math.PI * 2);
-      ctx.fill();
-      // Graduation cap
-      drawGraduationCap(0, -22, 0.82, '#0f172a');
+      for (const r of raindrops) {
+        ctx.moveTo(r.x, r.y);
+        ctx.lineTo(r.x - 4, r.y + r.len);
+      }
+      ctx.stroke();
       ctx.restore();
     }
   }
@@ -1944,126 +1578,64 @@
     ctx.fillStyle = '#16a34a';
     ctx.fillRect(0, y, W, 12);
     ctx.fillStyle = '#22c55e';
-    const stripeW = 28;
-    const off = ((worldScroll) % (stripeW * 2) + stripeW * 2) % (stripeW * 2);
-    for (let x = -off - stripeW * 2; x < W + stripeW * 2; x += stripeW * 2) {
-      ctx.fillRect(x, y, stripeW, 12);
-    }
-
+    const sw = 28;
+    const off = ((worldScroll) % (sw * 2) + sw * 2) % (sw * 2);
+    for (let x = -off - sw * 2; x < W + sw * 2; x += sw * 2) ctx.fillRect(x, y, sw, 12);
     ctx.fillStyle = '#e2e8f0';
     ctx.fillRect(0, y + 12, W, GROUND_H - 12);
     ctx.fillStyle = '#cbd5e1';
     ctx.fillRect(0, y + 12, W, 3);
   }
 
-  /* =========================================================
-     RENDERING: STACKED PAPER TOWERS FOR ALL OBSTACLES
-     ========================================================= */
-  function drawPaperSheetBlock(x, y, w, h, sheetFill, borderCol, ruleCol, foldedCorner = true) {
+  function drawPaperBlock(x, y, w, h, fill, border, rule, fold = true) {
     if (h <= 2 || w <= 2) return;
-    ctx.fillStyle = sheetFill;
-    ctx.strokeStyle = borderCol;
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = border;
     ctx.lineWidth = 1.6;
     ctx.beginPath();
     ctx.roundRect(x, y, w, h, 3);
     ctx.fill();
     ctx.stroke();
-
-    // Ruled lines inside paper
-    if (ruleCol && h > 12) {
-      ctx.strokeStyle = ruleCol;
+    if (rule && h > 12) {
+      ctx.strokeStyle = rule;
       ctx.lineWidth = 1.1;
       for (let ry = y + 7; ry < y + h - 4; ry += 7) {
-        ctx.beginPath();
-        ctx.moveTo(x + 5, ry);
-        ctx.lineTo(x + w - 6, ry);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x + 5, ry); ctx.lineTo(x + w - 6, ry); ctx.stroke();
       }
     }
-
-    // Folded page corner
-    if (foldedCorner && w > 14 && h > 14) {
+    if (fold && w > 14 && h > 14) {
       ctx.fillStyle = '#e2e8f0';
-      ctx.beginPath();
-      ctx.moveTo(x + w - 9, y);
-      ctx.lineTo(x + w, y);
-      ctx.lineTo(x + w, y + 9);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x + w - 9, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w, y + 9); ctx.closePath();
+      ctx.fill(); ctx.stroke();
     }
   }
 
-  function drawTowerSection(o, x, y, w, h, isTop) {
+  function drawTower(o, x, y, w, h, isTop) {
     if (h <= 2) return;
     ctx.save();
-
-    const breakAnim = isTop ? o.topBreakAnim : o.bottomBreakAnim;
-    if (breakAnim > 0) {
-      const retract = breakAnim * 56;
+    const ba = isTop ? o.topBreakAnim : o.bottomBreakAnim;
+    if (ba > 0) {
+      const retract = ba * 56;
       if (isTop) h = Math.max(0, h - retract);
       else { y += retract; h = Math.max(0, h - retract); }
       if (h <= 4) { ctx.restore(); return; }
-      ctx.globalAlpha = Math.max(0.22, 1 - breakAnim * 0.7);
+      ctx.globalAlpha = Math.max(0.22, 1 - ba * 0.7);
     }
 
-    // Base shadow behind tower
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.14)';
-    ctx.beginPath();
-    ctx.roundRect(x + 3, y + 2, w, h, 6);
-    ctx.fill();
-
-    // Every obstacle is built from stacked paper sheets/blocks
-    const sheetStep = 14;
-    const count = Math.max(1, Math.ceil(h / sheetStep));
-
+    const step = 14;
+    const count = Math.max(1, Math.ceil(h / step));
     for (let i = 0; i < count; i++) {
-      const stagger = ((i % 2) === 0 ? 0 : 2);
-      const bx = x + stagger;
-      const bw = w - stagger;
-      const sy = isTop ? (y + h - (i + 1) * sheetStep) : (y + i * sheetStep);
-      const sh = Math.min(sheetStep - 1, isTop ? (sy + sheetStep - y) : (y + h - sy));
+      const st = i % 2 === 0 ? 0 : 2;
+      const sy = isTop ? (y + h - (i + 1) * step) : (y + i * step);
+      const sh = Math.min(step - 1, isTop ? (sy + step - y) : (y + h - sy));
       if (sh <= 1) continue;
-
-      if (o.type === 'ASSIGNMENT') {
-        drawPaperSheetBlock(bx, sy, bw, sh, '#ffffff', '#64748b', '#93c5fd', i === 0);
-      } else if (o.type === 'CT') {
-        drawPaperSheetBlock(bx, sy, bw, sh, '#f8fafc', '#475569', '#fca5a5', i === 0);
-      } else if (o.type === 'PRESENTATION') {
-        drawPaperSheetBlock(bx, sy, bw, sh, i % 2 === 0 ? '#fff7ed' : '#ffedd5', '#c2410c', '#fdba74', false);
-        if (sh >= 10) {
-          ctx.fillStyle = '#ea580c';
-          ctx.fillRect(bx + 5, sy + 2, 13, Math.min(9, sh - 4));
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '900 7.5px system-ui';
-          ctx.fillText('P', bx + 9, sy + 9);
-        }
-      } else if (o.type === 'ATTENDANCE') {
-        drawPaperSheetBlock(bx, sy, bw, sh, '#ecfdf5', '#047857', '#6ee7b7', i === 0);
-        if (sh >= 10) {
-          ctx.fillStyle = i % 3 === 1 ? '#dc2626' : '#059669';
-          ctx.font = '900 8px system-ui';
-          ctx.textAlign = 'right';
-          ctx.fillText(i % 3 === 1 ? 'X' : '/', bx + bw - 5, sy + 9);
-          ctx.textAlign = 'left';
-        }
-      } else if (o.type === 'MID') {
-        drawPaperSheetBlock(bx, sy, bw, sh, i % 2 === 0 ? '#fff1f2' : '#ffe4e6', '#be123c', '#fda4af', i === 0);
-      } else if (o.type === 'FINAL') {
-        drawPaperSheetBlock(bx, sy, bw, sh, i % 2 === 0 ? '#fefce8' : '#fef9c3', '#b45309', '#fcd34d', i === 0);
-      }
+      if (o.type === 'ASSIGN') drawPaperBlock(x + st, sy, w - st, sh, '#ffffff', '#64748b', '#93c5fd', i === 0);
+      else if (o.type === 'CT') drawPaperBlock(x + st, sy, w - st, sh, '#f8fafc', '#475569', '#fca5a5', i === 0);
+      else if (o.type === 'PPTX') drawPaperBlock(x + st, sy, w - st, sh, i % 2 === 0 ? '#fff7ed' : '#ffedd5', '#c2410c', '#fdba74', false);
+      else if (o.type === 'ATTEND') drawPaperBlock(x + st, sy, w - st, sh, '#ecfdf5', '#047857', '#6ee7b7', i === 0);
+      else if (o.type === 'MID') drawPaperBlock(x + st, sy, w - st, sh, i % 2 === 0 ? '#fff1f2' : '#ffe4e6', '#be123c', '#fda4af', i === 0);
+      else drawPaperBlock(x + st, sy, w - st, sh, i % 2 === 0 ? '#fefce8' : '#fef9c3', '#b45309', '#fcd34d', i === 0);
     }
-
-    // Pencil accent on CT tower edge
-    if (o.type === 'CT' && h > 22) {
-      const py = isTop ? y + h - 8 : y + 2;
-      ctx.fillStyle = '#facc15';
-      ctx.strokeStyle = '#854d0e';
-      ctx.lineWidth = 1.4;
-      ctx.fillRect(x + 4, py, w - 12, 6);
-      ctx.strokeRect(x + 4, py, w - 12, 6);
-    }
-
     ctx.restore();
   }
 
@@ -2075,120 +1647,85 @@
     if (o.moving) {
       ctx.save();
       ctx.strokeStyle = 'rgba(190, 24, 93, 0.45)';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(o.x + o.w + 7, o.baseY - o.amp);
-      ctx.lineTo(o.x + o.w + 7, o.baseY + o.amp);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.lineWidth = 2; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(o.x + o.w + 7, o.baseY - o.amp); ctx.lineTo(o.x + o.w + 7, o.baseY + o.amp); ctx.stroke();
       ctx.restore();
     }
 
-    drawTowerSection(o, o.x, 0, o.w, topH, true);
-    drawTowerSection(o, o.x, botY, o.w, botH, false);
+    drawTower(o, o.x, 0, o.w, topH, true);
+    drawTower(o, o.x, botY, o.w, botH, false);
 
-    // Type tag pill (zero emojis)
-    const labelMap = {
-      CT: 'CT',
-      ASSIGNMENT: 'ASSIGN',
-      PRESENTATION: 'PPTX',
-      ATTENDANCE: 'ATTEND',
-      MID: 'MID -2L',
-      FINAL: 'FINAL'
-    };
-    const text = labelMap[o.type] || o.type;
+    const text = o.type === 'FINAL' ? 'FINAL -2♥' : o.type === 'MID' ? 'MID -1♥' : o.type;
     const tagY = topH > 44 ? topH - 21 : botY + 8;
-    const pillW = Math.max(o.w - 4, text.length * 6.2 + 12);
-    const pillX = o.x + o.w / 2 - pillW / 2;
-
+    const pw = Math.max(o.w - 2, text.length * 6.2 + 12);
     ctx.save();
-    ctx.fillStyle = o.type === 'MID' ? '#be123c' : o.type === 'FINAL' ? '#b45309' : '#0f2547';
-    ctx.beginPath();
-    ctx.roundRect(pillX, tagY, pillW, 17, 8);
-    ctx.fill();
-
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '800 9px system-ui';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = o.type === 'FINAL' ? '#b45309' : o.type === 'MID' ? '#be123c' : '#0f2547';
+    ctx.beginPath(); ctx.roundRect(o.x + o.w / 2 - pw / 2, tagY, pw, 17, 8); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.font = '800 9px system-ui'; ctx.textAlign = 'center';
     ctx.fillText(text, o.x + o.w / 2, tagY + 11.5);
     ctx.restore();
   }
 
-  /* =========================================================
-     RENDERING: VECTOR BIRD WITH CAP & DIZZY EYE MARK
-     ========================================================= */
-  function drawPlayer() {
+  // Upgraded bird model with crisp outline, graduation cap, NO shield
+  function drawBirdModel(x, y, rot, wingPhase, bodyCol, outlineCol, bellyCol, isPlayer = false) {
     ctx.save();
-    ctx.translate(player.x, player.y);
-
-    if (invulnerable > 0) {
-      const blink = Math.floor(invulnerable * 12) % 2 === 0;
-      ctx.save();
-      ctx.strokeStyle = 'rgba(217, 119, 6, 0.55)';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      ctx.arc(0, 0, 25, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-      if (blink) ctx.globalAlpha = 0.55;
+    ctx.translate(x, y);
+    if (isPlayer && invulnerable > 0 && Math.floor(invulnerable * 12) % 2 === 0) {
+      ctx.globalAlpha = 0.55;
     }
+    ctx.rotate(rot);
 
-    ctx.rotate(player.rot);
-
-    // Body
-    ctx.fillStyle = '#fbbf24';
-    ctx.strokeStyle = '#92400e';
-    ctx.lineWidth = 2.5;
+    // Tail feathers
+    ctx.fillStyle = bodyCol;
+    ctx.strokeStyle = outlineCol;
+    ctx.lineWidth = 2.4;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 18.5, 14.5, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.moveTo(-15, -3); ctx.lineTo(-26, -8); ctx.lineTo(-22, 0); ctx.lineTo(-26, 6); ctx.lineTo(-14, 4);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
 
-    // Belly
-    ctx.fillStyle = '#fef3c7';
+    // Main body with strong clean outline
+    ctx.fillStyle = bodyCol;
+    ctx.strokeStyle = outlineCol;
+    ctx.lineWidth = 2.8;
     ctx.beginPath();
-    ctx.ellipse(-2, 4, 10.5, 6.8, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, 19, 14.5, 0, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    // Belly highlight
+    ctx.fillStyle = bellyCol;
+    ctx.beginPath();
+    ctx.ellipse(1, 4.5, 11, 6.5, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Flapping wing
-    const wingFlap = Math.sin(player.wingPhase) * 0.55;
+    // Flapping wing with outline
+    const flapAng = Math.sin(wingPhase) * 0.6;
     ctx.save();
-    ctx.translate(-5, 3);
-    ctx.rotate(-0.25 + wingFlap);
-    ctx.fillStyle = '#f59e0b';
-    ctx.strokeStyle = '#92400e';
-    ctx.lineWidth = 2.1;
+    ctx.translate(-5, 2);
+    ctx.rotate(-0.2 + flapAng);
+    ctx.fillStyle = bodyCol;
+    ctx.strokeStyle = outlineCol;
+    ctx.lineWidth = 2.3;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 9.5, 6, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.ellipse(0, 0, 10, 6, 0, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
     ctx.restore();
 
     // Beak
     ctx.fillStyle = '#f97316';
-    ctx.strokeStyle = '#9a3412';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#7c2d12';
+    ctx.lineWidth = 2.2;
     ctx.beginPath();
-    ctx.moveTo(15, -3);
-    ctx.lineTo(26.5, 1);
-    ctx.lineTo(15, 5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
+    ctx.moveTo(15, -3.5); ctx.lineTo(27.5, 1); ctx.lineTo(15, 5.5); ctx.closePath();
+    ctx.fill(); ctx.stroke();
 
     // Eye
     ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#1e293b';
-    ctx.lineWidth = 2.1;
-    ctx.beginPath();
-    ctx.arc(8, -5, 5.8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.arc(8, -5, 5.8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-    if (invulnerable > 0) {
-      // Spinning spiral dizzy eye
+    if (isPlayer && invulnerable > 0) {
       ctx.save();
       ctx.translate(8, -5);
       ctx.rotate(player.dizzyAngle);
@@ -2197,56 +1734,41 @@
       ctx.beginPath();
       for (let a = 0; a < Math.PI * 3.5; a += 0.35) {
         const r = a * 0.4;
-        const sx = Math.cos(a) * r;
-        const sy = Math.sin(a) * r;
-        if (a === 0) ctx.moveTo(sx, sy);
-        else ctx.lineTo(sx, sy);
+        if (a === 0) ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+        else ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
       }
       ctx.stroke();
       ctx.restore();
     } else {
       ctx.fillStyle = '#0f172a';
-      ctx.beginPath();
-      ctx.arc(10, -5, 2.2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(10, -5, 2.3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(10.8, -6, 0.9, 0, Math.PI * 2); ctx.fill();
     }
 
-    // Small student/graduation cap
-    drawGraduationCap(1, -15, 0.92, '#0f2547');
-
+    // Graduation Cap
+    ctx.save();
+    ctx.translate(1, -15.5);
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#020617';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(-13, 0); ctx.lineTo(0, -6); ctx.lineTo(13, 0); ctx.lineTo(0, 5); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(12, 0); ctx.lineTo(14.5, 7); ctx.stroke();
     ctx.restore();
 
-    // Geometric dizzy ring above head while stunned/recovering
-    if (invulnerable > 0) {
-      ctx.save();
-      ctx.translate(player.x, player.y - 26);
-      ctx.strokeStyle = '#dc2626';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 14, 4.5, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      for (let i = 0; i < 3; i++) {
-        const ang = player.dizzyAngle * 0.8 + (i * Math.PI * 2) / 3;
-        ctx.fillStyle = '#f59e0b';
-        ctx.beginPath();
-        ctx.arc(Math.cos(ang) * 14, Math.sin(ang) * 4.5, 3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
+    ctx.restore();
   }
 
-  /* =========================================================
-     RENDERING: EFFECTS, BANNERS & READY PROMPT
-     ========================================================= */
   function drawEffects() {
     for (const p of particles) {
       ctx.save();
       ctx.globalAlpha = clamp(p.life / p.maxLife, 0, 1);
       ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
 
@@ -2256,13 +1778,10 @@
       ctx.translate(d.x, d.y);
       ctx.rotate(d.rot);
       if (d.isPencil) {
-        ctx.fillStyle = '#facc15';
-        ctx.strokeStyle = '#854d0e';
-        ctx.lineWidth = 1.3;
-        ctx.fillRect(-d.w / 2, -d.h / 2, d.w, d.h);
-        ctx.strokeRect(-d.w / 2, -d.h / 2, d.w, d.h);
+        ctx.fillStyle = '#facc15'; ctx.strokeStyle = '#854d0e'; ctx.lineWidth = 1.3;
+        ctx.fillRect(-d.w / 2, -d.h / 2, d.w, d.h); ctx.strokeRect(-d.w / 2, -d.h / 2, d.w, d.h);
       } else {
-        drawPaperSheetBlock(-d.w / 2, -d.h / 2, d.w, d.h, d.sheetFill, '#475569', d.lineCol, false);
+        drawPaperBlock(-d.w / 2, -d.h / 2, d.w, d.h, d.sheetFill, '#475569', d.lineCol, false);
       }
       ctx.restore();
     }
@@ -2270,83 +1789,51 @@
     for (const c of confetti) {
       ctx.save();
       ctx.globalAlpha = clamp(c.life / c.maxLife, 0, 1);
-      ctx.translate(c.x, c.y);
-      ctx.rotate(c.rot);
+      ctx.translate(c.x, c.y); ctx.rotate(c.rot);
       ctx.fillStyle = c.color;
       ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
       ctx.restore();
     }
 
     if (flashAlpha > 0) {
-      ctx.save();
       ctx.fillStyle = `rgba(220, 38, 38, ${flashAlpha * 0.45})`;
       ctx.fillRect(0, 0, W, H);
+    }
+
+    // Floating +1, +CHECKPOINT, +1 ♥ popups
+    for (const pop of popups) {
+      ctx.save();
+      ctx.globalAlpha = clamp(pop.life / pop.maxLife, 0, 1);
+      ctx.font = pop.big ? '900 13px system-ui' : '900 11px system-ui';
+      const tw = ctx.measureText(pop.text).width + 16;
+      const th = pop.big ? 26 : 21;
+      ctx.fillStyle = pop.bg;
+      ctx.beginPath(); ctx.roundRect(pop.x - tw / 2, pop.y - th / 2, tw, th, 999); ctx.fill();
+      ctx.fillStyle = pop.color;
+      ctx.textAlign = 'center';
+      ctx.fillText(pop.text, pop.x, pop.y + (pop.big ? 4.5 : 4));
       ctx.restore();
     }
 
+    // Slide-in Semester / Year Banner
     if (banners.length > 0) {
       const b = banners[0];
       const prog = 1 - b.life / b.maxLife;
-      let slideY = 18;
-      let alpha = 1;
-      if (prog < 0.14) {
-        const k = prog / 0.14;
-        slideY = lerp(-56, 18, 1 - Math.pow(1 - k, 3));
-        alpha = k;
-      } else if (prog > 0.82) {
-        const k = (prog - 0.82) / 0.18;
-        slideY = lerp(18, -36, k);
-        alpha = 1 - k;
-      }
+      let slideY = 16, alpha = 1;
+      if (prog < 0.14) { const k = prog / 0.14; slideY = lerp(-56, 16, 1 - Math.pow(1 - k, 3)); alpha = k; }
+      else if (prog > 0.82) { const k = (prog - 0.82) / 0.18; slideY = lerp(16, -36, k); alpha = 1 - k; }
 
       ctx.save();
       ctx.globalAlpha = clamp(alpha, 0, 1);
-      const bw = Math.min(W - 28, 326);
-      const bh = b.subtitle ? 54 : 40;
-      const bx = (W - bw) / 2;
-
-      ctx.fillStyle = '#0f2547';
-      ctx.strokeStyle = b.accent;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.roundRect(bx, slideY, bw, bh, 14);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '900 13px system-ui';
-      ctx.textAlign = 'center';
-      ctx.fillText(b.title, W / 2, slideY + (b.subtitle ? 23 : 24));
-
+      const bw = Math.min(W - 28, 326), bh = b.subtitle ? 52 : 38, bx = (W - bw) / 2;
+      ctx.fillStyle = '#0f2547'; ctx.strokeStyle = b.accent; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.roundRect(bx, slideY, bw, bh, 14); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.font = '900 13px system-ui'; ctx.textAlign = 'center';
+      ctx.fillText(b.title, W / 2, slideY + (b.subtitle ? 22 : 24));
       if (b.subtitle) {
-        ctx.fillStyle = '#fde68a';
-        ctx.font = '800 10px system-ui';
-        ctx.fillText(b.subtitle, W / 2, slideY + 41);
+        ctx.fillStyle = '#fde68a'; ctx.font = '800 10px system-ui';
+        ctx.fillText(b.subtitle, W / 2, slideY + 40);
       }
-      ctx.restore();
-    }
-
-    if (state === 'ready') {
-      const pulse = 0.75 + 0.25 * Math.sin(elapsed * 5);
-      ctx.save();
-      ctx.globalAlpha = pulse;
-      const pw = 166;
-      const ph = 38;
-      const px = W / 2 - pw / 2;
-      const py = H * 0.64;
-
-      ctx.fillStyle = '#0f2547';
-      ctx.strokeStyle = '#60a5fa';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.roundRect(px, py, pw, ph, 19);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '900 13px system-ui';
-      ctx.textAlign = 'center';
-      ctx.fillText('TAP OR SPACE TO FLY', W / 2, py + 23.5);
       ctx.restore();
     }
   }
@@ -2355,13 +1842,8 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let sx = 0;
-    let sy = 0;
-    if (shakeTimer > 0) {
-      const mag = shakeTimer * 16;
-      sx = rand(-mag, mag);
-      sy = rand(-mag, mag);
-    }
+    let sx = 0, sy = 0;
+    if (shakeTimer > 0) { sx = rand(-shakeTimer * 16, shakeTimer * 16); sy = rand(-shakeTimer * 16, shakeTimer * 16); }
 
     ctx.scale(scale, scale);
     ctx.translate(sx, sy);
@@ -2369,15 +1851,22 @@
     drawBackground();
     obstacles.forEach(drawObstacle);
     drawGround();
-    drawPlayer();
+
+    // Rival / Sky Birds
+    for (const b of skyBirds) {
+      drawBirdModel(b.x, b.y, 0, b.wing, b.color, b.stroke, 'rgba(255,255,255,0.35)', false);
+    }
+
+    // Player Bird (Blue with crisp dark outline, no shield)
+    drawBirdModel(player.x, player.y, player.rot, player.wingPhase, '#2563eb', '#0f172a', '#bfdbfe', true);
+
     drawEffects();
   }
 
   function loop(now) {
     const dt = Math.min(0.035, (now - lastTime) / 1000 || 0);
     lastTime = now;
-
-    if (state === 'ready' || state === 'playing' || state === 'won') {
+    if (state !== 'paused' && state !== 'over' && state !== 'won') {
       update(dt);
       render();
       rafId = requestAnimationFrame(loop);
@@ -2385,44 +1874,37 @@
   }
 
   /* =========================================================
-     CONTROLS & EVENT BINDINGS
+     CONTROLS
      ========================================================= */
   canvas.addEventListener('pointerdown', e => {
     e.preventDefault();
     flap();
   });
 
-  $('startBtn').addEventListener('click', startNewGame);
-  $('againBtn').addEventListener('click', startNewGame);
-  $('restartBtn').addEventListener('click', startNewGame);
-  $('pauseBtn').addEventListener('click', pauseGame);
-  $('resumeBtn').addEventListener('click', resumeGame);
-
-  $('soundBtn').addEventListener('click', () => {
-    Sound.toggle();
-    syncSoundIcon();
+  $('pauseBtn').addEventListener('click', () => {
+    if (state === 'playing') pauseGame();
+    else if (state === 'paused') resumeGame();
   });
-
-  function goHome() {
-    state = 'home';
+  $('resumeBtn').addEventListener('click', resumeGame);
+  $('restartBtn').addEventListener('click', () => {
+    resetToStart();
+    lastTime = performance.now();
     cancelAnimationFrame(rafId);
-    $('pauseOverlay').hidden = true;
-    $('endOverlay').hidden = true;
-    showScreen('home');
-    updateHud();
-  }
-
-  $('pauseHomeBtn').addEventListener('click', goHome);
-  $('endHomeBtn').addEventListener('click', goHome);
+    rafId = requestAnimationFrame(loop);
+  });
+  $('againBtn').addEventListener('click', () => {
+    resetToStart();
+    lastTime = performance.now();
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(loop);
+  });
+  $('soundBtn').addEventListener('click', () => { Sound.toggle(); syncSoundIcon(); });
 
   document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'ArrowUp') {
-      if (state === 'ready' || state === 'playing') {
-        e.preventDefault();
-        flap();
-      }
+      if (state === 'start' || state === 'playing') { e.preventDefault(); flap(); }
     } else if (e.code === 'Escape' || e.code === 'KeyP') {
-      if (state === 'playing' || state === 'ready') pauseGame();
+      if (state === 'playing') pauseGame();
       else if (state === 'paused') resumeGame();
     }
   });
@@ -2431,15 +1913,14 @@
     if (document.hidden && state === 'playing') pauseGame();
   });
 
-  window.addEventListener('resize', () => {
-    resizeCanvas();
-    if (state !== 'home') render();
-  });
+  window.addEventListener('resize', () => { resizeCanvas(); render(); });
 
   window.addEventListener('load', () => {
     syncSoundIcon();
-    updateHud();
     resizeCanvas();
+    resetToStart();
+    lastTime = performance.now();
+    rafId = requestAnimationFrame(loop);
   });
 })();
 </script>
