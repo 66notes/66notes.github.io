@@ -11,7 +11,7 @@
 <style>
 :root{
   --bg:#eef6fd;--surface:#fff;--border:#dbe7f3;--text:#1e2a3e;--text2:#64748b;--navy:#0d2b4e;
-  --accent:#123cf3;--accent-light:#eef2ff;--blue-light:#aed6f6;--frame:#5fa8e0;
+  --accent:#123cf3;--accent-light:#eef2ff;
 }
 :root[data-theme="dark"]{
   --bg:#0b0e14;--surface:#151a22;--border:#2a3442;--text:#f0f4f8;--text2:#8b98a5;--navy:#e2e8f0;
@@ -32,7 +32,8 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .screen{flex:1;min-height:0;display:none;flex-direction:column;align-items:center;overflow-y:auto;padding:16px}
 .screen.active{display:flex}
 .card{width:100%;max-width:360px;margin:auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:20px;text-align:center}
-.hero{width:84px;height:84px;margin:0 auto 8px;display:block}
+.hero{width:90px;height:90px;margin:0 auto 8px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
 h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 .sub{font-size:.78rem;color:var(--text2);margin-bottom:8px}
 .btn{width:100%;min-height:48px;border-radius:14px;border:2px solid var(--accent);font-size:.92rem;font-weight:700;margin-top:10px;padding:8px}
@@ -44,58 +45,71 @@ h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 .seg button{flex:1;border:none;background:none;color:var(--text2);padding:8px;border-radius:9px;font-weight:700;font-size:.8rem}
 .seg button.on{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.12)}
 
-/* keypad */
-.boxes{display:flex;justify-content:center;gap:10px;margin:8px 0 12px}
-.boxes b{width:60px;height:66px;border-radius:15px;border:2px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--navy)}
-.boxes b.typed{border-color:var(--accent);background:var(--accent-light)}
-.boxes b.ghosted{opacity:.4}
-.err{font-size:.74rem;font-weight:600;color:#dc2626;background:rgba(220,38,38,.1);border-radius:10px;padding:7px;margin-bottom:10px}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.key{height:clamp(44px,7.5vh,58px);border-radius:15px;border:1px solid var(--border);border-bottom-width:4px;background:var(--surface);color:var(--navy);font-size:1.4rem;font-weight:700}
-.key:active{transform:translateY(2px);border-bottom-width:2px;background:var(--accent-light)}
-.key.del{color:#dc2626}
-.key.ok{background:var(--accent);border-color:#0b2bb5;color:#fff}
-.keypad.busy{opacity:.5;pointer-events:none}
+/* ── game layout: face to face, or side by side ── */
+#game{--size:min(calc(100vw - 16px),calc(100vh - 292px),540px);display:none;justify-content:center;align-content:center;justify-items:center;gap:8px;padding:8px;overflow:hidden}
+@supports (height:100dvh){#game{--size:min(calc(100vw - 16px),calc(100dvh - 292px),540px)}}
+#game.active{display:grid}
+#game.face{grid-template-columns:100%;grid-template-areas:"top" "board" "bottom" "controls"}
+#game.side{--size:min(calc(100vw - 16px),calc(100vh - 222px),540px);grid-template-columns:repeat(2,calc(max(var(--size),290px)/2 - 3px));column-gap:6px;grid-template-areas:"board board" "left right" "controls controls"}
+@supports (height:100dvh){#game.side{--size:min(calc(100vw - 16px),calc(100dvh - 222px),540px)}}
 
-/* game */
-#game{justify-content:center;gap:8px;padding:8px;--size:min(calc(100vw - 16px),calc(100vh - 288px),540px)}
-@supports (height:100dvh){#game{--size:min(calc(100vw - 16px),calc(100dvh - 288px),540px)}}
-.panel{width:var(--size);min-width:290px;flex-shrink:0;background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:6px 10px}
-.panel.turn{border-color:var(--accent);background:var(--accent-light)}
+.panel{width:max(var(--size),290px);background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:6px 10px;transition:border-color .25s,background-color .25s}
+.side .panel{width:100%;padding:6px 7px}
+.panel.turn{border-color:var(--c);background:var(--accent-light);animation:glow 1.2s ease-in-out infinite}
+@keyframes glow{50%{border-color:var(--border)}}
 .panel.rot{transform:rotate(180deg)}
-.row{display:flex;align-items:center;gap:10px}
-.disc{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:3px solid var(--frame)}
-.disc.white{background:radial-gradient(circle,#fff 35%,#cbd5e1 40%,#fff 48%)}
-.disc.black{background:radial-gradient(circle,#0d2b4e 35%,#4a6c95 40%,#0d2b4e 48%)}
+.row{display:flex;align-items:center;gap:9px}
+.side .row{gap:6px}
+.disc{width:34px;height:34px;flex-shrink:0;border-radius:50%;border:3px solid var(--c);transition:transform .5s}
+.side .disc{width:26px;height:26px}
+.disc.white{background:radial-gradient(circle,#f8ecd0 28%,#a9814d 33%,#f8ecd0 40%,#f3e0b8 60%,#a9814d 65%,#f3e0b8 70%)}
+.disc.black{background:radial-gradient(circle,#2b2320 28%,#8a7a70 33%,#2b2320 40%,#1c1614 60%,#8a7a70 65%,#1c1614 70%)}
+.panel.turn .disc{transform:rotate(360deg) scale(1.1)}
 .who{flex:1;min-width:0}
-.pname{font-weight:700;font-size:.9rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
-.msg{font-size:.66rem;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
-.panel.turn .msg{color:var(--accent)}
-.queen{font-size:.62rem;font-weight:800;background:#ef4444;color:#fff;border-radius:20px;padding:3px 8px}
-.left{text-align:center;line-height:1;min-width:34px}
-.left b{display:block;font-size:1.35rem;color:var(--navy)}
-.left small{font-size:.55rem;font-weight:700;color:var(--text2);text-transform:uppercase}
-input[type=range]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:34px;background:transparent;touch-action:none}
-input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:10px;background:var(--blue-light)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:28px;margin-top:-9px;border-radius:16px;background:var(--accent);border:4px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
-input[type=range]::-moz-range-track{height:10px;border-radius:10px;background:var(--blue-light)}
-input[type=range]::-moz-range-thumb{width:36px;height:20px;border-radius:16px;background:var(--accent);border:4px solid #fff}
+.pname{font-weight:700;font-size:.9rem;color:var(--navy);white-space:nowrap;overflow:hidden;line-height:1.4;padding-top:3px}
+.side .pname{font-size:.76rem}
+.msg{font-size:.64rem;font-weight:600;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.panel.turn .msg{color:var(--c)}
+.queen{font-size:.58rem;font-weight:800;background:#c81e2b;color:#fff;border-radius:20px;padding:3px 7px;animation:beat .7s ease-in-out infinite alternate}
+@keyframes beat{to{transform:scale(1.14)}}
+.num{text-align:center;line-height:1;min-width:28px}
+.num b{display:block;font-size:1.25rem;color:var(--navy)}
+.num b.bump{animation:bump .5s cubic-bezier(.2,2.2,.4,1)}
+@keyframes bump{40%{transform:scale(1.8);color:#d97706}}
+.num small{font-size:.5rem;font-weight:700;color:var(--text2);text-transform:uppercase}
+.num.points b{color:#d97706}
+.side .num b{font-size:1rem}.side .num{min-width:20px}
+.side .queen{position:absolute;margin-top:-34px;right:6px}
+.side .panel{position:relative}
+input[type=range]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:32px;background:transparent;touch-action:none}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:10px;background:linear-gradient(90deg,#d9a862,#b57c3c)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:42px;height:26px;margin-top:-8px;border-radius:16px;background:var(--c);border:4px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+input[type=range]::-moz-range-track{height:10px;border-radius:10px;background:#d9a862}
+input[type=range]::-moz-range-thumb{width:34px;height:18px;border-radius:16px;background:var(--c);border:4px solid #fff}
 input[type=range]:disabled{opacity:.3}
 
-.board-wrap{width:var(--size);height:var(--size);min-width:290px;min-height:290px;flex-shrink:0;padding:9px;border-radius:20px;
-  background:linear-gradient(145deg,#7cc0f0,#3f86c4);box-shadow:0 10px 24px rgba(18,90,160,.3)}
-canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none;cursor:crosshair}
+.board-wrap{grid-area:board;width:max(var(--size),290px);height:max(var(--size),290px);padding:11px;border-radius:20px;border:1px solid #2c1406;
+  background:repeating-linear-gradient(93deg,rgba(255,255,255,.07) 0 2px,transparent 2px 9px,rgba(0,0,0,.12) 9px 11px,transparent 11px 17px),linear-gradient(145deg,#8a4d24,#4a240e);
+  box-shadow:0 10px 24px rgba(50,22,5,.38),inset 0 0 0 2px rgba(255,200,130,.25)}
+.board-wrap.shake{animation:shake .25s}
+@keyframes shake{25%{transform:translate(-3px,2px)}75%{transform:translate(3px,-2px)}}
+canvas#board{width:100%;height:100%;display:block;border-radius:8px;touch-action:none;cursor:crosshair}
 
-.controls{width:var(--size);min-width:290px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex-shrink:0}
-.ctl{height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-size:.62rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.controls{grid-area:controls;width:max(var(--size),290px);display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ctl{height:46px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-size:.62rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ctl i{font-style:normal;font-size:1.05rem;line-height:1.1;color:var(--accent)}
+.ctl.pkey{background:var(--accent);border-color:var(--accent);color:#fff}
+.ctl.pkey i{color:#fff;font-weight:800}
 .ctl:active{transform:scale(.94)}
 
 .overlay{position:fixed;inset:0;z-index:100;background:rgba(13,43,78,.82);display:flex;align-items:center;justify-content:center;padding:20px}
-.overlay .card{margin:0;max-height:94vh;overflow-y:auto}
-.rules{text-align:left;font-size:.78rem;line-height:1.55;padding-left:18px;margin-top:8px}
+.overlay.rot{transform:rotate(180deg)}
+.overlay .card{margin:0;max-height:94vh;overflow-y:auto;animation:rise .3s cubic-bezier(.2,1.4,.4,1)}
+@keyframes rise{from{opacity:0;scale:.7}}
+.rules{text-align:left;font-size:.76rem;line-height:1.55;padding-left:18px;margin-top:8px}
 .rules li{margin-bottom:5px}
-.trophy{font-size:3.5rem;line-height:1.2}
+.trophy{font-size:3.8rem;line-height:1.2;animation:float 1.4s ease-in-out infinite}
+.gain{font-size:1.1rem;font-weight:800;color:#d97706}
 </style>
 </head>
 <body>
@@ -107,7 +121,7 @@ canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none
 
 <section id="setup" class="screen active">
   <div class="card">
-    <svg class="hero" viewBox="0 0 84 84"><rect x="3" y="3" width="78" height="78" rx="16" fill="#e0f0fd" stroke="#5fa8e0" stroke-width="6"/><g fill="#0d2b4e"><circle cx="18" cy="18" r="7"/><circle cx="66" cy="18" r="7"/><circle cx="18" cy="66" r="7"/><circle cx="66" cy="66" r="7"/></g><circle cx="42" cy="40" r="17" fill="#fff" stroke="#5fa8e0" stroke-width="3"/><circle cx="42" cy="40" r="6" fill="#ef4444"/><circle cx="42" cy="65" r="8" fill="#123cf3"/></svg>
+    <svg class="hero" viewBox="0 0 84 84"><rect x="3" y="3" width="78" height="78" rx="14" fill="#e4bd80" stroke="#5f3115" stroke-width="7"/><g fill="#1a0f08"><circle cx="17" cy="17" r="7"/><circle cx="67" cy="17" r="7"/><circle cx="17" cy="67" r="7"/><circle cx="67" cy="67" r="7"/></g><circle cx="42" cy="40" r="17" fill="none" stroke="#7a3f16" stroke-width="2"/><circle cx="34" cy="37" r="6" fill="#f8ecd0" stroke="#7a5a30" stroke-width="2"/><circle cx="49" cy="35" r="6" fill="#2b2320" stroke="#000" stroke-width="2"/><circle cx="43" cy="47" r="6" fill="#c81e2b" stroke="#fbbf24" stroke-width="2"/><circle cx="42" cy="66" r="8" fill="#fff" stroke="#123cf3" stroke-width="3"/></svg>
     <h1>Carrom</h1>
     <p class="sub" id="hello"></p>
     <button class="btn primary" onclick="openFriend()">You vs Friend</button>
@@ -119,33 +133,13 @@ canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none
   </div>
 </section>
 
-<section id="friend" class="screen">
-  <div class="card">
-    <div id="step1">
-      <h1>You vs Friend</h1>
-      <p class="sub">Enter your friend's roll (5 means 005)</p>
-      <div class="boxes" id="boxes"><b></b><b></b><b></b></div>
-      <div class="err" id="err" hidden></div>
-      <div class="keypad" id="keypad"></div>
-    </div>
-    <div id="step2" hidden>
-      <h1>Who is your friend?</h1>
-      <p class="sub">Roll 138 is shared</p>
-      <div class="err" id="err2" hidden></div>
-      <button class="btn primary" onclick="pickShared('Aion')">Aion</button>
-      <button class="btn outline" onclick="pickShared('Maria')">Maria</button>
-    </div>
-    <button class="btn ghost" onclick="show('setup')">Cancel</button>
-  </div>
-</section>
-
-<section id="game" class="screen">
-  <div class="panel" id="topPanel"></div>
-  <div class="board-wrap"><canvas id="board"></canvas></div>
-  <div class="panel" id="bottomPanel"></div>
+<section id="game" class="screen face">
+  <div class="panel" id="panel0"></div>
+  <div class="board-wrap" id="wrap"><canvas id="board"></canvas></div>
+  <div class="panel" id="panel1"></div>
   <div class="controls">
     <button class="ctl" onclick="$('helpOverlay').hidden=false"><i>?</i>Rules</button>
-    <button class="ctl" onclick="switchSides()"><i>⇅</i>Switch Sides</button>
+    <button class="ctl pkey" id="pBtn" onclick="changeView()"><i>P</i>View</button>
     <button class="ctl" onclick="askRestart()"><i>↻</i>Restart</button>
     <button class="ctl" onclick="askLeave()"><i>✕</i>Exit</button>
   </div>
@@ -155,12 +149,13 @@ canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none
   <div class="card">
     <h1>How to play</h1>
     <ul class="rules">
-      <li>Move the <b>slider</b> to place your striker.</li>
-      <li><b>Drag backwards</b> anywhere on the board, then let go to shoot. Drag farther for more power. Drag back to the start to cancel.</li>
+      <li>Each game, colours are given out <b>at random</b>. White breaks first.</li>
+      <li>Move the <b>slider</b> to place your striker, then <b>drag backwards</b> on the board and let go. Drag back to the start to cancel.</li>
       <li>Pocket all your coins to win. Pocket one of yours and you shoot again.</li>
-      <li><b>Queen (red):</b> after pocketing it, pocket one of your coins in the same or next shot, or it returns.</li>
+      <li><b>Queen (red):</b> pocket one of your coins in the same or next shot to cover it, or it returns.</li>
       <li>The Queen must be covered before anyone's last coin can be pocketed.</li>
       <li><b>Foul:</b> if the striker is pocketed, one of your coins comes back and your turn ends.</li>
+      <li><b>Points:</b> the winner gets 1 for each coin the other player has left, plus 3 more for covering the Queen.</li>
     </ul>
     <button class="btn primary" onclick="$('helpOverlay').hidden=true">Got it</button>
   </div>
@@ -171,12 +166,14 @@ canvas{width:100%;height:100%;display:block;border-radius:11px;touch-action:none
     <div class="trophy" id="endIcon"></div>
     <h1 id="endTitle"></h1>
     <p class="sub" id="endReason"></p>
-    <button class="btn primary" onclick="newGame()">Play again</button>
+    <p class="gain" id="endGain"></p>
+    <button class="btn primary" onclick="newGame()">Next game</button>
     <button class="btn ghost" onclick="location.href='index.html'">Back to Hub</button>
   </div>
 </div>
 
 <script src="students.js"></script>
+<script src="common.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 
@@ -194,9 +191,11 @@ function show(id) {
 
 /* ═════════ Board and physics ═════════ */
 const SIZE = 600, COIN_R = 15, STRIKER_R = 21, POCKET_R = 32;
-const BASE_MIN = 150, BASE_MAX = 450, BASE_BOTTOM = 494, BASE_TOP = 106;
+const BASE_MIN = 150, BASE_MAX = 450;
 const POCKETS = [[34, 34], [566, 34], [34, 566], [566, 566]];
 const SUBSTEPS = 4;
+// where position t (150..450) sits on each player's baseline
+const BASELINE = { bottom: t => [t, 494], top: t => [600 - t, 106], left: t => [106, t], right: t => [494, t] };
 
 const makeBody = (type, x, y) => ({
   type, x, y, vx: 0, vy: 0, on: true,
@@ -265,16 +264,19 @@ function physics(bodies, sunk) {
 }
 
 /* ═════════ Game state ═════════ */
-let mode = 'ai', level = 'normal', players = [], bottom = 0, turn = 0;
-let coins = [], striker = makeBody('striker', 300, BASE_BOTTOM);
-let sunk = [], moving = false, over = false, aim = null;
+const PLAYER_COLORS = ['#e11d48', '#123cf3'];
+let mode = 'ai', level = 'normal', view = 'face-bottom', players = [], turn = 0, points = [0, 0];
+let coins = [], striker = makeBody('striker', 300, 494), place = 300;
+let sunk = [], moving = false, over = false, aim = null, ready = false, lastTurn = -1;
 let queenPending = null, queenOwner = null;   // player index
 let message = '', timers = [], effects = [];
 
 const later = (fn, ms) => timers.push(setTimeout(fn, ms));
 const stopTimers = () => { timers.forEach(clearTimeout); timers = []; };
-const baseY = p => p === bottom ? BASE_BOTTOM : BASE_TOP;
-const turnedAround = p => mode === 'friend' && p !== bottom;
+const seatOf = p => G66.VIEWS[view].seats[p];
+const isFace = () => G66.VIEWS[view].face;
+// is this player's side of the screen upside down?
+const turnedAround = p => isFace() && seatOf(mode === 'ai' ? 0 : p) === 'top';
 const remaining = color => coins.filter(c => c.on && c.type === color).length;
 const isAI = p => players[p].ai;
 
@@ -285,39 +287,53 @@ $('levelSeg').addEventListener('click', e => {
   [...$('levelSeg').children].forEach(x => x.classList.toggle('on', x === btn));
 });
 
-function begin(opponent, ai) {
-  players = [{ name: me.name, color: 'white', ai: false }, { name: opponent, color: 'black', ai }];
-  bottom = 0;
-  show('game');
-  newGame();
+async function openFriend() {
+  const choice = await G66.friend(me);
+  if (choice) begin('friend', choice.name, choice.view);
 }
-function startAI() { mode = 'ai'; begin('Computer', true); }
-function startFriend(name) { mode = 'friend'; begin(name, false); }
+function startAI() { begin('ai', 'Computer', G66.saved('face-bottom')); }
+async function begin(kind, opponent, chosen) {
+  mode = kind; view = chosen; points = [0, 0];
+  players = [{ name: me.name, ai: false }, { name: opponent, ai: kind === 'ai' }];
+  show('game');
+  newGame(true);
+  await G66.intro(players.map((pl, i) => ({ name: pl.name, color: PLAYER_COLORS[i] })), view);
+  ready = true;
+  announceColours();
+}
 
-function newGame() {
+function newGame(waitForIntro) {
   stopTimers();
   coins = startingCoins(); sunk = []; effects = [];
-  moving = false; over = false; aim = null; queenPending = queenOwner = null;
-  turn = 0;
+  moving = false; over = false; aim = null; queenPending = queenOwner = null; lastTurn = -1;
+  // colours are handed out at random, and white breaks
+  turn = Math.random() < 0.5 ? 0 : 1;
+  players[turn].color = 'white'; players[1 - turn].color = 'black';
   $('endOverlay').hidden = true;
+  ready = waitForIntro !== true;
   buildPanels();
   startTurn('Break the coins!');
+  if (ready) announceColours();
+}
+function announceColours() {
+  G66.banner(`${players[turn].name} gets White`, { color: PLAYER_COLORS[turn], flip: turnedAround(turn) });
+  if (isAI(turn)) later(computerTurn, 1500);
 }
 
 const overlaps = (x, y, r, list) => list.some(c => c.on && (c.x - x) ** 2 + (c.y - y) ** 2 < (c.r + r) ** 2);
 
 // nearest free spot on the baseline to where the player wants the striker
-function freeX(wanted, y) {
+function freeSpot(wanted, seat) {
   wanted = Math.max(BASE_MIN, Math.min(BASE_MAX, wanted));
   for (let d = 0; d <= BASE_MAX - BASE_MIN; d += 2)
-    for (const x of [wanted - d, wanted + d])
-      if (x >= BASE_MIN && x <= BASE_MAX && !overlaps(x, y, STRIKER_R, coins)) return x;
+    for (const t of [wanted - d, wanted + d])
+      if (t >= BASE_MIN && t <= BASE_MAX && !overlaps(...BASELINE[seat](t), STRIKER_R, coins)) return t;
   return wanted;
 }
 
-function placeStriker(x) {
-  const y = baseY(turn);
-  striker = makeBody('striker', freeX(x, y), y);
+function placeStriker(t) {
+  place = freeSpot(t, seatOf(turn));
+  striker = makeBody('striker', ...BASELINE[seatOf(turn)](place));
 }
 
 function startTurn(note) {
@@ -326,7 +342,10 @@ function startTurn(note) {
   placeStriker(300);
   updatePanels(true);
   draw();
-  if (isAI(turn)) later(computerTurn, 700);
+  const changed = lastTurn !== -1 && lastTurn !== turn;
+  lastTurn = turn;
+  if (changed && mode === 'friend') G66.banner(`${players[turn].name}'s turn`, { color: PLAYER_COLORS[turn], flip: turnedAround(turn) });
+  if (ready && isAI(turn)) later(computerTurn, 900);
 }
 
 function fire(angle, power) {
@@ -334,6 +353,8 @@ function fire(angle, power) {
   striker.vx = Math.cos(angle) * speed;
   striker.vy = Math.sin(angle) * speed;
   moving = true; aim = null;
+  G66.buzz(15);
+  if (power > 0.75) { const w = $('wrap'); w.classList.remove('shake'); void w.offsetWidth; w.classList.add('shake'); }
   updatePanels();
   run();
 }
@@ -355,7 +376,7 @@ function finishShot() {
   const own = sunk.filter(c => c.type === mine);
   const opp = sunk.filter(c => c.type === theirs);
   const gotQueen = sunk.includes(queen);
-  let again = false, note = '';
+  let again = false, note = '', shout = '';
 
   if (sunk.some(c => c.type === 'striker')) {
     own.forEach(returnToCentre);
@@ -363,17 +384,19 @@ function finishShot() {
     if (penalty) returnToCentre(penalty);
     if (gotQueen || queenPending === p) { returnToCentre(queen); queenPending = null; }
     note = penalty ? 'Foul! A coin came back' : 'Foul! Striker pocketed';
+    shout = 'FOUL!';
   } else {
     if (gotQueen) {
-      if (own.length) { queenOwner = p; note = 'Queen covered!'; }
+      if (own.length) { queenOwner = p; note = 'Queen covered!'; shout = 'QUEEN +3'; }
       else { queenPending = p; note = 'Now cover the Queen!'; }
       again = true;
     } else if (queenPending === p) {
-      if (own.length) { queenOwner = p; note = 'Queen covered!'; }
+      if (own.length) { queenOwner = p; note = 'Queen covered!'; shout = 'QUEEN +3'; }
       else { returnToCentre(queen); note = 'Queen returned'; }
       queenPending = null;
     }
     if (own.length) { again = true; note = note || 'Nice! Shoot again'; }
+    if (!shout && own.length > 1) shout = own.length === 2 ? 'DOUBLE!' : 'AMAZING!';
   }
 
   // nobody's last coin may go before the Queen is covered
@@ -388,33 +411,62 @@ function finishShot() {
   }
 
   sunk = [];
+  if (shout) {
+    G66.banner(shout, { color: shout === 'FOUL!' ? '#dc2626' : '#d97706', flip: turnedAround(p) });
+    if (shout !== 'FOUL!') G66.confetti({ count: 45 });
+  }
   if (queenOwner !== null) {
     const winner = remaining(mine) === 0 ? p : remaining(theirs) === 0 ? q : null;
     if (winner !== null) return finishGame(winner);
   }
   if (!again) turn = q;
+  else lastTurn = p;
+  if (shout) lastTurn = turn;   // don't cover the shout with a turn banner
   startTurn(note);
 }
 
 function finishGame(winner) {
   over = true; moving = false;
+  const loser = 1 - winner;
+  const gain = remaining(players[loser].color) + (queenOwner === winner ? 3 : 0) || 1;
+  points[winner] += gain;
   message = 'Game over';
   updatePanels(); draw();
   $('endIcon').textContent = isAI(winner) ? '🤖' : '🏆';
-  $('endTitle').textContent = `${players[winner].name} wins!`;
+  G66.wave($('endTitle'), `${players[winner].name} wins!`);
   $('endReason').textContent = `All ${players[winner].color} coins pocketed`;
-  later(() => { $('endOverlay').hidden = false; }, 700);
+  $('endGain').textContent = `+${gain} points  ·  ${points[0]} – ${points[1]}`;
+  later(() => {
+    $('endOverlay').classList.toggle('rot', turnedAround(winner));
+    $('endOverlay').hidden = false;
+    if (!isAI(winner)) G66.celebrate();
+  }, 900);
 }
 
 /* ═════════ Loop (only runs while something moves) ═════════ */
-let frame = 0, last = 0, pile = 0;
+let frame = 0, last = 0, pile = 0, trail = [];
 const STEP = 1000 / 60;
 
+function pocketOf(body) {
+  return POCKETS.reduce((a, b) => Math.hypot(body.x - a[0], body.y - a[1]) < Math.hypot(body.x - b[0], body.y - b[1]) ? a : b);
+}
+function screenPoint(x, y) {
+  const r = canvas.getBoundingClientRect();
+  return { x: r.left + x * r.width / SIZE, y: r.top + y * r.height / SIZE };
+}
 function tick() {
   const before = sunk.length;
   const still = physics([striker, ...coins], sunk);
-  for (const b of sunk.slice(before)) effects.push({ body: b, life: 1 });
-  if (!still) { moving = false; finishShot(); }
+  for (const b of sunk.slice(before)) {
+    effects.push({ body: b, at: pocketOf(b), life: 1 });
+    if (b.type === 'striker') continue;
+    const owner = players.findIndex(pl => pl.color === b.type);
+    const at = screenPoint(...pocketOf(b));
+    G66.pop(b.type === 'queen' ? 'Queen!' : owner === turn ? 'Nice!' : 'Oops!', { x: at.x, y: at.y },
+      { color: b.type === 'queen' ? '#c81e2b' : PLAYER_COLORS[Math.max(0, owner)], flip: turnedAround(turn) });
+    G66.buzz(30);
+  }
+  if (!still) { moving = false; trail = []; finishShot(); }
 }
 
 function run() {
@@ -426,8 +478,13 @@ function loop(now) {
   pile += Math.min(100, now - last); last = now;   // same speed on 60 Hz and 120 Hz screens
   while (pile >= STEP) {
     pile -= STEP;
-    if (moving) tick();
-    effects.forEach(e => e.life -= 0.07);
+    if (moving) {
+      tick();
+      if (moving && striker.on && Math.hypot(striker.vx, striker.vy) > 7) trail.push([striker.x, striker.y]);
+      else trail.shift();
+      if (trail.length > 6) trail.shift();
+    }
+    effects.forEach(e => e.life -= 0.045);
     effects = effects.filter(e => e.life > 0);
   }
   draw();
@@ -447,53 +504,94 @@ function circle(g, x, y, r, fill, stroke, width = 2) {
   if (stroke) { g.strokeStyle = stroke; g.lineWidth = width; g.stroke(); }
 }
 
-// the empty board is drawn once and reused
+// the empty wooden board is drawn once and reused
 const background = document.createElement('canvas');
 (function paintBoard() {
   background.width = background.height = SIZE * SCALE;
   const g = background.getContext('2d');
   g.scale(SCALE, SCALE);
-  g.fillStyle = '#d7ecfc'; g.fillRect(0, 0, SIZE, SIZE);
-  g.strokeStyle = '#5fa8e0'; g.lineWidth = 2; g.strokeRect(64, 64, SIZE - 128, SIZE - 128);
+  const wood = g.createLinearGradient(0, 0, SIZE, SIZE);
+  wood.addColorStop(0, '#f0d29b'); wood.addColorStop(0.5, '#e6bd7e'); wood.addColorStop(1, '#d8a763');
+  g.fillStyle = wood; g.fillRect(0, 0, SIZE, SIZE);
+  let seed = 66;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 90; i++) {                    // wood grain
+    const y = random() * SIZE, bend = random() * 26 - 13;
+    g.beginPath(); g.moveTo(0, y);
+    g.bezierCurveTo(200, y + bend, 400, y - bend, 600, y + random() * 14 - 7);
+    g.strokeStyle = random() < 0.7 ? `rgba(140,84,30,${0.05 + random() * 0.13})` : `rgba(255,240,205,${0.1 + random() * 0.15})`;
+    g.lineWidth = 0.6 + random() * 3; g.stroke();
+  }
+  const INK = '#4a240e', RED = '#b3231f';
+  g.strokeStyle = INK; g.lineWidth = 1.5; g.strokeRect(62, 62, SIZE - 124, SIZE - 124);
 
   for (let side = 0; side < 4; side++) {            // baselines on all four sides
     g.save(); g.translate(300, 300); g.rotate(side * Math.PI / 2); g.translate(-300, -300);
-    g.fillStyle = '#fff'; g.strokeStyle = '#3f86c4'; g.lineWidth = 2;
-    g.beginPath(); g.rect(BASE_MIN, BASE_BOTTOM - 14, BASE_MAX - BASE_MIN, 28); g.fill(); g.stroke();
-    for (const x of [BASE_MIN, BASE_MAX]) { circle(g, x, BASE_BOTTOM, 15, '#aed6f6', '#3f86c4'); circle(g, x, BASE_BOTTOM, 7, '#ef4444'); }
+    g.strokeStyle = INK;
+    g.lineWidth = 4; g.beginPath(); g.moveTo(BASE_MIN, 508); g.lineTo(BASE_MAX, 508); g.stroke();
+    g.lineWidth = 1.5; g.beginPath(); g.moveTo(BASE_MIN, 480); g.lineTo(BASE_MAX, 480); g.stroke();
+    for (const x of [BASE_MIN, BASE_MAX]) { circle(g, x, 494, 14, '#f0d29b', INK); circle(g, x, 494, 9.5, RED); }
     g.restore();
   }
-  for (const [px, py] of POCKETS) {                 // diagonal guide lines
+  for (const [px, py] of POCKETS) {                 // arrows from the corners
     const dx = Math.sign(300 - px), dy = Math.sign(300 - py);
-    g.beginPath(); g.moveTo(px + dx * 34, py + dy * 34); g.lineTo(px + dx * 138, py + dy * 138);
-    g.strokeStyle = '#3f86c4'; g.lineWidth = 2; g.stroke();
-    circle(g, px + dx * 138, py + dy * 138, 6, '#fff', '#3f86c4');
+    g.beginPath(); g.moveTo(px + dx * 36, py + dy * 36); g.lineTo(px + dx * 142, py + dy * 142);
+    g.strokeStyle = INK; g.lineWidth = 1.8; g.stroke();
+    g.beginPath(); g.arc(px + dx * 128, py + dy * 128, 24, Math.atan2(dy, dx) + 0.8, Math.atan2(dy, dx) + Math.PI * 2 - 0.8); g.stroke();
+    circle(g, px + dx * 36, py + dy * 36, 3.5, RED);
   }
-  circle(g, 300, 300, 88, '#fff', '#3f86c4', 3);
+  circle(g, 300, 300, 88, null, INK, 2); circle(g, 300, 300, 80, null, RED, 1.5);
   for (let i = 0; i < 8; i++) {                     // centre star
-    const a = i * Math.PI / 4;
+    const a = i * Math.PI / 4, len = i % 2 ? 56 : 78;
     g.beginPath(); g.moveTo(300, 300);
-    g.lineTo(300 + Math.cos(a - 0.32) * 40, 300 + Math.sin(a - 0.32) * 40);
-    g.lineTo(300 + Math.cos(a) * 82, 300 + Math.sin(a) * 82);
-    g.lineTo(300 + Math.cos(a + 0.32) * 40, 300 + Math.sin(a + 0.32) * 40);
-    g.fillStyle = i % 2 ? '#d7ecfc' : '#aed6f6'; g.fill();
+    g.lineTo(300 + Math.cos(a - 0.3) * 28, 300 + Math.sin(a - 0.3) * 28);
+    g.lineTo(300 + Math.cos(a) * len, 300 + Math.sin(a) * len);
+    g.lineTo(300 + Math.cos(a + 0.3) * 28, 300 + Math.sin(a + 0.3) * 28);
+    g.fillStyle = i % 2 ? 'rgba(74,36,14,.55)' : 'rgba(179,35,31,.55)'; g.fill();
   }
-  circle(g, 300, 300, 17, null, '#ef4444', 2);
-  for (const [px, py] of POCKETS) { circle(g, px, py, POCKET_R, '#3f86c4'); circle(g, px, py, POCKET_R - 5, '#08182c'); }
+  circle(g, 300, 300, 17, null, RED, 2.5);
+  for (const [px, py] of POCKETS) {                 // pockets with netting
+    circle(g, px, py, POCKET_R + 3, '#6b3a18'); circle(g, px, py, POCKET_R - 2, '#120a05');
+    g.save(); g.beginPath(); g.arc(px, py, POCKET_R - 4, 0, Math.PI * 2); g.clip();
+    g.strokeStyle = 'rgba(214,180,130,.22)'; g.lineWidth = 1;
+    for (let d = -60; d <= 60; d += 10) {
+      g.beginPath(); g.moveTo(px + d - 30, py - 30); g.lineTo(px + d + 30, py + 30); g.stroke();
+      g.beginPath(); g.moveTo(px + d + 30, py - 30); g.lineTo(px + d - 30, py + 30); g.stroke();
+    }
+    g.restore();
+  }
 })();
 
-const LOOK = {
-  white: ['#ffffff', '#0d2b4e', '#aebfd3'],
-  black: ['#0d2b4e', '#02101f', '#5b7ca6'],
-  queen: ['#ef4444', '#991b1b', '#fecaca'],
-  striker: ['#123cf3', '#ffffff', '#aed6f6']
-};
+// each piece is pre-drawn once, so drawing a frame is cheap
+const sprites = {};
+function sprite(type, accent) {
+  const key = type + (accent || '');
+  if (sprites[key]) return sprites[key];
+  const r = type === 'striker' ? STRIKER_R : COIN_R, size = r * 2 + 10;
+  const c = document.createElement('canvas');
+  c.width = c.height = size * SCALE;
+  const g = c.getContext('2d'); g.scale(SCALE, SCALE);
+  const m = size / 2;
+  circle(g, m + 2, m + 3.5, r, 'rgba(45,18,0,.33)');
+  const [light, dark, ring] = {
+    white: ['#fff8e6', '#e3c892', '#9c7440'],
+    black: ['#5a4a42', '#17100d', '#a8948a'],
+    queen: ['#ff5a63', '#a10f1c', '#ffd35c'],
+    striker: ['#ffffff', '#cfd9ee', accent]
+  }[type];
+  const shade = g.createRadialGradient(m - r * 0.35, m - r * 0.4, 1, m, m, r);
+  shade.addColorStop(0, light); shade.addColorStop(1, dark);
+  circle(g, m, m, r - 0.5, shade, type === 'striker' ? accent : dark, type === 'striker' ? 3 : 1);
+  circle(g, m, m, r * 0.68, null, ring, 1.6);
+  circle(g, m, m, r * 0.44, null, ring, 1.2);
+  if (type === 'striker') {
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; circle(g, m + Math.cos(a) * r * 0.44, m + Math.sin(a) * r * 0.44, 2.6, accent); }
+  } else circle(g, m, m, r * 0.14, ring);
+  return (sprites[key] = { c, size });
+}
 function piece(b, x = b.x, y = b.y, scale = 1) {
-  const [fill, edge, ring] = LOOK[b.type], r = b.r * scale;
-  circle(ctx, x + 1.5, y + 3, r, 'rgba(13,43,78,.22)');
-  circle(ctx, x, y, r - 1, fill, edge);
-  circle(ctx, x, y, r * 0.62, null, ring);
-  circle(ctx, x, y, r * 0.22, ring);
+  const s = sprite(b.type, b.type === 'striker' ? PLAYER_COLORS[turn] : ''), w = s.size * scale;
+  ctx.drawImage(s.c, x - w / 2, y - w / 2, w, w);
 }
 
 // dashed guide: where the striker travels and what it hits first
@@ -513,31 +611,35 @@ function guide() {
   const x = striker.x + dx * reach, y = striker.y + dy * reach;
   ctx.setLineDash([9, 8]);
   ctx.beginPath(); ctx.moveTo(striker.x, striker.y); ctx.lineTo(x, y);
-  ctx.strokeStyle = '#123cf3'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.stroke();
+  ctx.strokeStyle = '#123cf3'; ctx.lineWidth = 2.5; ctx.stroke();
   ctx.setLineDash([]);
-  circle(ctx, x, y, STRIKER_R, 'rgba(18,60,243,.1)', '#123cf3');
+  circle(ctx, x, y, STRIKER_R, 'rgba(255,255,255,.35)', '#123cf3');
   if (target) {
     const nx = target.x - x, ny = target.y - y, n = Math.hypot(nx, ny);
     ctx.beginPath(); ctx.moveTo(target.x, target.y); ctx.lineTo(target.x + nx / n * 55, target.y + ny / n * 55);
-    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.strokeStyle = '#b3231f'; ctx.lineWidth = 3.5; ctx.stroke();
   }
   // power ring
   ctx.beginPath();
-  ctx.arc(striker.x, striker.y, STRIKER_R + 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * aim.power);
-  ctx.strokeStyle = aim.power > 0.75 ? '#ef4444' : aim.power > 0.4 ? '#f59e0b' : '#16a34a';
-  ctx.lineWidth = 6; ctx.stroke();
+  ctx.arc(striker.x, striker.y, STRIKER_R + 10, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * aim.power);
+  ctx.strokeStyle = aim.power > 0.75 ? '#dc2626' : aim.power > 0.4 ? '#ea580c' : '#15803d';
+  ctx.lineWidth = 7; ctx.stroke();
 }
 
 function draw() {
   ctx.drawImage(background, 0, 0, SIZE, SIZE);
+  trail.forEach(([x, y], i) => circle(ctx, x, y, STRIKER_R * (0.4 + i * 0.09), `rgba(255,255,255,${0.07 + i * 0.045})`));
   coins.forEach(c => { if (c.on) piece(c); });
   effects.forEach(e => {
-    const [px, py] = POCKETS.reduce((a, b) => Math.hypot(e.body.x - a[0], e.body.y - a[1]) < Math.hypot(e.body.x - b[0], e.body.y - b[1]) ? a : b);
-    piece(e.body, px, py, e.life);
+    const [px, py] = e.at;
+    circle(ctx, px, py, POCKET_R + (1 - e.life) * 34, null, `rgba(255,205,60,${e.life})`, 6 * e.life);
+    const k = Math.max(0, e.life * 2 - 1);          // the coin sinks into the pocket
+    if (k) { ctx.save(); const s = sprite(e.body.type, e.body.type === 'striker' ? PLAYER_COLORS[turn] : ''); const w = s.size * k; ctx.drawImage(s.c, px - w / 2, py - w / 2, w, w); ctx.restore(); }
   });
   if (!over && striker.on) {
     if (aim) guide();
-    else if (!moving) circle(ctx, striker.x, striker.y, STRIKER_R + 6, null, 'rgba(18,60,243,.45)', 3);
+    else if (!moving) circle(ctx, striker.x, striker.y, STRIKER_R + 7, null, PLAYER_COLORS[turn], 3);
     piece(striker);
   }
 }
@@ -548,7 +650,7 @@ const point = e => {
   const rect = canvas.getBoundingClientRect();
   return { x: (e.clientX - rect.left) * SIZE / rect.width, y: (e.clientY - rect.top) * SIZE / rect.height };
 };
-const canShoot = () => players.length && !moving && !over && !isAI(turn);
+const canShoot = () => ready && players.length && !moving && !over && !isAI(turn);
 
 canvas.addEventListener('pointerdown', e => {
   if (!canShoot() || drag) return;
@@ -570,68 +672,87 @@ canvas.addEventListener('pointerup', e => {
 canvas.addEventListener('pointercancel', () => { drag = null; aim = null; draw(); });
 
 /* ═════════ Panels ═════════ */
-const panelOf = p => $(p === bottom ? 'bottomPanel' : 'topPanel');
+const panelOf = p => $('panel' + p);
 
 function buildPanels() {
   drag = null;
   players.forEach((player, p) => {
     const el = panelOf(p);
+    el.style.setProperty('--c', PLAYER_COLORS[p]);
     el.innerHTML = `<div class="row">
-        <div class="disc ${player.color}"></div>
+        <div class="disc ${player.color}" title="${player.color}"></div>
         <div class="who"><div class="pname"></div><div class="msg"></div></div>
-        <span class="queen" hidden>QUEEN</span>
-        <div class="left"><b></b><small>left</small></div>
+        <span class="queen" hidden></span>
+        <div class="num"><b class="left"></b><small>left</small></div>
+        <div class="num points"><b class="score">${points[p]}</b><small>pts</small></div>
       </div>
       <input type="range" min="${BASE_MIN}" max="${BASE_MAX}" value="300" aria-label="Striker position">`;
-    el.querySelector('.pname').textContent = player.name;
     el.querySelector('input').addEventListener('input', e => {
       if (p !== turn || !canShoot()) return;
-      const v = Number(e.target.value);
-      placeStriker(turnedAround(p) ? SIZE - v : v);
+      placeStriker(Number(e.target.value));
       aim = null;
       draw();
     });
   });
 }
 
+function setNumber(el, value) {
+  if (el.textContent === String(value)) return;
+  const first = el.textContent === '';
+  el.textContent = value;
+  if (!first) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+}
+
 function updatePanels(reset) {
+  $('game').classList.toggle('face', isFace());
+  $('game').classList.toggle('side', !isFace());
   players.forEach((player, p) => {
     const el = panelOf(p), active = p === turn && !over;
+    el.style.gridArea = seatOf(p);
     el.className = 'panel' + (active ? ' turn' : '') + (turnedAround(p) ? ' rot' : '');
-    el.querySelector('.left b').textContent = remaining(player.color);
+    const name = el.querySelector('.pname'), key = player.name + active;
+    if (name.dataset.key !== key) {
+      name.dataset.key = key;
+      if (active) G66.wave(name, player.name); else name.textContent = player.name;
+    }
+    setNumber(el.querySelector('.left'), remaining(player.color));
+    setNumber(el.querySelector('.score'), points[p]);
     el.querySelector('.queen').hidden = !(queenOwner === p || queenPending === p);
     el.querySelector('.queen').textContent = queenPending === p ? 'COVER IT' : 'QUEEN';
     el.querySelector('.msg').textContent = over ? 'Game over'
-      : !active ? 'Waiting'
+      : !active ? `Plays ${player.color}`
       : moving ? 'Shooting...'
-      : player.ai ? (message ? message + ' · ' : '') + 'Thinking...'
-      : message || 'Slide, then pull back to shoot';
+      : player.ai ? 'Thinking...'
+      : message || (isFace() ? 'Slide, then pull back' : 'Your shot');
     const slider = el.querySelector('input');
     slider.disabled = !active || moving || player.ai;
-    if (reset) slider.value = active ? (turnedAround(p) ? SIZE - striker.x : striker.x) : 300;
+    if (reset) slider.value = active ? place : 300;
   });
 }
 
-function switchSides() {
-  if (moving) return;
-  stopTimers();
-  bottom = 1 - bottom;
-  buildPanels();
-  if (over) { updatePanels(); draw(); $('endOverlay').hidden = false; }
-  else startTurn(message);
+async function changeView() {
+  if (!ready || moving) return;
+  const chosen = await G66.pickView(players[0].name, players[1].name, view);
+  if (!chosen) return;
+  view = chosen;
+  if (!over) placeStriker(300);
+  updatePanels(true);
+  draw();
 }
-function askRestart() { if (over || confirm('Restart this game?')) newGame(); }
+G66.onP(() => { if ($('game').classList.contains('active') && $('endOverlay').hidden && $('helpOverlay').hidden) changeView(); });
+
+function askRestart() { if (!ready) return; if (over || confirm('Restart this game?')) newGame(); }
 function askLeave() {
   if (!over && !confirm('Leave this game?')) return;
-  stopTimers(); moving = false; drag = null;
+  stopTimers(); moving = false; drag = null; trail = []; effects = [];
   cancelAnimationFrame(frame); frame = 0;
   $('endOverlay').hidden = true;
   show('setup');
 }
 
 /* ═════════ Computer player: tries many shots in a practice copy ═════════ */
-function trial(x, y, angle, power) {
-  const bodies = [makeBody('striker', x, y), ...coins.map(c => Object.assign({}, c))];
+function trial(t, angle, power) {
+  const bodies = [makeBody('striker', ...BASELINE[seatOf(turn)](t)), ...coins.map(c => Object.assign({}, c))];
   const speed = 3 + power * 24, down = [];
   bodies[0].vx = Math.cos(angle) * speed; bodies[0].vy = Math.sin(angle) * speed;
   for (let i = 0; i < 600 && physics(bodies, down); i++);
@@ -651,10 +772,11 @@ function trial(x, y, angle, power) {
 }
 
 function chooseShot() {
-  const y = baseY(turn), mine = players[turn].color;
+  const seat = seatOf(turn), mine = players[turn].color;
   const targets = coins.filter(c => c.on && (c.type === mine || c.type === 'queen'));
   const ideas = [];
-  for (let x = BASE_MIN; x <= BASE_MAX; x += 30) {
+  for (let t = BASE_MIN; t <= BASE_MAX; t += 30) {
+    const [x, y] = BASELINE[seat](t);
     if (overlaps(x, y, STRIKER_R, coins)) continue;
     for (const c of targets) {
       for (const [px, py] of POCKETS) {
@@ -662,95 +784,36 @@ function chooseShot() {
         const gx = c.x - ux * (STRIKER_R + COIN_R - 2), gy = c.y - uy * (STRIKER_R + COIN_R - 2);
         const len = Math.hypot(gx - x, gy - y);
         const cut = ((gx - x) * ux + (gy - y) * uy) / len;
-        if (cut > 0.3) ideas.push({ x, angle: Math.atan2(gy - y, gx - x), rank: cut * 2 - (len + d) / 500 });
+        if (cut > 0.3) ideas.push({ t, angle: Math.atan2(gy - y, gx - x), rank: cut * 2 - (len + d) / 500 });
       }
     }
   }
   ideas.sort((a, b) => b.rank - a.rank);
   const shots = [];
-  ideas.slice(0, 28).forEach(i => [0.4, 0.65].forEach(power => shots.push({ x: i.x, angle: i.angle, power })));
-  targets.forEach(c => { const x = freeX(c.x, y); shots.push({ x, angle: Math.atan2(c.y - y, c.x - x), power: 0.9 }); });
+  ideas.slice(0, 28).forEach(i => [0.4, 0.65].forEach(power => shots.push({ t: i.t, angle: i.angle, power })));
+  const along = c => seat === 'bottom' ? c.x : seat === 'top' ? 600 - c.x : c.y;
+  const aimAt = (c, t) => { const [x, y] = BASELINE[seat](t); return Math.atan2(c.y - y, c.x - x); };
+  targets.forEach(c => { const t = freeSpot(along(c), seat); shots.push({ t, angle: aimAt(c, t), power: 0.9 }); });
   let best = null;
   for (const shot of shots) {
-    const score = trial(shot.x, y, shot.angle, shot.power) + Math.random() * 4;
+    const score = trial(shot.t, shot.angle, shot.power) + Math.random() * 4;
     if (!best || score > best.score) best = Object.assign({ score }, shot);
   }
-  if (!best) { const x = freeX(300, y); best = { x, angle: Math.atan2(300 - y, 300 - x), power: 0.8 }; }
-  const wobble = level === 'easy' ? 0.09 : 0.015;
+  if (!best) { const t = freeSpot(300, seat); best = { t, angle: aimAt({ x: 300, y: 300 }, t), power: 0.8 }; }
+  const wobble = level === 'easy' ? 0.13 : 0.045;   // aiming error: bigger = weaker computer
   best.angle += (Math.random() - 0.5) * wobble * 2;
   return best;
 }
 
 function computerTurn() {
-  if (over || moving || !isAI(turn)) return;
+  if (!ready || over || moving || !isAI(turn)) return;
   const shot = chooseShot();
-  placeStriker(shot.x);
+  placeStriker(shot.t);
   aim = { angle: shot.angle, power: shot.power };
-  panelOf(turn).querySelector('input').value = striker.x;
+  panelOf(turn).querySelector('input').value = place;
   draw();
   later(() => fire(shot.angle, shot.power), 700);
 }
-
-/* ═════════ Roll keypad ═════════ */
-let roll = '', checking = false;
-['1','2','3','4','5','6','7','8','9','del','0','ok'].forEach(k => {
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'key' + (k === 'del' || k === 'ok' ? ' ' + k : '');
-  btn.dataset.k = k;
-  btn.textContent = k === 'del' ? '⌫' : k === 'ok' ? 'OK' : k;
-  btn.onclick = () => press(k);
-  $('keypad').appendChild(btn);
-});
-
-function drawRoll() {
-  const shown = roll ? roll.padStart(3, '0') : '';
-  [...$('boxes').children].forEach((box, i) => {
-    box.textContent = shown[i] || '';
-    box.className = !roll ? '' : i >= 3 - roll.length ? 'typed' : 'ghosted';
-  });
-}
-function fail(msg, id = 'err') { $(id).textContent = msg; $(id).hidden = false; }
-function openFriend() {
-  roll = ''; checking = false; drawRoll();
-  $('step1').hidden = false; $('step2').hidden = true;
-  $('err').hidden = true; $('err2').hidden = true;
-  $('keypad').classList.remove('busy');
-  show('friend');
-}
-function press(k) {
-  if (checking) return;
-  if (k === 'ok') return submitRoll();
-  $('err').hidden = true;
-  if (k === 'del') roll = roll.slice(0, -1);
-  else if (roll.length < 3) roll += k;
-  drawRoll();
-}
-async function submitRoll() {
-  if (!roll) return fail('Enter a roll number');
-  const value = roll.padStart(3, '0');
-  if (value === '138') { $('step1').hidden = true; $('step2').hidden = false; return; }
-  if (typeof studentsReady === 'undefined') return fail('students.js is missing. Upload it next to carrom.html');
-  checking = true; $('keypad').classList.add('busy');
-  await studentsReady;
-  checking = false; $('keypad').classList.remove('busy');
-  if (!$('friend').classList.contains('active')) return;
-  if (!Object.keys(STUDENTS).length) return fail('Cannot load students.json (' + studentsError + ')');
-  const name = STUDENTS[value];
-  if (!name) return fail('Roll not found!');
-  if (value === me.roll) return fail("That's you! Pick a friend.");
-  startFriend(name);
-}
-function pickShared(name) {
-  if (me.roll === '138' && me.name === name) return fail("That's you! Pick the other one.", 'err2');
-  startFriend(name);
-}
-document.addEventListener('keydown', e => {
-  if (!$('friend').classList.contains('active') || !$('step2').hidden) return;
-  if (/^[0-9]$/.test(e.key)) press(e.key);
-  else if (e.key === 'Backspace') press('del');
-  else if (e.key === 'Enter') { e.preventDefault(); press('ok'); }
-});
 </script>
 </body>
 </html>
