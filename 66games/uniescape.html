@@ -121,7 +121,8 @@
     .score-pill b { font-size: 1.2rem; color: var(--blue); }
     .pause-btn { pointer-events: auto; width: 40px; height: 40px; border-radius: 12px; background: var(--glass); border: 2px solid var(--border-strong); color: var(--navy); display: grid; place-items: center; }
     .pause-btn:active { transform: scale(0.92); }
-    .sem-label { position: absolute; left: 14px; right: 14px; bottom: max(8px, env(safe-area-inset-bottom)); height: 38px; display: flex; align-items: center; justify-content: center; background: var(--surface); border: 2px solid var(--border-strong); border-radius: 12px; font-size: 1rem; font-weight: 900; color: var(--navy); box-shadow: var(--shadow-sm); }
+    .sem-label b { font-variant-numeric: tabular-nums; color: var(--blue); }
+    .sem-label { position: absolute; left: 14px; right: 14px; bottom: max(8px, env(safe-area-inset-bottom)); height: 38px; padding: 0 12px; gap: 10px; white-space: nowrap; display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 2px solid var(--border-strong); border-radius: 12px; font-size: 1rem; font-weight: 900; color: var(--navy); box-shadow: var(--shadow-sm); }
 
     /* ══════════ START SCREEN ══════════ */
     .start-ui { position: absolute; inset: 0; z-index: 8; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 9px; padding: 10px 10px max(10px, env(safe-area-inset-bottom)); pointer-events: none; }
@@ -133,23 +134,50 @@
     .tap-btn { pointer-events: auto; background: var(--navy); color: #fff; border: 2px solid #60a5fa; padding: 11px 34px; border-radius: 999px; font-size: 1rem; font-weight: 900; letter-spacing: 0.6px; box-shadow: 0 8px 20px rgba(15,37,71,0.35); animation: pulseTap 1.3s ease-in-out infinite; }
     @keyframes pulseTap { 50% { transform: scale(1.06); } }
 
-    .lb-card { width: 100%; background: rgba(255,255,255,0.95); border: 1px solid var(--border-strong); border-radius: 18px; padding: 9px 11px 11px; box-shadow: var(--shadow-lg); pointer-events: auto; }
-    .lb-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
-    .lb-head h3 { font-size: 0.76rem; font-weight: 900; color: var(--navy); text-transform: uppercase; letter-spacing: 0.5px; }
-    .lb-status { font-size: 0.64rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
-    .lb-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .lb-row { display: flex; align-items: center; gap: 8px; min-height: 28px; padding: 3px 10px; border-radius: 9px; background: #f1f5f9; border: 1.5px solid transparent; font-size: 0.8rem; font-weight: 800; color: var(--navy); }
-    .lb-row.top { background: #fef3c7; color: #92400e; }
+    .lb-card { width: 100%; background: rgba(255,255,255,0.95); border: 1px solid var(--border-strong); border-radius: 18px; padding: 8px 9px 9px; box-shadow: var(--shadow-lg); pointer-events: auto; min-height: 0; display: flex; flex-direction: column; }
+    .lb-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+    .lb-head h3 { font-size: 0.74rem; font-weight: 900; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
+    .lb-status { font-size: 0.62rem; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .lb-list { list-style: none; display: flex; flex-direction: column; gap: 2px; min-height: 0; overflow-y: auto; }
+    .lb-row { display: flex; flex-shrink: 0; align-items: center; gap: 7px; height: 21px; padding: 0 8px 0 4px; border-radius: 7px; background: #f1f5f9; border: 1.5px solid transparent; font-size: 0.75rem; font-weight: 800; color: var(--navy); }
+    .lb-row.r1 { background: #fef3c7; color: #92400e; }
+    .lb-row.r2 { background: #e5eaf2; }
+    .lb-row.r3 { background: #fde8d7; color: #7c2d12; }
     .lb-row.me { border-color: var(--blue); }
+    .lb-rank { width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; font-size: 0.6rem; font-weight: 900; color: var(--muted); }
+    .r1 .lb-rank { background: #f59e0b; color: #fff; }
+    .r2 .lb-rank { background: #64748b; color: #fff; }
+    .r3 .lb-rank { background: #c2621c; color: #fff; }
     .lb-name { flex: 1; min-width: 0; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .lb-score { font-weight: 900; color: var(--blue); }
-    .lb-gem { width: 15px; height: 15px; flex-shrink: 0; fill: #fbbf24; stroke: #92400e; stroke-width: 1.6; }
-    .lb-note { justify-content: center; color: var(--muted); font-weight: 700; }
-    @media (max-height: 640px) {
-      .lb-row { min-height: 23px; padding: 1px 10px; font-size: 0.72rem; }
-      .lb-list { gap: 3px; }
+    .lb-time { font-size: 0.68rem; font-weight: 700; color: var(--muted); min-width: 30px; text-align: right; font-variant-numeric: tabular-nums; }
+    .lb-score { font-weight: 900; color: var(--blue); min-width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
+    .lb-note { justify-content: center; color: var(--muted); font-weight: 700; height: 28px; }
+
+    /* season notice on the start screen */
+    .season { position: absolute; left: 10px; right: 10px; top: calc(max(10px, env(safe-area-inset-top)) + 54px); background: var(--navy); color: #fff; border: 2px solid #fbbf24; border-radius: 13px; padding: 6px 10px; text-align: center; pointer-events: auto; box-shadow: var(--shadow-sm); }
+    .season b { display: block; font-size: 0.82rem; font-weight: 900; color: #fde68a; }
+    .season span { display: block; font-size: 0.66rem; font-weight: 700; line-height: 1.35; }
+
+    @media (max-height: 700px) {
+      .lb-row { height: 19px; font-size: 0.71rem; }
+      .lb-list { gap: 1px; }
       .tap-btn { padding: 8px 28px; font-size: 0.9rem; }
       .start-ui { gap: 6px; }
+      .picker { padding: 4px 8px 6px; }
+      .picker small { margin-bottom: 3px; }
+    }
+    @media (max-height: 600px) {
+      .lb-row { height: 17px; font-size: 0.66rem; border-width: 1px; }
+      .lb-rank { width: 14px; height: 14px; font-size: 0.56rem; }
+      .lb-card { padding: 5px 8px 6px; }
+      .lb-head { margin-bottom: 3px; }
+      .picker small { display: none; }
+      .swatch { width: 26px; }
+      .tap-btn { padding: 6px 24px; font-size: 0.82rem; }
+      .start-ui { gap: 5px; padding-bottom: 6px; }
+      .season { padding: 4px 8px; }
+      .season b { font-size: 0.74rem; }
+      .season span { font-size: 0.6rem; }
     }
 
     .save-note { font-size: 0.72rem; font-weight: 800; color: var(--muted); margin-bottom: 4px; }
@@ -207,7 +235,7 @@
     }
     .acad-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
     .acad-cell {
@@ -272,19 +300,23 @@
           <div class="score-pill">Score: <b id="scoreVal">0</b></div>
         </div>
       </div>
-      <div class="sem-label" id="semLabel">1st Year - 1st Semester</div>
+      <div class="sem-label"><span id="semLabel">1st Year - 1st Semester</span><b id="timeVal" aria-label="Time">0:00</b></div>
     </div>
 
     <!-- START SCREEN -->
     <div class="start-ui" id="startUI">
-      <div class="picker">
+      <div class="season" id="seasonNote">
+        <b>Season 2 is coming on December 1</b>
+        <span>All scores will be reset and the Top 3 winners will be announced</span>
+      </div>
+      <div class="picker" id="picker">
         <small id="playerTag">Pick your bird</small>
         <div class="swatches" id="swatches"></div>
       </div>
       <button class="tap-btn" id="tapBtn">TAP TO START</button>
       <div class="lb-card">
         <div class="lb-head">
-          <h3>Leaderboard</h3>
+          <h3>Top 10</h3>
           <span class="lb-status" id="lbStatus">Loading...</span>
         </div>
         <ol class="lb-list" id="lbList"></ol>
@@ -314,6 +346,7 @@
       <div class="score-box">
         <div class="acad-grid">
           <div class="acad-cell"><small>Score</small><b id="endScore" style="color:var(--blue)">0</b></div>
+          <div class="acad-cell"><small>Time</small><b id="endTime">0:00</b></div>
           <div class="acad-cell"><small>Your best</small><b id="endBest" style="color:var(--emerald)">0</b></div>
         </div>
       </div>
@@ -377,6 +410,23 @@
   function saveVal(key, val) {
     try { localStorage.setItem(key, String(val)); } catch {}
   }
+  // a run is { score, time in seconds }; scores saved before the timer have no time
+  function loadRun(key) {
+    try {
+      const v = JSON.parse(localStorage.getItem(key));
+      if (typeof v === 'number' && v > 0) return { score: v, time: null };
+      if (v && v.score > 0) return v;
+    } catch {}
+    return null;
+  }
+  // higher score wins; on the same score a timed run beats an untimed one, then the faster time
+  function beats(a, b) {
+    if (!b) return true;
+    if (a.score !== b.score) return a.score > b.score;
+    if (a.time == null) return false;
+    return b.time == null || a.time < b.time;
+  }
+  const clock = sec => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60)).padStart(2, '0')}`;
 
   /* =========================================================
      BIRD COLOURS
@@ -395,36 +445,44 @@
   try { const b = localStorage.getItem(STORAGE_BIRD); if (BIRDS[b]) birdName = b; } catch {}
 
   /* =========================================================
-     LEADERBOARD (top 5)
+     LEADERBOARD (top 10)
      ========================================================= */
   function boardNote(text) {
     const li = document.createElement('li');
     li.className = 'lb-row lb-note';
     li.textContent = text;
     $('lbList').replaceChildren(li);
+    placeStartBird();
   }
 
   function boardStatus(text) {
-    $('lbStatus').textContent = `Your best: ${loadNum(STORAGE_BEST, 0)} · ${text}`;
+    const mine = loadRun(STORAGE_BEST);
+    const bestText = !mine ? 'Best 0' : `Best ${mine.score}` + (mine.time != null ? ` in ${clock(mine.time)}` : '');
+    $('lbStatus').textContent = `${bestText} · ${text}`;
   }
 
   function renderLeaderboard(scores) {
     if (!Array.isArray(scores) || !scores.length) return boardNote('No scores yet. Be the first!');
-    const rows = scores.slice(0, 5).map((entry, idx) => {
+    const rows = scores.slice(0, 10).map((entry, idx) => {
       const li = document.createElement('li');
       const mine = String(entry.name).toLowerCase() === playerName.toLowerCase() && (!entry.id || entry.id === playerId);
-      li.className = 'lb-row' + (idx === 0 ? ' top' : '') + (mine ? ' me' : '');
-      const name = document.createElement('span');
-      name.className = 'lb-name';
-      name.textContent = entry.name || 'Player';
-      const points = document.createElement('span');
-      points.className = 'lb-score';
-      points.textContent = entry.score;
-      li.append(name, points);
-      if (idx === 0) li.insertAdjacentHTML('beforeend', '<svg class="lb-gem" viewBox="0 0 24 24"><path d="M12 2l10 10-10 10L2 12z"/></svg>');
+      li.className = 'lb-row' + (idx < 3 ? ' r' + (idx + 1) : '') + (mine ? ' me' : '');
+      const cell = (cls, text) => {
+        const el = document.createElement('span');
+        el.className = cls;
+        el.textContent = text;
+        return el;
+      };
+      li.append(
+        cell('lb-rank', idx + 1),
+        cell('lb-name', entry.name || 'Player'),
+        cell('lb-time', Number.isInteger(entry.time) ? clock(entry.time) : ''),
+        cell('lb-score', entry.score)
+      );
       return li;
     });
     $('lbList').replaceChildren(...rows);
+    placeStartBird();
   }
 
   async function api(path, options) {
@@ -455,27 +513,30 @@
 
   // a score that could not be sent is kept and sent next time
   async function sendPending() {
-    const score = loadNum(STORAGE_PENDING, 0);
-    if (!score || !API_URL) return null;
+    const run = loadRun(STORAGE_PENDING);
+    if (!run || !API_URL) return null;
+    const sent = localStorage.getItem(STORAGE_PENDING);
+    const body = { id: playerId, name: playerName, score: run.score };
+    if (run.time != null) body.time = run.time;
     const data = await api('/score', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: playerId, name: playerName, score })
+      body: JSON.stringify(body)
     });
-    if (loadNum(STORAGE_PENDING, 0) === score) { try { localStorage.removeItem(STORAGE_PENDING); } catch {} }
+    try { if (localStorage.getItem(STORAGE_PENDING) === sent) localStorage.removeItem(STORAGE_PENDING); } catch {}
     return data;
   }
 
-  async function submitScore(finalScore) {
+  async function submitScore(run) {
     const note = $('saveNote');
-    if (finalScore <= 0) { note.textContent = ''; return; }
-    saveVal(STORAGE_PENDING, Math.max(finalScore, loadNum(STORAGE_PENDING, 0)));
+    if (run.score <= 0) { note.textContent = ''; return; }
+    if (beats(run, loadRun(STORAGE_PENDING))) saveVal(STORAGE_PENDING, JSON.stringify(run));
     if (!API_URL) { note.textContent = 'Saved on this phone (leaderboard not set up)'; return; }
     note.textContent = 'Saving to leaderboard...';
     try {
       const data = await sendPending();
       if (data && data.top5) renderLeaderboard(data.top5);
-      note.textContent = '✓ Saved to leaderboard';
+      note.textContent = 'Saved to leaderboard';
     } catch {
       note.textContent = 'Offline. Your score will be sent next time';
     }
@@ -486,7 +547,9 @@
      ========================================================= */
   const Sound = (() => {
     let ac = null, noise = null;
-    let muted = loadNum(STORAGE_MUTE, 0) === 1;
+    // sound is off unless the player has turned it on
+    let muted = true;
+    try { muted = localStorage.getItem(STORAGE_MUTE) !== '0'; } catch {}
 
     function ctxA() {
       if (muted) return null;
@@ -536,7 +599,7 @@
     return {
       isMuted: () => muted,
       warmUp() { const a = ctxA(); if (a && !noise) noise = makeNoise(a); },
-      toggle() { muted = !muted; saveVal(STORAGE_MUTE, muted ? 1 : 0); return muted; },
+      toggle() { muted = !muted; saveVal(STORAGE_MUTE, muted ? 1 : 0); this.warmUp(); return muted; },
       flap: () => tone(310, 520, 0.08, 'triangle', 0.08),
       pass: () => tone(640, 860, 0.06, 'sine', 0.05),
       hit: () => { crash(); tone(185, 70, 0.2, 'sawtooth', 0.11); },
@@ -591,20 +654,18 @@
     { name: 'Great Sunset', top: [64, 28, 108], mid: [226, 78, 52], bot: [254, 196, 84], hill: [118, 52, 86], bldg: [72, 32, 66], cloud: 0.7, clouds: 6, star: 0.22, win: 0.55, rain: 0, sunY: 342, sunR: 40, sunCol: [254, 215, 92], moon: false }
   ];
 
-  // one Mid in the middle, and the Final ends the semester
-  const SEMESTER_SEQUENCE = [
-    'CT', 'ASSIGN', 'PPTX', 'ATTEND', 'MID',
-    'ASSIGN', 'PPTX', 'ATTEND', 'CT', 'FINAL'
-  ];
+  // one Mid in the middle, and the Final ends the semester.
+  // 100 walls in total: each year has semesters of 8, 8 and 9 walls
+  const SHORT_SEM = ['CT', 'ASSIGN', 'PPTX', 'MID', 'ATTEND', 'ASSIGN', 'CT', 'FINAL'];
+  const LONG_SEM = ['CT', 'ASSIGN', 'PPTX', 'ATTEND', 'MID', 'ASSIGN', 'PPTX', 'CT', 'FINAL'];
+  const sequenceFor = sem => (sem % 3 === 2 ? LONG_SEM : SHORT_SEM);
   const TITLES = { CT: 'CT', ASSIGN: 'ASSIGNMENT', PPTX: 'PRESENTATION', ATTEND: 'ATTENDANCE', MID: 'MID -1♥', FINAL: 'FINAL -2♥' };
   const WIDTHS = { CT: 70, ASSIGN: 70, PPTX: 70, ATTEND: 70, MID: 74, FINAL: 76 };
-  // 100 marks in total: 12 semesters x 5, plus the year bonuses
-  const SEMESTER_MARKS = 5;
-  const YEAR_BONUS = [5, 5, 10, 20];
+  const HIT_PENALTY = 5;    // seconds added to the timer for every lost heart
+  const WALL_TRAVEL = 410;  // same distance from a new wall to the bird on every screen, so times are fair
   const ORDINAL = ['1st', '2nd', '3rd', '4th'];
   const semesterName = i => `${ORDINAL[Math.floor(i / 3)]} Year - ${ORDINAL[i % 3]} Semester`;
   const TOTAL_SEMESTERS = 12;
-  const OBSTACLES_PER_SEM = SEMESTER_SEQUENCE.length;
 
   /* =========================================================
      CANVAS SCALING & STATE
@@ -614,6 +675,19 @@
   const CEILING = 112;   // just under the progress bar and hearts
   let W = 420;
   let scale = 1;
+
+  let startY = H * 0.3;
+  function placeStartBird() {
+    if ($('startUI').hidden || !scale) return;
+    const top = $('seasonNote').getBoundingClientRect().bottom, bottom = $('picker').getBoundingClientRect().top;
+    const box = canvas.getBoundingClientRect();
+    const middle = ((top + bottom) / 2 - box.top) * (H / box.height);
+    const next = Math.max(CEILING + 20, Math.min(H * 0.36, middle));
+    if (Math.abs(next - startY) < 1) return;
+    skyBirds.forEach(b => { b.y += next - startY; });
+    player.y += next - startY;
+    startY = next;
+  }
 
   let paintedScale = 0;
   function resizeCanvas() {
@@ -632,10 +706,12 @@
   let lastTime = 0;
   let elapsed = 0;
 
-  let best = loadNum(STORAGE_BEST, 0);
   let lives = 3;
   let maxLivesCap = 6;
-  let score = 0;      // out of 100, earned at each Final
+  let score = 0;      // 1 point for every wall passed, 100 in total
+  let runTime = 0;    // seconds of play (pauses do not count)
+  let penalty = 0;    // seconds added for hits
+  let scoreTime = 0;  // timer reading when the latest point was earned
 
   let currentSemester = 0; // 0..11
   let clearedInSem = 0;
@@ -700,6 +776,7 @@
 
   function updateHud(animateLives = false) {
     setText('scoreVal', score);
+    setText('timeVal', clock(runTime + penalty));
     setText('semLabel', semesterName(clamp(currentSemester, 0, 11)));
 
     const hearts = $('hearts');
@@ -709,7 +786,7 @@
     hearts.classList.toggle('many', slots > 3);
     [...hearts.children].forEach((h, i) => h.classList.toggle('lost', i >= lives));
 
-    const done = (currentSemester + clearedInSem / OBSTACLES_PER_SEM) / TOTAL_SEMESTERS;
+    const done = (currentSemester + clearedInSem / sequenceFor(currentSemester).length) / TOTAL_SEMESTERS;
     $('progressFill').style.transform = `scaleX(${Math.min(1, done)})`;
 
     // animate without forcing the page to re-measure itself
@@ -818,7 +895,7 @@
   function resetToStart() {
     lives = 3;
     score = 0;
-    best = loadNum(STORAGE_BEST, 0);
+    runTime = penalty = scoreTime = 0;
     currentSemester = 0;
     clearedInSem = 0;
     spawnSemester = 0;
@@ -839,7 +916,7 @@
     banners = [];
     popups = [];
 
-    player = { x: Math.round(W * 0.27), y: H * 0.3, vy: 0, rot: 0, wingPhase: 0, dizzyAngle: 0 };
+    player = { x: Math.round(W * 0.27), y: startY, vy: 0, rot: 0, wingPhase: 0, dizzyAngle: 0 };
     spawnIntroBirds();
 
     state = 'start';
@@ -849,6 +926,7 @@
     $('pauseOverlay').hidden = true;
     $('endOverlay').hidden = true;
     updateHud();
+    placeStartBird();
     fetchLeaderboard();
   }
 
@@ -862,7 +940,7 @@
     player.rot = -0.4;
     Sound.flap();
     spawnFlapFeathers();
-    pushBanner('YEAR 1 · SEMESTER 1', '3 LIVES · SURVIVE THE YEAR', '#123cf3');
+    pushBanner('YEAR 1 · SEMESTER 1', `1 WALL = 1 POINT · HIT = +${HIT_PENALTY}s`, '#123cf3');
     updateHud();
   }
 
@@ -897,40 +975,40 @@
   function openEndModal(won) {
     state = won ? 'won' : 'over';
 
-    // marks from finished semesters count even if you fail later
-    if (score > best) {
-      best = score;
-      saveVal(STORAGE_BEST, best);
-    }
+    // every wall passed counts, even if you fail later
+    const run = { score, time: score > 0 ? Math.max(score, Math.round(scoreTime)) : 0 };
+    if (score > 0 && beats(run, loadRun(STORAGE_BEST))) saveVal(STORAGE_BEST, JSON.stringify(run));
     updateHud();
 
+    const mine = loadRun(STORAGE_BEST);
     $('endScore').textContent = score;
-    $('endBest').textContent = best;
+    $('endTime').textContent = clock(run.time);
+    $('endBest').textContent = mine ? mine.score : 0;
 
     if (won) {
       $('endTitle').textContent = `${playerName}, Graduated! Uni Escaped!`;
       $('endSub').textContent = `${playerName}, you conquered all 4 years and 12 semesters!`;
-      $('endDetail').textContent = 'University completed with full marks.';
+      $('endDetail').textContent = 'All 100 walls passed. Full points!';
       $('againBtn').className = 'btn btn-gold';
     } else {
       $('endTitle').textContent = `${playerName}, ${currentSemester === 0 ? 'Eliminated in Semester 1!' : 'Semester Failed!'}`;
       $('endSub').textContent = score > 0
-        ? `${playerName}, your finished semesters saved ${score} marks!`
-        : `${playerName}, pass a Final exam to get on the leaderboard!`;
+        ? `${playerName}, you scored ${score} ${score === 1 ? 'point' : 'points'}!`
+        : `${playerName}, pass a wall to get on the leaderboard!`;
       $('endDetail').textContent = `Reached ${semesterName(clamp(currentSemester, 0, 11))}.`;
       $('againBtn').className = 'btn btn-primary';
     }
 
     $('endOverlay').hidden = false;
-    submitScore(score);
+    submitScore(run);
   }
 
   /* =========================================================
      OBSTACLES, DAMAGE & CHECKPOINTS
      ========================================================= */
-  function spawnNextObstacle() {
+  function spawnNextObstacle(offset = 0) {
     if (spawnSemester >= TOTAL_SEMESTERS) return;
-    const type = SEMESTER_SEQUENCE[spawnStep];
+    const type = sequenceFor(spawnSemester)[spawnStep];
     const year = Math.floor(spawnSemester / 3);
     const moving = type === 'MID';
 
@@ -944,7 +1022,7 @@
     const gapY = rand(minCenter, maxCenter);
 
     obstacles.push({
-      x: W + 42,
+      x: Math.max(W + 42, player.x + WALL_TRAVEL) + offset,
       w: WIDTHS[type],
       gapY, baseY: gapY, gap, type,
       semIndex: spawnSemester, stepIndex: spawnStep,
@@ -955,7 +1033,7 @@
     });
 
     spawnStep++;
-    if (spawnStep >= OBSTACLES_PER_SEM) {
+    if (spawnStep >= sequenceFor(spawnSemester).length) {
       spawnStep = 0;
       spawnSemester++;
     }
@@ -965,16 +1043,12 @@
     const completedYear = Math.floor(completedSem / 3) + 1;
     const isEndOfYear = (completedSem + 1) % 3 === 0;
     const isLastSem = completedSem >= TOTAL_SEMESTERS - 1;
-    const bonus = isEndOfYear ? YEAR_BONUS[completedYear - 1] : 0;
-    score = Math.min(100, score + SEMESTER_MARKS + bonus);
-
-    addPopup(`+${SEMESTER_MARKS} SEMESTER PASSED`, W / 2, H * 0.3, '#fef08a', '#b45309', true);
-    if (bonus) addPopup(`+${bonus} YEAR BONUS`, W / 2, H * 0.37, '#ffffff', '#047857', true);
+    addPopup('SEMESTER PASSED', W / 2, H * 0.3, '#fef08a', '#b45309', true);
 
     if (isLastSem) {
       // Graduation! Trigger victory overtaking animation in Sem 12 sunset
       currentSemester = TOTAL_SEMESTERS - 1;
-      clearedInSem = OBSTACLES_PER_SEM;
+      clearedInSem = sequenceFor(currentSemester).length;
       obstacles = [];
       state = 'victory_anim';
       cutsceneTimer = 3.2;
@@ -1016,13 +1090,14 @@
     if (invulnerable > 0) return;
 
     lives = Math.max(0, lives - dmg);
+    penalty += dmg * HIT_PENALTY;
     invulnerable = 2.6;
     stunTimer = 0.38;
     shakeTimer = 0.3;
     flashAlpha = 0.38;
     Sound.hit();
 
-    addPopup(`-${dmg} ♥`, player.x, player.y - 30, '#ffffff', '#dc2626', false);
+    addPopup(`-${dmg} ♥  +${dmg * HIT_PENALTY}s`, player.x + 20, player.y - 30, '#ffffff', '#dc2626', false);
 
     if (obstacle) {
       if (hitTop) obstacle.topBroken = true;
@@ -1090,7 +1165,7 @@
     if (state === 'start') {
       worldScroll += 85 * dt;
       player.x = Math.round(W * 0.27);
-      player.y = H * 0.3 + Math.sin(elapsed * 4.5) * 10;
+      player.y = startY + Math.sin(elapsed * 4.5) * 10;
       player.rot = Math.sin(elapsed * 4.5) * 0.08;
       player.wingPhase += dt * 11;
       for (const b of skyBirds) {
@@ -1134,6 +1209,9 @@
     }
 
     if (state !== 'playing') return;
+
+    runTime += dt;
+    setText('timeVal', clock(runTime + penalty));
 
     // Intro rival birds fly away ahead when game starts
     for (const b of skyBirds) {
@@ -1179,10 +1257,11 @@
     if (spawnSemester < TOTAL_SEMESTERS) {
       spawnTimer -= dt;
       if (spawnTimer <= 0) {
-        spawnNextObstacle();
+        // place the wall exactly where it should be, whatever the phone's frame rate
+        spawnNextObstacle(speed * (dt + spawnTimer));
         const justFinishedSem = spawnStep === 0 && spawnSemester > 0;
         const interval = 335 / speed;
-        spawnTimer = justFinishedSem ? interval + 0.36 : interval;
+        spawnTimer += justFinishedSem ? interval + 0.36 : interval;
       }
     }
 
@@ -1200,9 +1279,11 @@
 
       if (!o.passed && o.x + o.w < player.x - 10) {
         o.passed = true;
-        clearedInSem = Math.min(OBSTACLES_PER_SEM, o.stepIndex + 1);
+        score = Math.min(100, score + 1);
+        scoreTime = runTime + penalty;
+        clearedInSem = Math.min(sequenceFor(o.semIndex).length, o.stepIndex + 1);
         Sound.pass();
-        addPopup(`✓ ${o.type === 'MID' ? 'MID' : o.type === 'FINAL' ? 'FINAL' : TITLES[o.type]}`, player.x + 18, player.y - 24, '#ffffff', o.type === 'MID' ? '#be123c' : '#123cf3', false);
+        addPopup(`+1 ${o.type === 'MID' ? 'MID' : o.type === 'FINAL' ? 'FINAL' : TITLES[o.type]}`, player.x + 18, player.y - 24, '#ffffff', o.type === 'MID' ? '#be123c' : '#123cf3', false);
         spawnPassSparkles(o.x + o.w, o.gapY, o.type === 'FINAL' ? '#f59e0b' : '#60a5fa', o.type === 'FINAL' ? 12 : 5);
         updateHud();
 
@@ -1765,7 +1846,7 @@
     if (document.hidden && state === 'playing') pauseGame();
   });
 
-  window.addEventListener('resize', () => { resizeCanvas(); render(); });
+  window.addEventListener('resize', () => { resizeCanvas(); placeStartBird(); render(); });
 
   window.addEventListener('load', () => {
     syncSoundIcon();
