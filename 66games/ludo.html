@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <style>
         :root{
@@ -21,10 +20,11 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        [hidden]{display:none!important}
         body { 
             font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); 
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; 
-            user-select: none; -webkit-user-select: none;
+            user-select: none; -webkit-user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
         }
         
         /* TOP BAR */
@@ -63,10 +63,19 @@
         }
         .input-roll:focus { border-color: var(--accent); }
 
-        /* GAME BOARD */
-        #game-screen { justify-content: flex-start; padding: 10px 8px; }
-        .board-wrapper{width:100%;max-width:400px;aspect-ratio:1;background:#fff;
-          border:2px solid var(--navy);position:relative; box-shadow: var(--shadow);}
+        /* GAME: face to face, or side by side (left and right boxes under the board) */
+        #game-screen{--b:min(calc(100vw - 16px),calc(100vh - 258px),460px);max-width:none;min-height:100vh;padding:8px;justify-content:center;align-content:center;justify-items:center;gap:8px;overflow:hidden}
+        @supports (height:100dvh){#game-screen{--b:min(calc(100vw - 16px),calc(100dvh - 258px),460px);min-height:100dvh}}
+        #game-screen.active{display:grid}
+        #game-screen.face{grid-template-columns:100%;grid-template-areas:"top" "board" "bottom" "controls"}
+        #game-screen.side{--b:min(calc(100vw - 16px),calc(100vh - 252px),460px);grid-template-columns:repeat(2,calc(max(var(--b),304px)/2 - 4px));column-gap:8px;grid-template-areas:"board board" "left right" "controls controls"}
+        @supports (height:100dvh){#game-screen.side{--b:min(calc(100vw - 16px),calc(100dvh - 252px),460px)}}
+        .board-wrapper{grid-area:board;width:var(--b);min-width:260px;aspect-ratio:1;background:#fff;
+          border:2px solid var(--navy);position:relative;box-shadow:var(--shadow);transition:transform .7s cubic-bezier(.45,0,.25,1)}
+        .board-wrapper.turning{animation:dip .7s ease-in-out}
+        @keyframes dip{50%{scale:.74}}
+        .board-wrapper.shake{animation:shake .4s}
+        @keyframes shake{25%,75%{translate:-5px 2px}50%{translate:5px -2px}}
         .board{position:absolute;inset:0;display:grid;
           grid-template-columns:repeat(15,minmax(0,1fr));grid-template-rows:repeat(15,minmax(0,1fr));background:#fff}
 
@@ -88,7 +97,7 @@
 
         /* PATH CELLS */
         .cell{background:#fff;position:relative;border:.5px solid var(--line)}
-        .cell.safe::after{content:'★';position:absolute;inset:0;display:flex;
+        .cell.safe::after{rotate:var(--unturn,0deg);content:'★';position:absolute;inset:0;display:flex;
           align-items:center;justify-content:center;font-size:.85rem;line-height:1;color:#64748b}
         .cell.safe[class*="start-"]::after{color:#fff}
         .home-path-blue,.start-blue{background:var(--blue)}
@@ -105,7 +114,10 @@
         .t-left  {background:var(--blue); clip-path:polygon(0 0,0 100%,50% 50%)}
 
         /* PAWNS: a map-pin token with a soft shadow, outlined so it shows on any colour */
-        .pawn{position:absolute;inset:0;margin:auto;width:76%;height:76%;z-index:10;background:none;border:none}
+        .pawn{position:absolute;inset:0;margin:auto;width:76%;height:76%;z-index:10;background:none;border:none;transition:rotate .7s}
+        .pawn.hop{animation:hop .19s ease-out;z-index:30}
+        @keyframes hop{50%{scale:1.55}}
+        .pawn.ghost{position:fixed;margin:0;inset:auto;z-index:600;pointer-events:none}
         .pawn::before{ /* shadow */
           content:'';position:absolute;left:18%;right:18%;bottom:-4%;height:24%;
           border-radius:50%;background:rgba(0,0,0,.35)}
@@ -124,20 +136,20 @@
         .pawn-selectable::after{box-shadow:0 0 0 2px var(--navy),0 0 7px 5px #fff}
         @keyframes pulse{50%{scale:1.25}}
 
-        /* PLAYER INFO & DICE */
-        .player-info-row { 
-            display: flex; justify-content: space-between; align-items: flex-start; 
-            width: 100%; max-width: 400px; margin-top: 15px; padding: 0 10px;
-            transition: flex-direction 0.3s ease;
-        }
-        .player-info-row.swapped { flex-direction: row-reverse; }
-        
-        .player-side { display: flex; flex-direction: column; align-items: center; width: 45%; gap: 5px; }
-        .p-name { font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 5px; }
-        .p1-text { color: var(--red); }
-        .p2-text { color: var(--blue); }
+        /* PLAYER BOXES & DICE */
+        .panel{width:max(var(--b),304px);background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:5px 12px;height:84px;
+          display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name dice" "track dice" "msg dice";align-items:center;justify-items:start;column-gap:12px;transition:border-color .25s,background-color .25s}
+        .side .panel{width:100%;height:auto;grid-template-columns:100%;grid-template-areas:"name" "dice" "track" "msg";justify-items:center;text-align:center;row-gap:3px;padding:4px 6px}
+        .panel.turn{border-color:var(--c);background:var(--accent-light);animation:glow 1.2s ease-in-out infinite}
+        @keyframes glow{50%{border-color:var(--border)}}
+        .panel.rot{transform:rotate(180deg)}
+        .p-name{grid-area:name;font-weight:700;font-size:.95rem;color:var(--c);max-width:100%;white-space:nowrap;overflow:hidden;line-height:1.35;padding-top:3px}
+        .msg{grid-area:msg;font-size:.66rem;font-weight:600;color:#64748b;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
+        .panel.turn .msg{color:var(--c)}
 
-        .dice-container { width: 60px; height: 60px; perspective: 600px; cursor: pointer; transition: opacity 0.3s; }
+        .dice-container { grid-area: dice; width: 60px; height: 60px; perspective: 600px; cursor: pointer; transition: opacity 0.3s; }
+        .panel.ready .dice-container{animation:nudge 1s ease-in-out infinite}
+        @keyframes nudge{50%{transform:scale(1.12)}}
         .dice-container.disabled { opacity: 0.3; pointer-events: none; }
         .dice-cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s ease-out; transform: translateZ(-30px); }
         .dice-face {
@@ -162,35 +174,35 @@
         .f2 { transform: rotateX(-90deg) translateZ(30px); }
 
         /* TRACKERS */
-        .trackers-row { display: flex; justify-content: space-between; width: 100%; max-width: 400px; margin-top: 15px; padding: 0 15px; transition: flex-direction 0.3s ease; }
-        .trackers-row.swapped { flex-direction: row-reverse; }
-        
-        .tracker-box {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-            padding: 6px 12px; font-size: 0.85rem; font-weight: 600; display: flex; gap: 10px; align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .tracker-box i { font-size: 1rem; }
-        .t-red i { color: var(--red); }
-        .t-blue i { color: var(--blue); }
-        .t-gold i { color: #fbbf24; }
+        .tracker-box{grid-area:track;font-size:.72rem;font-weight:700;display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:8px;padding:2px 10px}
+        .tracker-box span:first-child{color:var(--c)}
+        .tracker-box span:last-child{color:#b45309}
+        .tracker-box b.bump{display:inline-block;animation:bump .45s cubic-bezier(.2,2.2,.4,1)}
+        @keyframes bump{40%{transform:scale(1.8)}}
 
-        .status-text { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-align: center; margin-top: 15px; }
+        .controls{grid-area:controls;width:max(var(--b),304px);display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+        .ctl{height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-family:'Poppins',sans-serif;font-size:.62rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+        .ctl i{font-style:normal;font-size:1.05rem;line-height:1.1;color:var(--accent)}
+        .ctl.pkey{background:var(--accent);border-color:var(--accent);color:#fff}
+        .ctl.pkey i{color:#fff;font-weight:700}
+        .ctl:active{transform:scale(.95)}
         
         /* WIN OVERLAY */
         .win-overlay {
-            position: fixed; inset: 0; background: rgba(13,43,78,0.95); z-index: 1000;
+            position: fixed; inset: 0; background: rgba(13,43,78,0.93); z-index: 100;
             display: none; flex-direction: column; align-items: center; justify-content: center;
             color: white; text-align: center; padding: 20px;
         }
         .win-overlay.active { display: flex; }
-        .win-crown { font-size: 5rem; color: #fbbf24; animation: bounce 1s infinite alternate; margin-bottom: 20px; }
+        .win-overlay.rot { transform: rotate(180deg); }
+        .win-overlay .btn { max-width: 280px; }
+        .win-crown { font-size: 5rem; line-height: 1.2; animation: bounce 1s infinite alternate; margin-bottom: 14px; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
+    <div class="top-bar" id="topBar">
         <a href="index.html" class="logo-small">66<span>Notes</span></a>
         <div class="brand-badge">Ludo</div>
         <div style="width: 32px;"></div>
@@ -198,23 +210,14 @@
 
     <div id="setup-screen" class="screen active">
         <h1 class="title">Select Ludo Mode</h1>
-        <button class="btn btn-primary" onclick="startMode('ai')"><i class="fas fa-robot"></i> Solo vs AI</button>
-        <button class="btn btn-outline" onclick="showScreen('split-screen')"><i class="fas fa-user-group"></i> You vs Friend</button>
-        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: var(--text-secondary); margin-top: 20px;"><i class="fas fa-arrow-left"></i> Back to Hub</button>
+        <button class="btn btn-primary" onclick="openFriend()">👥 You vs Friend</button>
+        <button class="btn btn-outline" onclick="startAI()">🤖 Solo vs AI</button>
+        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: #64748b; margin-top: 20px;">← Back to Hub</button>
     </div>
 
-    <div id="split-screen" class="screen">
-        <h1 class="title">You vs Friend</h1>
-        <p style="margin-bottom: 15px; color: var(--text-secondary);">Enter your friend's roll number</p>
-        <input type="number" id="p2-roll" class="input-roll" placeholder="e.g. 015" />
-        <button class="btn btn-primary" onclick="startSplit()">Start Game</button>
-        <button class="btn" onclick="showScreen('setup-screen')" style="background: transparent; color: var(--text-secondary);">Cancel</button>
-    </div>
-
-    <div id="game-screen" class="screen">
-        
+    <div id="game-screen" class="screen face">
         <!-- BOARD HTML -->
-        <div class="board-wrapper">
+        <div class="board-wrapper" id="wrap">
             <div class="board" id="board">
               <div class="base-blue"><div class="base-inner" id="base-p2"></div></div>
               <div class="base-green"><div class="base-inner"></div></div>
@@ -227,72 +230,67 @@
             </div>
         </div>
 
-        <!-- PLAYER UI -->
-        <div class="player-info-row" id="player-ui-row">
-            <div class="player-side">
-                <span class="p-name p1-text" id="ui-p1">Opponent</span>
-                <div class="dice-container disabled" id="dice-wrap-1" onclick="handleDiceClick(1)">
-                    <div class="dice-cube" id="dice-cube-1">
-                        <div class="dice-face f1"><div class="dot"></div></div>
-                        <div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    </div>
+                <div class="panel" id="panel1">
+            <span class="p-name" id="ui-p1"></span>
+            <div class="dice-container disabled" id="dice-wrap-1" onclick="handleDiceClick(1)">
+                <div class="dice-cube" id="dice-cube-1">
+<div class="dice-face f1"><div class="dot"></div></div>
+<div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
                 </div>
             </div>
-            
-            <div class="player-side">
-                <span class="p-name p2-text" id="ui-p2">My Name</span>
-                <div class="dice-container" id="dice-wrap-2" onclick="handleDiceClick(2)">
-                    <div class="dice-cube" id="dice-cube-2">
-                        <div class="dice-face f1"><div class="dot"></div></div>
-                        <div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                        <div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-                    </div>
+            <div class="tracker-box"><span>♟︎ <b id="track-p1-play">0</b>/2</span><span>👑 <b id="track-p1-home">0</b>/2</span></div>
+            <div class="msg" id="msg-1"></div>
+        </div>
+        <div class="panel" id="panel2">
+            <span class="p-name" id="ui-p2"></span>
+            <div class="dice-container disabled" id="dice-wrap-2" onclick="handleDiceClick(2)">
+                <div class="dice-cube" id="dice-cube-2">
+<div class="dice-face f1"><div class="dot"></div></div>
+<div class="dice-face f2"><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<div class="dice-face f6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
                 </div>
             </div>
+            <div class="tracker-box"><span>♟︎ <b id="track-p2-play">0</b>/2</span><span>👑 <b id="track-p2-home">0</b>/2</span></div>
+            <div class="msg" id="msg-2"></div>
         </div>
 
-        <!-- TRACKERS -->
-        <div class="trackers-row" id="tracker-row">
-            <div class="tracker-box t-red">
-                <span><i class="fas fa-chess-pawn"></i> <span id="track-p1-play">0</span>/2</span>
-                <span class="t-gold"><i class="fas fa-crown"></i> <span id="track-p1-home">0</span>/2</span>
-            </div>
-            <div class="tracker-box t-blue">
-                <span><i class="fas fa-chess-pawn"></i> <span id="track-p2-play">0</span>/2</span>
-                <span class="t-gold"><i class="fas fa-crown"></i> <span id="track-p2-home">0</span>/2</span>
-            </div>
+        <div class="controls">
+            <button class="ctl pkey" id="pBtn" onclick="changeView()"><i>P</i>View</button>
+            <button class="ctl" onclick="askRestart()"><i>↻</i>Restart</button>
+            <button class="ctl" onclick="askLeave()"><i>✕</i>Exit</button>
         </div>
-        
-        <!-- SWITCH SIDES BUTTON -->
-        <button class="btn btn-outline" onclick="toggleSides()" style="max-width:200px; margin-top:15px; padding:8px 12px; font-size:0.8rem; border-radius:20px;">
-            <i class="fas fa-arrow-right-arrow-left"></i> Switch Sides
-        </button>
-
-        <p class="status-text" id="turn-text">Waiting to start...</p>
     </div>
 
     <div class="win-overlay" id="win-overlay">
-        <i class="fas fa-crown win-crown"></i>
-        <h1 style="font-size: 2rem; margin-bottom: 10px;" id="win-text">Player Wins!</h1>
-        <p style="color: #cbd5e1;">Returning to dashboard...</p>
+        <div class="win-crown" id="win-icon">👑</div>
+        <h1 style="font-size: 1.8rem; margin-bottom: 18px;" id="win-text"></h1>
+        <button class="btn btn-primary" onclick="newGame()">Play again</button>
+        <button class="btn" onclick="window.location.href='index.html'" style="background: transparent; color: #cbd5e1;">Back to Hub</button>
     </div>
 
     <script src="students.js"></script>
+    <script src="common.js"></script>
     <script>
         
-        const currentUser = JSON.parse(localStorage.getItem('66games_user'));
+        const $ = id => document.getElementById(id);
+        let currentUser = null;
+        try { currentUser = JSON.parse(localStorage.getItem('66games_user')); } catch (e) {}
         if (!currentUser) window.location.href = 'index.html';
+        const me = currentUser || { roll: '', name: 'Player' };
 
-        let mode = ''; let p1Name = currentUser.name; let p2Name = '';
+        const COLORS = { 1: '#e11d48', 2: '#0b78d0' };
+        let mode = ''; let p1Name = me.name; let p2Name = '';
         let turn = 1; let isRolling = false; let hasRolled = false; let isSelecting = false;
-        let sidesSwapped = false;
+        let view = 'face-bottom', angle = 0, ready = false, over = false, game = 0;
+        let choices = null;               // pawns the player may tap right now
+        let notes = { 1: '', 2: '' };
         
         const LOOP = [
             {r:6,c:1},{r:6,c:2},{r:6,c:3},{r:6,c:4},{r:6,c:5},
@@ -322,48 +320,85 @@
         let p1Pawns = [-1, -1];
         let p2Pawns = [-1, -1];
 
+        // timers that are forgotten when the game is restarted or left
+        const later = (fn, ms) => { const id = game; setTimeout(() => { if (id === game) fn(); }, ms); };
+        const nameOf = p => p === 1 ? p1Name : p2Name;
+        const isFace = () => G66.VIEWS[view].face;
+        const seatOf = p => G66.VIEWS[view].seats[p - 1];
+        // is this player's side of the screen upside down?
+        const turnedAround = p => isFace() && seatOf(mode === 'ai' ? 1 : p) === 'top';
+        // how far the board is turned so that each base is near its owner
+        const BOARD_ANGLE = { 'face-bottom': 0, 'face-top': 180, 'side-left': 90, 'side-right': 0 };
+
         function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+            $('topBar').hidden = id === 'game-screen';
         }
 
-        function startMode(m) {
-            mode = m; p2Name = (m === 'ai') ? 'Computer' : p2Name; initGame();
+        async function openFriend() {
+            const choice = await G66.friend(me);
+            if (choice) begin('friend', choice.name, choice.view);
         }
-
-        async function startSplit() {
-            await studentsReady;
-            const roll = document.getElementById('p2-roll').value.padStart(3, '0');
-            let name = STUDENTS[roll];
-            if (roll === '138') name = 'Aion/Maria'; 
-            if (!name) return alert('Roll not found!');
-            p2Name = name; mode = 'split'; initGame();
-        }
-
-        function toggleSides() {
-            sidesSwapped = !sidesSwapped;
-            const uiRow = document.getElementById('player-ui-row');
-            const trackRow = document.getElementById('tracker-row');
-            
-            if (sidesSwapped) {
-                uiRow.classList.add('swapped');
-                trackRow.classList.add('swapped');
-            } else {
-                uiRow.classList.remove('swapped');
-                trackRow.classList.remove('swapped');
-            }
-        }
-
-        function initGame() {
-            p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
-            turn = 1; hasRolled = false; isRolling = false; isSelecting = false;
-            
-            document.getElementById('ui-p1').innerText = p1Name;
-            document.getElementById('ui-p2').innerText = p2Name;
-            
+        function startAI() { begin('ai', 'Computer', G66.saved('side-left')); }
+        async function begin(kind, opponent, chosen) {
+            mode = kind; p2Name = opponent; view = chosen;
             showScreen('game-screen');
+            applyView(false);
+            newGame(true);
+            const id = game;
+            await G66.intro([{ name: p1Name, color: COLORS[1] }, { name: p2Name, color: COLORS[2] }], view);
+            if (id !== game) return;
+            ready = true;
+            updateTurnUI();
+            G66.banner(`${nameOf(turn)} starts!`, { color: COLORS[turn], flip: turnedAround(turn) });
+        }
+
+        function newGame(waitForIntro) {
+            game++;
+            p1Pawns = [-1, -1]; p2Pawns = [-1, -1];
+            turn = 1; hasRolled = false; isRolling = false; isSelecting = false; over = false;
+            choices = null; notes = { 1: '', 2: '' };
+            ready = waitForIntro !== true;
+            document.querySelectorAll('.ghost').forEach(g => g.remove());
+            $('win-overlay').classList.remove('active');
+            [1, 2].forEach(p => { $('track-p' + p + '-play').textContent = ''; $('track-p' + p + '-home').textContent = ''; delete $('ui-p' + p).dataset.key; });
             buildGrid();
             updateTurnUI();
+        }
+
+        const pawnTurn = p => (turnedAround(p) ? 180 : 0) - angle;
+
+        function applyView(animate) {
+            const screen = $('game-screen'), wrap = $('wrap');
+            screen.classList.toggle('face', isFace());
+            screen.classList.toggle('side', !isFace());
+            [1, 2].forEach(p => { $('panel' + p).style.gridArea = seatOf(p); $('panel' + p).style.setProperty('--c', COLORS[p]); });
+            const change = ((BOARD_ANGLE[view] - angle) % 360 + 540) % 360 - 180;   // shortest way round
+            angle += change;
+            if (animate && change) { wrap.classList.remove('turning'); void wrap.offsetWidth; wrap.classList.add('turning'); }
+            wrap.style.transition = animate ? '' : 'none';
+            wrap.style.transform = `rotate(${angle}deg)`;
+            $('board').style.setProperty('--unturn', -angle + 'deg');
+            document.querySelectorAll('.pawn:not(.ghost)').forEach(el => el.style.rotate = pawnTurn(el.classList.contains('pawn-p1') ? 1 : 2) + 'deg');
+        }
+
+        async function changeView() {
+            if (!ready) return;
+            const chosen = await G66.pickView(p1Name, p2Name, view);
+            if (!chosen) return;
+            view = chosen;
+            applyView(true);
+            updateTurnUI();
+        }
+        G66.onP(() => { if ($('game-screen').classList.contains('active') && !over) changeView(); });
+
+        function askRestart() { if (!ready) return; if (over || confirm('Restart this game?')) newGame(); }
+        function askLeave() {
+            if (!over && !confirm('Leave this game?')) return;
+            game++; ready = false;
+            document.querySelectorAll('.ghost').forEach(g => g.remove());
+            $('win-overlay').classList.remove('active');
+            showScreen('setup-screen');
         }
 
         function buildGrid() {
@@ -403,36 +438,47 @@
             renderBoard();
         }
 
-        function renderBoard() {
-            document.querySelectorAll('.pawn').forEach(p => p.remove());
+        function setCount(id, value) {
+            const el = $(id);
+            if (el.textContent === String(value)) return;
+            const first = el.textContent === '';
+            el.textContent = value;
+            if (!first) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+        }
+
+        function renderBoard(hopping) {
+            document.querySelectorAll('.pawn:not(.ghost)').forEach(p => p.remove());
             document.querySelectorAll('.base-inner').forEach(b => {
                 b.innerHTML = '<div class="slot"></div><div class="slot"></div>';
             });
 
-            const placePawn = (pathIndex, colorClass, pIdx) => {
+            const placePawn = (pathIndex, player, pIdx) => {
                 const p = document.createElement('div');
-                p.className = `pawn ${colorClass}`;
-                p.id = `pawn-${colorClass.includes('p1') ? 'p1' : 'p2'}-${pIdx}`;
-                
+                p.className = `pawn pawn-p${player}`;
+                p.id = `pawn-p${player}-${pIdx}`;
+                p.style.rotate = pawnTurn(player) + 'deg';
+                if (hopping === p.id) p.classList.add('hop');
+                if (choices && player === turn && choices.list.includes(pIdx)) {
+                    p.classList.add('pawn-selectable');
+                    p.onclick = () => choose(pIdx);
+                }
+
                 if (pathIndex === -1) {
                     p.classList.add('pawn-base');
-                    const baseId = colorClass.includes('p1') ? 'base-p1' : 'base-p2';
-                    document.getElementById(baseId).children[pIdx].appendChild(p);
+                    $('base-p' + player).children[pIdx].appendChild(p);
                     return;
                 }
 
-                // BUG FIX: If pawn is at or past HOME_INDEX, don't render it on the board!
+                // pawns that reached the centre are no longer drawn
                 if (pathIndex >= HOME_INDEX) return;
 
-                const path = colorClass.includes('p1') ? P1_PATH : P2_PATH;
-                const {r, c} = path[pathIndex];
-                const cell = document.getElementById(`cell-${r}-${c}`);
-                
+                const {r, c} = (player === 1 ? P1_PATH : P2_PATH)[pathIndex];
+                const cell = $(`cell-${r}-${c}`);
                 if (cell) cell.appendChild(p);
             };
 
-            p1Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p1', idx));
-            p2Pawns.forEach((pos, idx) => placePawn(pos, 'pawn-p2', idx));
+            p1Pawns.forEach((pos, idx) => placePawn(pos, 1, idx));
+            p2Pawns.forEach((pos, idx) => placePawn(pos, 2, idx));
 
             // pawns sharing a square sit side by side
             document.querySelectorAll('.cell').forEach(cell => {
@@ -442,54 +488,40 @@
                 group.forEach((p, i) => { p.style.transform = `translate(${spots[i][0]}%, ${spots[i][1]}%) scale(0.72)`; });
             });
 
-            const p1Out = p1Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
-            const p1Home = p1Pawns.filter(p => p === HOME_INDEX).length;
-            const p2Out = p2Pawns.filter(p => p >= 0 && p < HOME_INDEX).length;
-            const p2Home = p2Pawns.filter(p => p === HOME_INDEX).length;
-
-            document.getElementById('track-p1-play').innerText = p1Out;
-            document.getElementById('track-p1-home').innerText = p1Home;
-            document.getElementById('track-p2-play').innerText = p2Out;
-            document.getElementById('track-p2-home').innerText = p2Home;
+            [[1, p1Pawns], [2, p2Pawns]].forEach(([p, pawns]) => {
+                setCount(`track-p${p}-play`, pawns.filter(x => x >= 0 && x < HOME_INDEX).length);
+                setCount(`track-p${p}-home`, pawns.filter(x => x === HOME_INDEX).length);
+            });
         }
 
-        let currentX1 = 0, currentY1 = 0;
-        let currentX2 = 0, currentY2 = 0;
+        const spin = { 1: { x: 0, y: 0 }, 2: { x: 0, y: 0 } };
+        const faceMap = {
+            1: {x: 0, y: 0}, 2: {x: 90, y: 0}, 3: {x: 0, y: -90},
+            4: {x: 0, y: 90}, 5: {x: -90, y: 0}, 6: {x: 0, y: 180}
+        };
 
-        function handleDiceClick(player, byComputer) {
-            if (isRolling || hasRolled || isSelecting) return;
+        function handleDiceClick(player, byComputer, forced) {
+            if (!ready || over || isRolling || hasRolled || isSelecting) return;
             if (mode === 'ai' && player === 2 && !byComputer) return; // only the computer rolls its dice
-            
-            if (turn === 1 && player === 2) return;
-            if (turn === 2 && player === 1) return;
+            if (turn !== player) return;
             
             isRolling = true;
-            const diceValue = Math.floor(Math.random() * 6) + 1;
-            
-            const cubeId = player === 1 ? 'dice-cube-1' : 'dice-cube-2';
-            const cube = document.getElementById(cubeId);
-            
-            const faceMap = {
-                1: {x: 0, y: 0}, 2: {x: 90, y: 0}, 3: {x: 0, y: -90},
-                4: {x: 0, y: 90}, 5: {x: -90, y: 0}, 6: {x: 0, y: 180}
-            };
-            
-            const spins = 4 + Math.floor(Math.random() * 3);
-            if (player === 1) {
-                currentX1 = spins * 360 + faceMap[diceValue].x;
-                currentY1 = spins * 360 + faceMap[diceValue].y;
-                cube.style.transform = `translateZ(-30px) rotateX(${currentX1}deg) rotateY(${currentY1}deg)`;
-            } else {
-                currentX2 = spins * 360 + faceMap[diceValue].x;
-                currentY2 = spins * 360 + faceMap[diceValue].y;
-                cube.style.transform = `translateZ(-30px) rotateX(${currentX2}deg) rotateY(${currentY2}deg)`;
-            }
+            const diceValue = forced || Math.floor(Math.random() * 6) + 1;
+            spin[player] = { x: spin[player].x + 1440, y: spin[player].y + 1080 + 360 };
+            const to = faceMap[diceValue];
+            $('dice-cube-' + player).style.transform = `translateZ(-30px) rotateX(${spin[player].x + to.x}deg) rotateY(${spin[player].y + to.y}deg)`;
+            notes = { 1: '', 2: '' }; notes[player] = 'Rolling...';
+            G66.buzz(20);
+            updateTurnUI();
 
-            setTimeout(() => {
+            later(() => {
                 isRolling = false;
                 hasRolled = true;
+                notes[player] = 'Rolled ' + diceValue;
+                updateTurnUI();
+                G66.pop(diceValue === 6 ? 'SIX!' : '+' + diceValue, $('dice-wrap-' + player), { color: COLORS[player], flip: turnedAround(player) });
                 processMove(diceValue);
-            }, 800);
+            }, 850);
         }
 
         function processMove(dice) {
@@ -500,83 +532,122 @@
                 if (pos === -1 && dice === 6) {
                     validMoves.push(i);
                 } else if (pos >= 0 && pos < HOME_INDEX) {
-                    validMoves.push(i); // BUG FIX: Always allow moving forward, even if it exceeds HOME_INDEX
+                    validMoves.push(i); // a pawn may always move forward, even past the centre
                 }
             });
 
             if (validMoves.length === 0) {
-                setTimeout(nextTurn, 600);
+                notes[turn] = `Rolled ${dice} · no move`;
+                updateTurnUI();
+                later(nextTurn, 900);
             } else if (validMoves.length === 1) {
-                setTimeout(() => executeMove(validMoves[0], dice), 300);
+                later(() => executeMove(validMoves[0], dice), 350);
             } else {
                 if (mode === 'ai' && turn === 2) {
-                    setTimeout(() => executeMove(validMoves[validMoves.length - 1], dice), 400);
+                    later(() => executeMove(validMoves[validMoves.length - 1], dice), 450);
                     return;
                 }
-                
                 isSelecting = true;
-                document.getElementById('turn-text').innerText = "Select a glowing pawn to move!";
-                
-                validMoves.forEach(idx => {
-                    const p = document.getElementById(`pawn-${turn === 1 ? 'p1' : 'p2'}-${idx}`);
-                    if(p) {
-                        p.classList.add('pawn-selectable');
-                        p.onclick = () => {
-                            document.querySelectorAll('.pawn-selectable').forEach(el => {
-                                el.classList.remove('pawn-selectable');
-                                el.onclick = null;
-                            });
-                            isSelecting = false;
-                            executeMove(idx, dice);
-                        };
-                    }
-                });
+                choices = { list: validMoves, dice };
+                notes[turn] = 'Tap a glowing pawn!';
+                renderBoard();
+                updateTurnUI();
             }
         }
 
+        function choose(idx) {
+            if (!choices) return;
+            const { dice } = choices;
+            choices = null;
+            isSelecting = false;
+            executeMove(idx, dice);
+        }
+
+        const centreOf = el => { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; };
+
+        // a captured pawn flies back to its base
+        function flyHome(player, idx, from) {
+            const target = $(`pawn-p${player}-${idx}`);
+            if (!target || !target.animate) return;
+            const to = target.getBoundingClientRect();
+            const ghost = document.createElement('div');
+            ghost.className = `pawn pawn-p${player} ghost`;
+            Object.assign(ghost.style, { left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px' });
+            document.body.appendChild(ghost);
+            target.style.visibility = 'hidden';
+            const dx = to.left + to.width / 2 - from.left - from.width / 2, dy = to.top + to.height / 2 - from.top - from.height / 2;
+            ghost.animate([
+                { transform: 'translate(0,0) rotate(0deg) scale(1)' },
+                { transform: `translate(${dx / 2}px,${dy / 2 - 50}px) rotate(360deg) scale(1.8)` },
+                { transform: `translate(${dx}px,${dy}px) rotate(720deg) scale(1)` }
+            ], { duration: 650, easing: 'ease-in-out' }).onfinish = () => { ghost.remove(); target.style.visibility = ''; };
+        }
+
         function executeMove(pawnIdx, dice) {
-            const myPawns = turn === 1 ? p1Pawns : p2Pawns;
-            const oppPawns = turn === 1 ? p2Pawns : p1Pawns;
-            const myPath = turn === 1 ? P1_PATH : P2_PATH;
-            const oppPath = turn === 1 ? P2_PATH : P1_PATH;
+            const player = turn;
+            const myPawns = player === 1 ? p1Pawns : p2Pawns;
+            const oppPawns = player === 1 ? p2Pawns : p1Pawns;
+            const myPath = player === 1 ? P1_PATH : P2_PATH;
+            const oppPath = player === 1 ? P2_PATH : P1_PATH;
 
-            let pos = myPawns[pawnIdx];
-            myPawns[pawnIdx] = (pos === -1) ? 0 : pos + dice;
+            const start = myPawns[pawnIdx];
+            const end = start === -1 ? 0 : Math.min(HOME_INDEX, start + dice);
+            const id = `pawn-p${player}-${pawnIdx}`;
+            notes[player] = 'Moving...';
+            updateTurnUI();
 
-            // BUG FIX: Cap the position at HOME_INDEX immediately
-            if (myPawns[pawnIdx] > HOME_INDEX) {
-                myPawns[pawnIdx] = HOME_INDEX;
-            }
+            // hop one square at a time
+            let at = start;
+            (function step() {
+                at++;
+                myPawns[pawnIdx] = at;
+                renderBoard(id);
+                if (at < end) return later(step, 190);
+                later(land, 200);
+            })();
 
-            let hitOpponent = false;
-            if (myPawns[pawnIdx] < HOME_INDEX && !SAFE_SPOTS.includes(myPawns[pawnIdx])) {
-                const currentCoord = myPath[myPawns[pawnIdx]];
-                oppPawns.forEach((oppPos, i) => {
-                    if (oppPos >= 0 && oppPos < HOME_INDEX) {
-                        const oppCoord = oppPath[oppPos];
-                        if (currentCoord.r === oppCoord.r && currentCoord.c === oppCoord.c) {
-                            oppPawns[i] = -1;
-                            hitOpponent = true;
+            function land() {
+                const flip = turnedAround(player);
+                const victims = [];
+                if (end < HOME_INDEX && !SAFE_SPOTS.includes(end)) {
+                    const here = myPath[end];
+                    oppPawns.forEach((oppPos, i) => {
+                        if (oppPos >= 0 && oppPos < HOME_INDEX) {
+                            const there = oppPath[oppPos];
+                            if (here.r === there.r && here.c === there.c) {
+                                const el = $(`pawn-p${3 - player}-${i}`);
+                                victims.push({ i, from: el.getBoundingClientRect() });
+                                oppPawns[i] = -1;
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+                renderBoard();
 
-            renderBoard();
+                const hit = victims.length > 0;
+                if (hit) {
+                    victims.forEach(v => flyHome(3 - player, v.i, v.from));
+                    G66.banner('💥 CAPTURED!', { color: COLORS[player], flip });
+                    G66.buzz(90);
+                    const w = $('wrap'); w.classList.remove('turning', 'shake'); void w.offsetWidth; w.classList.add('shake');
+                }
+                if (end === HOME_INDEX) {
+                    const c = centreOf($('wrap'));
+                    G66.banner('👑 HOME!', { color: '#d97706', flip });
+                    G66.confetti({ x: c.x, y: c.y, count: 45 });
+                    G66.buzz(60);
+                }
 
-            if (myPawns[0] === HOME_INDEX && myPawns[1] === HOME_INDEX) {
-                triggerWin(turn === 1 ? p1Name : p2Name);
-                return;
-            }
+                if (myPawns[0] === HOME_INDEX && myPawns[1] === HOME_INDEX) return triggerWin(player);
 
-            const extraTurn = (dice === 6 || hitOpponent);
-
-            if (extraTurn) {
-                hasRolled = false;
-                updateTurnUI();
-                if (mode === 'ai' && turn === 2) setTimeout(() => handleDiceClick(2, true), 800);
-            } else {
-                setTimeout(nextTurn, 600);
+                if (dice === 6 || hit) {
+                    hasRolled = false;
+                    notes[player] = 'Roll again!';
+                    updateTurnUI();
+                    if (mode === 'ai' && player === 2) later(() => handleDiceClick(2, true), 900);
+                } else {
+                    later(nextTurn, hit ? 900 : 500);
+                }
             }
         }
 
@@ -584,39 +655,40 @@
             turn = turn === 1 ? 2 : 1;
             hasRolled = false;
             isSelecting = false;
+            choices = null;
+            notes = { 1: '', 2: '' };
             updateTurnUI();
-
-            if (mode === 'ai' && turn === 2) {
-                setTimeout(() => handleDiceClick(2, true), 800);
-            }
+            if (mode === 'friend') G66.banner(`${nameOf(turn)}'s turn`, { color: COLORS[turn], flip: turnedAround(turn) });
+            if (mode === 'ai' && turn === 2) later(() => handleDiceClick(2, true), 800);
         }
 
         function updateTurnUI() {
-            document.getElementById('ui-p1').classList.toggle('active', turn === 1);
-            document.getElementById('ui-p2').classList.toggle('active', turn === 2);
-            
-            const text = turn === 1 ? `${p1Name} is playing...` : `${p2Name} is playing...`;
-            document.getElementById('turn-text').innerText = text;
-            
-            const wrap1 = document.getElementById('dice-wrap-1');
-            const wrap2 = document.getElementById('dice-wrap-2');
-
-            if (turn === 1) {
-                wrap1.classList.remove('disabled');
-                wrap2.classList.add('disabled');
-            } else {
-                wrap1.classList.add('disabled');
-                wrap2.classList.remove('disabled');
-            }
+            [1, 2].forEach(p => {
+                const active = turn === p && !over;
+                const computer = mode === 'ai' && p === 2;
+                const free = active && ready && !isRolling && !hasRolled && !isSelecting;
+                $('panel' + p).className = 'panel' + (active ? ' turn' : '') + (free && !computer ? ' ready' : '') + (turnedAround(p) ? ' rot' : '');
+                const name = $('ui-p' + p), key = nameOf(p) + active;
+                if (name.dataset.key !== key) {
+                    name.dataset.key = key;
+                    if (active) G66.wave(name, nameOf(p)); else name.textContent = nameOf(p);
+                }
+                $('msg-' + p).textContent = notes[p] || (over ? 'Game over' : !active ? 'Waiting' : computer ? 'Thinking...' : 'Tap the dice');
+                $('dice-wrap-' + p).classList.toggle('disabled', !active);
+            });
         }
 
-        function triggerWin(winnerName) {
-            document.getElementById('win-text').innerText = `${winnerName} Won the Match!`;
-            document.getElementById('win-overlay').classList.add('active');
-            
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 3500);
+        function triggerWin(winner) {
+            over = true;
+            notes = { 1: '', 2: '' }; notes[winner] = 'Winner!';
+            updateTurnUI();
+            later(() => {
+                $('win-icon').textContent = mode === 'ai' && winner === 2 ? '🤖' : '👑';
+                G66.wave($('win-text'), `${nameOf(winner)} wins!`);
+                $('win-overlay').classList.toggle('rot', turnedAround(winner));
+                $('win-overlay').classList.add('active');
+                if (!(mode === 'ai' && winner === 2)) G66.celebrate();
+            }, 900);
         }
     </script>
 </body>
