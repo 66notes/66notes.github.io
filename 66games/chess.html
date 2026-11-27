@@ -11,8 +11,7 @@
 <style>
 :root{
   --bg:#eef6fd;--surface:#fff;--border:#dbe7f3;--text:#1e2a3e;--text2:#64748b;--navy:#0d2b4e;
-  --accent:#123cf3;--accent-light:#eef2ff;
-  --light:#ffffff;--dark:#aed6f6;--frame:#5fa8e0;
+  --accent:#123cf3;--accent-light:#eef2ff;--light:#ffffff;--dark:#aed6f6;--frame:#5fa8e0;
 }
 :root[data-theme="dark"]{
   --bg:#0b0e14;--surface:#151a22;--border:#2a3442;--text:#f0f4f8;--text2:#8b98a5;--navy:#e2e8f0;
@@ -21,7 +20,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;overscroll-behavior:none;
   -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 button:disabled{opacity:.4;cursor:default}
@@ -34,7 +33,8 @@ button:disabled{opacity:.4;cursor:default}
 .screen{flex:1;min-height:0;display:none;flex-direction:column;align-items:center;overflow-y:auto;padding:16px}
 .screen.active{display:flex}
 .card{width:100%;max-width:360px;margin:auto;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:20px;text-align:center}
-.hero{width:76px;height:76px;margin:0 auto 8px;border-radius:22px;background:linear-gradient(135deg,var(--frame),var(--accent));color:#fff;font-size:3rem;line-height:76px}
+.hero{width:86px;height:86px;margin:0 auto 8px;border-radius:22px;background:linear-gradient(135deg,var(--frame),var(--accent));padding:6px;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
 h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 .sub{font-size:.78rem;color:var(--text2);margin-bottom:8px}
 .btn{width:100%;min-height:48px;border-radius:14px;border:2px solid var(--accent);font-size:.92rem;font-weight:700;margin-top:10px;padding:8px}
@@ -46,68 +46,91 @@ h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 .seg button{flex:1;border:none;background:none;color:var(--text2);padding:8px;border-radius:9px;font-weight:700;font-size:.8rem}
 .seg button.on{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.12)}
 
-/* keypad */
-.boxes{display:flex;justify-content:center;gap:10px;margin:8px 0 12px}
-.boxes b{width:60px;height:66px;border-radius:15px;border:2px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--navy)}
-.boxes b.typed{border-color:var(--accent);background:var(--accent-light)}
-.boxes b.ghosted{opacity:.4}
-.err{font-size:.74rem;font-weight:600;color:#dc2626;background:rgba(220,38,38,.1);border-radius:10px;padding:7px;margin-bottom:10px}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.key{height:clamp(44px,7.5vh,58px);border-radius:15px;border:1px solid var(--border);border-bottom-width:4px;background:var(--surface);color:var(--navy);font-size:1.4rem;font-weight:700}
-.key:active{transform:translateY(2px);border-bottom-width:2px;background:var(--accent-light)}
-.key.del{color:#dc2626}
-.key.ok{background:var(--accent);border-color:#0b2bb5;color:#fff}
-.keypad.busy{opacity:.5;pointer-events:none}
+/* ── game layout: face to face, or side by side ── */
+#game{--size:min(calc(100vw - 20px),calc(100vh - 262px),520px);display:none;justify-content:center;align-content:center;justify-items:center;gap:8px;padding:8px;overflow:hidden}
+@supports (height:100dvh){#game{--size:min(calc(100vw - 20px),calc(100dvh - 262px),520px)}}
+#game.active{display:grid}
+#game.face{grid-template-columns:100%;grid-template-areas:"top" "board" "bottom" "status" "controls"}
+#game.side{--size:min(calc(100vw - 20px),calc(100vh - 214px),520px);grid-template-columns:repeat(2,calc(max(var(--size),280px)/2 - 1px));column-gap:6px;grid-template-areas:"board board" "status status" "left right" "controls controls"}
+@supports (height:100dvh){#game.side{--size:min(calc(100vw - 20px),calc(100dvh - 214px),520px)}}
 
-/* game */
-#game{justify-content:center;gap:8px;padding:8px;--size:min(calc(100vw - 16px),calc(100vh - 232px),520px)}
-@supports (height:100dvh){#game{--size:min(calc(100vw - 16px),calc(100dvh - 232px),520px)}}
-.player{width:var(--size);min-width:280px;display:flex;align-items:center;gap:10px;padding:7px 10px;background:var(--surface);border:2px solid var(--border);border-radius:16px}
-.player.turn{border-color:var(--accent);background:var(--accent-light)}
+.player{width:max(var(--size),280px);height:58px;display:flex;align-items:center;gap:9px;padding:6px 10px;background:var(--surface);border:2px solid var(--border);border-radius:16px;transition:border-color .25s,background-color .25s,transform .45s}
+.side .player{width:100%;padding:6px;gap:6px}
+.player.turn{border-color:var(--accent);background:var(--accent-light);animation:glow 1.2s ease-in-out infinite}
+@keyframes glow{50%{border-color:var(--frame)}}
 .player.rot{transform:rotate(180deg)}
-.avatar{width:38px;height:38px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:2px solid var(--frame)}
-.avatar.w{background:#fff;color:#0d2b4e}.avatar.b{background:#0d2b4e;color:#fff}
+.avatar{width:38px;height:38px;flex-shrink:0;border-radius:11px;border:2px solid var(--frame);padding:1px}
+.side .avatar{width:30px;height:30px}
+.avatar.w{background:#cfe8fb}.avatar.b{background:#fff}
 .who{flex:1;min-width:0;text-align:left}
-.pname{font-weight:700;font-size:.92rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.taken{height:18px;font-size:.95rem;line-height:18px;color:var(--text2);white-space:nowrap;overflow:hidden}
-.taken em{font-style:normal;font-size:.7rem;font-weight:800;margin-left:5px;color:#16a34a}
+.pname{font-weight:700;font-size:.92rem;color:var(--navy);white-space:nowrap;overflow:hidden;line-height:1.5;padding-top:2px}
+.side .pname{font-size:.78rem}
+.taken{display:flex;align-items:center;height:18px;overflow:hidden}
+.taken svg{width:17px;height:17px;flex-shrink:0;margin-right:-5px}
+.taken em{font-style:normal;font-size:.7rem;font-weight:800;margin-left:9px;color:#16a34a}
 .tag{font-size:.65rem;font-weight:800;padding:4px 9px;border-radius:20px;background:var(--accent);color:#fff;visibility:hidden}
 .player.turn .tag{visibility:visible}
+.side .tag{display:none}
 
-.board{width:var(--size);height:var(--size);min-width:280px;min-height:280px;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
-  border:5px solid var(--frame);border-radius:12px;overflow:hidden;flex-shrink:0;background:var(--light);box-shadow:0 8px 22px rgba(18,90,160,.22)}
-.sq{position:relative;border:none;padding:0;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:var(--light)}
+.frame{grid-area:board;width:max(var(--size),280px);height:max(var(--size),280px);padding:5px;border-radius:14px;background:linear-gradient(145deg,#7cc0f0,#3f86c4);box-shadow:0 8px 22px rgba(18,90,160,.25)}
+.frame.spin{animation:dip .8s ease-in-out}
+@keyframes dip{50%{transform:scale(.74)}}
+.board{width:100%;height:100%;position:relative;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);border-radius:9px;background:var(--light);transition:transform .8s cubic-bezier(.5,0,.3,1)}
+.sq{position:relative;border:none;padding:0;min-width:0;min-height:0;background:var(--light)}
 .sq.d{background:var(--dark)}
-.sq.last{background-image:linear-gradient(rgba(250,204,21,.42),rgba(250,204,21,.42))}
+.sq.last{background-image:linear-gradient(rgba(250,204,21,.45),rgba(250,204,21,.45))}
 .sq.sel{background-image:linear-gradient(rgba(18,60,243,.35),rgba(18,60,243,.35))}
-.sq.check{background-image:radial-gradient(circle,#ef4444 25%,rgba(239,68,68,.15) 75%)}
-.sq.move::after{content:'';position:absolute;width:28%;height:28%;border-radius:50%;background:rgba(18,60,243,.45)}
-.sq.take::after{content:'';position:absolute;inset:5%;border-radius:50%;border:4px solid rgba(239,68,68,.75)}
-.coord{position:absolute;font-size:.55rem;font-weight:700;color:#3c76a8;pointer-events:none}
-.coord.rank{top:1px;left:2px}.coord.file{bottom:0;right:3px}
-.pc{font-size:calc(var(--size)/10.2);line-height:1;pointer-events:none;font-family:"Segoe UI Symbol","Noto Sans Symbols2","DejaVu Sans",serif}
-@media (max-width:300px),(max-height:512px){.pc{font-size:1.7rem}}
-.pc.w{color:#fff;-webkit-text-stroke:1.5px #0d2b4e;text-shadow:0 2px 3px rgba(13,43,78,.45)}
-.pc.b{color:#0d2b4e;-webkit-text-stroke:.6px #fff;text-shadow:0 2px 3px rgba(13,43,78,.3)}
-.pc.rot{transform:rotate(180deg)}
+.sq.check::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,#ef4444 30%,rgba(239,68,68,0) 72%);animation:alarm .6s ease-in-out infinite alternate}
+@keyframes alarm{from{opacity:.45}}
+.sq.move::after{content:'';position:absolute;left:36%;top:36%;width:28%;height:28%;border-radius:50%;background:rgba(18,60,243,.5);animation:dot .25s cubic-bezier(.2,2,.4,1)}
+.sq.take::after{content:'';position:absolute;inset:3%;border-radius:50%;border:4px solid rgba(239,68,68,.85);animation:dot .25s cubic-bezier(.2,2,.4,1)}
+@keyframes dot{from{transform:scale(0)}}
+.coord{position:absolute;font-size:.55rem;font-weight:700;color:#3c76a8;pointer-events:none;line-height:1;transition:transform .8s}
+.coord.rank{top:2px;left:2px}.coord.file{bottom:2px;right:2px}
 
-.status{font-weight:700;font-size:.85rem;color:var(--navy);min-height:1.3em;text-align:center}
+/* pieces slide; the art inside turns to face its player */
+.pc{position:absolute;left:0;top:0;width:12.5%;height:12.5%;pointer-events:none;z-index:2;transition:transform .34s cubic-bezier(.3,1.2,.4,1)}
+.pc .turner{width:100%;height:100%;transition:transform .8s cubic-bezier(.5,0,.3,1)}
+.pc svg{display:block;width:100%;height:100%;overflow:visible;transition:transform .18s cubic-bezier(.2,2,.4,1);transform-origin:50% 85%}
+.pc.sel{z-index:4}.pc.sel svg{transform:translateY(-12%) scale(1.22)}
+.pc.moving{z-index:5}.pc.moving svg{animation:hop .34s ease-out}
+@keyframes hop{45%{transform:scale(1.3)}75%{transform:scale(.94,.9)}}
+.pc.dead{z-index:1;animation:die .42s forwards}
+@keyframes die{35%{opacity:1;scale:1.35;rotate:12deg}100%{opacity:0;scale:.1;rotate:-60deg}}
+.pc.deal svg{animation:deal .45s backwards cubic-bezier(.2,1.7,.4,1)}
+@keyframes deal{from{opacity:0;transform:translateY(-90%) scale(.5)}}
+.pc.crown svg{animation:crown .7s cubic-bezier(.2,1.8,.4,1)}
+@keyframes crown{0%{transform:scale(.2) rotate(-200deg)}60%{transform:scale(1.5)}}
+.spark{position:absolute;width:12.5%;height:12.5%;pointer-events:none;z-index:3;border-radius:50%;border:3px solid #fbbf24;animation:spark .45s ease-out forwards}
+@keyframes spark{from{scale:.3}to{scale:1.7;opacity:0}}
+
+.status{grid-area:status;font-weight:700;font-size:.85rem;color:var(--navy);min-height:1.3em;text-align:center;transition:transform .4s}
 .status.alert{color:#dc2626}
-.controls{width:var(--size);min-width:280px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.status.rot{transform:rotate(180deg)}
+.controls{grid-area:controls;width:max(var(--size),280px);display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .ctl{height:48px;border-radius:13px;border:1px solid var(--border);background:var(--surface);color:var(--navy);font-size:.66rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ctl i{font-style:normal;font-size:1.15rem;line-height:1.1;color:var(--accent)}
+.ctl.pkey{background:var(--accent);border-color:var(--accent);color:#fff}
+.ctl.pkey i{color:#fff;font-weight:800}
 .ctl:active:not(:disabled){transform:scale(.94)}
 
 .overlay{position:fixed;inset:0;z-index:100;background:rgba(13,43,78,.82);display:flex;align-items:center;justify-content:center;padding:20px}
-.overlay .card{margin:0}
-.overlay .card.rot{transform:rotate(180deg)}
+.overlay .card{margin:0;animation:rise .3s cubic-bezier(.2,1.4,.4,1)}
+.overlay.rot{transform:rotate(180deg)}
+@keyframes rise{from{opacity:0;scale:.7}}
 .promo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.promo button{height:64px;border-radius:14px;border:2px solid var(--frame);background:var(--dark);display:flex;align-items:center;justify-content:center}
-.promo .pc{font-size:2.5rem}
-.trophy{font-size:3.5rem;line-height:1.2}
+.promo button{height:68px;border-radius:14px;border:2px solid var(--frame);background:var(--dark);padding:4px}
+.promo svg{width:100%;height:100%}
+.trophy{font-size:3.8rem;line-height:1.2;animation:float 1.4s ease-in-out infinite}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gw" x1="0" y1="0" x2="1" y2="1"><stop offset=".35" stop-color="#ffffff"/><stop offset="1" stop-color="#bcd7ee"/></linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b6ea5"/><stop offset=".65" stop-color="#0d2b4e"/><stop offset="1" stop-color="#06182e"/></linearGradient>
+  </defs>
+</svg>
 
 <header class="top-bar" id="topBar">
   <a href="index.html" class="logo">66<span>Games</span></a>
@@ -116,10 +139,10 @@ h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 
 <section id="setup" class="screen active">
   <div class="card">
-    <div class="hero">♞&#xFE0E;</div>
+    <div class="hero" id="hero"></div>
     <h1>Chess</h1>
     <p class="sub" id="hello"></p>
-    <button class="btn primary" onclick="openSplit()">1v1 Split-screen</button>
+    <button class="btn primary" onclick="openFriend()">You vs Friend</button>
     <button class="btn outline" onclick="startAI()">Solo vs Computer</button>
     <div class="seg" id="levelSeg">
       <button data-level="1">Easy</button><button data-level="3" class="on">Normal</button>
@@ -128,41 +151,21 @@ h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
   </div>
 </section>
 
-<section id="split" class="screen">
-  <div class="card">
-    <div id="step1">
-      <h1>Player 2</h1>
-      <p class="sub">Enter roll number (5 means 005)</p>
-      <div class="boxes" id="boxes"><b></b><b></b><b></b></div>
-      <div class="err" id="err" hidden></div>
-      <div class="keypad" id="keypad"></div>
-    </div>
-    <div id="step2" hidden>
-      <h1>Who is Player 2?</h1>
-      <p class="sub">Roll 138 is shared</p>
-      <div class="err" id="err2" hidden></div>
-      <button class="btn primary" onclick="pickShared('Aion')">Aion</button>
-      <button class="btn outline" onclick="pickShared('Maria')">Maria</button>
-    </div>
-    <button class="btn ghost" onclick="show('setup')">Cancel</button>
-  </div>
-</section>
-
-<section id="game" class="screen">
-  <div class="player" id="topPlayer"></div>
-  <div class="board" id="board"></div>
-  <div class="player" id="bottomPlayer"></div>
+<section id="game" class="screen face">
+  <div class="player" id="player-w"></div>
+  <div class="frame" id="frame"><div class="board" id="board"></div></div>
+  <div class="player" id="player-b"></div>
   <div class="status" id="status"></div>
   <div class="controls">
     <button class="ctl" id="undoBtn" onclick="undo()"><i>↶</i>Undo</button>
-    <button class="ctl" onclick="flipBoard()"><i>⇅</i>Switch Sides</button>
+    <button class="ctl pkey" id="pBtn" onclick="changeView()"><i>P</i>View</button>
     <button class="ctl" onclick="askRestart()"><i>↻</i>Restart</button>
     <button class="ctl" onclick="askLeave()"><i>✕</i>Exit</button>
   </div>
 </section>
 
 <div class="overlay" id="promoOverlay" hidden>
-  <div class="card" id="promoCard">
+  <div class="card">
     <h1>Promote pawn</h1>
     <div class="promo" id="promo"></div>
     <button class="btn ghost" onclick="cancelPromo()">Cancel</button>
@@ -181,6 +184,7 @@ h1{font-size:1.45rem;font-weight:800;color:var(--navy)}
 </div>
 
 <script src="students.js"></script>
+<script src="common.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 
@@ -359,14 +363,34 @@ function bestMove(s, level) {
   return best;
 }
 
-/* ═════════ Game flow ═════════ */
-// filled symbols for both colours; U+FE0E stops phones drawing them as emoji
-const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟' };
-const glyph = t => GLYPH[t] + '︎';
+/* ═════════ Piece artwork ═════════ */
+const BASE = '<rect x="22" y="77" width="56" height="14" rx="6"/>';
+const SHAPES = {
+  p: '<path d="M37 47Q50 40 63 47L58 53Q60 68 71 79H29Q40 68 42 53Z"/><circle cx="50" cy="31" r="15"/>',
+  r: '<path d="M28 18h11v9h6v-9h10v9h6v-9h11v22l-8 7v22l8 10H28l8-10V47l-8-7Z"/><path class="line" d="M36 47h28M36 68h28"/>',
+  n: '<path d="M31 79C31 63 40 57 47 49C40 50 35 57 27 55C20 52 19 45 25 39L43 23L45 10L55 20C71 25 77 43 74 60C73 68 71 73 71 79Z"/><path class="line" d="M56 27C65 34 67 47 63 58"/><circle class="eye" cx="44" cy="32" r="3.8"/>',
+  b: '<path d="M40 62h20c1 7 7 11 11 17H29c4-6 10-10 11-17Z"/><path d="M50 21C68 33 70 51 59 62H41C30 51 32 33 50 21Z"/><circle cx="50" cy="15" r="7"/><path class="line" d="M55 31L45 49"/>',
+  q: '<path d="M33 65h34l5 14H28Z"/><path d="M22 31L36 51L36 22L46 48L50 17L54 48L64 22L64 51L78 31L68 67H32Z"/><circle cx="22" cy="29" r="6"/><circle cx="36" cy="20" r="6"/><circle cx="50" cy="13" r="6"/><circle cx="64" cy="20" r="6"/><circle cx="78" cy="29" r="6"/>',
+  k: '<path d="M35 64h30l7 15H28Z"/><path d="M50 36C58 24 81 30 77 48C74 57 67 59 65 66H35C33 59 26 57 23 48C19 30 42 24 50 36Z"/><path d="M45 5h10v8h8v10h-8v12H45V23h-8V13h8Z"/><path class="line" d="M35 58Q50 52 65 58"/>'
+};
+function art(piece) {
+  const white = piece[0] === 'w', fill = white ? 'url(#gw)' : 'url(#gb)', edge = white ? '#0d2b4e' : '#e8f4ff';
+  const body = (SHAPES[piece[1]] + BASE)
+    .replace(/class="line"/g, `style="fill:none;stroke:${white ? '#3f86c4' : '#aed6f6'}"`)
+    .replace(/class="eye"/g, `style="fill:${edge};stroke:none"`);
+  return `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="92" rx="33" ry="6" fill="#0d2b4e" opacity=".22"/>
+    <g fill="${fill}" stroke="${edge}" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round">${body}</g></svg>`;
+}
+$('hero').innerHTML = art('wn');
 
-let mode = 'ai', level = 3, names = { w: me.name, b: 'Computer' };
-let state, history = [], selected = -1, targets = [], flipped = false, over = false, thinking = false;
-let pending = null, aiTimer = null;
+/* ═════════ Game flow ═════════ */
+const COLORS = { w: '#e11d48', b: '#123cf3' };
+let mode = 'ai', level = 3, view = 'face-bottom', names = { w: me.name, b: 'Computer' };
+let state, history = [], selected = -1, targets = [], over = false, thinking = false, ready = false;
+let pending = null, timers = [], boardAngle = 0, pieces = [];
+
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+const stopTimers = () => { timers.forEach(clearTimeout); timers = []; };
 
 $('levelSeg').addEventListener('click', e => {
   const btn = e.target.closest('button');
@@ -375,20 +399,122 @@ $('levelSeg').addEventListener('click', e => {
   [...$('levelSeg').children].forEach(x => x.classList.toggle('on', x === btn));
 });
 
-function startAI() { mode = 'ai'; names = { w: me.name, b: 'Computer' }; flipped = false; show('game'); newGame(); }
-function startSplit(name) { mode = 'split'; names = { w: me.name, b: name }; flipped = false; show('game'); newGame(); }
-
-function newGame() {
-  clearTimeout(aiTimer);
-  state = startState(); history = []; selected = -1; targets = [];
-  over = false; thinking = false; pending = null;
-  $('endOverlay').hidden = true; $('promoOverlay').hidden = true;
-  render();
+async function openFriend() {
+  const choice = await G66.friend(me);
+  if (choice) begin('friend', choice.name, choice.view);
+}
+function startAI() { begin('ai', 'Computer', G66.saved('face-bottom')); }
+async function begin(kind, opponent, chosen) {
+  mode = kind; view = chosen; names = { w: me.name, b: opponent };
+  show('game');
+  newGame(true);
+  ready = false;
+  await G66.intro([{ name: names.w, color: COLORS.w }, { name: names.b, color: COLORS.b }], view);
+  ready = true;
+  deal();
 }
 
-// in split-screen the player at the top sits opposite, so their side is turned around
-const topColor = () => flipped ? 'w' : 'b';
-const turnedAround = color => mode === 'split' && color === topColor();
+function newGame(waitForIntro) {
+  stopTimers();
+  state = startState(); history = []; selected = -1; targets = [];
+  over = false; thinking = false; pending = null; ready = true;
+  $('endOverlay').hidden = true; $('promoOverlay').hidden = true;
+  buildBoard();
+  syncPieces();
+  render();
+  if (waitForIntro !== true) deal();
+}
+// pieces drop onto the board one after another
+function deal() {
+  pieces.forEach((el, sq) => {
+    if (!el) return;
+    el.classList.add('deal');
+    el.querySelector('svg').style.animationDelay = ((sq & 7) * 35 + (sq >> 3) * 12) + 'ms';
+  });
+  later(() => pieces.forEach(el => { if (el) { el.classList.remove('deal'); el.querySelector('svg').style.animationDelay = ''; } }), 900);
+}
+
+/* ── who sits where ── */
+const seatOf = color => G66.VIEWS[view].seats[color === 'w' ? 0 : 1];
+const isFace = () => G66.VIEWS[view].face;
+// is this player's side of the screen upside down?
+const turnedAround = color => isFace() && seatOf(mode === 'ai' ? 'w' : color) === 'top';
+// which way the board should be turned right now (0 = white at the bottom)
+function wantedAngle() {
+  if (isFace()) return seatOf('w') === 'bottom' ? 0 : 180;
+  if (mode === 'ai') return 0;
+  return state.turn === 'w' ? 0 : 180;      // side by side: the mover's army comes to the bottom
+}
+
+function turnBoard() {
+  const want = wantedAngle();
+  if (((boardAngle - want) % 360 + 360) % 360 === 0) return false;
+  boardAngle += 180;
+  const frame = $('frame');
+  frame.classList.remove('spin'); void frame.offsetWidth; frame.classList.add('spin');
+  return true;
+}
+function orient() {
+  $('board').style.transform = `rotate(${boardAngle}deg)`;
+  pieces.forEach(el => { if (el) face(el); });
+  document.querySelectorAll('.coord').forEach(c => { c.style.transform = `rotate(${-boardAngle}deg)`; });
+}
+function face(el) {
+  const facing = turnedAround(el.dataset.p[0]) ? 180 : 0;
+  el.firstChild.style.transform = `rotate(${facing - boardAngle}deg)`;
+}
+
+/* ── board and pieces ── */
+function buildBoard() {
+  const board = $('board');
+  board.innerHTML = ''; pieces = Array(64).fill(null);
+  boardAngle = wantedAngle();
+  for (let sq = 0; sq < 64; sq++) {
+    const r = sq >> 3, c = sq & 7;
+    const el = document.createElement('button');
+    el.className = 'sq' + ((r + c) % 2 ? ' d' : '');
+    el.dataset.sq = sq;
+    el.setAttribute('aria-label', 'abcdefgh'[c] + (8 - r));
+    if (c === 0) el.insertAdjacentHTML('beforeend', `<span class="coord rank">${8 - r}</span>`);
+    if (r === 7) el.insertAdjacentHTML('beforeend', `<span class="coord file">${'abcdefgh'[c]}</span>`);
+    el.onclick = () => tap(sq);
+    board.appendChild(el);
+  }
+}
+const spot = sq => `translate(${(sq & 7) * 100}%,${(sq >> 3) * 100}%)`;
+function makePiece(p, sq) {
+  const el = document.createElement('div');
+  el.className = 'pc'; el.dataset.p = p;
+  el.style.transform = spot(sq);
+  el.innerHTML = `<div class="turner">${art(p)}</div>`;
+  $('board').appendChild(el);
+  face(el);
+  return el;
+}
+function syncPieces() {
+  pieces.forEach(el => el && el.remove());
+  pieces = state.b.map((p, sq) => p ? makePiece(p, sq) : null);
+  orient();
+}
+function slide(from, to) {
+  const el = pieces[from];
+  pieces[to] = el; pieces[from] = null;
+  el.classList.remove('sel'); el.classList.add('moving');
+  el.style.transform = spot(to);
+  later(() => el.classList.remove('moving'), 360);
+  return el;
+}
+function remove(sq) {
+  const el = pieces[sq];
+  if (!el) return;
+  pieces[sq] = null;
+  el.classList.add('dead');
+  const spark = document.createElement('div');
+  spark.className = 'spark';
+  spark.style.transform = spot(sq);
+  $('board').appendChild(spark);
+  setTimeout(() => { el.remove(); spark.remove(); }, 460);
+}
 
 function positionKey(s) { return s.b.join(',') + s.turn + JSON.stringify(s.castle) + s.ep; }
 
@@ -407,7 +533,7 @@ function result() {
 }
 
 function tap(sq) {
-  if (over || thinking || pending || (mode === 'ai' && state.turn === 'b')) return;
+  if (!ready || over || thinking || pending || (mode === 'ai' && state.turn === 'b')) return;
   const options = targets.filter(m => m.t === sq);
   if (options.length) {
     if (options[0].promo) return askPromo(options);
@@ -417,6 +543,7 @@ function tap(sq) {
   if (p && p[0] === state.turn && sq !== selected) {
     selected = sq;
     targets = legalMoves(state).filter(m => m.f === sq);
+    G66.buzz(8);
   } else { selected = -1; targets = []; }
   render();
 }
@@ -428,60 +555,105 @@ function askPromo(options) {
   options.forEach(m => {
     const btn = document.createElement('button');
     btn.dataset.piece = m.promo;
-    btn.innerHTML = `<span class="pc ${color}">${glyph(m.promo)}</span>`;
+    btn.innerHTML = art(color + m.promo);
     btn.onclick = () => { pending = null; $('promoOverlay').hidden = true; play(m); };
     $('promo').appendChild(btn);
   });
-  $('promoCard').classList.toggle('rot', turnedAround(color));
+  $('promoOverlay').classList.toggle('rot', turnedAround(color));
   $('promoOverlay').hidden = false;
 }
 function cancelPromo() { pending = null; $('promoOverlay').hidden = true; }
 
+const CHEERS = { p: '+1', n: 'Nice! +3', b: 'Nice! +3', r: 'Great! +5', q: 'WOW! +9' };
+
 function play(move) {
+  const mover = state.turn;
   history.push({ state, move });
   state = apply(state, move);
   selected = -1; targets = []; thinking = false;
+
+  // animate what changed
+  const victim = move.enPassant ? move.t + (mover === 'w' ? 8 : -8) : move.t;
+  if (state.captured) {
+    remove(victim);
+    G66.pop(CHEERS[state.captured[1]], $('board').children[move.t], { color: COLORS[mover], flip: turnedAround(mover) });
+    G66.buzz(35);
+  } else G66.buzz(12);
+  const moved = slide(move.f, move.t);
+  if (move.rook) slide(move.rook[0], move.rook[1]);
+  if (move.promo) later(() => { moved.dataset.p = mover + move.promo; moved.innerHTML = `<div class="turner">${art(moved.dataset.p)}</div>`; moved.classList.add('crown'); face(moved); }, 300);
+
   const end = result();
   over = !!end;
   render();
   if (end) return finish(end);
-  if (mode === 'ai' && state.turn === 'b') {
-    thinking = true;
-    render();
-    aiTimer = setTimeout(() => play(bestMove(state, level)), 450);
+  const check = inCheck(state, state.turn);
+  if (check) later(() => G66.banner('CHECK!', { color: '#dc2626', flip: turnedAround(state.turn) }), 250);
+
+  if (mode === 'ai') {
+    if (state.turn === 'b') {
+      thinking = true;
+      render();
+      later(() => play(bestMove(state, level)), 650);
+    }
+  } else if (!isFace()) {
+    // side by side: swing the board round to the next player
+    later(() => {
+      if (turnBoard()) orient();
+      if (!check) G66.banner(`${names[state.turn]}'s turn`, { color: COLORS[state.turn] });
+    }, 520);
   }
 }
 
 function finish(end) {
   const lost = mode === 'ai' && end.winner === 'b';
   $('endIcon').textContent = !end.winner ? '🤝' : lost ? '🤖' : '🏆';
-  $('endTitle').textContent = end.winner ? `${names[end.winner]} wins!` : 'Draw';
+  if (end.winner) G66.wave($('endTitle'), `${names[end.winner]} wins!`);
+  else $('endTitle').textContent = 'Draw';
   $('endReason').textContent = end.reason;
-  aiTimer = setTimeout(() => { $('endOverlay').hidden = false; }, 800);
+  if (end.reason === 'Checkmate') later(() => G66.banner('CHECKMATE!', { color: COLORS[end.winner], flip: turnedAround(end.winner) }), 350);
+  later(() => {
+    $('endOverlay').classList.toggle('rot', turnedAround(end.winner || state.turn));
+    $('endOverlay').hidden = false;
+    if (end.winner && !lost) G66.celebrate();
+  }, 1500);
 }
 
 function undo() {
   if (!history.length || thinking) return;
-  clearTimeout(aiTimer);
+  stopTimers();
   let last = history.pop();
   // against the computer, go back to your own turn
   if (mode === 'ai' && last.state.turn === 'b' && history.length) last = history.pop();
   state = last.state;
-  selected = -1; targets = []; over = false;
+  selected = -1; targets = []; over = false; pending = null;
   $('endOverlay').hidden = true;
+  turnBoard();
+  syncPieces();
   render();
 }
 
-function flipBoard() { flipped = !flipped; render(); }
+async function changeView() {
+  if (!ready || pending) return;
+  const chosen = await G66.pickView(names.w, names.b, view);
+  if (!chosen) return;
+  view = chosen;
+  turnBoard();
+  orient();
+  render();
+}
+G66.onP(() => { if ($('game').classList.contains('active') && $('endOverlay').hidden && $('promoOverlay').hidden) changeView(); });
+
 function askRestart() { if (!history.length || over || confirm('Restart this game?')) newGame(); }
 function askLeave() {
   if (history.length && !over && !confirm('Leave this game?')) return;
-  clearTimeout(aiTimer); thinking = false;
+  stopTimers(); thinking = false;
   $('endOverlay').hidden = true;
   show('setup');
 }
 
-function playerCard(el, color) {
+function playerCard(color) {
+  const el = $('player-' + color);
   const taken = [];
   history.forEach((h, i) => {
     const after = i + 1 < history.length ? history[i + 1].state : state;
@@ -489,106 +661,45 @@ function playerCard(el, color) {
   });
   const total = c => state.b.reduce((n, p) => n + (p && p[0] === c ? VALUE[p[1]] : 0), 0);
   const lead = Math.round((total(color) - total(other(color))) / 100);
-  el.className = 'player' + (state.turn === color && !over ? ' turn' : '') + (turnedAround(color) ? ' rot' : '');
-  el.innerHTML = `<div class="avatar ${color}">${glyph('k')}</div>
-    <div class="who"><div class="pname"></div><div class="taken">${taken.sort((a, b) => VALUE[b[1]] - VALUE[a[1]]).map(p => glyph(p[1])).join('')}${lead > 0 ? `<em>+${lead}</em>` : ''}</div></div>
-    <span class="tag">TURN</span>`;
-  el.querySelector('.pname').textContent = names[color];
+  if (!el.firstChild) el.innerHTML = `<div class="avatar ${color}">${art(color + 'k')}</div>
+    <div class="who"><div class="pname"></div><div class="taken"></div></div><span class="tag">TURN</span>`;
+  const active = state.turn === color && !over;
+  el.className = 'player' + (active ? ' turn' : '') + (turnedAround(color) ? ' rot' : '');
+  el.style.gridArea = seatOf(color);
+  // the name of whoever is playing does a little wave
+  const name = el.querySelector('.pname'), key = names[color] + active;
+  if (name.dataset.key !== key) {
+    name.dataset.key = key;
+    if (active) G66.wave(name, names[color]); else name.textContent = names[color];
+  }
+  el.querySelector('.taken').innerHTML = taken.sort((a, b) => VALUE[b[1]] - VALUE[a[1]]).map(art).join('') + (lead > 0 ? `<em>+${lead}</em>` : '');
 }
 
 function render() {
-  const board = $('board');
-  board.innerHTML = '';
+  const squares = $('board').children;
   const last = history.length ? history[history.length - 1].move : null;
   const checked = inCheck(state, state.turn) ? state.b.indexOf(state.turn + 'k') : -1;
-  for (let i = 0; i < 64; i++) {
-    const sq = flipped ? 63 - i : i;
-    const r = sq >> 3, c = sq & 7, p = state.b[sq];
-    const el = document.createElement('button');
-    el.className = 'sq' + ((r + c) % 2 ? ' d' : '');
-    el.dataset.sq = sq;
-    el.setAttribute('aria-label', 'abcdefgh'[c] + (8 - r));
-    if (last && (sq === last.f || sq === last.t)) el.classList.add('last');
-    if (sq === selected) el.classList.add('sel');
-    if (sq === checked) el.classList.add('check');
-    const target = targets.find(m => m.t === sq);
-    if (target) el.classList.add(p || target.enPassant ? 'take' : 'move');
-    if (i % 8 === 0) el.insertAdjacentHTML('beforeend', `<span class="coord rank">${8 - r}</span>`);
-    if (i >= 56) el.insertAdjacentHTML('beforeend', `<span class="coord file">${'abcdefgh'[c]}</span>`);
-    if (p) el.insertAdjacentHTML('beforeend', `<span class="pc ${p[0]}${turnedAround(p[0]) ? ' rot' : ''}">${glyph(p[1])}</span>`);
-    el.onclick = () => tap(sq);
-    board.appendChild(el);
+  for (let sq = 0; sq < 64; sq++) {
+    const el = squares[sq], target = targets.find(m => m.t === sq);
+    el.classList.toggle('last', !!last && (sq === last.f || sq === last.t));
+    el.classList.toggle('sel', sq === selected);
+    el.classList.toggle('check', sq === checked);
+    el.classList.toggle('move', !!target && !state.b[sq] && !target.enPassant);
+    el.classList.toggle('take', !!target && (!!state.b[sq] || !!target.enPassant));
+    if (pieces[sq]) pieces[sq].classList.toggle('sel', sq === selected);
   }
-  playerCard($('topPlayer'), topColor());
-  playerCard($('bottomPlayer'), other(topColor()));
+  $('game').classList.toggle('face', isFace());
+  $('game').classList.toggle('side', !isFace());
+  playerCard('w');
+  playerCard('b');
   const status = $('status');
   status.classList.toggle('alert', checked >= 0);
+  status.classList.toggle('rot', turnedAround(state.turn) && !over);
   status.textContent = over ? 'Game over'
     : thinking ? 'Computer is thinking...'
     : (checked >= 0 ? 'Check! ' : '') + `${names[state.turn]}'s turn (${state.turn === 'w' ? 'White' : 'Black'})`;
   $('undoBtn').disabled = !history.length || thinking;
 }
-
-/* ═════════ Roll keypad ═════════ */
-let roll = '', checking = false;
-['1','2','3','4','5','6','7','8','9','del','0','ok'].forEach(k => {
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'key' + (k === 'del' || k === 'ok' ? ' ' + k : '');
-  btn.dataset.k = k;
-  btn.textContent = k === 'del' ? '⌫' : k === 'ok' ? 'OK' : k;
-  btn.onclick = () => press(k);
-  $('keypad').appendChild(btn);
-});
-
-function drawRoll() {
-  const shown = roll ? roll.padStart(3, '0') : '';
-  [...$('boxes').children].forEach((box, i) => {
-    box.textContent = shown[i] || '';
-    box.className = !roll ? '' : i >= 3 - roll.length ? 'typed' : 'ghosted';
-  });
-}
-function fail(msg, id = 'err') { $(id).textContent = msg; $(id).hidden = false; }
-function openSplit() {
-  roll = ''; checking = false; drawRoll();
-  $('step1').hidden = false; $('step2').hidden = true;
-  $('err').hidden = true; $('err2').hidden = true;
-  $('keypad').classList.remove('busy');
-  show('split');
-}
-function press(k) {
-  if (checking) return;
-  if (k === 'ok') return submitRoll();
-  $('err').hidden = true;
-  if (k === 'del') roll = roll.slice(0, -1);
-  else if (roll.length < 3) roll += k;
-  drawRoll();
-}
-async function submitRoll() {
-  if (!roll) return fail('Enter a roll number');
-  const value = roll.padStart(3, '0');
-  if (value === '138') { $('step1').hidden = true; $('step2').hidden = false; return; }
-  if (typeof studentsReady === 'undefined') return fail('students.js is missing. Upload it next to chess.html');
-  checking = true; $('keypad').classList.add('busy');
-  await studentsReady;
-  checking = false; $('keypad').classList.remove('busy');
-  if (!$('split').classList.contains('active')) return;
-  if (!Object.keys(STUDENTS).length) return fail('Cannot load students.json (' + studentsError + ')');
-  const name = STUDENTS[value];
-  if (!name) return fail('Roll not found!');
-  if (value === me.roll) return fail("That's you! Pick another player.");
-  startSplit(name);
-}
-function pickShared(name) {
-  if (me.roll === '138' && me.name === name) return fail("That's you! Pick the other one.", 'err2');
-  startSplit(name);
-}
-document.addEventListener('keydown', e => {
-  if (!$('split').classList.contains('active') || !$('step2').hidden) return;
-  if (/^[0-9]$/.test(e.key)) press(e.key);
-  else if (e.key === 'Backspace') press('del');
-  else if (e.key === 'Enter') { e.preventDefault(); press('ok'); }
-});
 </script>
 </body>
 </html>
